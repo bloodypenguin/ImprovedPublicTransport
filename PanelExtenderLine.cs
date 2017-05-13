@@ -35,13 +35,13 @@ namespace ImprovedPublicTransport
     private VehicleListBox _prefabListBox;
     private VehicleListBox _lineVehicleListBox;
     private VehicleListBox _vehiclesInQueueListBox;
-    private StopListBox _lineStopsListBox;
+
     private UIButton _selectTypes;
     private UIButton _addVehicle;
     private UIPanel _prefabPanel;
     private UIPanel _lineVehiclePanel;
     private UIPanel _vehiclesInQueuePanel;
-    private UIPanel _lineStopsPanel;
+
     private UITextField _colorTextField;
 
     public PanelExtenderLine()
@@ -164,7 +164,7 @@ namespace ImprovedPublicTransport
               this.CreateButtonPanel2();
               this._publicTransportWorldInfoPanel.component.height = 493f;
               this.CreatePrefabPanel();
-              this.CreateLineStopsPanel();
+
               this.CreateVehiclesOnLinePanel();
               this.CreateVehiclesInQueuePanel();
               BuildingWatcher.instance.OnDepotAdded += new BuildingWatcher.DepotAdded(this.OnDepotChanged);
@@ -237,18 +237,6 @@ namespace ImprovedPublicTransport
           this._prefabPanel.Hide();
           this.UpdatePanelPositionAndSize();
         }
-        if (num1 != 0)
-        {
-          if ((int) lineId != this._cachedLineID || num1 != this._cachedStopCount)
-            this.PopulateLineStopsListBox(lineId);
-          this._lineStopsPanel.Show();
-          this.UpdatePanelPositionAndSize();
-        }
-        else
-        {
-          this._lineStopsPanel.Hide();
-          this._lineStopsListBox.ClearItems();
-        }
         if (lineVehicleCount != 0)
         {
           if ((int) lineId != this._cachedLineID || lineVehicleCount != this._cachedSimCount)
@@ -292,9 +280,6 @@ namespace ImprovedPublicTransport
       float num = 0.0f;
       if (this._prefabPanel.isVisible)
         num = this._prefabPanel.width + 1f;
-      this._lineStopsPanel.relativePosition = new Vector3((float) ((double) num + (double) this._lineStopsPanel.parent.width + 1.0), 0.0f);
-      if (this._lineStopsPanel.isVisible)
-        num = (float) ((double) num + (double) this._lineStopsPanel.width + 1.0);
       this._lineVehiclePanel.relativePosition = new Vector3((float) ((double) num + (double) this._lineVehiclePanel.parent.width + 1.0), 0.0f);
       if (this._lineVehiclePanel.isVisible)
       {
@@ -340,9 +325,6 @@ namespace ImprovedPublicTransport
         UnityEngine.Object.Destroy((UnityEngine.Object) this._lineVehiclePanel.gameObject);
       if ((UnityEngine.Object) this._vehiclesInQueuePanel != (UnityEngine.Object) null)
         UnityEngine.Object.Destroy((UnityEngine.Object) this._vehiclesInQueuePanel.gameObject);
-      if (!((UnityEngine.Object) this._lineStopsPanel != (UnityEngine.Object) null))
-        return;
-      UnityEngine.Object.Destroy((UnityEngine.Object) this._lineStopsPanel.gameObject);
     }
 
     private void CreateSpawnTimerPanel()
@@ -613,38 +595,12 @@ namespace ImprovedPublicTransport
       this._prefabListBox.eventRowShiftClick += new MouseEventHandler(this.OnAddVehicleClick);
     }
 
-    private void CreateLineStopsPanel()
-    {
-      UIPanel uiPanel = this._publicTransportWorldInfoPanel.component.AddUIComponent<UIPanel>();
-      uiPanel.name = "LineStops";
-      uiPanel.AlignTo(uiPanel.parent, UIAlignAnchor.TopRight);
-      uiPanel.relativePosition = new Vector3((float) ((double) uiPanel.parent.width + (double) this._prefabPanel.width + 2.0), 0.0f);
-      uiPanel.width = 180f;
-      uiPanel.height = uiPanel.parent.height - 16f;
-      uiPanel.backgroundSprite = "UnlockingPanel2";
-      uiPanel.opacity = 0.95f;
-      this._lineStopsPanel = uiPanel;
-      UILabel uiLabel = uiPanel.AddUIComponent<UILabel>();
-      uiLabel.text = Localization.Get("LINE_PANEL_LINE_STOPS");
-      uiLabel.textAlignment = UIHorizontalAlignment.Center;
-      uiLabel.font = this._vehicleAmount.font;
-      uiLabel.position = new Vector3((float) ((double) uiPanel.width / 2.0 - (double) uiLabel.width / 2.0), (float) ((double) uiLabel.height / 2.0 - 20.0));
-      StopListBox stopListBox = StopListBox.Create((UIComponent) uiPanel);
-      stopListBox.name = "LineStopsListBox";
-      stopListBox.AlignTo((UIComponent) uiPanel, UIAlignAnchor.TopLeft);
-      stopListBox.relativePosition = new Vector3(3f, 40f);
-      stopListBox.width = uiPanel.width - 6f;
-      stopListBox.height = uiPanel.parent.height - 61f;
-      stopListBox.Font = this._vehicleAmount.font;
-      this._lineStopsListBox = stopListBox;
-    }
-
     private void CreateVehiclesOnLinePanel()
     {
       UIPanel uiPanel = this._publicTransportWorldInfoPanel.component.AddUIComponent<UIPanel>();
       uiPanel.name = "VehiclesOnLine";
       uiPanel.AlignTo(uiPanel.parent, UIAlignAnchor.TopRight);
-      uiPanel.relativePosition = new Vector3((float) ((double) uiPanel.parent.width + (double) this._prefabPanel.width + (double) this._lineStopsPanel.width + 3.0), 0.0f);
+      uiPanel.relativePosition = new Vector3((float) ((double) uiPanel.parent.width + (double) this._prefabPanel.width + (double)180f + 3.0), 0.0f);
       uiPanel.width = 180f;
       uiPanel.height = (float) (((double) uiPanel.parent.height - 16.0) / 2.0);
       uiPanel.backgroundSprite = "UnlockingPanel2";
@@ -912,20 +868,6 @@ namespace ImprovedPublicTransport
             break;
           }
         }
-      }
-    }
-
-    private void PopulateLineStopsListBox(ushort lineID)
-    {
-      this._lineStopsListBox.ClearItems();
-      TransportLine transportLine = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID];
-      ushort num1 = transportLine.m_stops;
-      int num2 = transportLine.CountStops(lineID);
-      for (int index = 0; index < num2; ++index)
-      {
-        int nextStop = (int) TransportLine.GetNextStop(num1);
-        this._lineStopsListBox.AddItem(num1, index + 1);
-        num1 = (ushort) nextStop;
       }
     }
 

@@ -65,6 +65,8 @@
     <Compile Include="Bezier3Extensions.cs" />
     <Compile Include="BuildingWatcher.cs" />
     <Compile Include="BusAIMod.cs" />
+    <Compile Include="Detour\PublicTransportWorldInfoPanelDetour.cs" />
+    <Compile Include="Detour\Redirection`2.cs" />
     <Compile Include="GameDefault.cs" />
     <Compile Include="LineData.cs" />
     <Compile Include="LocaleModifier.cs" />
@@ -75,11 +77,21 @@
     <Compile Include="PassengerPlaneAIMod.cs" />
     <Compile Include="PassengerShipAIMod.cs" />
     <Compile Include="PassengerTrainAIMod.cs" />
+    <Compile Include="Redirection\AssemblyRedirector.cs" />
+    <Compile Include="Redirection\Attributes\RedirectAttribute.cs" />
+    <Compile Include="Redirection\Attributes\RedirectMethodAttribute.cs" />
+    <Compile Include="Redirection\Attributes\RedirectReverseAttribute.cs" />
+    <Compile Include="Redirection\Attributes\TargetTypeAttribute.cs" />
+    <Compile Include="Redirection\Extensions\TypeExtension.cs" />
+    <Compile Include="Redirection\RedirectionHelper.cs" />
+    <Compile Include="Redirection\RedirectionUtil.cs" />
+    <Compile Include="Redirection\Redirector.cs" />
+    <Compile Include="Redirection\Tuple.cs" />
+    <Compile Include="StopListBox.cs" />
+    <Compile Include="StopListBoxRow.cs" />
     <Compile Include="TramAIMod.cs" />
     <Compile Include="PanelExtenderCityService.cs" />
     <Compile Include="PublicTransportStopWorldInfoPanel.cs" />
-    <Compile Include="StopListBox.cs" />
-    <Compile Include="StopListBoxRow.cs" />
     <Compile Include="DropDown.cs" />
     <Compile Include="DropDownRow.cs" />
     <Compile Include="UIHelper.cs" />
@@ -102,9 +114,6 @@
     <Compile Include="VehicleData.cs" />
     <Compile Include="VehicleManagerMod.cs" />
     <Compile Include="VehiclePrefabs.cs" />
-    <Compile Include="Detour\RedirectCallsState.cs" />
-    <Compile Include="Detour\Redirection`2.cs" />
-    <Compile Include="Detour\RedirectionHelper.cs" />
     <Compile Include="Detour\TypeExtensions.cs" />
     <Compile Include="AssemblyInfo.cs" />
   </ItemGroup>
