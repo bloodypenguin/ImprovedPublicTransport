@@ -65,7 +65,7 @@
     <Compile Include="Bezier3Extensions.cs" />
     <Compile Include="BuildingWatcher.cs" />
     <Compile Include="Detour\BusAIMod.cs" />
-    <Compile Include="Detour\PublicTransportWorldInfoPanelDetour.cs" />
+    <Compile Include="Detour\PublicTransportStopButtonDetour.cs" />
     <Compile Include="GameDefault.cs" />
     <Compile Include="LineData.cs" />
     <Compile Include="LocaleModifier.cs" />
