@@ -9,18 +9,18 @@ using System.Collections.Generic;
 using System.Linq;
 using ColossalFramework;
 using ColossalFramework.Math;
+using ImprovedPublicTransport.Redirection.Attributes;
 using UnityEngine;
 
 namespace ImprovedPublicTransport.Detour
 {
+  [TargetType(typeof(TransportLine))]
   public class TransportLineMod
   {
     private static readonly string _dataID = "ImprovedPublicTransport";
     private static readonly string _dataVersion = "v004";
     private static bool _isDeployed = false;
     private static bool _init = false;
-    private static Redirection<TransportLine, TransportLineMod> _redirectionSimulationStep;
-    private static Redirection<TransportLine, TransportLineMod> _redirectionUpdateMeshData;
     private static LineData[] _lineData;
 
     public static void Init()
@@ -58,11 +58,6 @@ namespace ImprovedPublicTransport.Detour
       TransportLineMod._init = true;
     }
 
-    public static void DetourUpdateMeshData()
-    {
-      TransportLineMod._redirectionUpdateMeshData.Redirect();
-    }
-
     public static void Deinit()
     {
       if (TransportLineMod._isDeployed)
@@ -78,11 +73,6 @@ namespace ImprovedPublicTransport.Detour
       TransportLineMod._lineData = (LineData[]) null;
       SerializableDataExtension.instance.EventSaveData -= new SerializableDataExtension.SaveDataEventHandler(TransportLineMod.OnSaveData);
       TransportLineMod._init = false;
-    }
-
-    public static void RevertDetourUpdateMeshData()
-    {
-      TransportLineMod._redirectionUpdateMeshData.Revert();
     }
 
     public static bool TryLoadData(out LineData[] data)
@@ -224,6 +214,7 @@ namespace ImprovedPublicTransport.Detour
     }
 
 //TODO(earalov): restore
+//    [RedirectMethod]  
 //    public void SimulationStep(ushort lineID)
 //    {
 //      if (!TransportLineMod._init)
@@ -328,6 +319,7 @@ namespace ImprovedPublicTransport.Detour
 //    }
 
 //TODO(earalov): restore
+//    [RedirectMethod]  
 //    public bool UpdateMeshData(ushort lineID)
 //    {
 //      return TransportLineMod.UpdateMeshDataImpl(ref Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID], lineID);

@@ -66,7 +66,6 @@
     <Compile Include="BuildingWatcher.cs" />
     <Compile Include="Detour\BusAIMod.cs" />
     <Compile Include="Detour\PublicTransportWorldInfoPanelDetour.cs" />
-    <Compile Include="Detour\Redirection`2.cs" />
     <Compile Include="GameDefault.cs" />
     <Compile Include="LineData.cs" />
     <Compile Include="LocaleModifier.cs" />
@@ -89,7 +88,7 @@
     <Compile Include="Redirection\Tuple.cs" />
     <Compile Include="StopListBox.cs" />
     <Compile Include="StopListBoxRow.cs" />
-    <Compile Include="TramAIMod.cs" />
+    <Compile Include="Detour\TramAIMod.cs" />
     <Compile Include="PanelExtenderCityService.cs" />
     <Compile Include="PublicTransportStopWorldInfoPanel.cs" />
     <Compile Include="DropDown.cs" />
@@ -101,7 +100,6 @@
     <Compile Include="VehicleListBox.cs" />
     <Compile Include="SettingsPanel.cs" />
     <Compile Include="VehicleEditor.cs" />
-    <Compile Include="Detour\DepotAIMod.cs" />
     <Compile Include="SerializableDataExtension.cs" />
     <Compile Include="Serializer.cs" />
     <Compile Include="Settings.cs" />
@@ -114,7 +112,6 @@
     <Compile Include="VehicleData.cs" />
     <Compile Include="Detour\VehicleManagerMod.cs" />
     <Compile Include="VehiclePrefabs.cs" />
-    <Compile Include="Detour\TypeExtensions.cs" />
     <Compile Include="AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -6,17 +6,18 @@
 
 using System;
 using ColossalFramework;
+using ImprovedPublicTransport.Redirection;
+using ImprovedPublicTransport.Redirection.Attributes;
 
 namespace ImprovedPublicTransport.Detour
 {
+  [TargetType(typeof(NetManager))]
   public class NetManagerMod
   {
     private static readonly string _dataID = "IPT_NodeData";
     private static readonly string _dataVersion = "v003";
     private static bool _isDeployed = false;
-    private static NetManagerMod.PreReleaseNodeImplementationCallback PreReleaseNodeImplementation;
-    private static NetManagerMod.ReleaseNodeImplementationCallback ReleaseNodeImplementation;
-    private static Redirection<NetManager, NetManagerMod> _redirection;
+
     public static NodeData[] m_cachedNodeData;
 
     public static void Init()
@@ -25,9 +26,7 @@ namespace ImprovedPublicTransport.Detour
         return;
       if (!NetManagerMod.TryLoadData(out NetManagerMod.m_cachedNodeData))
         Utils.Log((object) "Loading default net node data.");
-      NetManagerMod.PreReleaseNodeImplementation = (NetManagerMod.PreReleaseNodeImplementationCallback) Utils.CreateDelegate<NetManager, NetManagerMod.PreReleaseNodeImplementationCallback>("PreReleaseNodeImplementation", (object) Singleton<NetManager>.instance);
-      NetManagerMod.ReleaseNodeImplementation = (NetManagerMod.ReleaseNodeImplementationCallback) Utils.CreateDelegate<NetManager, NetManagerMod.ReleaseNodeImplementationCallback>("ReleaseNodeImplementation", (object) Singleton<NetManager>.instance);
-      NetManagerMod._redirection = new Redirection<NetManager, NetManagerMod>("ReleaseNode");
+      Redirector<NetManagerMod>.Deploy();
       SerializableDataExtension.instance.EventSaveData += new SerializableDataExtension.SaveDataEventHandler(NetManagerMod.OnSaveData);
       NetManagerMod._isDeployed = true;
     }
@@ -37,11 +36,8 @@ namespace ImprovedPublicTransport.Detour
       if (!NetManagerMod._isDeployed)
         return;
       NetManagerMod.m_cachedNodeData = (NodeData[]) null;
-      NetManagerMod._redirection.Revert();
-      NetManagerMod._redirection = (Redirection<NetManager, NetManagerMod>) null;
-      NetManagerMod.PreReleaseNodeImplementation = (NetManagerMod.PreReleaseNodeImplementationCallback) null;
-      NetManagerMod.ReleaseNodeImplementation = (NetManagerMod.ReleaseNodeImplementationCallback) null;
-      SerializableDataExtension.instance.EventSaveData -= new SerializableDataExtension.SaveDataEventHandler(NetManagerMod.OnSaveData);
+        Redirector<NetManagerMod>.Revert();
+            SerializableDataExtension.instance.EventSaveData -= new SerializableDataExtension.SaveDataEventHandler(NetManagerMod.OnSaveData);
       NetManagerMod._isDeployed = false;
     }
 
@@ -116,6 +112,7 @@ namespace ImprovedPublicTransport.Detour
       }
     }
 
+    [RedirectMethod]
     public void ReleaseNode(ushort nodeID)
     {
       Singleton<InstanceManager>.instance.SetName(new InstanceID()
@@ -125,12 +122,20 @@ namespace ImprovedPublicTransport.Detour
       if (!NetManagerMod.m_cachedNodeData[(int) nodeID].IsEmpty)
         NetManagerMod.m_cachedNodeData[(int) nodeID] = new NodeData();
       NetManager instance = Singleton<NetManager>.instance;
-      NetManagerMod.PreReleaseNodeImplementation(nodeID, ref instance.m_nodes.m_buffer[(int) nodeID], false, false);
-      NetManagerMod.ReleaseNodeImplementation(nodeID, ref instance.m_nodes.m_buffer[(int) nodeID]);
+      PreReleaseNodeImplementation(nodeID, ref instance.m_nodes.m_buffer[(int) nodeID], false, false);
+      ReleaseNodeImplementation(nodeID, ref instance.m_nodes.m_buffer[(int) nodeID]);
     }
 
-    private delegate void PreReleaseNodeImplementationCallback(ushort node, ref NetNode data, bool checkDeleted, bool checkTouchable);
+      [RedirectReverse]
+      private void PreReleaseNodeImplementation(ushort node, ref NetNode data, bool checkDeleted, bool checkTouchable)
+      {
+          UnityEngine.Debug.Log("PreReleaseNodeImplementation");
+      }
 
-    private delegate void ReleaseNodeImplementationCallback(ushort node, ref NetNode data);
+      [RedirectReverse]
+      private void ReleaseNodeImplementation(ushort node, ref NetNode data)
+      {
+          UnityEngine.Debug.Log("ReleaseNodeImplementation");
+        }
   }
 }

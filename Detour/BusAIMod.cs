@@ -6,28 +6,24 @@
 
 using System;
 using ColossalFramework;
+using ImprovedPublicTransport.Redirection;
+using ImprovedPublicTransport.Redirection.Attributes;
 using UnityEngine;
 
 namespace ImprovedPublicTransport.Detour
 {
+  [TargetType(typeof(BusAI))]
   public class BusAIMod : BusAI
   {
     public const byte MIN_WAIT_COUNTER = 12;
     private const byte MAX_BOARDING_COUNTER = 60;
     private static bool _isDeployed;
-    private static BusAIMod.LoadPassengersCallback LoadPassengers;
-    private static BusAIMod.UnloadPassengersCallback UnloadPassengers;
-    private static Redirection<BusAI, BusAIMod> _redirectionArriveAtTarget;
-    private static Redirection<BusAI, BusAIMod> _redirectionCanLeave;
 
     public static void Init()
     {
       if (BusAIMod._isDeployed)
         return;
-      BusAIMod.LoadPassengers = (BusAIMod.LoadPassengersCallback) Utils.CreateDelegate<BusAI, BusAIMod.LoadPassengersCallback>("LoadPassengers", (object) null);
-      BusAIMod.UnloadPassengers = (BusAIMod.UnloadPassengersCallback) Utils.CreateDelegate<BusAI, BusAIMod.UnloadPassengersCallback>("UnloadPassengers", (object) null);
-      BusAIMod._redirectionArriveAtTarget = new Redirection<BusAI, BusAIMod>("ArriveAtTarget");
-      BusAIMod._redirectionCanLeave = new Redirection<BusAI, BusAIMod>("CanLeave");
+      Redirector<BusAIMod>.Deploy();
       BusAIMod._isDeployed = true;
     }
 
@@ -35,15 +31,11 @@ namespace ImprovedPublicTransport.Detour
     {
       if (!BusAIMod._isDeployed)
         return;
-      BusAIMod.LoadPassengers = (BusAIMod.LoadPassengersCallback) null;
-      BusAIMod.UnloadPassengers = (BusAIMod.UnloadPassengersCallback) null;
-      BusAIMod._redirectionArriveAtTarget.Revert();
-      BusAIMod._redirectionArriveAtTarget = (Redirection<BusAI, BusAIMod>) null;
-      BusAIMod._redirectionCanLeave.Revert();
-      BusAIMod._redirectionCanLeave = (Redirection<BusAI, BusAIMod>) null;
+      Redirector<BusAIMod>.Revert();
       BusAIMod._isDeployed = false;
     }
 
+    [RedirectMethod]
     private bool ArriveAtTarget(ushort vehicleID, ref Vehicle data)
     {
       if ((int) data.m_targetBuilding == 0)
@@ -88,6 +80,7 @@ namespace ImprovedPublicTransport.Detour
       return false;
     }
 
+    [RedirectMethod]
     public new bool CanLeave(ushort vehicleID, ref Vehicle vehicleData)
     {
       if ((int) vehicleData.m_leadingVehicle != 0)
@@ -97,7 +90,7 @@ namespace ImprovedPublicTransport.Detour
       return false;
     }
 
-    private static bool IsBoardingDone(ushort vehicleID, ref Vehicle vehicleData)
+    public static bool IsBoardingDone(ushort vehicleID, ref Vehicle vehicleData)
     {
       CitizenManager instance1 = Singleton<CitizenManager>.instance;
       bool flag = false;
@@ -133,7 +126,7 @@ namespace ImprovedPublicTransport.Detour
       return true;
     }
 
-    private static bool IsUnbunchingDone(ushort vehicleID, ref Vehicle vehicleData)
+    public static bool IsUnbunchingDone(ushort vehicleID, ref Vehicle vehicleData)
     {
       bool flag;
       try
@@ -220,7 +213,7 @@ namespace ImprovedPublicTransport.Detour
       Singleton<EconomyManager>.instance.AddResource(EconomyManager.Resource.PublicIncome, ticketPrice, info.m_class);
     }
 
-    public static bool GetProgressStatus(ushort vehicleID, ref Vehicle data, out float current, out float max)
+    public new static bool GetProgressStatus(ushort vehicleID, ref Vehicle data, out float current, out float max)
     {
       ushort transportLine = data.m_transportLine;
       ushort targetBuilding = data.m_targetBuilding;
@@ -247,8 +240,18 @@ namespace ImprovedPublicTransport.Detour
       return true;
     }
 
-    private delegate void LoadPassengersCallback(BusAI ai, ushort vehicleID, ref Vehicle data, ushort currentStop, ushort nextStop);
+      [RedirectReverse]
+        private static void LoadPassengers(BusAI ai, ushort vehicleID, ref Vehicle data, ushort currentStop,
+          ushort nextStop)
+      {
+         UnityEngine.Debug.Log("LoadPassengers"); 
+      }
 
-    private delegate void UnloadPassengersCallback(BusAI ai, ushort vehicleID, ref Vehicle data, ushort currentStop, ushort nextStop);
+        [RedirectReverse]
+      private static void UnloadPassengers(BusAI ai, ushort vehicleID, ref Vehicle data, ushort currentStop,
+          ushort nextStop)
+      {
+          UnityEngine.Debug.Log("UnloadPassengers");
+        }
   }
 }

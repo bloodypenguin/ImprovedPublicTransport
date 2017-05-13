@@ -178,32 +178,6 @@ namespace ImprovedPublicTransport
       return true;
     }
 
-    public static Delegate CreateDelegate<TClass, TDelegade>(string methodName, object firstArgument)
-    {
-      if (string.IsNullOrEmpty(methodName))
-        throw new ArgumentNullException("methodName");
-      MethodInfo method1 = (MethodInfo) null;
-      MethodInfo method2 = typeof (TDelegade).GetMethod("Invoke");
-      ParameterInfo[] destinationParameters = method2.GetParameters();
-      if (firstArgument == null)
-        destinationParameters = ((IEnumerable<ParameterInfo>) destinationParameters).Skip<ParameterInfo>(1).ToArray<ParameterInfo>();
-      MethodInfo[] methods = typeof (TClass).GetMethods(methodName, BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-      if (methods.Length == 0)
-        throw new ArgumentNullException("No methods found!");
-      foreach (MethodInfo methodInfo in methods)
-      {
-        if (methodInfo.ReturnType == method2.ReturnType && Utils.AreParametersEqual(methodInfo.GetParameters(), destinationParameters))
-        {
-          method1 = methodInfo;
-          break;
-        }
-      }
-      if (method1 == null)
-        throw new ArgumentNullException("No method match found.");
-      Utils.Log((object) string.Format("Creating Delegate for {0}.{1}.", (object) method1.DeclaringType.Name, (object) method1.Name));
-      return Delegate.CreateDelegate(typeof (TDelegade), firstArgument, method1);
-    }
-
     public static string GetModPath(string assemblyName, ulong workshopId)
     {
       foreach (PluginManager.PluginInfo pluginInfo in Singleton<PluginManager>.instance.GetPluginsInfo())
