@@ -6,6 +6,7 @@
 
 using System;
 using System.Reflection;
+using ImprovedPublicTransport.Redirection;
 
 namespace ImprovedPublicTransport.Detour
 {
