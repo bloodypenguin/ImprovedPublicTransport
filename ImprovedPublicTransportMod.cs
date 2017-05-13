@@ -9,6 +9,7 @@ using ColossalFramework.UI;
 using ICities;
 using System;
 using ImprovedPublicTransport.Detour;
+using ImprovedPublicTransport.Redirection;
 using UnityEngine;
 
 namespace ImprovedPublicTransport
@@ -73,7 +74,7 @@ namespace ImprovedPublicTransport
     public void OnLevelLoaded(LoadMode mode)
     {
       this._loadMode = mode;
-      if (mode != LoadMode.LoadGame && mode != LoadMode.NewGame)
+      if (mode != LoadMode.LoadGame && mode != LoadMode.NewGame && mode != LoadMode.NewGameFromScenario)
         return;
       try
       {
@@ -107,6 +108,7 @@ namespace ImprovedPublicTransport
           VehiclePrefabs.Init();
           SerializableDataExtension.instance.Loaded = true;
           LocaleModifier.Init();
+          Redirector<PublicTransportStopButtonDetour>.Deploy();
           Utils.Log((object) "Loading done!");
         }
         else
@@ -121,7 +123,7 @@ namespace ImprovedPublicTransport
 
     public void OnLevelUnloading()
     {
-      if (this._loadMode != LoadMode.LoadGame && this._loadMode != LoadMode.NewGame)
+      if (this._loadMode != LoadMode.LoadGame && this._loadMode != LoadMode.NewGame && this._loadMode == LoadMode.NewGameFromScenario)
         return;
       Serializer.SaveSettings(ImprovedPublicTransportMod.Settings);
       this.Deinit();
@@ -165,6 +167,8 @@ namespace ImprovedPublicTransport
       VehiclePrefabs.Deinit();
       SerializableDataExtension.instance.Loaded = false;
       LocaleModifier.Deinit();
+      Redirector<PublicTransportStopButtonDetour>.Revert();
+
       if ((UnityEngine.Object) this._iptGameObject != (UnityEngine.Object) null)
         UnityEngine.Object.Destroy((UnityEngine.Object) this._iptGameObject);
       if (!((UnityEngine.Object) this._worldInfoPanel != (UnityEngine.Object) null))
