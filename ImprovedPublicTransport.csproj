@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--Project was exported from assembly: C:\Games\Steam\steamapps\workshop\content\255710\424106600\ImprovedPublicTransport.dll-->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{36C6DFFD-7B77-4665-91F9-5AAF6ED147A9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>ImprovedPublicTransport</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <ApplicationVersion>1.0.6177.17409</ApplicationVersion>
+    <FileAlignment>512</FileAlignment>
+    <RootNamespace>ImprovedPublicTransport</RootNamespace>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Core" />
+    <Reference Include="ColossalManaged" />
+    <Reference Include="UnityEngine" />
+    <Reference Include="ICities" />
+    <Reference Include="Assembly-CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Bezier3Extensions.cs" />
+    <Compile Include="BuildingWatcher.cs" />
+    <Compile Include="BusAIMod.cs" />
+    <Compile Include="GameDefault.cs" />
+    <Compile Include="LineData.cs" />
+    <Compile Include="LocaleModifier.cs" />
+    <Compile Include="Localization.cs" />
+    <Compile Include="MovingAverage.cs" />
+    <Compile Include="NetManagerMod.cs" />
+    <Compile Include="NodeData.cs" />
+    <Compile Include="PassengerPlaneAIMod.cs" />
+    <Compile Include="PassengerShipAIMod.cs" />
+    <Compile Include="PassengerTrainAIMod.cs" />
+    <Compile Include="TramAIMod.cs" />
+    <Compile Include="PanelExtenderCityService.cs" />
+    <Compile Include="PublicTransportStopWorldInfoPanel.cs" />
+    <Compile Include="StopListBox.cs" />
+    <Compile Include="StopListBoxRow.cs" />
+    <Compile Include="DropDown.cs" />
+    <Compile Include="DropDownRow.cs" />
+    <Compile Include="UIHelper.cs" />
+    <Compile Include="VehicleListBoxRow.cs" />
+    <Compile Include="LineWatcher.cs" />
+    <Compile Include="PrefabData.cs" />
+    <Compile Include="VehicleListBox.cs" />
+    <Compile Include="SettingsPanel.cs" />
+    <Compile Include="VehicleEditor.cs" />
+    <Compile Include="DepotAIMod.cs" />
+    <Compile Include="SerializableDataExtension.cs" />
+    <Compile Include="Serializer.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="SimHelper.cs" />
+    <Compile Include="TransportLineMod.cs" />
+    <Compile Include="ImprovedPublicTransportMod.cs" />
+    <Compile Include="PanelExtenderVehicle.cs" />
+    <Compile Include="PanelExtenderLine.cs" />
+    <Compile Include="Utils.cs" />
+    <Compile Include="VehicleData.cs" />
+    <Compile Include="VehicleManagerMod.cs" />
+    <Compile Include="VehiclePrefabs.cs" />
+    <Compile Include="Detour\RedirectCallsState.cs" />
+    <Compile Include="Detour\Redirection`2.cs" />
+    <Compile Include="Detour\RedirectionHelper.cs" />
+    <Compile Include="Detour\TypeExtensions.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
