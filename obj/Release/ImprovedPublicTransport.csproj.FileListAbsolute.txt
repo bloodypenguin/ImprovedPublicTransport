@@ -1,0 +1,11 @@
+D:\Documents\Development\VisualStudioProjects\Cities Skylines Mods\ImprovedPublicTransport\bin\Release\ImprovedPublicTransport.dll
+D:\Documents\Development\VisualStudioProjects\Cities Skylines Mods\ImprovedPublicTransport\bin\Release\ImprovedPublicTransport.pdb
+D:\Documents\Development\VisualStudioProjects\Cities Skylines Mods\ImprovedPublicTransport\bin\Release\Assembly-CSharp.dll
+D:\Documents\Development\VisualStudioProjects\Cities Skylines Mods\ImprovedPublicTransport\bin\Release\ColossalManaged.dll
+D:\Documents\Development\VisualStudioProjects\Cities Skylines Mods\ImprovedPublicTransport\bin\Release\ICities.dll
+D:\Documents\Development\VisualStudioProjects\Cities Skylines Mods\ImprovedPublicTransport\bin\Release\UnityEngine.dll
+D:\Documents\Development\VisualStudioProjects\Cities Skylines Mods\ImprovedPublicTransport\bin\Release\ICSharpCode.SharpZipLib.dll
+D:\Documents\Development\VisualStudioProjects\Cities Skylines Mods\ImprovedPublicTransport\bin\Release\PopsApiWrapper.dll
+D:\Documents\Development\VisualStudioProjects\Cities Skylines Mods\ImprovedPublicTransport\bin\Release\Assembly-CSharp-firstpass.dll
+D:\Documents\Development\VisualStudioProjects\Cities Skylines Mods\ImprovedPublicTransport\obj\Release\ImprovedPublicTransport.dll
+D:\Documents\Development\VisualStudioProjects\Cities Skylines Mods\ImprovedPublicTransport\obj\Release\ImprovedPublicTransport.pdb
