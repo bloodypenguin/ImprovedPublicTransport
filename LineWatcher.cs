@@ -6,6 +6,7 @@
 
 using ColossalFramework;
 using System.Collections.Generic;
+using ImprovedPublicTransport.Detour;
 using UnityEngine;
 
 namespace ImprovedPublicTransport

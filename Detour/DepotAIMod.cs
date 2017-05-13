@@ -7,7 +7,7 @@
 using ColossalFramework;
 using UnityEngine;
 
-namespace ImprovedPublicTransport
+namespace ImprovedPublicTransport.Detour
 {
   public static class DepotAIMod
   {
