@@ -9,6 +9,7 @@ using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using System;
 using System.Reflection;
+using ImprovedPublicTransport.Detour;
 using UnityEngine;
 
 namespace ImprovedPublicTransport

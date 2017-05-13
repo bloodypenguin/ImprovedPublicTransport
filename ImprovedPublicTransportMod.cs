@@ -8,6 +8,7 @@ using ColossalFramework;
 using ColossalFramework.UI;
 using ICities;
 using System;
+using ImprovedPublicTransport.Detour;
 using UnityEngine;
 
 namespace ImprovedPublicTransport

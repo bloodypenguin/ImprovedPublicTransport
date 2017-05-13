@@ -5,10 +5,9 @@
 // Assembly location: C:\Games\Steam\steamapps\workshop\content\255710\424106600\ImprovedPublicTransport.dll
 
 using ColossalFramework;
-using ImprovedPublicTransport.Detour;
 using UnityEngine;
 
-namespace ImprovedPublicTransport
+namespace ImprovedPublicTransport.Detour
 {
   public class PassengerShipAIMod : PassengerShipAI
   {
