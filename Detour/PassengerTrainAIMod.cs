@@ -5,24 +5,22 @@
 // Assembly location: C:\Games\Steam\steamapps\workshop\content\255710\424106600\ImprovedPublicTransport.dll
 
 using ColossalFramework;
+using ImprovedPublicTransport.Redirection;
+using ImprovedPublicTransport.Redirection.Attributes;
 using UnityEngine;
 
 namespace ImprovedPublicTransport.Detour
 {
+  [TargetType(typeof(PassengerTrainAI))]
   public class PassengerTrainAIMod : PassengerTrainAI
   {
     private static bool _isDeployed;
-    private static Redirection<PassengerTrainAI, PassengerTrainAIMod> _redirectionLoadPassengers;
-    private static Redirection<PassengerTrainAI, PassengerTrainAIMod> _redirectionUnloadPassengers;
-    private static Redirection<PassengerTrainAI, BusAIMod> _redirectionCanLeave;
 
     public static void Init()
     {
       if (PassengerTrainAIMod._isDeployed)
         return;
-      PassengerTrainAIMod._redirectionLoadPassengers = new Redirection<PassengerTrainAI, PassengerTrainAIMod>("LoadPassengers");
-      PassengerTrainAIMod._redirectionUnloadPassengers = new Redirection<PassengerTrainAI, PassengerTrainAIMod>("UnloadPassengers");
-      PassengerTrainAIMod._redirectionCanLeave = new Redirection<PassengerTrainAI, BusAIMod>("CanLeave");
+      Redirector<PassengerTrainAIMod>.Deploy();
       PassengerTrainAIMod._isDeployed = true;
     }
 
@@ -30,15 +28,21 @@ namespace ImprovedPublicTransport.Detour
     {
       if (!PassengerTrainAIMod._isDeployed)
         return;
-      PassengerTrainAIMod._redirectionCanLeave.Revert();
-      PassengerTrainAIMod._redirectionCanLeave = (Redirection<PassengerTrainAI, BusAIMod>) null;
-      PassengerTrainAIMod._redirectionLoadPassengers.Revert();
-      PassengerTrainAIMod._redirectionLoadPassengers = (Redirection<PassengerTrainAI, PassengerTrainAIMod>) null;
-      PassengerTrainAIMod._redirectionUnloadPassengers.Revert();
-      PassengerTrainAIMod._redirectionUnloadPassengers = (Redirection<PassengerTrainAI, PassengerTrainAIMod>) null;
+      Redirector<PassengerTrainAIMod>.Revert();
       PassengerTrainAIMod._isDeployed = false;
     }
 
+    [RedirectMethod]
+    public new bool CanLeave(ushort vehicleID, ref Vehicle vehicleData)
+    {
+      if ((int) vehicleData.m_leadingVehicle != 0)
+        return true;
+      if ((int) vehicleData.m_waitCounter >= 12 && BusAIMod.IsBoardingDone(vehicleID, ref vehicleData))
+        return BusAIMod.IsUnbunchingDone(vehicleID, ref vehicleData);
+      return false;
+    }
+
+    [RedirectMethod]
     private void LoadPassengers(ushort vehicleID, ref Vehicle data, ushort currentStop, ushort nextStop)
     {
       if ((int) currentStop == 0 || (int) nextStop == 0)
@@ -107,6 +111,7 @@ namespace ImprovedPublicTransport.Detour
       NetManagerMod.m_cachedNodeData[(int) currentStop].PassengersIn += (int) num6;
     }
 
+    [RedirectMethod]
     private void UnloadPassengers(ushort vehicleID, ref Vehicle data, ushort currentStop, ushort nextStop)
     {
       if ((int) currentStop == 0)

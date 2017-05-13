@@ -7,16 +7,18 @@
 using System;
 using ColossalFramework;
 using ColossalFramework.Math;
+using ImprovedPublicTransport.Redirection;
+using ImprovedPublicTransport.Redirection.Attributes;
 
 namespace ImprovedPublicTransport.Detour
 {
+  [TargetType(typeof(VehicleManager))]
   public class VehicleManagerMod
   {
     private static readonly string _dataID = "IPT_VehicleData";
     private static readonly string _dataVersion = "v003";
     private static bool _isDeployed = false;
-    private static VehicleManagerMod.ReleaseVehicleImplementationCallback ReleaseVehicleImplementation;
-    private static Redirection<VehicleManager, VehicleManagerMod> _redirection;
+
     public static VehicleData[] m_cachedVehicleData;
 
     public static void Init()
@@ -25,8 +27,7 @@ namespace ImprovedPublicTransport.Detour
         return;
       if (!VehicleManagerMod.TryLoadData(out VehicleManagerMod.m_cachedVehicleData))
         Utils.Log((object) "Loading default vehicle data.");
-      VehicleManagerMod.ReleaseVehicleImplementation = (VehicleManagerMod.ReleaseVehicleImplementationCallback) Utils.CreateDelegate<VehicleManager, VehicleManagerMod.ReleaseVehicleImplementationCallback>("ReleaseVehicleImplementation", (object) Singleton<VehicleManager>.instance);
-      VehicleManagerMod._redirection = new Redirection<VehicleManager, VehicleManagerMod>("ReleaseVehicle");
+      Redirector<VehicleManagerMod>.Deploy();
       SerializableDataExtension.instance.EventSaveData += new SerializableDataExtension.SaveDataEventHandler(VehicleManagerMod.OnSaveData);
       VehicleManagerMod._isDeployed = true;
     }
@@ -36,9 +37,7 @@ namespace ImprovedPublicTransport.Detour
       if (!VehicleManagerMod._isDeployed)
         return;
       VehicleManagerMod.m_cachedVehicleData = (VehicleData[]) null;
-      VehicleManagerMod._redirection.Revert();
-      VehicleManagerMod._redirection = (Redirection<VehicleManager, VehicleManagerMod>) null;
-      VehicleManagerMod.ReleaseVehicleImplementation = (VehicleManagerMod.ReleaseVehicleImplementationCallback) null;
+      Redirector<VehicleManagerMod>.Revert();
       SerializableDataExtension.instance.EventSaveData -= new SerializableDataExtension.SaveDataEventHandler(VehicleManagerMod.OnSaveData);
       VehicleManagerMod._isDeployed = false;
     }
@@ -134,13 +133,19 @@ namespace ImprovedPublicTransport.Detour
       return instance.GetRandomVehicleInfo(ref randomizer, (ItemClass.Service) service, (ItemClass.SubService) subService, (ItemClass.Level) level);
     }
 
+    [RedirectMethod]
     public void ReleaseVehicle(ushort vehicleID)
     {
       if (!VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].IsEmpty)
         VehicleManagerMod.m_cachedVehicleData[(int) vehicleID] = new VehicleData();
-      VehicleManagerMod.ReleaseVehicleImplementation(vehicleID, ref Singleton<VehicleManager>.instance.m_vehicles.m_buffer[(int) vehicleID]);
+      ReleaseVehicleImplementation(vehicleID, ref Singleton<VehicleManager>.instance.m_vehicles.m_buffer[(int) vehicleID]);
     }
 
-    private delegate void ReleaseVehicleImplementationCallback(ushort vehicle, ref Vehicle data);
+    [RedirectReverse]
+    private void ReleaseVehicleImplementation(ushort vehicle, ref Vehicle data)
+    {
+        UnityEngine.Debug.Log("ReleaseVehicleImplementation");
+    }
+  
   }
 }

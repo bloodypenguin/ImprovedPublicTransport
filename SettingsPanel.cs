@@ -486,10 +486,11 @@ namespace ImprovedPublicTransport
         return;
       Utils.Log((object) ("Changing compatibility mode: " + (isChecked ? "on" : "off")));
       ImprovedPublicTransportMod.Settings.CompatibilityMode = isChecked;
-      if (isChecked)
-        TransportLineMod.RevertDetourUpdateMeshData();
-      else
-        TransportLineMod.DetourUpdateMeshData();
+//TODO(earalov): restore
+//      if (isChecked)
+//        TransportLineMod.RevertDetourUpdateMeshData();
+//      else
+//        TransportLineMod.DetourUpdateMeshData();
     }
 
     private void OnShowLineCheckChanged(UIComponent component, bool isChecked)

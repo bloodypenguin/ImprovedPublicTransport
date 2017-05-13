@@ -5,26 +5,22 @@
 // Assembly location: C:\Games\Steam\steamapps\workshop\content\255710\424106600\ImprovedPublicTransport.dll
 
 using ColossalFramework;
+using ImprovedPublicTransport.Redirection;
+using ImprovedPublicTransport.Redirection.Attributes;
 using UnityEngine;
 
 namespace ImprovedPublicTransport.Detour
 {
+    [TargetType(typeof(PassengerShipAI))]
   public class PassengerShipAIMod : PassengerShipAI
   {
     private static bool _isDeployed;
-    private static PassengerShipAIMod.LoadPassengersCallback LoadPassengers;
-    private static PassengerShipAIMod.UnloadPassengersCallback UnloadPassengers;
-    private static Redirection<PassengerShipAI, PassengerShipAIMod> _redirectionArriveAtTarget;
-    private static Redirection<PassengerShipAI, BusAIMod> _redirectionCanLeave;
 
     public static void Init()
     {
       if (PassengerShipAIMod._isDeployed)
         return;
-      PassengerShipAIMod.LoadPassengers = (PassengerShipAIMod.LoadPassengersCallback) Utils.CreateDelegate<PassengerShipAI, PassengerShipAIMod.LoadPassengersCallback>("LoadPassengers", (object) null);
-      PassengerShipAIMod.UnloadPassengers = (PassengerShipAIMod.UnloadPassengersCallback) Utils.CreateDelegate<PassengerShipAI, PassengerShipAIMod.UnloadPassengersCallback>("UnloadPassengers", (object) null);
-      PassengerShipAIMod._redirectionArriveAtTarget = new Redirection<PassengerShipAI, PassengerShipAIMod>("ArriveAtTarget");
-      PassengerShipAIMod._redirectionCanLeave = new Redirection<PassengerShipAI, BusAIMod>("CanLeave");
+      Redirector<PassengerShipAIMod>.Deploy();
       PassengerShipAIMod._isDeployed = true;
     }
 
@@ -32,15 +28,21 @@ namespace ImprovedPublicTransport.Detour
     {
       if (!PassengerShipAIMod._isDeployed)
         return;
-      PassengerShipAIMod.LoadPassengers = (PassengerShipAIMod.LoadPassengersCallback) null;
-      PassengerShipAIMod.UnloadPassengers = (PassengerShipAIMod.UnloadPassengersCallback) null;
-      PassengerShipAIMod._redirectionArriveAtTarget.Revert();
-      PassengerShipAIMod._redirectionArriveAtTarget = (Redirection<PassengerShipAI, PassengerShipAIMod>) null;
-      PassengerShipAIMod._redirectionCanLeave.Revert();
-      PassengerShipAIMod._redirectionCanLeave = (Redirection<PassengerShipAI, BusAIMod>) null;
+      Redirector<PassengerShipAIMod>.Revert();
       PassengerShipAIMod._isDeployed = false;
     }
 
+    [RedirectMethod]
+    public new bool CanLeave(ushort vehicleID, ref Vehicle vehicleData)
+    {
+      if ((int) vehicleData.m_leadingVehicle != 0)
+        return true;
+      if ((int) vehicleData.m_waitCounter >= 12 && BusAIMod.IsBoardingDone(vehicleID, ref vehicleData))
+        return BusAIMod.IsUnbunchingDone(vehicleID, ref vehicleData);
+      return false;
+    }
+
+    [RedirectMethod]
     private bool ArriveAtTarget(ushort vehicleID, ref Vehicle data)
     {
       if ((int) data.m_targetBuilding == 0 || (data.m_flags & Vehicle.Flags.DummyTraffic) != ~(Vehicle.Flags.Created | Vehicle.Flags.Deleted | Vehicle.Flags.Spawned | Vehicle.Flags.Inverted | Vehicle.Flags.TransferToTarget | Vehicle.Flags.TransferToSource | Vehicle.Flags.Emergency1 | Vehicle.Flags.Emergency2 | Vehicle.Flags.WaitingPath | Vehicle.Flags.Stopped | Vehicle.Flags.Leaving | Vehicle.Flags.Arriving | Vehicle.Flags.Reversed | Vehicle.Flags.TakingOff | Vehicle.Flags.Flying | Vehicle.Flags.Landing | Vehicle.Flags.WaitingSpace | Vehicle.Flags.WaitingCargo | Vehicle.Flags.GoingBack | Vehicle.Flags.WaitingTarget | Vehicle.Flags.Importing | Vehicle.Flags.Exporting | Vehicle.Flags.Parking | Vehicle.Flags.CustomName | Vehicle.Flags.OnGravel | Vehicle.Flags.WaitingLoading | Vehicle.Flags.Congestion | Vehicle.Flags.DummyTraffic | Vehicle.Flags.Underground | Vehicle.Flags.Transition | Vehicle.Flags.InsideBuilding | Vehicle.Flags.LeftHandDrive))
@@ -89,8 +91,18 @@ namespace ImprovedPublicTransport.Detour
       return false;
     }
 
-    private delegate void LoadPassengersCallback(PassengerShipAI ai, ushort vehicleID, ref Vehicle data, ushort currentStop, ushort nextStop);
+      [RedirectReverse]
+      private static void LoadPassengers(PassengerShipAI ai, ushort vehicleID, ref Vehicle data,
+          ushort currentStop, ushort nextStop)
+      {
+          UnityEngine.Debug.Log("LoadPassengers");
+      }
 
-    private delegate void UnloadPassengersCallback(PassengerShipAI ai, ushort vehicleID, ref Vehicle data, ushort currentStop, ushort nextStop);
+      [RedirectReverse]
+        private static void UnloadPassengers(PassengerShipAI ai, ushort vehicleID, ref Vehicle data,
+          ushort currentStop, ushort nextStop)
+      {
+          UnityEngine.Debug.Log("UnloadPassengers");
+        }
   }
 }
