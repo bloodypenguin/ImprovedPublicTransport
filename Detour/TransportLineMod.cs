@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ColossalFramework;
 using ColossalFramework.Math;
+using ImprovedPublicTransport.Redirection;
 using ImprovedPublicTransport.Redirection.Attributes;
 using UnityEngine;
 
@@ -19,7 +20,7 @@ namespace ImprovedPublicTransport.Detour
   {
     private static readonly string _dataID = "ImprovedPublicTransport";
     private static readonly string _dataVersion = "v004";
-    private static bool _isDeployed = false;
+
     private static bool _init = false;
     private static LineData[] _lineData;
 
@@ -46,30 +47,13 @@ namespace ImprovedPublicTransport.Detour
         }
       }
       SerializableDataExtension.instance.EventSaveData += new SerializableDataExtension.SaveDataEventHandler(TransportLineMod.OnSaveData);
-      if (!TransportLineMod._isDeployed)
-      {
-//TODO(earlov): restore
-//        TransportLineMod._redirectionSimulationStep = new Redirection<TransportLine, TransportLineMod>("SimulationStep");
-//        TransportLineMod._redirectionUpdateMeshData = new Redirection<TransportLine, TransportLineMod>("UpdateMeshData", false);
-//        if (!ImprovedPublicTransportMod.Settings.CompatibilityMode)
-//          TransportLineMod.DetourUpdateMeshData();
-        TransportLineMod._isDeployed = true;
-      }
+      Redirector<TransportLineMod>.Deploy();
       TransportLineMod._init = true;
     }
 
     public static void Deinit()
     {
-      if (TransportLineMod._isDeployed)
-      {
-//TODO(earalov): restore
-//        TransportLineMod._redirectionSimulationStep.Revert();
-//        TransportLineMod._redirectionSimulationStep = (Redirection<TransportLine, TransportLineMod>) null;
-//        if (!ImprovedPublicTransportMod.Settings.CompatibilityMode)
-//          TransportLineMod.RevertDetourUpdateMeshData();
-//        TransportLineMod._redirectionUpdateMeshData = (Redirection<TransportLine, TransportLineMod>) null;
-        TransportLineMod._isDeployed = false;
-      }
+      Redirector<TransportLineMod>.Revert();
       TransportLineMod._lineData = (LineData[]) null;
       SerializableDataExtension.instance.EventSaveData -= new SerializableDataExtension.SaveDataEventHandler(TransportLineMod.OnSaveData);
       TransportLineMod._init = false;
