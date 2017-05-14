@@ -87,6 +87,10 @@ namespace ImprovedPublicTransport.Redirection
                 {
                     var redirectAttributes = method.GetCustomAttributes(typeof(T), false);
                     return redirectAttributes.Length == 1;
+                }).Where(method =>
+                {
+                    var ignoreAttributes = method.GetCustomAttributes(typeof(IgnoreConditionAttribute), false);
+                    return !ignoreAttributes.Any(attribute => ((IgnoreConditionAttribute) attribute).IsIgnored(method));
                 });
         }
 
