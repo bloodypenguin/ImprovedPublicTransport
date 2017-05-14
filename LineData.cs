@@ -28,6 +28,6 @@ namespace ImprovedPublicTransport
 
     public Queue<string> QueuedVehicles { get; set; }
 
-    public float Length { get; set; }
+    public float Length { get; set; } //deprecated
   }
 }

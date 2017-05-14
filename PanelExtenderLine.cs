@@ -188,6 +188,7 @@ namespace ImprovedPublicTransport
         this._vehicleAmount.text = LocaleFormatter.FormatGeneric("TRANSPORT_LINE_VEHICLECOUNT", (object) (lineVehicleCount.ToString() + " / " + (object) targetVehicleCount));
         this._stopCountLabel.text = string.Format(Localization.Get("LINE_PANEL_STOPS"), (object) num1);
         this._budgetControl.isChecked = TransportLineMod.GetBudgetControlState(lineId);
+
         if ((int) ImprovedPublicTransportMod.Settings.IntervalAggressionFactor == 0)
         {
           this._unbunching.Disable();
@@ -198,8 +199,11 @@ namespace ImprovedPublicTransport
         {
           this._unbunching.Enable();
           this._unbunching.isChecked = TransportLineMod.GetUnbunchingState(lineId);
+
           if (targetVehicleCount > 1)
-            this._unbunching.label.text = string.Format(Localization.Get("UNBUNCHING_ENABLED") + " - " + Localization.Get("UNBUNCHING_TARGET_GAP"), (object) Utils.RoundToNearest((float) ((double) TransportLineMod.GetLength(lineId) / (double) targetVehicleCount * 0.899999976158142), 10));
+          {
+              this._unbunching.label.text = string.Format(Localization.Get("UNBUNCHING_ENABLED") + " - " + Localization.Get("UNBUNCHING_TARGET_GAP"), (object) Utils.RoundToNearest((float) ((double)TransportLineMod.GetLength(lineId) / (double) targetVehicleCount * 0.899999976158142), 10)) ;
+          }
           else
             this._unbunching.label.text = Localization.Get("UNBUNCHING_ENABLED");
         }
