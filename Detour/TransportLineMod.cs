@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using ColossalFramework;
 using ColossalFramework.Math;
 using ImprovedPublicTransport.Redirection;
@@ -197,251 +198,112 @@ namespace ImprovedPublicTransport.Detour
       }
     }
 
-//TODO(earalov): restore
-//    [RedirectMethod]  
-//    public void SimulationStep(ushort lineID)
-//    {
-//      if (!TransportLineMod._init)
-//        return;
-//      TransportLineMod.SimulationStepImpl(ref Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID], lineID);
-//    }
-//
-//    public static void SimulationStepImpl(ref TransportLine line, ushort lineID)
-//    {
-//      if (!line.Complete)
-//        return;
-//      TransportInfo info = line.Info;
-//      SimulationManager instance1 = Singleton<SimulationManager>.instance;
-//      bool isLineEnabled = !instance1.m_isNightTime ? (line.m_flags & TransportLine.Flags.DisabledDay) == TransportLine.Flags.None : (line.m_flags & TransportLine.Flags.DisabledNight) == TransportLine.Flags.None;
-//      bool flag = TransportLineMod.SetLineStatus(lineID, isLineEnabled);
-//      int num1 = line.CountVehicles(lineID);
-//      int num2 = 0;
-//      if (TransportLineMod._lineData[(int) lineID].BudgetControl)
-//      {
-//        num2 = !isLineEnabled ? 0 : (!flag ? Mathf.CeilToInt((float) ((double) TransportLineMod.GetBudget(lineID, instance1.m_isNightTime, info.m_class) * (double) TransportLineMod.GetLength(lineID) / ((double) info.m_defaultVehicleDistance * 100.0))) : num1);
-//        TransportLineMod._lineData[(int) lineID].TargetVehicleCount = num2;
-//      }
-//      else if (isLineEnabled)
-//        num2 = TransportLineMod._lineData[(int) lineID].TargetVehicleCount;
-//      if (num1 < num2)
-//      {
-//        if ((double) SimHelper.instance.SimulationTime >= (double) TransportLineMod._lineData[(int) lineID].NextSpawnTime)
-//        {
-//          int index1 = instance1.m_randomizer.Int32((uint) line.CountStops(lineID));
-//          ushort stop = line.GetStop(index1);
-//          if (info.m_vehicleReason != TransferManager.TransferReason.None && (int) stop != 0)
-//          {
-//            TransferManager.TransferOffer offer = new TransferManager.TransferOffer();
-//            offer.Priority = num2 - num1 + 1;
-//            offer.TransportLine = lineID;
-//            offer.Position = Singleton<NetManager>.instance.m_nodes.m_buffer[(int) stop].m_position;
-//            offer.Amount = 1;
-//            offer.Active = false;
-//            ushort depot = TransportLineMod._lineData[(int) lineID].Depot;
-//            if (TransportLineMod.IsLineDepotStillValid(lineID, ref depot))
-//            {
-//              BuildingManager instance2 = Singleton<BuildingManager>.instance;
-//              if (TransportLineMod.CanAddVehicle(depot, ref instance2.m_buildings.m_buffer[(int) depot]))
-//              {
-//                string prefabName;
-//                if (TransportLineMod.EnqueuedVehiclesCount(lineID) > 0)
-//                {
-//                  prefabName = TransportLineMod.Dequeue(lineID);
-//                }
-//                else
-//                {
-//                  int num3 = num2 - num1;
-//                  for (int index2 = 0; index2 < num3; ++index2)
-//                    TransportLineMod.EnqueueVehicle(lineID, TransportLineMod.GetRandomPrefab(lineID), false);
-//                  prefabName = TransportLineMod.Dequeue(lineID);
-//                }
-//                if (prefabName != "")
-//                {
-//                  int num4 = (int) DepotAIMod.StartTransfer(depot, ref instance2.m_buildings.m_buffer[(int) depot], info.m_vehicleReason, offer, prefabName);
-//                }
-//                else
-//                  instance2.m_buildings.m_buffer[(int) depot].Info.m_buildingAI.StartTransfer(depot, ref instance2.m_buildings.m_buffer[(int) depot], info.m_vehicleReason, offer);
-//                TransportLineMod._lineData[(int) lineID].NextSpawnTime = SimHelper.instance.SimulationTime + (float) ImprovedPublicTransportMod.Settings.SpawnTimeInterval;
-//              }
-//              else
-//                TransportLineMod.ClearEnqueuedVehicles(lineID);
-//            }
-//          }
-//        }
-//      }
-//      else if (num1 > num2)
-//        TransportLineMod.RemoveRandomVehicle(lineID, false);
-//      if ((instance1.m_currentFrameIndex & 4095U) < 3840U)
-//        return;
-//      line.m_passengers.Update();
-//      Singleton<TransportManager>.instance.m_passengers[(int) info.m_transportType].Add(ref line.m_passengers);
-//      line.m_passengers.Reset();
-//      ushort stops = line.m_stops;
-//      ushort stop1 = stops;
-//      do
-//      {
-//        NetManagerMod.m_cachedNodeData[(int) stop1].StartNewWeek();
-//        stop1 = TransportLine.GetNextStop(stop1);
-//      }
-//      while ((int) stops != (int) stop1 && (int) stop1 != 0);
-//      VehicleManager instance3 = Singleton<VehicleManager>.instance;
-//      PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(info.m_class.m_subService);
-//      int amount = 0;
-//      for (ushort index = line.m_vehicles; (int) index != 0; index = instance3.m_vehicles.m_buffer[(int) index].m_nextLineVehicle)
-//      {
-//        Vehicle vehicle = instance3.m_vehicles.m_buffer[(int) index];
-//        PrefabData prefabData = Array.Find<PrefabData>(prefabs, (Predicate<PrefabData>) (item => item.PrefabDataIndex == vehicle.Info.m_prefabDataIndex));
-//        if (prefabData != null)
-//        {
-//          amount += prefabData.MaintenanceCost;
-//          VehicleManagerMod.m_cachedVehicleData[(int) index].StartNewWeek(prefabData.MaintenanceCost);
-//        }
-//      }
-//      if (amount == 0)
-//        return;
-//      Singleton<EconomyManager>.instance.FetchResource(EconomyManager.Resource.Maintenance, amount, info.m_class);
-//    }
+        //TODO(earalov): restore
+        //    [RedirectMethod]  
+        //    public void SimulationStep(ushort lineID)
+        //    {
+        //      if (!TransportLineMod._init)
+        //        return;
+        //      TransportLineMod.SimulationStepImpl(ref Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID], lineID);
+        //    }
+        //
+        //    public static void SimulationStepImpl(ref TransportLine line, ushort lineID)
+        //    {
+        //      if (!line.Complete)
+        //        return;
+        //      TransportInfo info = line.Info;
+        //      SimulationManager instance1 = Singleton<SimulationManager>.instance;
+        //      bool isLineEnabled = !instance1.m_isNightTime ? (line.m_flags & TransportLine.Flags.DisabledDay) == TransportLine.Flags.None : (line.m_flags & TransportLine.Flags.DisabledNight) == TransportLine.Flags.None;
+        //      bool flag = TransportLineMod.SetLineStatus(lineID, isLineEnabled);
+        //      int num1 = line.CountVehicles(lineID);
+        //      int num2 = 0;
+        //      if (TransportLineMod._lineData[(int) lineID].BudgetControl)
+        //      {
+        //        num2 = !isLineEnabled ? 0 : (!flag ? Mathf.CeilToInt((float) ((double) TransportLineMod.GetBudget(lineID, instance1.m_isNightTime, info.m_class) * (double) TransportLineMod.GetLength(lineID) / ((double) info.m_defaultVehicleDistance * 100.0))) : num1);
+        //        TransportLineMod._lineData[(int) lineID].TargetVehicleCount = num2;
+        //      }
+        //      else if (isLineEnabled)
+        //        num2 = TransportLineMod._lineData[(int) lineID].TargetVehicleCount;
+        //      if (num1 < num2)
+        //      {
+        //        if ((double) SimHelper.instance.SimulationTime >= (double) TransportLineMod._lineData[(int) lineID].NextSpawnTime)
+        //        {
+        //          int index1 = instance1.m_randomizer.Int32((uint) line.CountStops(lineID));
+        //          ushort stop = line.GetStop(index1);
+        //          if (info.m_vehicleReason != TransferManager.TransferReason.None && (int) stop != 0)
+        //          {
+        //            TransferManager.TransferOffer offer = new TransferManager.TransferOffer();
+        //            offer.Priority = num2 - num1 + 1;
+        //            offer.TransportLine = lineID;
+        //            offer.Position = Singleton<NetManager>.instance.m_nodes.m_buffer[(int) stop].m_position;
+        //            offer.Amount = 1;
+        //            offer.Active = false;
+        //            ushort depot = TransportLineMod._lineData[(int) lineID].Depot;
+        //            if (TransportLineMod.IsLineDepotStillValid(lineID, ref depot))
+        //            {
+        //              BuildingManager instance2 = Singleton<BuildingManager>.instance;
+        //              if (TransportLineMod.CanAddVehicle(depot, ref instance2.m_buildings.m_buffer[(int) depot]))
+        //              {
+        //                string prefabName;
+        //                if (TransportLineMod.EnqueuedVehiclesCount(lineID) > 0)
+        //                {
+        //                  prefabName = TransportLineMod.Dequeue(lineID);
+        //                }
+        //                else
+        //                {
+        //                  int num3 = num2 - num1;
+        //                  for (int index2 = 0; index2 < num3; ++index2)
+        //                    TransportLineMod.EnqueueVehicle(lineID, TransportLineMod.GetRandomPrefab(lineID), false);
+        //                  prefabName = TransportLineMod.Dequeue(lineID);
+        //                }
+        //                if (prefabName != "")
+        //                {
+        //                  int num4 = (int) DepotAIMod.StartTransfer(depot, ref instance2.m_buildings.m_buffer[(int) depot], info.m_vehicleReason, offer, prefabName);
+        //                }
+        //                else
+        //                  instance2.m_buildings.m_buffer[(int) depot].Info.m_buildingAI.StartTransfer(depot, ref instance2.m_buildings.m_buffer[(int) depot], info.m_vehicleReason, offer);
+        //                TransportLineMod._lineData[(int) lineID].NextSpawnTime = SimHelper.instance.SimulationTime + (float) ImprovedPublicTransportMod.Settings.SpawnTimeInterval;
+        //              }
+        //              else
+        //                TransportLineMod.ClearEnqueuedVehicles(lineID);
+        //            }
+        //          }
+        //        }
+        //      }
+        //      else if (num1 > num2)
+        //        TransportLineMod.RemoveRandomVehicle(lineID, false);
+        //      if ((instance1.m_currentFrameIndex & 4095U) < 3840U)
+        //        return;
+        //      line.m_passengers.Update();
+        //      Singleton<TransportManager>.instance.m_passengers[(int) info.m_transportType].Add(ref line.m_passengers);
+        //      line.m_passengers.Reset();
+        //      ushort stops = line.m_stops;
+        //      ushort stop1 = stops;
+        //      do
+        //      {
+        //        NetManagerMod.m_cachedNodeData[(int) stop1].StartNewWeek();
+        //        stop1 = TransportLine.GetNextStop(stop1);
+        //      }
+        //      while ((int) stops != (int) stop1 && (int) stop1 != 0);
+        //      VehicleManager instance3 = Singleton<VehicleManager>.instance;
+        //      PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(info.m_class.m_subService);
+        //      int amount = 0;
+        //      for (ushort index = line.m_vehicles; (int) index != 0; index = instance3.m_vehicles.m_buffer[(int) index].m_nextLineVehicle)
+      //      {
+      //        Vehicle vehicle = instance3.m_vehicles.m_buffer[(int) index];
+      //        PrefabData prefabData = Array.Find<PrefabData>(prefabs, (Predicate<PrefabData>) (item => item.PrefabDataIndex == vehicle.Info.m_prefabDataIndex));
+      //        if (prefabData != null)
+      //        {
+      //          amount += prefabData.MaintenanceCost;
+      //          VehicleManagerMod.m_cachedVehicleData[(int) index].StartNewWeek(prefabData.MaintenanceCost);
+      //        }
+      //      }
+      //      if (amount == 0)
+      //        return;
+      //      Singleton<EconomyManager>.instance.FetchResource(EconomyManager.Resource.Maintenance, amount, info.m_class);
+      //    }
 
-//TODO(earalov): restore
-//    [RedirectMethod]  
-//    public bool UpdateMeshData(ushort lineID)
-//    {
-//      return TransportLineMod.UpdateMeshDataImpl(ref Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID], lineID);
-//    }
-//
-//    private static bool UpdateMeshDataImpl(ref TransportLine line, ushort lineID)
-//    {
-//      bool flag = true;
-//      int length1 = 0;
-//      int num1 = 0;
-//      int length2 = 0;
-//      float num2 = 0.0f;
-//      TransportManager instance1 = Singleton<TransportManager>.instance;
-//      NetManager instance2 = Singleton<NetManager>.instance;
-//      PathManager instance3 = Singleton<PathManager>.instance;
-//      ushort stops = line.m_stops;
-//      ushort num3 = stops;
-//      int num4 = 0;
-//      while ((int) num3 != 0)
-//      {
-//        ushort num5 = 0;
-//        for (int index = 0; index < 8; ++index)
-//        {
-//          ushort segment = instance2.m_nodes.m_buffer[(int) num3].GetSegment(index);
-//          if ((int) segment != 0 && (int) instance2.m_segments.m_buffer[(int) segment].m_startNode == (int) num3)
-//          {
-//            uint path = instance2.m_segments.m_buffer[(int) segment].m_path;
-//            if ((int) path != 0)
-//            {
-//              byte pathFindFlags = instance3.m_pathUnits.m_buffer[(int) path].m_pathFindFlags;
-//              if (((int) pathFindFlags & 4) != 0)
-//              {
-//                if (!TransportLine.CalculatePathSegmentCount(path, ref num1, ref length2, ref num2))
-//                {
-//                  TransportLineAI.StartPathFind(segment, ref instance2.m_segments.m_buffer[(int) segment], line.Info.m_netService, line.Info.m_vehicleType, (uint) (line.m_flags & TransportLine.Flags.Temporary) > 0U);
-//                  flag = false;
-//                }
-//              }
-//              else if (((int) pathFindFlags & 8) == 0)
-//                flag = false;
-//            }
-//            num5 = instance2.m_segments.m_buffer[(int) segment].m_endNode;
-//            break;
-//          }
-//        }
-//        ++length1;
-//        ++num1;
-//        num3 = num5;
-//        if ((int) num3 != (int) stops && flag)
-//        {
-//          if (++num4 >= 32768)
-//          {
-//            CODebugBase<LogChannel>.Error(LogChannel.Core, "Invalid list detected!\n" + System.Environment.StackTrace);
-//            break;
-//          }
-//        }
-//        else
-//          break;
-//      }
-//      TransportLineMod._lineData[(int) lineID].Length = num2;
-//      if (!flag)
-//        return flag;
-//      RenderGroup.MeshData meshData = new RenderGroup.MeshData();
-//      meshData.m_vertices = new Vector3[num1 * 8];
-//      meshData.m_normals = new Vector3[num1 * 8];
-//      meshData.m_tangents = new Vector4[num1 * 8];
-//      meshData.m_uvs = new Vector2[num1 * 8];
-//      meshData.m_uvs2 = new Vector2[num1 * 8];
-//      meshData.m_colors = new Color32[num1 * 8];
-//      meshData.m_triangles = new int[num1 * 30];
-//      TransportManager.LineSegment[] lineSegmentArray = new TransportManager.LineSegment[length1];
-//      Bezier3[] bezier3Array = new Bezier3[length2];
-//      int index1 = 0;
-//      int num6 = 0;
-//      int num7 = 0;
-//      float num8 = Mathf.Ceil(num2 / 64f) / num2;
-//      float num9 = 0.0f;
-//      ushort num10 = stops;
-//      Vector3 vector3_1 = new Vector3(100000f, 100000f, 100000f);
-//      Vector3 vector3_2 = new Vector3(-100000f, -100000f, -100000f);
-//      int num11 = 0;
-//      while ((int) num10 != 0)
-//      {
-//        ushort num5 = 0;
-//        for (int index2 = 0; index2 < 8; ++index2)
-//        {
-//          ushort segment = instance2.m_nodes.m_buffer[(int) num10].GetSegment(index2);
-//          if ((int) segment != 0 && (int) instance2.m_segments.m_buffer[(int) segment].m_startNode == (int) num10)
-//          {
-//            uint path = instance2.m_segments.m_buffer[(int) segment].m_path;
-//            if ((int) path != 0 && ((int) instance3.m_pathUnits.m_buffer[(int) path].m_pathFindFlags & 4) != 0)
-//            {
-//              lineSegmentArray[index1].m_curveStart = num7;
-//              Vector3 vector3_3;
-//              Vector3 vector3_4;
-//              TransportLine.FillPathSegments(path, meshData, bezier3Array, ref num6, ref num7, ref num9, num8, ref vector3_3, ref vector3_4);
-//              vector3_1 = Vector3.Min(vector3_1, vector3_3);
-//              vector3_2 = Vector3.Max(vector3_2, vector3_4);
-//              lineSegmentArray[index1].m_bounds.SetMinMax(vector3_3, vector3_4);
-//              lineSegmentArray[index1].m_curveEnd = num7;
-//            }
-//            num5 = instance2.m_segments.m_buffer[(int) segment].m_endNode;
-//            break;
-//          }
-//        }
-//        TransportLine.FillPathNode(instance2.m_nodes.m_buffer[(int) num10].m_position, meshData, num6);
-//        ++index1;
-//        ++num6;
-//        num10 = num5;
-//        if ((int) num10 != (int) stops)
-//        {
-//          if (++num11 >= 32768)
-//          {
-//            CODebugBase<LogChannel>.Error(LogChannel.Core, "Invalid list detected!\n" + System.Environment.StackTrace);
-//            break;
-//          }
-//        }
-//        else
-//          break;
-//      }
-//      do
-//        ;
-//      while (!Monitor.TryEnter((object) instance1.m_lineMeshData, SimulationManager.SYNCHRONIZE_TIMEOUT));
-//      try
-//      {
-//        instance1.m_lineMeshData[(int) lineID] = (RenderGroup.MeshData[]) meshData;
-//        instance1.m_lineSegments[(int) lineID] = lineSegmentArray;
-//        instance1.m_lineCurves[(int) lineID] = bezier3Array;
-//        line.m_bounds.SetMinMax(vector3_1, vector3_2);
-//      }
-//      finally
-//      {
-//        Monitor.Exit((object) instance1.m_lineMeshData);
-//      }
-//      return flag;
-//    }
-
-    public static void SetLineDefaults(ushort lineID)
+        public static void SetLineDefaults(ushort lineID)
     {
       TransportLineMod._lineData[(int) lineID] = new LineData();
       TransportLineMod._lineData[(int) lineID].TargetVehicleCount = ImprovedPublicTransportMod.Settings.DefaultVehicleCount;
@@ -512,31 +374,12 @@ namespace ImprovedPublicTransport.Detour
 
     public static float GetLength(ushort lineID)
     {
-      if (ImprovedPublicTransportMod.Settings.CompatibilityMode)
-        return TransportLineMod.CalculateLineLength(lineID);
-      if ((double) TransportLineMod._lineData[(int) lineID].Length == 0.0)
+      var length = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID].m_totalLength;
+      if (Math.Abs(length) < 0.01f)
         Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID].UpdateMeshData(lineID);
-      return TransportLineMod._lineData[(int) lineID].Length;
+      return length;
     }
 
-    public static float CalculateLineLength(ushort lineID)
-    {
-      float num = 0.0f;
-      try
-      {
-        Bezier3[] lineCurve = Singleton<TransportManager>.instance.m_lineCurves[(int) lineID];
-        if (lineCurve != null)
-        {
-          for (int index = 0; index < lineCurve.Length; ++index)
-            num += lineCurve[index].CalculateLength(10);
-        }
-      }
-      catch (Exception ex)
-      {
-        Utils.Log((object) ("Unexpected " + ex.GetType().Name + " : " + ex.Message + System.Environment.NewLine + ex.StackTrace + System.Environment.NewLine));
-      }
-      return num;
-    }
 
     public static bool IsLineDepotStillValid(ushort lineID, ref ushort depotID)
     {
