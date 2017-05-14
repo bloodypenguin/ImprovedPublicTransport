@@ -291,8 +291,8 @@ namespace ImprovedPublicTransport
       this._changeFlag = false;
     }
 
-    private static int GetCapacity(ItemClass.SubService subService, VehicleAI ai)
-    {
+    private static int GetCapacity(ItemClass.SubService subService, VehicleAI ai)       //TODO(earalov): add new vehicle types (monorail, blimp, cablecar, ferry, evacuation buses)
+        {
       int num = 0;
       if (subService == ItemClass.SubService.PublicTransportBus && (UnityEngine.Object) (ai as BusAI) != (UnityEngine.Object) null)
         num = (ai as BusAI).m_passengerCapacity;

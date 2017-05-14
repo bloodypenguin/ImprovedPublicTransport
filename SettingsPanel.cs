@@ -557,8 +557,8 @@ namespace ImprovedPublicTransport
       }));
     }
 
-    private void DeleteLines()
-    {
+    private void DeleteLines()       //TODO(earalov): add new vehicle types (monorail, blimp, cablecar, ferry, evacuation buses)
+        {
       TransportManager instance = Singleton<TransportManager>.instance;
       int length = instance.m_lines.m_buffer.Length;
       for (int index = 0; index < length; ++index)

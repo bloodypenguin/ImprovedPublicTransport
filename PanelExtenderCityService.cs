@@ -42,8 +42,8 @@ namespace ImprovedPublicTransport
         BuildingManager instance1 = Singleton<BuildingManager>.instance;
         ushort building = Utils.GetPrivate<InstanceID>((object) this._cityServiceWorldInfoPanel, "m_InstanceID").Building;
         ItemClass.SubService subService = instance1.m_buildings.m_buffer[(int) building].Info.GetSubService();
-        switch (subService)
-        {
+        switch (subService)       //TODO(earalov): add new vehicle types (monorail, blimp, cablecar, ferry, evacuation buses)
+                {
           case ItemClass.SubService.PublicTransportBus:
           case ItemClass.SubService.PublicTransportMetro:
           case ItemClass.SubService.PublicTransportTrain:
