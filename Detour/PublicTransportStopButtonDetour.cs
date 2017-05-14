@@ -20,9 +20,8 @@ namespace ImprovedPublicTransport.Detour
                 ToolsModifierControl.cameraController.SetTarget(empty, position, Input.GetKey(KeyCode.LeftShift) | Input.GetKey(KeyCode.RightShift));
                 //end mod
 
-//TODO(earalov): restore?
-//            PublicTransportWorldInfoPanel.ResetScrollPosition();
-//            UIView.SetFocus((UIComponent)null);
+            PublicTransportWorldInfoPanel.ResetScrollPosition();
+            UIView.SetFocus((UIComponent)null);
 
             //begin mod: show PublicTransportStopWorldInfoPanel
             PublicTransportStopWorldInfoPanel.instance.Show(position, empty);
