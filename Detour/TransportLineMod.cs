@@ -378,7 +378,7 @@ namespace ImprovedPublicTransport.Detour
         if (Math.Abs(length) < 0.01f)
         {
             Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID].UpdateMeshData(lineID);
-            length = Singleton<TransportManager>.instance.m_lines.m_buffer[(int)lineID].m_totalLength
+            length = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID].m_totalLength;
         }
         return length;
     }
