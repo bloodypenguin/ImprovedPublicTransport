@@ -101,7 +101,7 @@ namespace ImprovedPublicTransport
           PassengerTrainAIMod.Init();
           PassengerShipAIMod.Init();
           PassengerPlaneAIMod.Init();
-          TramAIMod.Init();
+          Redirector<TramAIDetour>.Deploy();
           BuildingWatcher.instance.Init();
           LineWatcher.instance.Init();
           TransportLineMod.Init();
@@ -155,7 +155,7 @@ namespace ImprovedPublicTransport
 
     private void Deinit()
     {
-      TramAIMod.Deinit();
+      Redirector<TramAIDetour>.Revert();
       PassengerTrainAIMod.Deinit();
       PassengerShipAIMod.Deinit();
       PassengerPlaneAIMod.Deinit();

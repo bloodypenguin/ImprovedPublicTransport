@@ -88,7 +88,7 @@
     <Compile Include="Redirection\Tuple.cs" />
     <Compile Include="StopListBox.cs" />
     <Compile Include="StopListBoxRow.cs" />
-    <Compile Include="Detour\TramAIMod.cs" />
+    <Compile Include="Detour\TramAIDetour.cs" />
     <Compile Include="PanelExtenderCityService.cs" />
     <Compile Include="PublicTransportStopWorldInfoPanel.cs" />
     <Compile Include="DropDown.cs" />
