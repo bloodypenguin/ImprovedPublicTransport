@@ -5,44 +5,50 @@
 // Assembly location: C:\Games\Steam\steamapps\workshop\content\255710\424106600\ImprovedPublicTransport.dll
 
 using ColossalFramework;
-using ImprovedPublicTransport.Redirection;
+
 using ImprovedPublicTransport.Redirection.Attributes;
 using UnityEngine;
 
 namespace ImprovedPublicTransport.Detour
 {
   [TargetType(typeof(PassengerTrainAI))]
-  public class PassengerTrainAIMod : PassengerTrainAI
+  public class PassengerTrainAIDetour : TrainAI
   {
-    private static bool _isDeployed;
 
-    public static void Init()
-    {
-      if (PassengerTrainAIMod._isDeployed)
-        return;
-      Redirector<PassengerTrainAIMod>.Deploy();
-      PassengerTrainAIMod._isDeployed = true;
-    }
+      [RedirectMethod]
+      public override bool CanLeave(ushort vehicleID, ref Vehicle vehicleData)
+      {
+          if ((int)vehicleData.m_leadingVehicle == 0 && (int)vehicleData.m_waitCounter < 12 ||
+              !base.CanLeave(vehicleID, ref vehicleData))
+          {
+              //begin mod(+): track if unbunching happens
+              VehicleManagerMod.m_cachedVehicleData[(int)vehicleID].IsUnbunchingInProgress = false;
+              //end mod
+              return false;
+          }
 
-    public static void Deinit()
-    {
-      if (!PassengerTrainAIMod._isDeployed)
-        return;
-      Redirector<PassengerTrainAIMod>.Revert();
-      PassengerTrainAIMod._isDeployed = false;
-    }
+          if ((int)vehicleData.m_leadingVehicle == 0 && (int)vehicleData.m_transportLine != 0)
+          {
+              //begin mod(+): Check if unbunching enabled for this line & stop. track if unbunching happens
+              ushort currentStop = VehicleManagerMod.m_cachedVehicleData[vehicleID].CurrentStop;
+              if (currentStop != 0 && NetManagerMod.m_cachedNodeData[currentStop].Unbunching &&
+                  TransportLineMod.GetUnbunchingState(vehicleData.m_transportLine))
+              {
+                  var canLeaveStop = Singleton<TransportManager>.instance.m_lines
+                      .m_buffer[(int)vehicleData.m_transportLine]
+                      .CanLeaveStop(vehicleData.m_targetBuilding, (int)vehicleData.m_waitCounter >> 4);
+                  VehicleManagerMod.m_cachedVehicleData[vehicleID].IsUnbunchingInProgress = !canLeaveStop;
+                  return canLeaveStop;
+              }
+              //end mod
+          }
+          //begin mod(+): track if unbunching happens
+          VehicleManagerMod.m_cachedVehicleData[vehicleID].IsUnbunchingInProgress = false;
+          //end mod
+          return true;
+      }
 
-    [RedirectMethod]
-    public new bool CanLeave(ushort vehicleID, ref Vehicle vehicleData)
-    {
-      if ((int) vehicleData.m_leadingVehicle != 0)
-        return true;
-      if ((int) vehicleData.m_waitCounter >= 12 && BusAIMod.IsBoardingDone(vehicleID, ref vehicleData))
-        return BusAIMod.IsUnbunchingDone(vehicleID, ref vehicleData);
-      return false;
-    }
-
-    [RedirectMethod]
+        [RedirectMethod]
     private void LoadPassengers(ushort vehicleID, ref Vehicle data, ushort currentStop, ushort nextStop)
     {
       if ((int) currentStop == 0 || (int) nextStop == 0)
@@ -126,7 +132,7 @@ namespace ImprovedPublicTransport.Detour
       int serviceCounter = 0;
       int num1 = 0;
       ushort vehicleID1 = vehicleID;
-      ushort bufferStatus = PassengerTrainAIMod.GetBufferStatus(vehicleID1, ref instance1.m_vehicles.m_buffer[(int) vehicleID1]);
+      ushort bufferStatus = PassengerTrainAIDetour.GetBufferStatus(vehicleID1, ref instance1.m_vehicles.m_buffer[(int) vehicleID1]);
       while ((int) vehicleID != 0)
       {
         if ((int) data.m_transportLine != 0)
@@ -143,7 +149,7 @@ namespace ImprovedPublicTransport.Detour
       Singleton<StatisticsManager>.instance.Acquire<StatisticArray>(StatisticType.PassengerCount).Acquire<StatisticInt32>((int) this.m_transportInfo.m_transportType, 8).Add(serviceCounter);
       serviceCounter += (int) instance2.m_nodes.m_buffer[(int) currentStop].m_tempCounter;
       instance2.m_nodes.m_buffer[(int) currentStop].m_tempCounter = (ushort) Mathf.Min(serviceCounter, (int) ushort.MaxValue);
-      ushort num2 = (ushort) ((uint) bufferStatus - (uint) PassengerTrainAIMod.GetBufferStatus(vehicleID1, ref instance1.m_vehicles.m_buffer[(int) vehicleID1]));
+      ushort num2 = (ushort) ((uint) bufferStatus - (uint) PassengerTrainAIDetour.GetBufferStatus(vehicleID1, ref instance1.m_vehicles.m_buffer[(int) vehicleID1]));
       VehicleManagerMod.m_cachedVehicleData[(int) vehicleID1].LastStopGonePassengers = (int) num2;
       VehicleManagerMod.m_cachedVehicleData[(int) vehicleID1].CurrentStop = currentStop;
       NetManagerMod.m_cachedNodeData[(int) currentStop].PassengersOut += (int) num2;
@@ -162,7 +168,7 @@ namespace ImprovedPublicTransport.Detour
           VehicleInfo info = instance.m_vehicles.m_buffer[(int) trailingVehicle].Info;
           if ((int) instance.m_vehicles.m_buffer[(int) trailingVehicle].m_leadingVehicle != 0)
           {
-            ushort bufferStatus = PassengerTrainAIMod.GetBufferStatus(trailingVehicle, ref instance.m_vehicles.m_buffer[(int) trailingVehicle]);
+            ushort bufferStatus = PassengerTrainAIDetour.GetBufferStatus(trailingVehicle, ref instance.m_vehicles.m_buffer[(int) trailingVehicle]);
             transferSize += bufferStatus;
           }
           trailingVehicle = instance.m_vehicles.m_buffer[(int) trailingVehicle].m_trailingVehicle;

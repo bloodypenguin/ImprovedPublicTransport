@@ -97,10 +97,10 @@ namespace ImprovedPublicTransport
           this._worldInfoPanel.AddComponent<PublicTransportStopWorldInfoPanel>().Show();
           NetManagerMod.Init();
           VehicleManagerMod.Init();
-          BusAIMod.Init();
-          PassengerTrainAIMod.Init();
-          PassengerShipAIMod.Init();
-          PassengerPlaneAIMod.Init();
+          Redirector<BusAIDetour>.Deploy();
+          Redirector<PassengerTrainAIDetour>.Deploy();
+          Redirector<PassengerShipAIDetour>.Deploy(); 
+          Redirector<PassengerPlaneAIDetour>.Deploy();
           Redirector<TramAIDetour>.Deploy();
           BuildingWatcher.instance.Init();
           LineWatcher.instance.Init();
@@ -156,10 +156,10 @@ namespace ImprovedPublicTransport
     private void Deinit()
     {
       Redirector<TramAIDetour>.Revert();
-      PassengerTrainAIMod.Deinit();
-      PassengerShipAIMod.Deinit();
-      PassengerPlaneAIMod.Deinit();
-      BusAIMod.Deinit();
+      Redirector<PassengerTrainAIDetour>.Revert();
+      Redirector<PassengerShipAIDetour>.Revert();
+      Redirector<PassengerPlaneAIDetour>.Revert();
+      Redirector<BusAIDetour>.Revert();
       TransportLineMod.Deinit();
       BuildingWatcher.instance.Deinit();
       NetManagerMod.Deinit();

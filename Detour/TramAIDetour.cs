@@ -5,7 +5,6 @@
 // Assembly location: C:\Games\Steam\steamapps\workshop\content\255710\424106600\ImprovedPublicTransport.dll
 
 using ColossalFramework;
-using ImprovedPublicTransport.Redirection;
 using ImprovedPublicTransport.Redirection.Attributes;
 using UnityEngine;
 
