@@ -733,8 +733,8 @@ namespace ImprovedPublicTransport
         this.SetTransportType(transportType, prefab);
     }
 
-    private static ItemClass.SubService GetSubService(TransportInfo.TransportType transportType)
-    {
+    private static ItemClass.SubService GetSubService(TransportInfo.TransportType transportType)       //TODO(earalov): add new vehicle types (monorail, blimp, cablecar, ferry, evacuation buses)
+        {
       switch (transportType)
       {
         case TransportInfo.TransportType.Bus:

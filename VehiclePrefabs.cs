@@ -31,8 +31,8 @@ namespace ImprovedPublicTransport
       VehiclePrefabs.instance = (VehiclePrefabs) null;
     }
 
-    public PrefabData[] GetPrefabs(ItemClass.SubService subService)
-    {
+    public PrefabData[] GetPrefabs(ItemClass.SubService subService)       //TODO(earalov): add new vehicle types (monorail, blimp, cablecar, ferry, evacuation buses)
+        {
       switch (subService)
       {
         case ItemClass.SubService.PublicTransportBus:
@@ -50,7 +50,10 @@ namespace ImprovedPublicTransport
         case ItemClass.SubService.PublicTransportTram:
           return this._tramPrefabData;
         default:
-          return (PrefabData[]) null;
+          {
+              UnityEngine.Debug.LogWarning("IPT: Vehicles of sub service " + subService + " were requested. They are currently not supported.");
+              return new PrefabData[] { };
+          }
       }
     }
 
