@@ -219,7 +219,183 @@ namespace ImprovedPublicTransport.Detour
 
 
         [RedirectMethod]
-        public static void SimulationStep(ref TransportLine line, ushort lineID)
+        public static void SimulationStep(ref TransportLine thisLine, ushort lineID)
+        {
+            TransportInfo info = thisLine.Info;
+            if (thisLine.Complete)
+            {
+                int num1 = 0;
+                int num2 = 0;
+                if ((int) thisLine.m_vehicles != 0)
+                {
+                    VehicleManager instance = Singleton<VehicleManager>.instance;
+                    ushort num3 = thisLine.m_vehicles;
+                    int num4 = 0;
+                    while ((int) num3 != 0)
+                    {
+                        ushort nextLineVehicle = instance.m_vehicles.m_buffer[(int) num3].m_nextLineVehicle;
+                        ++num1;
+                        if ((instance.m_vehicles.m_buffer[(int) num3].m_flags & Vehicle.Flags.GoingBack) ==
+                            ~(Vehicle.Flags.Created | Vehicle.Flags.Deleted | Vehicle.Flags.Spawned |
+                              Vehicle.Flags.Inverted | Vehicle.Flags.TransferToTarget | Vehicle.Flags.TransferToSource |
+                              Vehicle.Flags.Emergency1 | Vehicle.Flags.Emergency2 | Vehicle.Flags.WaitingPath |
+                              Vehicle.Flags.Stopped | Vehicle.Flags.Leaving | Vehicle.Flags.Arriving |
+                              Vehicle.Flags.Reversed | Vehicle.Flags.TakingOff | Vehicle.Flags.Flying |
+                              Vehicle.Flags.Landing | Vehicle.Flags.WaitingSpace | Vehicle.Flags.WaitingCargo |
+                              Vehicle.Flags.GoingBack | Vehicle.Flags.WaitingTarget | Vehicle.Flags.Importing |
+                              Vehicle.Flags.Exporting | Vehicle.Flags.Parking | Vehicle.Flags.CustomName |
+                              Vehicle.Flags.OnGravel | Vehicle.Flags.WaitingLoading | Vehicle.Flags.Congestion |
+                              Vehicle.Flags.DummyTraffic | Vehicle.Flags.Underground | Vehicle.Flags.Transition |
+                              Vehicle.Flags.InsideBuilding | Vehicle.Flags.LeftHandDrive))
+                            ++num2;
+                        num3 = nextLineVehicle;
+                        if (++num4 > 16384)
+                        {
+                            CODebugBase<LogChannel>.Error(LogChannel.Core,
+                                "Invalid list detected!\n" + System.Environment.StackTrace);
+                            break;
+                        }
+                    }
+                }
+                bool flag1 = !Singleton<SimulationManager>.instance.m_isNightTime
+                    ? (thisLine.m_flags & TransportLine.Flags.DisabledDay) == TransportLine.Flags.None
+                    : (thisLine.m_flags & TransportLine.Flags.DisabledNight) == TransportLine.Flags.None;
+                uint range = 0;
+                float num5 = 0.0f;
+                int num6 = 0;
+                bool flag2 = false;
+                if ((int) thisLine.m_stops != 0)
+                {
+                    NetManager instance = Singleton<NetManager>.instance;
+                    ushort stops = thisLine.m_stops;
+                    ushort num3 = stops;
+                    int num4 = 0;
+                    while ((int) num3 != 0)
+                    {
+                        ushort num7 = 0;
+                        if (flag1)
+                            instance.m_nodes.m_buffer[(int) num3].m_flags &=
+                                NetNode.Flags.OneWayOutTrafficLights | NetNode.Flags.UndergroundTransition |
+                                NetNode.Flags.Created | NetNode.Flags.Deleted | NetNode.Flags.Original |
+                                NetNode.Flags.End | NetNode.Flags.Middle | NetNode.Flags.Bend | NetNode.Flags.Junction |
+                                NetNode.Flags.Moveable | NetNode.Flags.Untouchable | NetNode.Flags.Outside |
+                                NetNode.Flags.Temporary | NetNode.Flags.Double | NetNode.Flags.Fixed |
+                                NetNode.Flags.OnGround | NetNode.Flags.Ambiguous | NetNode.Flags.Water |
+                                NetNode.Flags.Sewage | NetNode.Flags.ForbidLaneConnection |
+                                NetNode.Flags.LevelCrossing | NetNode.Flags.OneWayIn | NetNode.Flags.Heating |
+                                NetNode.Flags.Electricity | NetNode.Flags.Collapsed | NetNode.Flags.DisableOnlyMiddle |
+                                NetNode.Flags.AsymForward | NetNode.Flags.AsymBackward |
+                                NetNode.Flags.CustomTrafficLights;
+                        else
+                            instance.m_nodes.m_buffer[(int) num3].m_flags |= NetNode.Flags.Disabled;
+                        for (int index = 0; index < 8; ++index)
+                        {
+                            ushort segment = instance.m_nodes.m_buffer[(int) num3].GetSegment(index);
+                            if ((int) segment != 0 && (int) instance.m_segments.m_buffer[(int) segment].m_startNode ==
+                                (int) num3)
+                            {
+                                num6 +=
+                                    Mathf.Max((int) instance.m_segments.m_buffer[(int) segment].m_trafficLightState0,
+                                        (int) instance.m_segments.m_buffer[(int) segment].m_trafficLightState1);
+                                num5 += instance.m_segments.m_buffer[(int) segment].m_averageLength;
+                                num7 = instance.m_segments.m_buffer[(int) segment].m_endNode;
+                                if ((instance.m_segments.m_buffer[(int) segment].m_flags &
+                                     NetSegment.Flags.PathLength) == NetSegment.Flags.None)
+                                {
+                                    flag2 = true;
+                                    break;
+                                }
+                                break;
+                            }
+                        }
+                        ++range;
+                        num3 = num7;
+                        if ((int) num3 != (int) stops)
+                        {
+                            if (++num4 >= 32768)
+                            {
+                                CODebugBase<LogChannel>.Error(LogChannel.Core,
+                                    "Invalid list detected!\n" + System.Environment.StackTrace);
+                                break;
+                            }
+                        }
+                        else
+                            break;
+                    }
+                }
+                if (!flag2)
+                    thisLine.m_totalLength = num5;
+                if ((int) range != 0)
+                    thisLine.m_averageInterval = (byte) Mathf.Min((float) byte.MaxValue,
+                        (float) (((long) num6 + (long) (range >> 1)) / (long) range));
+                int amount = num1 * info.m_maintenanceCostPerVehicle / 100;
+                if (amount != 0)
+                    Singleton<EconomyManager>.instance.FetchResource(EconomyManager.Resource.Maintenance, amount,
+                        info.m_class);
+                TransferManager.TransferReason vehicleReason = info.m_vehicleReason;
+                if (vehicleReason != TransferManager.TransferReason.None)
+                {
+                    int num3 = !flag1 ? 0 : (!flag2 ? thisLine.CalculateTargetVehicleCount() : num2);
+                    if ((int) range != 0 && num1 < num3)
+                    {
+                        ushort stop = thisLine.GetStop(Singleton<SimulationManager>.instance.m_randomizer.Int32(range));
+                        if (vehicleReason != TransferManager.TransferReason.None && (int) stop != 0)
+                            Singleton<TransferManager>.instance.AddIncomingOffer(vehicleReason,
+                                new TransferManager.TransferOffer()
+                                {
+                                    Priority = num3 - num1 + 1,
+                                    TransportLine = lineID,
+                                    Position = Singleton<NetManager>.instance.m_nodes.m_buffer[(int) stop].m_position,
+                                    Amount = 1,
+                                    Active = false
+                                });
+                    }
+                    else if (num2 > num3)
+                    {
+                        ushort activeVehicle =
+                            GetActiveVehicle(ref thisLine,
+                                Singleton<SimulationManager>.instance.m_randomizer.Int32((uint) num2));
+                        if ((int) activeVehicle != 0)
+                        {
+                            VehicleManager instance = Singleton<VehicleManager>.instance;
+                            if ((instance.m_vehicles.m_buffer[(int) activeVehicle].m_flags & Vehicle.Flags.GoingBack) ==
+                                ~(Vehicle.Flags.Created | Vehicle.Flags.Deleted | Vehicle.Flags.Spawned |
+                                  Vehicle.Flags.Inverted | Vehicle.Flags.TransferToTarget |
+                                  Vehicle.Flags.TransferToSource | Vehicle.Flags.Emergency1 | Vehicle.Flags.Emergency2 |
+                                  Vehicle.Flags.WaitingPath | Vehicle.Flags.Stopped | Vehicle.Flags.Leaving |
+                                  Vehicle.Flags.Arriving | Vehicle.Flags.Reversed | Vehicle.Flags.TakingOff |
+                                  Vehicle.Flags.Flying | Vehicle.Flags.Landing | Vehicle.Flags.WaitingSpace |
+                                  Vehicle.Flags.WaitingCargo | Vehicle.Flags.GoingBack | Vehicle.Flags.WaitingTarget |
+                                  Vehicle.Flags.Importing | Vehicle.Flags.Exporting | Vehicle.Flags.Parking |
+                                  Vehicle.Flags.CustomName | Vehicle.Flags.OnGravel | Vehicle.Flags.WaitingLoading |
+                                  Vehicle.Flags.Congestion | Vehicle.Flags.DummyTraffic | Vehicle.Flags.Underground |
+                                  Vehicle.Flags.Transition | Vehicle.Flags.InsideBuilding |
+                                  Vehicle.Flags.LeftHandDrive))
+                                instance.m_vehicles.m_buffer[(int) activeVehicle]
+                                    .Info.m_vehicleAI
+                                    .SetTransportLine(activeVehicle,
+                                        ref instance.m_vehicles.m_buffer[(int) activeVehicle], (ushort) 0);
+                        }
+                    }
+                }
+            }
+            if ((Singleton<SimulationManager>.instance.m_currentFrameIndex & 4095U) < 3840U)
+                return;
+            thisLine.m_passengers.Update();
+            Singleton<TransportManager>.instance.m_passengers[(int) info.m_transportType]
+                .Add(ref thisLine.m_passengers);
+            thisLine.m_passengers.Reset();
+        }
+
+        [RedirectReverse]
+        private static ushort GetActiveVehicle(ref TransportLine thisLine, int index)
+        {
+            UnityEngine.Debug.Log("GetActiveVehicle");
+            return 0;
+        }
+
+        //TODO(earalov): reproduce changes and get rid of
+        public static void SimulationStepOld(ref TransportLine line, ushort lineID)
         {
             //begin mod(+): change for initialization
             if (!TransportLineMod._init)
