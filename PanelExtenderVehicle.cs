@@ -350,7 +350,7 @@ namespace ImprovedPublicTransport
       ushort firstVehicle = instance.m_vehicles.m_buffer[(int) vehicle].GetFirstVehicle(vehicle);
       float current;
       float max;
-      if (BusAIMod.GetProgressStatus(firstVehicle, ref instance.m_vehicles.m_buffer[(int) firstVehicle], out current, out max) || (int) firstVehicle != (int) (ushort) this._cachedProgressVehicle.GetValue((object) this._publicTransportVehicleWorldInfoPanel))
+      if (GetProgressStatus(firstVehicle, ref instance.m_vehicles.m_buffer[(int) firstVehicle], out current, out max) || (int) firstVehicle != (int) (ushort) this._cachedProgressVehicle.GetValue((object) this._publicTransportVehicleWorldInfoPanel))
       {
         this._cachedCurrentProgress.SetValue((object) this._publicTransportVehicleWorldInfoPanel, (object) current);
         this._cachedTotalProgress.SetValue((object) this._publicTransportVehicleWorldInfoPanel, (object) max);
@@ -370,6 +370,47 @@ namespace ImprovedPublicTransport
       this._distanceTraveled.value = num;
       this._distanceProgress.text = LocaleFormatter.FormatPercentage(p);
     }
+
+    public static bool GetProgressStatus(ushort vehicleID, ref Vehicle data, out float current, out float max)
+    {
+        ushort transportLine = data.m_transportLine;
+        ushort targetBuilding = data.m_targetBuilding;
+        if ((int) transportLine != 0 && (int) targetBuilding != 0)
+        {
+            float min;
+            float max1;
+            float total;
+            Singleton<TransportManager>.instance.m_lines.m_buffer[(int) transportLine]
+                .GetStopProgress(targetBuilding, out min, out max1, out total);
+            uint path = data.m_path;
+            bool valid;
+            if ((int) path == 0 || (data.m_flags & Vehicle.Flags.WaitingPath) !=
+                ~(Vehicle.Flags.Created | Vehicle.Flags.Deleted | Vehicle.Flags.Spawned | Vehicle.Flags.Inverted |
+                    Vehicle.Flags.TransferToTarget | Vehicle.Flags.TransferToSource | Vehicle.Flags.Emergency1 |
+                    Vehicle.Flags.Emergency2 | Vehicle.Flags.WaitingPath | Vehicle.Flags.Stopped |
+                    Vehicle.Flags.Leaving | Vehicle.Flags.Arriving | Vehicle.Flags.Reversed |
+                    Vehicle.Flags.TakingOff | Vehicle.Flags.Flying | Vehicle.Flags.Landing |
+                    Vehicle.Flags.WaitingSpace | Vehicle.Flags.WaitingCargo | Vehicle.Flags.GoingBack |
+                    Vehicle.Flags.WaitingTarget | Vehicle.Flags.Importing | Vehicle.Flags.Exporting |
+                    Vehicle.Flags.Parking | Vehicle.Flags.CustomName | Vehicle.Flags.OnGravel |
+                    Vehicle.Flags.WaitingLoading | Vehicle.Flags.Congestion | Vehicle.Flags.DummyTraffic |
+                    Vehicle.Flags.Underground | Vehicle.Flags.Transition | Vehicle.Flags.InsideBuilding |
+                    Vehicle.Flags.LeftHandDrive))
+            {
+                current = min;
+                valid = false;
+            }
+            else
+                current = BusAI.GetPathProgress(path, (int) data.m_pathPositionIndex, min, max1, out valid);
+            max = total;
+            return valid;
+        }
+        current = 0.0f;
+        max = 0.0f;
+        return true;
+    }
+
+
 
     public ushort GetLineID(out ushort firstVehicle)
     {

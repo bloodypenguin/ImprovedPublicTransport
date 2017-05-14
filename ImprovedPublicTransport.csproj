@@ -64,7 +64,9 @@
   <ItemGroup>
     <Compile Include="Bezier3Extensions.cs" />
     <Compile Include="BuildingWatcher.cs" />
-    <Compile Include="Detour\BusAIMod.cs" />
+    <Compile Include="Detour\BusAIDetour.cs" />
+    <Compile Include="Detour\PassengerPlaneAIDetour.cs" />
+    <Compile Include="Detour\PassengerShipAIDetour.cs" />
     <Compile Include="Detour\PublicTransportStopButtonDetour.cs" />
     <Compile Include="GameDefault.cs" />
     <Compile Include="LineData.cs" />
@@ -73,9 +75,7 @@
     <Compile Include="MovingAverage.cs" />
     <Compile Include="Detour\NetManagerMod.cs" />
     <Compile Include="NodeData.cs" />
-    <Compile Include="Detour\PassengerPlaneAIMod.cs" />
-    <Compile Include="Detour\PassengerShipAIMod.cs" />
-    <Compile Include="Detour\PassengerTrainAIMod.cs" />
+    <Compile Include="Detour\PassengerTrainAIDetour.cs" />
     <Compile Include="Redirection\AssemblyRedirector.cs" />
     <Compile Include="Redirection\Attributes\RedirectAttribute.cs" />
     <Compile Include="Redirection\Attributes\RedirectMethodAttribute.cs" />
