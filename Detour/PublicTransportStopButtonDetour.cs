@@ -6,8 +6,9 @@ using UnityEngine;
 namespace ImprovedPublicTransport.Detour
 {
     [TargetType(typeof(PublicTransportStopButton))]
-    public class PublicTransportStopButtonDetour
+    public class PublicTransportStopButtonDetour : PublicTransportStopButton
     {
+
         [RedirectMethod]
         private void OnMouseDown(UIComponent component, UIMouseEventParameter eventParam)
         {

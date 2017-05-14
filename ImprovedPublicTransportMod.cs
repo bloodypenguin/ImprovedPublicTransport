@@ -109,6 +109,8 @@ namespace ImprovedPublicTransport
           SerializableDataExtension.instance.Loaded = true;
           LocaleModifier.Init();
           Redirector<PublicTransportStopButtonDetour>.Deploy();
+          Redirector<PublicTransportVehicleButtonDetour>.Deploy();
+          Redirector<PublicTransportWorldInfoPanelDetour>.Deploy();
           Utils.Log((object) "Loading done!");
         }
         else
@@ -168,6 +170,8 @@ namespace ImprovedPublicTransport
       SerializableDataExtension.instance.Loaded = false;
       LocaleModifier.Deinit();
       Redirector<PublicTransportStopButtonDetour>.Revert();
+      Redirector<PublicTransportVehicleButtonDetour>.Revert();
+      Redirector<PublicTransportWorldInfoPanelDetour>.Revert();
 
       if ((UnityEngine.Object) this._iptGameObject != (UnityEngine.Object) null)
         UnityEngine.Object.Destroy((UnityEngine.Object) this._iptGameObject);
