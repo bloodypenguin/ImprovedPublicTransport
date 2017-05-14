@@ -69,6 +69,8 @@
     <Compile Include="Detour\PassengerPlaneAIDetour.cs" />
     <Compile Include="Detour\PassengerShipAIDetour.cs" />
     <Compile Include="Detour\PublicTransportStopButtonDetour.cs" />
+    <Compile Include="Detour\PublicTransportVehicleButtonDetour.cs" />
+    <Compile Include="Detour\PublicTransportWorldInfoPanelDetour.cs" />
     <Compile Include="GameDefault.cs" />
     <Compile Include="LineData.cs" />
     <Compile Include="LocaleModifier.cs" />

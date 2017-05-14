@@ -62,18 +62,18 @@ namespace ImprovedPublicTransport
       }
     }
 
-    private string GenerateStopName(string name)
+    public static string GenerateStopName(string name, ushort node, int stopIndex)
     {
       string str;
       if (string.IsNullOrEmpty(name))
       {
-        if (this.StopIndex == -1)
+        if (stopIndex == -1)
         {
-          ushort transportLine = Singleton<NetManager>.instance.m_nodes.m_buffer[(int) this._instanceID.NetNode].m_transportLine;
-          str = string.Format("{0} #{1}", (object) Singleton<TransportManager>.instance.GetLineName(transportLine), (object) (TransportLineMod.GetStopIndex(transportLine, this._instanceID.NetNode) + 1));
+          ushort transportLine = Singleton<NetManager>.instance.m_nodes.m_buffer[node].m_transportLine;
+          str = string.Format("{0} #{1}", (object) Singleton<TransportManager>.instance.GetLineName(transportLine), (object) (TransportLineMod.GetStopIndex(transportLine, node) + 1));
         }
         else
-          str = string.Format(Localization.Get("STOP_LIST_BOX_ROW_STOP"), (object) this.StopIndex);
+          str = string.Format(Localization.Get("STOP_LIST_BOX_ROW_STOP"), (object)stopIndex);
       }
       else
         str = name;
@@ -83,7 +83,7 @@ namespace ImprovedPublicTransport
     protected override void OnMouseEnter(UIMouseEventParameter p)
     {
       byte max;
-      this.tooltip = string.Format(Localization.Get("STOP_LIST_BOX_ROW_TOOLTIP"), (object) this.GenerateStopName(Singleton<InstanceManager>.instance.GetName(this._instanceID)), (object) PanelExtenderLine.CountWaitingPassengers(this.StopID, this.NextStopID, out max));
+      this.tooltip = string.Format(Localization.Get("STOP_LIST_BOX_ROW_TOOLTIP"), (object) GenerateStopName(Singleton<InstanceManager>.instance.GetName(this._instanceID), this._instanceID.NetNode, this.StopIndex), (object) PanelExtenderLine.CountWaitingPassengers(this.StopID, this.NextStopID, out max));
       if (!this.IsSelected)
         this.backgroundSprite = "ListItemHover";
       base.OnMouseEnter(p);
@@ -105,7 +105,7 @@ namespace ImprovedPublicTransport
       if (this._cachedName != name)
       {
         this._cachedName = name;
-        Utils.Truncate(this._stopName, this.GenerateStopName(name), "…");
+        Utils.Truncate(this._stopName, GenerateStopName(name, this._instanceID.NetNode, this.StopIndex));
       }
       if ((double) this._delta >= 1.0)
       {
