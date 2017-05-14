@@ -144,7 +144,7 @@ namespace ImprovedPublicTransport.Detour
           }
           if (str == "v003")
             ++index1;
-          data[(int) lineID].Unbunching = !(str == "v004") ? ImprovedPublicTransportMod.Settings.Unbunching : SerializableDataExtension.ReadBool(data1, ref index1);
+          data[(int) lineID].Unbunching = str != "v004" ? ImprovedPublicTransportMod.Settings.Unbunching : SerializableDataExtension.ReadBool(data1, ref index1);
           ++lineID;
         }
         return true;
