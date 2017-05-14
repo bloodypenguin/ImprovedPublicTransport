@@ -219,16 +219,13 @@ namespace ImprovedPublicTransport.Detour
 
 
         [RedirectMethod]
-        public void SimulationStep(ushort lineID)
+        public static void SimulationStep(ref TransportLine line, ushort lineID)
         {
+            //begin mod(+): change for initialization
             if (!TransportLineMod._init)
                 return;
-            TransportLineMod.SimulationStepImpl(ref Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID],
-                lineID);
-        }
+            //end mod
 
-        public static void SimulationStepImpl(ref TransportLine line, ushort lineID)
-        {
             if (!line.Complete)
                 return;
             TransportInfo info = line.Info;
