@@ -112,7 +112,7 @@
     <Compile Include="VehicleData.cs" />
     <Compile Include="Detour\VehicleManagerMod.cs" />
     <Compile Include="VehiclePrefabs.cs" />
-    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
