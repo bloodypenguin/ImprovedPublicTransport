@@ -374,10 +374,13 @@ namespace ImprovedPublicTransport.Detour
 
     public static float GetLength(ushort lineID)
     {
-      var length = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID].m_totalLength;
-      if (Math.Abs(length) < 0.01f)
-        Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID].UpdateMeshData(lineID);
-      return length;
+        var length = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID].m_totalLength;
+        if (Math.Abs(length) < 0.01f)
+        {
+            Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID].UpdateMeshData(lineID);
+            length = Singleton<TransportManager>.instance.m_lines.m_buffer[(int)lineID].m_totalLength
+        }
+        return length;
     }
 
 
