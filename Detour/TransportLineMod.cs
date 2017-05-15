@@ -33,12 +33,11 @@ namespace ImprovedPublicTransport.Detour
                 NetManager instance1 = Singleton<NetManager>.instance;
                 TransportManager instance2 = Singleton<TransportManager>.instance;
                 int length = instance2.m_lines.m_buffer.Length;
-                for (int index = 0; index < length; ++index)
+                for (ushort index = 0; index < length; ++index)
                 {
                     if (instance2.m_lines.m_buffer[index].Complete)
                     {
-                        int num = instance2.m_lines.m_buffer[index].CountVehicles((ushort) index);
-                        TransportLineMod._lineData[index].TargetVehicleCount = num;
+                        TransportLineMod._lineData[index].TargetVehicleCount = TransportLineMod.CountLineActiveVehicles(index);
                     }
                     else
                         TransportLineMod._lineData[index].TargetVehicleCount =
@@ -480,7 +479,7 @@ namespace ImprovedPublicTransport.Detour
                         (float)(((long)num6 + (long)(range >> 1)) / (long)range));
                 //begin mod(+): something weird happens :)
                 bool flag = TransportLineMod.SetLineStatus(lineID, flag1);
-                int lineVehicleCount = thisLine.CountVehicles(lineID);
+                int lineVehicleCount = CountLineActiveVehicles(lineID);
                 int targetVehicleCount = 0;
                 if (TransportLineMod._lineData[(int) lineID].BudgetControl)
                 {
@@ -558,7 +557,7 @@ namespace ImprovedPublicTransport.Detour
                 }
                 else if (lineVehicleCount > targetVehicleCount)
                 {
-                    TransportLineMod.RemoveRandomVehicle(lineID, false);
+                    TransportLineMod.RemoveRandomActiveVehicle(lineID, false);
                 }
                 //end mod
 
@@ -581,19 +580,50 @@ namespace ImprovedPublicTransport.Detour
                 VehicleManager instance3 = Singleton<VehicleManager>.instance;
                 PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(info.m_class.m_subService);
                 int amount = 0;
-                for (ushort index = thisLine.m_vehicles;
-                    (int) index != 0;
-                    index = instance3.m_vehicles.m_buffer[(int) index].m_nextLineVehicle)
+
+                //this part is very similar to beginning of vanilla method where active vehicles are counted
+                if ((int)thisLine.m_vehicles != 0)
                 {
-                    Vehicle vehicle = instance3.m_vehicles.m_buffer[(int) index];
-                    PrefabData prefabData = Array.Find<PrefabData>(prefabs,
-                        (Predicate<PrefabData>) (item => item.PrefabDataIndex == vehicle.Info.m_prefabDataIndex));
-                    if (prefabData != null)
+                    VehicleManager instance = Singleton<VehicleManager>.instance;
+                    ushort index = thisLine.m_vehicles;
+                    int num4 = 0;
+                    while ((int)index != 0)
                     {
-                        amount += prefabData.MaintenanceCost;
-                        VehicleManagerMod.m_cachedVehicleData[(int) index].StartNewWeek(prefabData.MaintenanceCost);
+                        ushort nextLineVehicle = instance.m_vehicles.m_buffer[(int)index].m_nextLineVehicle;
+
+                        if ((instance.m_vehicles.m_buffer[(int) index].m_flags & Vehicle.Flags.GoingBack) ==
+                            ~(Vehicle.Flags.Created | Vehicle.Flags.Deleted | Vehicle.Flags.Spawned |
+                              Vehicle.Flags.Inverted | Vehicle.Flags.TransferToTarget | Vehicle.Flags.TransferToSource |
+                              Vehicle.Flags.Emergency1 | Vehicle.Flags.Emergency2 | Vehicle.Flags.WaitingPath |
+                              Vehicle.Flags.Stopped | Vehicle.Flags.Leaving | Vehicle.Flags.Arriving |
+                              Vehicle.Flags.Reversed | Vehicle.Flags.TakingOff | Vehicle.Flags.Flying |
+                              Vehicle.Flags.Landing | Vehicle.Flags.WaitingSpace | Vehicle.Flags.WaitingCargo |
+                              Vehicle.Flags.GoingBack | Vehicle.Flags.WaitingTarget | Vehicle.Flags.Importing |
+                              Vehicle.Flags.Exporting | Vehicle.Flags.Parking | Vehicle.Flags.CustomName |
+                              Vehicle.Flags.OnGravel | Vehicle.Flags.WaitingLoading | Vehicle.Flags.Congestion |
+                              Vehicle.Flags.DummyTraffic | Vehicle.Flags.Underground | Vehicle.Flags.Transition |
+                              Vehicle.Flags.InsideBuilding | Vehicle.Flags.LeftHandDrive))
+                        {
+                                Vehicle vehicle = instance3.m_vehicles.m_buffer[(int)index];
+                                PrefabData prefabData = Array.Find<PrefabData>(prefabs,
+                                    (Predicate<PrefabData>)(item => item.PrefabDataIndex == vehicle.Info.m_prefabDataIndex));
+                                if (prefabData != null)
+                                {
+                                    amount += prefabData.MaintenanceCost;
+                                    VehicleManagerMod.m_cachedVehicleData[(int)index].StartNewWeek(prefabData.MaintenanceCost);
+                                }
+                        }
+
+                        index = nextLineVehicle;
+                        if (++num4 > 16384)
+                        {
+                            CODebugBase<LogChannel>.Error(LogChannel.Core,
+                                "Invalid list detected!\n" + System.Environment.StackTrace);
+                            break;
+                        }
                     }
                 }
+                //end of similar part
                 //end mod
 
                 //begin mod(+): this piece was moved from another place, earlier
@@ -713,17 +743,17 @@ namespace ImprovedPublicTransport.Detour
             return buildingAi.GetVehicleCount(depotID, ref depot) < num;
         }
 
-        public static void RemoveRandomVehicle(ushort lineID, bool descreaseVehicleCount = true)
+        public static void RemoveRandomActiveVehicle(ushort lineID, bool descreaseTargetVehicleCount) //TODO(earalov): only remove active vehicles(use custom vehicle count method)
         {
             TransportLine transportLine = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID];
             int index =
                 Singleton<SimulationManager>.instance.m_randomizer.Int32((uint) transportLine.CountVehicles(lineID));
-            TransportLineMod.RemoveVehicle(lineID, transportLine.GetVehicle(index), descreaseVehicleCount);
+            TransportLineMod.RemoveVehicle(lineID, transportLine.GetVehicle(index), descreaseTargetVehicleCount);
         }
 
-        public static void RemoveVehicle(ushort lineID, ushort vehicleID, bool descreaseVehicleCount = true)
+        public static void RemoveVehicle(ushort lineID, ushort vehicleID, bool descreaseTargetVehicleCount)
         {
-            if (descreaseVehicleCount)
+            if (descreaseTargetVehicleCount)
                 TransportLineMod.DecreaseTargetVehicleCount(lineID);
             VehicleManager instance = Singleton<VehicleManager>.instance;
             instance.m_vehicles.m_buffer[(int) vehicleID]
@@ -731,9 +761,53 @@ namespace ImprovedPublicTransport.Detour
                     (ushort) 0);
         }
 
-        public static int GetLineVehicleCount(ushort lineID)
+        public static int CountLineActiveVehicles(ushort lineID)
         {
-            return Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID].CountVehicles(lineID);
+            
+            int activeVehicles = 0;
+
+            TransportLine thisLine = TransportManager.instance.m_lines.m_buffer[lineID];
+
+            //this part is directly taken from beginning of vanilla SimulationStep method
+            if (thisLine.Complete)
+            {
+                int num1 = 0;
+                int num2 = 0;
+                if ((int) thisLine.m_vehicles != 0)
+                {
+                    VehicleManager instance = Singleton<VehicleManager>.instance;
+                    ushort num3 = thisLine.m_vehicles;
+                    int num4 = 0;
+                    while ((int) num3 != 0)
+                    {
+                        ushort nextLineVehicle = instance.m_vehicles.m_buffer[(int) num3].m_nextLineVehicle;
+                        ++num1;
+                        if ((instance.m_vehicles.m_buffer[(int) num3].m_flags & Vehicle.Flags.GoingBack) ==
+                            ~(Vehicle.Flags.Created | Vehicle.Flags.Deleted | Vehicle.Flags.Spawned |
+                              Vehicle.Flags.Inverted | Vehicle.Flags.TransferToTarget | Vehicle.Flags.TransferToSource |
+                              Vehicle.Flags.Emergency1 | Vehicle.Flags.Emergency2 | Vehicle.Flags.WaitingPath |
+                              Vehicle.Flags.Stopped | Vehicle.Flags.Leaving | Vehicle.Flags.Arriving |
+                              Vehicle.Flags.Reversed | Vehicle.Flags.TakingOff | Vehicle.Flags.Flying |
+                              Vehicle.Flags.Landing | Vehicle.Flags.WaitingSpace | Vehicle.Flags.WaitingCargo |
+                              Vehicle.Flags.GoingBack | Vehicle.Flags.WaitingTarget | Vehicle.Flags.Importing |
+                              Vehicle.Flags.Exporting | Vehicle.Flags.Parking | Vehicle.Flags.CustomName |
+                              Vehicle.Flags.OnGravel | Vehicle.Flags.WaitingLoading | Vehicle.Flags.Congestion |
+                              Vehicle.Flags.DummyTraffic | Vehicle.Flags.Underground | Vehicle.Flags.Transition |
+                              Vehicle.Flags.InsideBuilding | Vehicle.Flags.LeftHandDrive))
+                            ++num2;
+                        num3 = nextLineVehicle;
+                        if (++num4 > 16384)
+                        {
+                            CODebugBase<LogChannel>.Error(LogChannel.Core,
+                                "Invalid list detected!\n" + System.Environment.StackTrace);
+                            break;
+                        }
+                    }
+                }
+                //end of vanilla part
+                activeVehicles = num2;
+            }
+            return activeVehicles;
         }
 
         public static int GetTargetVehicleCount(ushort lineID)

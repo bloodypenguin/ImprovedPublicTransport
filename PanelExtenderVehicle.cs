@@ -335,12 +335,15 @@ namespace ImprovedPublicTransport
 
     private void OnRemoveVehicleClick(UIComponent component, UIMouseEventParameter eventParam)
     {
-      ushort firstVehicle = 0;
-      ushort lineId = this.GetLineID(out firstVehicle);
-      if ((int) lineId == 0 || (int) firstVehicle == 0)
-        return;
-      TransportLineMod.SetBudgetControlState(lineId, false);
-      TransportLineMod.RemoveVehicle(lineId, firstVehicle, true);
+        SimulationManager.instance.AddAction(() =>
+        {
+            ushort firstVehicle = 0;
+            ushort lineId = this.GetLineID(out firstVehicle);
+            if ((int) lineId == 0 || (int) firstVehicle == 0)
+                return;
+            TransportLineMod.SetBudgetControlState(lineId, false);
+            TransportLineMod.RemoveVehicle(lineId, firstVehicle, true);
+        });
     }
 
     private void UpdateProgress()
