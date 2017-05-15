@@ -182,7 +182,7 @@ namespace ImprovedPublicTransport
       ushort lineId = this.GetLineID();
       if ((int) lineId != 0)
       {
-        int lineVehicleCount = TransportLineMod.GetLineVehicleCount(lineId);
+        int lineVehicleCount = TransportLineMod.CountLineActiveVehicles(lineId);
         int targetVehicleCount = TransportLineMod.GetTargetVehicleCount(lineId);
         int num1 = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineId].CountStops(lineId);
         this._vehicleAmount.text = LocaleFormatter.FormatGeneric("TRANSPORT_LINE_VEHICLECOUNT", (object) (lineVehicleCount.ToString() + " / " + (object) targetVehicleCount));
@@ -202,7 +202,7 @@ namespace ImprovedPublicTransport
 
           if (targetVehicleCount > 1)
           {
-              this._unbunching.label.text = string.Format(Localization.Get("UNBUNCHING_ENABLED") + " - " + Localization.Get("UNBUNCHING_TARGET_GAP"), (object) Utils.RoundToNearest((float) ((double)TransportLineMod.GetLength(lineId) / (double) targetVehicleCount * 0.899999976158142), 10)) ;
+            this._unbunching.label.text = string.Format(Localization.Get("UNBUNCHING_ENABLED") + " - " + Localization.Get("UNBUNCHING_TARGET_GAP"), Singleton<TransportManager>.instance.m_lines.m_buffer[(int)lineId].m_averageInterval) ;
           }
           else
             this._unbunching.label.text = Localization.Get("UNBUNCHING_ENABLED");
@@ -728,11 +728,12 @@ namespace ImprovedPublicTransport
         foreach (ushort vehicleID in selectedVehicles)
           TransportLineMod.RemoveVehicle(lineId, vehicleID, true);
       }
-      else if (TransportLineMod.EnqueuedVehiclesCount(lineId) > 0)
+      else if (TransportLineMod.EnqueuedVehiclesCount(lineId) > 0) { 
         TransportLineMod.DequeueVehicle(lineId);
-      else if (TransportLineMod.GetLineVehicleCount(lineId) > 0)
+      }
+      else if (TransportLineMod.CountLineActiveVehicles(lineId) > 0)
       {
-        TransportLineMod.RemoveRandomVehicle(lineId, true);
+        TransportLineMod.RemoveRandomActiveVehicle(lineId, true);
       }
       else
       {
@@ -742,7 +743,7 @@ namespace ImprovedPublicTransport
       }
     }
 
-    private void OnDeleteLineClick(UIComponent component, UIMouseEventParameter eventParam)
+      private void OnDeleteLineClick(UIComponent component, UIMouseEventParameter eventParam)
     {
       ushort lineID = this.GetLineID();
       if ((int) lineID == 0)
@@ -834,7 +835,7 @@ namespace ImprovedPublicTransport
     {
       this._lineVehicleListBox.ClearItems();
       TransportLine transportLine = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID];
-      int num = transportLine.CountVehicles(lineID);
+      int num = TransportLineMod.CountLineActiveVehicles(lineID);
       PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(subService);
       int length = prefabs.Length;
       for (int index1 = 0; index1 < num; ++index1)
@@ -842,16 +843,30 @@ namespace ImprovedPublicTransport
         ushort vehicle = transportLine.GetVehicle(index1);
         if ((int) vehicle != 0)
         {
-          VehicleInfo info = Singleton<VehicleManager>.instance.m_vehicles.m_buffer[(int) vehicle].Info;
-          for (int index2 = 0; index2 < length; ++index2)
-          {
-            PrefabData data = prefabs[index2];
-            if (info.name == data.ObjectName)
+            if ((VehicleManager.instance.m_vehicles.m_buffer[vehicle].m_flags & Vehicle.Flags.GoingBack) ==
+                ~(Vehicle.Flags.Created | Vehicle.Flags.Deleted | Vehicle.Flags.Spawned |
+                  Vehicle.Flags.Inverted | Vehicle.Flags.TransferToTarget | Vehicle.Flags.TransferToSource |
+                  Vehicle.Flags.Emergency1 | Vehicle.Flags.Emergency2 | Vehicle.Flags.WaitingPath |
+                  Vehicle.Flags.Stopped | Vehicle.Flags.Leaving | Vehicle.Flags.Arriving |
+                  Vehicle.Flags.Reversed | Vehicle.Flags.TakingOff | Vehicle.Flags.Flying |
+                  Vehicle.Flags.Landing | Vehicle.Flags.WaitingSpace | Vehicle.Flags.WaitingCargo |
+                  Vehicle.Flags.GoingBack | Vehicle.Flags.WaitingTarget | Vehicle.Flags.Importing |
+                  Vehicle.Flags.Exporting | Vehicle.Flags.Parking | Vehicle.Flags.CustomName |
+                  Vehicle.Flags.OnGravel | Vehicle.Flags.WaitingLoading | Vehicle.Flags.Congestion |
+                  Vehicle.Flags.DummyTraffic | Vehicle.Flags.Underground | Vehicle.Flags.Transition |
+                  Vehicle.Flags.InsideBuilding | Vehicle.Flags.LeftHandDrive)) //based on beginning of TransportLine.SimulationStep
             {
-              this._lineVehicleListBox.AddItem(data, vehicle);
-              break;
+                VehicleInfo info = Singleton<VehicleManager>.instance.m_vehicles.m_buffer[(int)vehicle].Info;
+                for (int index2 = 0; index2 < length; ++index2)
+                {
+                    PrefabData data = prefabs[index2];
+                    if (info.name == data.ObjectName)
+                    {
+                        this._lineVehicleListBox.AddItem(data, vehicle);
+                        break;
+                    }
+                }
             }
-          }
         }
       }
     }
