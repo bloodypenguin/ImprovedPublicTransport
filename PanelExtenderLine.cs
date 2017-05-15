@@ -746,7 +746,7 @@ namespace ImprovedPublicTransport
             }
             else if (TransportLineMod.CountLineActiveVehicles(lineId) > 0)
             {
-                TransportLineMod.RemoveRandomActiveVehicle(lineId, true);
+                TransportLineMod.RemoveActiveVehicle(lineId, true);
             }
             else
             {
