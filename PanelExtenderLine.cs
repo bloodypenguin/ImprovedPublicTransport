@@ -209,9 +209,11 @@ namespace ImprovedPublicTransport
         }
         bool flag1 = false;
         ushort depot = TransportLineMod.GetDepot(lineId);
-        if (!TransportLineMod.IsLineDepotStillValid(lineId, ref depot))
-          flag1 = true;
-        bool flag2 = true;
+          if (!TransportLineMod.ValidateDepot(lineId, ref depot))
+          {
+              flag1 = true;
+          }
+          bool flag2 = true;
         if ((int) depot != 0)
           flag2 = TransportLineMod.CanAddVehicle(depot, ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[(int) depot]);
         if (flag2)

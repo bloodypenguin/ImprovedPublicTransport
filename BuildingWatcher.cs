@@ -158,7 +158,7 @@ namespace ImprovedPublicTransport
       this._depotMap.Clear();
     }
 
-    public static bool IsValidDepot(ref Building building, out ItemClass.SubService subService)
+    public static bool IsValidDepot(ref Building building, out ItemClass.SubService subService) //TODO(earalov): add support for Mass Transit vehicle types
     {
       subService = ItemClass.SubService.None;
       if ((Object) building.Info == (Object) null)
