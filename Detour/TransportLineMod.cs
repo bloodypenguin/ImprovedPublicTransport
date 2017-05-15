@@ -435,7 +435,7 @@ namespace ImprovedPublicTransport.Detour
                         offer.Amount = 1;
                         offer.Active = false;
                         ushort depot = TransportLineMod._lineData[(int) lineID].Depot;
-                        if (TransportLineMod.IsLineDepotStillValid(lineID, ref depot))
+                        if (TransportLineMod.ValidateDepot(lineID, ref depot))
                         {
                             BuildingManager instance2 = Singleton<BuildingManager>.instance;
                             if (TransportLineMod.CanAddVehicle(depot, ref instance2.m_buildings.m_buffer[(int) depot]))
@@ -453,23 +453,31 @@ namespace ImprovedPublicTransport.Detour
                                             TransportLineMod.GetRandomPrefab(lineID), false);
                                     prefabName = TransportLineMod.Dequeue(lineID);
                                 }
-                                if (prefabName != "")
+                                if (prefabName == "")
                                 {
-                                    int num4 = (int) DepotAIMod.StartTransfer(depot,
-                                        ref instance2.m_buildings.m_buffer[(int) depot], info.m_vehicleReason, offer,
-                                        prefabName);
+                                    instance2.m_buildings.m_buffer[(int)depot]
+                                        .Info.m_buildingAI
+                                        .StartTransfer(depot, ref instance2.m_buildings.m_buffer[(int)depot],
+                                            info.m_vehicleReason, offer);
                                 }
                                 else
-                                    instance2.m_buildings.m_buffer[(int) depot]
-                                        .Info.m_buildingAI
-                                        .StartTransfer(depot, ref instance2.m_buildings.m_buffer[(int) depot],
-                                            info.m_vehicleReason, offer);
+                                {
+                                    DepotAIMod.StartTransfer(depot,
+                                        ref instance2.m_buildings.m_buffer[(int)depot], info.m_vehicleReason, offer,
+                                        prefabName);
+                                }
                                 TransportLineMod._lineData[(int) lineID].NextSpawnTime =
                                     SimHelper.instance.SimulationTime +
                                     (float) ImprovedPublicTransportMod.Settings.SpawnTimeInterval;
                             }
                             else
+                            {
                                 TransportLineMod.ClearEnqueuedVehicles(lineID);
+                            }
+                        }
+                        else
+                        {
+                            TransportLineMod.ClearEnqueuedVehicles(lineID);
                         }
                     }
                 }
@@ -593,12 +601,11 @@ namespace ImprovedPublicTransport.Detour
         }
 
 
-        public static bool IsLineDepotStillValid(ushort lineID, ref ushort depotID)
+        public static bool ValidateDepot(ushort lineID, ref ushort depotID)
         {
-            ItemClass.SubService subService;
             if (depotID != 0 &&
                 BuildingWatcher.IsValidDepot(ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[depotID],
-                    out subService))
+                    out ItemClass.SubService _))
             {
                 return true;
             }
@@ -607,12 +614,7 @@ namespace ImprovedPublicTransport.Detour
                     .m_buffer[Singleton<TransportManager>.instance.m_lines.m_buffer[lineID].GetStop(0)]
                     .m_position);
             TransportLineMod._lineData[lineID].Depot = depotID;
-            if (depotID != 0)
-            {
-                return true;
-            }
-            TransportLineMod.ClearEnqueuedVehicles(lineID);
-            return false;
+            return depotID != 0;
         }
 
         public static bool CanAddVehicle(ushort depotID, ref Building depot) //TODO(earalov): add support for buildingAi.m_maxVehicleCount2?
