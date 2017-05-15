@@ -9,8 +9,8 @@ using UnityEngine;
 
 namespace ImprovedPublicTransport
 {
-  public class VehiclePrefabs
-  {
+  public class VehiclePrefabs //TODO(earalov): add new vehicle types (monorail, blimp, cablecar, ferry, evacuation buses)
+    {
     public static VehiclePrefabs instance;
     private PrefabData[] _busPrefabData;
     private PrefabData[] _metroPrefabData;
@@ -31,7 +31,7 @@ namespace ImprovedPublicTransport
       VehiclePrefabs.instance = (VehiclePrefabs) null;
     }
 
-    public PrefabData[] GetPrefabs(ItemClass.SubService subService)       //TODO(earalov): add new vehicle types (monorail, blimp, cablecar, ferry, evacuation buses)
+    public PrefabData[] GetPrefabs(ItemClass.SubService subService) //TODO(earalov): add new vehicle types (monorail, blimp, cablecar, ferry, evacuation buses)
         {
       switch (subService)
       {
@@ -57,8 +57,8 @@ namespace ImprovedPublicTransport
       }
     }
 
-    private void FindAllPrefabs()
-    {
+    private void FindAllPrefabs()  //TODO(earalov): add new vehicle types (monorail, blimp, cablecar, ferry, evacuation buses)
+        {
       List<PrefabData> prefabDataList1 = new List<PrefabData>();
       List<PrefabData> prefabDataList2 = new List<PrefabData>();
       List<PrefabData> prefabDataList3 = new List<PrefabData>();
