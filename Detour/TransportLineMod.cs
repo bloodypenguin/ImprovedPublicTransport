@@ -557,7 +557,7 @@ namespace ImprovedPublicTransport.Detour
                 }
                 else if (lineVehicleCount > targetVehicleCount)
                 {
-                    TransportLineMod.RemoveRandomActiveVehicle(lineID, false);
+                    TransportLineMod.RemoveActiveVehicle(lineID, false);
                 }
                 //end mod
 
@@ -743,11 +743,10 @@ namespace ImprovedPublicTransport.Detour
             return buildingAi.GetVehicleCount(depotID, ref depot) < num;
         }
 
-        public static void RemoveRandomActiveVehicle(ushort lineID, bool descreaseTargetVehicleCount) //TODO(earalov): only remove active vehicles(use custom vehicle count method)
+        public static void RemoveActiveVehicle(ushort lineID, bool descreaseTargetVehicleCount)
         {
             TransportLine transportLine = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID];
-            int index =
-                Singleton<SimulationManager>.instance.m_randomizer.Int32((uint) transportLine.CountVehicles(lineID));
+            ushort index = GetActiveVehicle(ref transportLine, lineID);
             TransportLineMod.RemoveVehicle(lineID, transportLine.GetVehicle(index), descreaseTargetVehicleCount);
         }
 
