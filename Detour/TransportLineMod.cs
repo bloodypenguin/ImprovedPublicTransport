@@ -395,126 +395,213 @@ namespace ImprovedPublicTransport.Detour
         }
 
         //TODO(earalov): reproduce changes and get rid of
-        public static void SimulationStepOld(ref TransportLine line, ushort lineID)
+        public static void SimulationStepOld(ref TransportLine thisLine, ushort lineID)
         {
             //begin mod(+): change for initialization
             if (!TransportLineMod._init)
                 return;
             //end mod
 
-            if (!line.Complete)
-                return;
-            TransportInfo info = line.Info;
-            SimulationManager instance1 = Singleton<SimulationManager>.instance;
-            bool isLineEnabled = !instance1.m_isNightTime
-                ? (line.m_flags & TransportLine.Flags.DisabledDay) == TransportLine.Flags.None
-                : (line.m_flags & TransportLine.Flags.DisabledNight) == TransportLine.Flags.None;
-            bool flag = TransportLineMod.SetLineStatus(lineID, isLineEnabled);
-            int lineVehicleCount = line.CountVehicles(lineID);
-            int targetVehicleCount = 0;
-            if (TransportLineMod._lineData[(int) lineID].BudgetControl)
+            TransportInfo info = thisLine.Info;
+            if (thisLine.Complete)
             {
-                targetVehicleCount = !isLineEnabled ? 0 : (!flag ? line.CalculateTargetVehicleCount() : lineVehicleCount);
-                TransportLineMod._lineData[(int) lineID].TargetVehicleCount = targetVehicleCount;
-            }
-            else if (isLineEnabled)
-                targetVehicleCount = TransportLineMod._lineData[(int) lineID].TargetVehicleCount;
-            if (lineVehicleCount < targetVehicleCount)
-            {
-                if ((double) SimHelper.instance.SimulationTime >=
-                    (double) TransportLineMod._lineData[(int) lineID].NextSpawnTime)
+                //begin mod(-): looks like this was moved to the bottom of the method
+                //end mod
+                bool flag1 = !Singleton<SimulationManager>.instance.m_isNightTime
+                    ? (thisLine.m_flags & TransportLine.Flags.DisabledDay) == TransportLine.Flags.None
+                    : (thisLine.m_flags & TransportLine.Flags.DisabledNight) == TransportLine.Flags.None;
+                uint range = 0;
+                float num5 = 0.0f;
+                int num6 = 0;
+                bool flag2 = false;
+                if ((int)thisLine.m_stops != 0)
                 {
-                    int randomStopIndex = instance1.m_randomizer.Int32((uint) line.CountStops(lineID));
-                    ushort stop = line.GetStop(randomStopIndex);
-                    if (info.m_vehicleReason != TransferManager.TransferReason.None && (int) stop != 0)
+                    NetManager instance = Singleton<NetManager>.instance;
+                    ushort stops = thisLine.m_stops;
+                    ushort num3 = stops;
+                    int num4 = 0;
+                    while ((int)num3 != 0)
                     {
-                        TransferManager.TransferOffer offer = new TransferManager.TransferOffer();
-                        offer.Priority = targetVehicleCount - lineVehicleCount + 1;
-                        offer.TransportLine = lineID;
-                        offer.Position = Singleton<NetManager>.instance.m_nodes.m_buffer[(int) stop].m_position;
-                        offer.Amount = 1;
-                        offer.Active = false;
-                        ushort depot = TransportLineMod._lineData[(int) lineID].Depot;
-                        if (TransportLineMod.ValidateDepot(lineID, ref depot))
+                        ushort num7 = 0;
+                        if (flag1)
+                            instance.m_nodes.m_buffer[(int)num3].m_flags &=
+                                NetNode.Flags.OneWayOutTrafficLights | NetNode.Flags.UndergroundTransition |
+                                NetNode.Flags.Created | NetNode.Flags.Deleted | NetNode.Flags.Original |
+                                NetNode.Flags.End | NetNode.Flags.Middle | NetNode.Flags.Bend | NetNode.Flags.Junction |
+                                NetNode.Flags.Moveable | NetNode.Flags.Untouchable | NetNode.Flags.Outside |
+                                NetNode.Flags.Temporary | NetNode.Flags.Double | NetNode.Flags.Fixed |
+                                NetNode.Flags.OnGround | NetNode.Flags.Ambiguous | NetNode.Flags.Water |
+                                NetNode.Flags.Sewage | NetNode.Flags.ForbidLaneConnection |
+                                NetNode.Flags.LevelCrossing | NetNode.Flags.OneWayIn | NetNode.Flags.Heating |
+                                NetNode.Flags.Electricity | NetNode.Flags.Collapsed | NetNode.Flags.DisableOnlyMiddle |
+                                NetNode.Flags.AsymForward | NetNode.Flags.AsymBackward |
+                                NetNode.Flags.CustomTrafficLights;
+                        else
+                            instance.m_nodes.m_buffer[(int)num3].m_flags |= NetNode.Flags.Disabled;
+                        for (int index = 0; index < 8; ++index)
                         {
-                            BuildingManager instance2 = Singleton<BuildingManager>.instance;
-                            if (TransportLineMod.CanAddVehicle(depot, ref instance2.m_buildings.m_buffer[(int) depot]))
+                            ushort segment = instance.m_nodes.m_buffer[(int)num3].GetSegment(index);
+                            if ((int)segment != 0 && (int)instance.m_segments.m_buffer[(int)segment].m_startNode ==
+                                (int)num3)
                             {
-                                string prefabName;
-                                if (TransportLineMod.EnqueuedVehiclesCount(lineID) > 0)
+                                num6 +=
+                                    Mathf.Max((int)instance.m_segments.m_buffer[(int)segment].m_trafficLightState0,
+                                        (int)instance.m_segments.m_buffer[(int)segment].m_trafficLightState1);
+                                num5 += instance.m_segments.m_buffer[(int)segment].m_averageLength;
+                                num7 = instance.m_segments.m_buffer[(int)segment].m_endNode;
+                                if ((instance.m_segments.m_buffer[(int)segment].m_flags &
+                                     NetSegment.Flags.PathLength) == NetSegment.Flags.None)
                                 {
-                                    prefabName = TransportLineMod.Dequeue(lineID);
+                                    flag2 = true;
+                                    break;
+                                }
+                                break;
+                            }
+                        }
+                        ++range;
+                        num3 = num7;
+                        if ((int)num3 != (int)stops)
+                        {
+                            if (++num4 >= 32768)
+                            {
+                                CODebugBase<LogChannel>.Error(LogChannel.Core,
+                                    "Invalid list detected!\n" + System.Environment.StackTrace);
+                                break;
+                            }
+                        }
+                        else
+                            break;
+                    }
+                }
+                if (!flag2)
+                    thisLine.m_totalLength = num5;
+                if ((int)range != 0)
+                    thisLine.m_averageInterval = (byte)Mathf.Min((float)byte.MaxValue,
+                        (float)(((long)num6 + (long)(range >> 1)) / (long)range));
+                //begin mod(+): something weird happens :)
+                bool flag = TransportLineMod.SetLineStatus(lineID, flag1);
+                int lineVehicleCount = thisLine.CountVehicles(lineID);
+                int targetVehicleCount = 0;
+                if (TransportLineMod._lineData[(int) lineID].BudgetControl)
+                {
+                    targetVehicleCount = !flag1
+                        ? 0
+                        : (!flag ? thisLine.CalculateTargetVehicleCount() : lineVehicleCount);
+                    TransportLineMod._lineData[(int) lineID].TargetVehicleCount = targetVehicleCount;
+                }
+                else if (flag1)
+                    targetVehicleCount = TransportLineMod._lineData[(int) lineID].TargetVehicleCount;
+                if (lineVehicleCount < targetVehicleCount)
+                {
+                    if ((double) SimHelper.instance.SimulationTime >=
+                        (double) TransportLineMod._lineData[(int) lineID].NextSpawnTime)
+                    {
+                        ushort randomStop = thisLine.GetStop(Singleton<SimulationManager>.instance.m_randomizer
+                            .Int32((uint)thisLine.CountStops(lineID)));
+                        if (info.m_vehicleReason != TransferManager.TransferReason.None && (int) randomStop != 0)
+                        {
+                            TransferManager.TransferOffer offer = new TransferManager.TransferOffer();
+                            offer.Priority = targetVehicleCount - lineVehicleCount + 1;
+                            offer.TransportLine = lineID;
+                            offer.Position = Singleton<NetManager>.instance.m_nodes.m_buffer[(int) randomStop].m_position;
+                            offer.Amount = 1;
+                            offer.Active = false;
+                            ushort depot = TransportLineMod._lineData[(int) lineID].Depot;
+                            if (TransportLineMod.ValidateDepot(lineID, ref depot))
+                            {
+                                BuildingManager instance2 = Singleton<BuildingManager>.instance;
+                                if (TransportLineMod.CanAddVehicle(depot,
+                                    ref instance2.m_buildings.m_buffer[(int) depot]))
+                                {
+                                    string prefabName;
+                                    if (TransportLineMod.EnqueuedVehiclesCount(lineID) > 0)
+                                    {
+                                        prefabName = TransportLineMod.Dequeue(lineID);
+                                    }
+                                    else
+                                    {
+                                        int num3 = targetVehicleCount - lineVehicleCount;
+                                        for (int index2 = 0; index2 < num3; ++index2)
+                                            TransportLineMod.EnqueueVehicle(lineID,
+                                                TransportLineMod.GetRandomPrefab(lineID), false);
+                                        prefabName = TransportLineMod.Dequeue(lineID);
+                                    }
+                                    if (prefabName == "")
+                                    {
+                                        instance2.m_buildings.m_buffer[(int) depot]
+                                            .Info.m_buildingAI
+                                            .StartTransfer(depot, ref instance2.m_buildings.m_buffer[(int) depot],
+                                                info.m_vehicleReason, offer);
+                                    }
+                                    else
+                                    {
+                                        DepotAIMod.StartTransfer(depot,
+                                            ref instance2.m_buildings.m_buffer[(int) depot], info.m_vehicleReason,
+                                            offer,
+                                            prefabName);
+                                    }
+                                    TransportLineMod._lineData[(int) lineID].NextSpawnTime =
+                                        SimHelper.instance.SimulationTime +
+                                        (float) ImprovedPublicTransportMod.Settings.SpawnTimeInterval;
                                 }
                                 else
                                 {
-                                    int num3 = targetVehicleCount - lineVehicleCount;
-                                    for (int index2 = 0; index2 < num3; ++index2)
-                                        TransportLineMod.EnqueueVehicle(lineID,
-                                            TransportLineMod.GetRandomPrefab(lineID), false);
-                                    prefabName = TransportLineMod.Dequeue(lineID);
+                                    TransportLineMod.ClearEnqueuedVehicles(lineID);
                                 }
-                                if (prefabName == "")
-                                {
-                                    instance2.m_buildings.m_buffer[(int)depot]
-                                        .Info.m_buildingAI
-                                        .StartTransfer(depot, ref instance2.m_buildings.m_buffer[(int)depot],
-                                            info.m_vehicleReason, offer);
-                                }
-                                else
-                                {
-                                    DepotAIMod.StartTransfer(depot,
-                                        ref instance2.m_buildings.m_buffer[(int)depot], info.m_vehicleReason, offer,
-                                        prefabName);
-                                }
-                                TransportLineMod._lineData[(int) lineID].NextSpawnTime =
-                                    SimHelper.instance.SimulationTime +
-                                    (float) ImprovedPublicTransportMod.Settings.SpawnTimeInterval;
                             }
                             else
                             {
                                 TransportLineMod.ClearEnqueuedVehicles(lineID);
                             }
                         }
-                        else
-                        {
-                            TransportLineMod.ClearEnqueuedVehicles(lineID);
-                        }
                     }
                 }
-            }
-            else if (lineVehicleCount > targetVehicleCount)
-                TransportLineMod.RemoveRandomVehicle(lineID, false);
-            if ((instance1.m_currentFrameIndex & 4095U) < 3840U)
-                return;
-            line.m_passengers.Update();
-            Singleton<TransportManager>.instance.m_passengers[(int) info.m_transportType].Add(ref line.m_passengers);
-            line.m_passengers.Reset();
-            ushort stops = line.m_stops;
-            ushort stop1 = stops;
-            do
-            {
-                NetManagerMod.m_cachedNodeData[(int) stop1].StartNewWeek();
-                stop1 = TransportLine.GetNextStop(stop1);
-            } while ((int) stops != (int) stop1 && (int) stop1 != 0);
-            VehicleManager instance3 = Singleton<VehicleManager>.instance;
-            PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(info.m_class.m_subService);
-            int amount = 0;
-            for (ushort index = line.m_vehicles;
-                (int) index != 0;
-                index = instance3.m_vehicles.m_buffer[(int) index].m_nextLineVehicle)
-            {
-                Vehicle vehicle = instance3.m_vehicles.m_buffer[(int) index];
-                PrefabData prefabData = Array.Find<PrefabData>(prefabs,
-                    (Predicate<PrefabData>) (item => item.PrefabDataIndex == vehicle.Info.m_prefabDataIndex));
-                if (prefabData != null)
+                else if (lineVehicleCount > targetVehicleCount)
                 {
-                    amount += prefabData.MaintenanceCost;
-                    VehicleManagerMod.m_cachedVehicleData[(int) index].StartNewWeek(prefabData.MaintenanceCost);
+                    TransportLineMod.RemoveRandomVehicle(lineID, false);
                 }
+                //end mod
+
+                if ((Singleton<SimulationManager>.instance.m_currentFrameIndex & 4095U) < 3840U)
+                    return;
+                thisLine.m_passengers.Update();
+                Singleton<TransportManager>.instance.m_passengers[(int)info.m_transportType].Add(ref thisLine.m_passengers);
+                thisLine.m_passengers.Reset();
+
+
+                //begin mod(+): something weird happens again :)
+                ushort stops1 = thisLine.m_stops;
+                ushort stop1 = stops1;
+                do
+                {
+                    NetManagerMod.m_cachedNodeData[(int) stop1].StartNewWeek();
+                    stop1 = TransportLine.GetNextStop(stop1);
+                } while ((int) stops1 != (int) stop1 && (int) stop1 != 0);
+
+                VehicleManager instance3 = Singleton<VehicleManager>.instance;
+                PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(info.m_class.m_subService);
+                int amount = 0;
+                for (ushort index = thisLine.m_vehicles;
+                    (int) index != 0;
+                    index = instance3.m_vehicles.m_buffer[(int) index].m_nextLineVehicle)
+                {
+                    Vehicle vehicle = instance3.m_vehicles.m_buffer[(int) index];
+                    PrefabData prefabData = Array.Find<PrefabData>(prefabs,
+                        (Predicate<PrefabData>) (item => item.PrefabDataIndex == vehicle.Info.m_prefabDataIndex));
+                    if (prefabData != null)
+                    {
+                        amount += prefabData.MaintenanceCost;
+                        VehicleManagerMod.m_cachedVehicleData[(int) index].StartNewWeek(prefabData.MaintenanceCost);
+                    }
+                }
+                //end mod
+
+                //begin mod(+): this piece was moved from another place, earlier
+                if (amount != 0)
+                    Singleton<EconomyManager>.instance.FetchResource(EconomyManager.Resource.Maintenance, amount,
+                        info.m_class);
+                //end mod
             }
-            if (amount == 0)
-                return;
-            Singleton<EconomyManager>.instance.FetchResource(EconomyManager.Resource.Maintenance, amount, info.m_class);
         }
 
         public static void SetLineDefaults(ushort lineID)
