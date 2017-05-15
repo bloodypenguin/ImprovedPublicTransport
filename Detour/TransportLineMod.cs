@@ -419,7 +419,7 @@ namespace ImprovedPublicTransport.Detour
                     : (!flag
                         ? Mathf.CeilToInt(
                             (float) (
-                                (double) TransportLineMod.GetBudget(lineID, instance1.m_isNightTime, info.m_class) *
+                                (double)Singleton<EconomyManager>.instance.GetBudget(info.m_class) *
                                 (double) TransportLineMod.GetLength(lineID) /
                                 ((double) info.m_defaultVehicleDistance * 100.0)))
                         : lineVehicleCount);
@@ -587,23 +587,6 @@ namespace ImprovedPublicTransport.Detour
                 }
             }
             return flag;
-        }
-
-        public static int GetBudget(ushort lineID, bool isNightTime, ItemClass itemClass)
-        {
-            if (!isNightTime && TransportLineMod._lineData[(int) lineID].DayBudget > 0)
-                return TransportLineMod._lineData[(int) lineID].DayBudget;
-            if (isNightTime && TransportLineMod._lineData[(int) lineID].NightBudget > 0)
-                return TransportLineMod._lineData[(int) lineID].NightBudget;
-            return Singleton<EconomyManager>.instance.GetBudget(itemClass);
-        }
-
-        public static void SetBudget(ushort lineID, bool isNight, int value)
-        {
-            if (!isNight)
-                TransportLineMod._lineData[(int) lineID].DayBudget = value;
-            else
-                TransportLineMod._lineData[(int) lineID].NightBudget = value;
         }
 
         public static float GetLength(ushort lineID)

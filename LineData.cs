@@ -16,9 +16,9 @@ namespace ImprovedPublicTransport
 
     public bool BudgetControl { get; set; }
 
-    public int DayBudget { get; set; }
+    public int DayBudget { get; set; } //deprecated
 
-    public int NightBudget { get; set; }
+    public int NightBudget { get; set; } //deprecated
 
     public bool Unbunching { get; set; }
 
