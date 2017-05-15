@@ -17,19 +17,11 @@ namespace ImprovedPublicTransport
   public class ImprovedPublicTransportMod : IUserMod, ILoadingExtension
   {
     public static Settings Settings = Serializer.LoadSettings();
-    public const ulong WORKSHOP_ID = 424106600;
-    private const string VERSION = "3.8.10";
     private LoadMode _loadMode;
     private GameObject _iptGameObject;
     private GameObject _worldInfoPanel;
 
-    public string Name
-    {
-      get
-      {
-        return "Improved Public Transport 3.8.10";
-      }
-    }
+    public string Name => "Improved Public Transport 2";
 
     public string Description
     {

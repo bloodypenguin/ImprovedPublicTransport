@@ -62,7 +62,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bezier3Extensions.cs" />
     <Compile Include="BuildingWatcher.cs" />
     <Compile Include="Detour\BusAIDetour.cs" />
     <Compile Include="Detour\DepotAIMod.cs" />
