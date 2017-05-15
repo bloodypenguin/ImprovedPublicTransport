@@ -410,11 +410,11 @@ namespace ImprovedPublicTransport.Detour
                 ? (line.m_flags & TransportLine.Flags.DisabledDay) == TransportLine.Flags.None
                 : (line.m_flags & TransportLine.Flags.DisabledNight) == TransportLine.Flags.None;
             bool flag = TransportLineMod.SetLineStatus(lineID, isLineEnabled);
-            int num1 = line.CountVehicles(lineID);
-            int num2 = 0;
+            int lineVehicleCount = line.CountVehicles(lineID);
+            int targetVehicleCount = 0;
             if (TransportLineMod._lineData[(int) lineID].BudgetControl)
             {
-                num2 = !isLineEnabled
+                targetVehicleCount = !isLineEnabled
                     ? 0
                     : (!flag
                         ? Mathf.CeilToInt(
@@ -422,22 +422,22 @@ namespace ImprovedPublicTransport.Detour
                                 (double) TransportLineMod.GetBudget(lineID, instance1.m_isNightTime, info.m_class) *
                                 (double) TransportLineMod.GetLength(lineID) /
                                 ((double) info.m_defaultVehicleDistance * 100.0)))
-                        : num1);
-                TransportLineMod._lineData[(int) lineID].TargetVehicleCount = num2;
+                        : lineVehicleCount);
+                TransportLineMod._lineData[(int) lineID].TargetVehicleCount = targetVehicleCount;
             }
             else if (isLineEnabled)
-                num2 = TransportLineMod._lineData[(int) lineID].TargetVehicleCount;
-            if (num1 < num2)
+                targetVehicleCount = TransportLineMod._lineData[(int) lineID].TargetVehicleCount;
+            if (lineVehicleCount < targetVehicleCount)
             {
                 if ((double) SimHelper.instance.SimulationTime >=
                     (double) TransportLineMod._lineData[(int) lineID].NextSpawnTime)
                 {
-                    int index1 = instance1.m_randomizer.Int32((uint) line.CountStops(lineID));
-                    ushort stop = line.GetStop(index1);
+                    int randomStopIndex = instance1.m_randomizer.Int32((uint) line.CountStops(lineID));
+                    ushort stop = line.GetStop(randomStopIndex);
                     if (info.m_vehicleReason != TransferManager.TransferReason.None && (int) stop != 0)
                     {
                         TransferManager.TransferOffer offer = new TransferManager.TransferOffer();
-                        offer.Priority = num2 - num1 + 1;
+                        offer.Priority = targetVehicleCount - lineVehicleCount + 1;
                         offer.TransportLine = lineID;
                         offer.Position = Singleton<NetManager>.instance.m_nodes.m_buffer[(int) stop].m_position;
                         offer.Amount = 1;
@@ -455,7 +455,7 @@ namespace ImprovedPublicTransport.Detour
                                 }
                                 else
                                 {
-                                    int num3 = num2 - num1;
+                                    int num3 = targetVehicleCount - lineVehicleCount;
                                     for (int index2 = 0; index2 < num3; ++index2)
                                         TransportLineMod.EnqueueVehicle(lineID,
                                             TransportLineMod.GetRandomPrefab(lineID), false);
@@ -482,7 +482,7 @@ namespace ImprovedPublicTransport.Detour
                     }
                 }
             }
-            else if (num1 > num2)
+            else if (lineVehicleCount > targetVehicleCount)
                 TransportLineMod.RemoveRandomVehicle(lineID, false);
             if ((instance1.m_currentFrameIndex & 4095U) < 3840U)
                 return;
@@ -621,22 +621,23 @@ namespace ImprovedPublicTransport.Detour
         public static bool IsLineDepotStillValid(ushort lineID, ref ushort depotID)
         {
             ItemClass.SubService subService;
-            if ((int) depotID == 0 ||
-                !BuildingWatcher.IsValidDepot(
-                    ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[(int) depotID], out subService))
+            if (depotID != 0 &&
+                BuildingWatcher.IsValidDepot(ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[depotID],
+                    out subService))
             {
-                depotID = TransportLineMod.GetClosestDepot(lineID,
-                    Singleton<NetManager>.instance.m_nodes
-                        .m_buffer[(int) Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID].GetStop(0)]
-                        .m_position);
-                TransportLineMod._lineData[(int) lineID].Depot = depotID;
-                if ((int) depotID == 0)
-                {
-                    TransportLineMod.ClearEnqueuedVehicles(lineID);
-                    return false;
-                }
+                return true;
             }
-            return true;
+            depotID = TransportLineMod.GetClosestDepot(lineID,
+                Singleton<NetManager>.instance.m_nodes
+                    .m_buffer[Singleton<TransportManager>.instance.m_lines.m_buffer[lineID].GetStop(0)]
+                    .m_position);
+            TransportLineMod._lineData[lineID].Depot = depotID;
+            if (depotID != 0)
+            {
+                return true;
+            }
+            TransportLineMod.ClearEnqueuedVehicles(lineID);
+            return false;
         }
 
         public static bool CanAddVehicle(ushort depotID, ref Building depot)
