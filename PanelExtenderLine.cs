@@ -674,14 +674,17 @@ namespace ImprovedPublicTransport
 
     private void OnBudgetControlClick(UIComponent component, UIMouseEventParameter p)
     {
-      ushort lineId = this.GetLineID();
-      if ((int) lineId == 0)
-        return;
-      bool budgetControlState = TransportLineMod.GetBudgetControlState(lineId);
-      TransportLineMod.SetBudgetControlState(lineId, !budgetControlState);
-      if (budgetControlState)
-        return;
-      TransportLineMod.ClearEnqueuedVehicles(lineId);
+        SimulationManager.instance.AddAction(() =>
+        {
+            ushort lineId = this.GetLineID();
+            if ((int) lineId == 0)
+                return;
+            bool budgetControlState = TransportLineMod.GetBudgetControlState(lineId);
+            TransportLineMod.SetBudgetControlState(lineId, !budgetControlState);
+            if (budgetControlState)
+                return;
+            TransportLineMod.ClearEnqueuedVehicles(lineId);
+        });
     }
 
     private void OnUnbunchingClick(UIComponent component, UIMouseEventParameter p)
@@ -695,52 +698,63 @@ namespace ImprovedPublicTransport
 
     private void OnAddVehicleClick(UIComponent component, UIMouseEventParameter eventParam)
     {
-      ushort lineId = this.GetLineID();
-      if ((int) lineId == 0)
-        return;
-      ushort depot = TransportLineMod.GetDepot(lineId);
-      if (!TransportLineMod.CanAddVehicle(depot, ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[(int) depot]))
-        return;
-      TransportLineMod.SetBudgetControlState(lineId, false);
-      if ((int) depot == 0)
-      {
-        TransportLineMod.IncreaseTargetVehicleCount(lineId);
-      }
-      else
-      {
-        string prefabName = !((UnityEngine.Object) (component as VehicleListBoxRow) != (UnityEngine.Object) null) ? TransportLineMod.GetRandomPrefab(lineId) : (component as VehicleListBoxRow).Prefab.ObjectName;
-        TransportLineMod.EnqueueVehicle(lineId, prefabName, true);
-      }
+        SimulationManager.instance.AddAction(() =>
+        {
+            ushort lineId = this.GetLineID();
+            if ((int) lineId == 0)
+                return;
+            ushort depot = TransportLineMod.GetDepot(lineId);
+            if (!TransportLineMod.CanAddVehicle(depot,
+                ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[(int) depot]))
+                return;
+            TransportLineMod.SetBudgetControlState(lineId, false);
+            if ((int) depot == 0)
+            {
+                TransportLineMod.IncreaseTargetVehicleCount(lineId);
+            }
+            else
+            {
+                string prefabName =
+                    !((UnityEngine.Object) (component as VehicleListBoxRow) != (UnityEngine.Object) null)
+                        ? TransportLineMod.GetRandomPrefab(lineId)
+                        : (component as VehicleListBoxRow).Prefab.ObjectName;
+                TransportLineMod.EnqueueVehicle(lineId, prefabName, true);
+            }
+        });
     }
 
     private void OnRemoveVehicleClick(UIComponent component, UIMouseEventParameter eventParam)
     {
-      ushort lineId = this.GetLineID();
-      if ((int) lineId == 0)
-        return;
-      TransportLineMod.SetBudgetControlState(lineId, false);
-      int[] selectedIndexes = this._vehiclesInQueueListBox.SelectedIndexes;
-      HashSet<ushort> selectedVehicles = this._lineVehicleListBox.SelectedVehicles;
-      if (selectedIndexes.Length != 0)
-        TransportLineMod.DequeueVehicles(lineId, selectedIndexes, true);
-      else if (selectedVehicles.Count > 0)
-      {
-        foreach (ushort vehicleID in selectedVehicles)
-          TransportLineMod.RemoveVehicle(lineId, vehicleID, true);
-      }
-      else if (TransportLineMod.EnqueuedVehiclesCount(lineId) > 0) { 
-        TransportLineMod.DequeueVehicle(lineId);
-      }
-      else if (TransportLineMod.CountLineActiveVehicles(lineId) > 0)
-      {
-        TransportLineMod.RemoveRandomActiveVehicle(lineId, true);
-      }
-      else
-      {
-        if (TransportLineMod.GetTargetVehicleCount(lineId) <= 0)
-          return;
-        TransportLineMod.DecreaseTargetVehicleCount(lineId);
-      }
+        SimulationManager.instance.AddAction(() =>
+        {
+            ushort lineId = this.GetLineID();
+            if ((int) lineId == 0)
+                return;
+            TransportLineMod.SetBudgetControlState(lineId, false);
+            int[] selectedIndexes = this._vehiclesInQueueListBox.SelectedIndexes;
+            HashSet<ushort> selectedVehicles = this._lineVehicleListBox.SelectedVehicles;
+            if (selectedIndexes.Length != 0)
+                TransportLineMod.DequeueVehicles(lineId, selectedIndexes, true);
+            else if (selectedVehicles.Count > 0)
+            {
+                foreach (ushort vehicleID in selectedVehicles)
+                    TransportLineMod.RemoveVehicle(lineId, vehicleID, true);
+            }
+            else if (TransportLineMod.EnqueuedVehiclesCount(lineId) > 0)
+            {
+                TransportLineMod.DequeueVehicle(lineId);
+            }
+            else if (TransportLineMod.CountLineActiveVehicles(lineId) > 0)
+            {
+                TransportLineMod.RemoveRandomActiveVehicle(lineId, true);
+            }
+            else
+            {
+                if (TransportLineMod.GetTargetVehicleCount(lineId) <= 0)
+                    return;
+                TransportLineMod.DecreaseTargetVehicleCount(lineId);
+            }
+        });
     }
 
       private void OnDeleteLineClick(UIComponent component, UIMouseEventParameter eventParam)
