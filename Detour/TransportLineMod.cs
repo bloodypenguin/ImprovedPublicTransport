@@ -414,15 +414,7 @@ namespace ImprovedPublicTransport.Detour
             int targetVehicleCount = 0;
             if (TransportLineMod._lineData[(int) lineID].BudgetControl)
             {
-                targetVehicleCount = !isLineEnabled
-                    ? 0
-                    : (!flag
-                        ? Mathf.CeilToInt(
-                            (float) (
-                                (double)Singleton<EconomyManager>.instance.GetBudget(info.m_class) *
-                                (double) TransportLineMod.GetLength(lineID) /
-                                ((double) info.m_defaultVehicleDistance * 100.0)))
-                        : lineVehicleCount);
+                targetVehicleCount = !isLineEnabled ? 0 : (!flag ? line.CalculateTargetVehicleCount() : lineVehicleCount);
                 TransportLineMod._lineData[(int) lineID].TargetVehicleCount = targetVehicleCount;
             }
             else if (isLineEnabled)
@@ -623,7 +615,7 @@ namespace ImprovedPublicTransport.Detour
             return false;
         }
 
-        public static bool CanAddVehicle(ushort depotID, ref Building depot)
+        public static bool CanAddVehicle(ushort depotID, ref Building depot) //TODO(earalov): add support for buildingAi.m_maxVehicleCount2?
         {
             DepotAI buildingAi = depot.Info.m_buildingAI as DepotAI;
             int num = (PlayerBuildingAI.GetProductionRate(100,
