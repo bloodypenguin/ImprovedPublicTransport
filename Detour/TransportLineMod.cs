@@ -216,9 +216,7 @@ namespace ImprovedPublicTransport.Detour
             }
         }
 
-
-        [RedirectMethod]
-        public static void SimulationStep(ref TransportLine thisLine, ushort lineID)
+        public static void SimulationStepVanilla(ref TransportLine thisLine, ushort lineID)
         {
             TransportInfo info = thisLine.Info;
             if (thisLine.Complete)
@@ -386,15 +384,8 @@ namespace ImprovedPublicTransport.Detour
             thisLine.m_passengers.Reset();
         }
 
-        [RedirectReverse]
-        private static ushort GetActiveVehicle(ref TransportLine thisLine, int index)
-        {
-            UnityEngine.Debug.Log("GetActiveVehicle");
-            return 0;
-        }
-
-        //TODO(earalov): reproduce changes and get rid of
-        public static void SimulationStepOld(ref TransportLine thisLine, ushort lineID)
+        [RedirectMethod]
+        public static void SimulationStep(ref TransportLine thisLine, ushort lineID)
         {
             //begin mod(+): change for initialization
             if (!TransportLineMod._init)
@@ -568,7 +559,7 @@ namespace ImprovedPublicTransport.Detour
                 thisLine.m_passengers.Reset();
 
 
-                //begin mod(+): something weird happens again :)
+                //begin mod(+): update statistics + fetch maintenance costs
                 ushort stops1 = thisLine.m_stops;
                 ushort stop1 = stops1;
                 do
@@ -626,6 +617,7 @@ namespace ImprovedPublicTransport.Detour
                 //end of similar part
                 //end mod
 
+                //TODO(earalov): in vanilla, it looks like maintenance cost is fetched on each SimulationStep (without skips). We probably should fetch like that too
                 //begin mod(+): this piece was moved from another place, earlier
                 if (amount != 0)
                     Singleton<EconomyManager>.instance.FetchResource(EconomyManager.Resource.Maintenance, amount,
@@ -1049,6 +1041,13 @@ namespace ImprovedPublicTransport.Detour
                 }
             }
             return num1;
+        }
+
+        [RedirectReverse]
+        private static ushort GetActiveVehicle(ref TransportLine thisLine, int index)
+        {
+            UnityEngine.Debug.Log("GetActiveVehicle");
+            return 0;
         }
     }
 }
