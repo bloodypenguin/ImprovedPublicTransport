@@ -11,10 +11,10 @@ using UnityEngine;
 
 namespace ImprovedPublicTransport
 {
-  public class SettingsPanel : UIPanel
+  public class SettingsPanel : UIPanel //TODO(earalov): move settings to the main menu
   {
     private UICheckBox _budgetControl;
-    private UICheckBox _compatibilityMode;
+    private UICheckBox _compatibilityMode; //TODO(earalov): since the setting is deprecated use for something else
     private UICheckBox _showLineInfo;
     private UITextField _spawnTimeInterval;
     private UITextField _intervalAggressionFactor;
@@ -486,12 +486,15 @@ namespace ImprovedPublicTransport
         return;
       Utils.Log((object) ("Changing compatibility mode: " + (isChecked ? "on" : "off")));
       ImprovedPublicTransportMod.Settings.CompatibilityMode = isChecked;
-//TODO(earalov): restore
-//      if (isChecked)
-//        TransportLineMod.RevertDetourUpdateMeshData();
-//      else
-//        TransportLineMod.DetourUpdateMeshData();
-    }
+        if (isChecked)
+        {
+            //TODO(earalov): do something
+        }
+        else
+        {
+                //TODO(earalov): do something
+            }
+        }
 
     private void OnShowLineCheckChanged(UIComponent component, bool isChecked)
     {

@@ -33,7 +33,7 @@ namespace ImprovedPublicTransport
       }
     }
 
-    public bool CompatibilityMode
+    public bool CompatibilityMode //deprecated
     {
       get
       {
