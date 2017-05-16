@@ -560,7 +560,7 @@ namespace ImprovedPublicTransport
       }));
     }
 
-    private void DeleteLines()       //TODO(earalov): add new vehicle types (monorail, blimp, cablecar, ferry, evacuation buses)
+    private void DeleteLines()
         {
       TransportManager instance = Singleton<TransportManager>.instance;
       int length = instance.m_lines.m_buffer.Length;
@@ -570,29 +570,35 @@ namespace ImprovedPublicTransport
         if (!((UnityEngine.Object) info == (UnityEngine.Object) null))
         {
           bool flag = false;
-          switch (info.GetSubService())
-          {
-            case ItemClass.SubService.PublicTransportBus:
-              flag = this._deleteBusLines.isChecked;
-              break;
-            case ItemClass.SubService.PublicTransportMetro:
-              flag = this._deleteMetroLines.isChecked;
-              break;
-            case ItemClass.SubService.PublicTransportTrain:
-              flag = this._deleteTrainLines.isChecked;
-              break;
-            case ItemClass.SubService.PublicTransportShip:
-              flag = this._deleteShipLines.isChecked;
-              break;
-            case ItemClass.SubService.PublicTransportPlane:
-              flag = this._deleteAirLines.isChecked;
-              break;
-            case ItemClass.SubService.PublicTransportTram:
-              flag = this._deleteTramLines.isChecked;
-              break;
-          }
-          if (flag)
-            instance.ReleaseLine((ushort) index);
+          var subService = info.GetSubService();
+          var service = info.GetService();
+          var level = info.GetClassLevel();
+            if (service == ItemClass.Service.PublicTransport && level == ItemClass.Level.Level1) //TODO(earalov): handle evacuation buses, blimps, monorails, cable cars, ferries
+            {
+                switch (subService)
+                {
+                    case ItemClass.SubService.PublicTransportBus:
+                        flag = this._deleteBusLines.isChecked;
+                        break;
+                    case ItemClass.SubService.PublicTransportMetro:
+                        flag = this._deleteMetroLines.isChecked;
+                        break;
+                    case ItemClass.SubService.PublicTransportTrain:
+                        flag = this._deleteTrainLines.isChecked;
+                        break;
+                    case ItemClass.SubService.PublicTransportShip:
+                        flag = this._deleteShipLines.isChecked;
+                        break;
+                    case ItemClass.SubService.PublicTransportPlane:
+                        flag = this._deleteAirLines.isChecked;
+                        break;
+                    case ItemClass.SubService.PublicTransportTram:
+                        flag = this._deleteTramLines.isChecked;
+                        break;
+                }
+            }
+            if (flag)
+                instance.ReleaseLine((ushort) index);
         }
       }
     }

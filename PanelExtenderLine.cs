@@ -225,11 +225,15 @@ namespace ImprovedPublicTransport
           this._spawnTimer.text = Localization.Get("LINE_PANEL_DEPOT_WARNING");
         this._selectTypes.isEnabled = !flag1;
         this._addVehicle.isEnabled = !flag1 & flag2;
-        ItemClass.SubService subService = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineId].Info.m_class.m_subService;
+        var itemClass = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineId].Info.m_class;
+        ItemClass.SubService subService = itemClass.m_subService;
+        ItemClass.Service service = itemClass.m_service;
+        ItemClass.Level level = itemClass.m_level;
+
         if (subService != this._cachedSubService | flag1 || this._updateDepots[subService])
         {
-          this.PopulateDepotDropDown(subService);
-          this.PopulatePrefabListBox(subService);
+          this.PopulateDepotDropDown(service, subService, level);
+          this.PopulatePrefabListBox(service, subService, level);
           this._updateDepots[subService] = false;
         }
         if (this._depotDropDown.Items.Length == 0)
@@ -247,7 +251,7 @@ namespace ImprovedPublicTransport
         if (lineVehicleCount != 0)
         {
           if ((int) lineId != this._cachedLineID || lineVehicleCount != this._cachedSimCount)
-            this.PopulateLineVehicleListBox(lineId, subService);
+          this.PopulateLineVehicleListBox(lineId, service, subService, level);
           this._lineVehiclePanel.Show();
           this.UpdatePanelPositionAndSize();
         }
@@ -260,7 +264,7 @@ namespace ImprovedPublicTransport
         if ((uint) num3 > 0U & flag2)
         {
           if ((int) lineId != this._cachedLineID || num3 != this._cachedQueuedCount)
-            this.PopulateQueuedVehicleListBox(lineId, subService);
+            this.PopulateQueuedVehicleListBox(lineId, service, subService, level);
           if (this._vehiclesInQueueListBox.Items.Count == 0)
             this._vehiclesInQueuePanel.Hide();
           else
@@ -817,15 +821,15 @@ namespace ImprovedPublicTransport
       });
     }
 
-    private void OnDepotChanged(ItemClass.SubService subService)
+    private void OnDepotChanged(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
     {
-      this._updateDepots[subService] = true;
+      this._updateDepots[subService] = true; //TODO(earalov): handle service and level
     }
 
-    private void PopulateDepotDropDown(ItemClass.SubService subService)
+    private void PopulateDepotDropDown(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
     {
       this._depotDropDown.ClearItems();
-      this._depotDropDown.AddItems(BuildingWatcher.instance.GetDepots(subService), new Func<ushort, string>(this.IDToName));
+      this._depotDropDown.AddItems(BuildingWatcher.instance.GetDepots(service, subService, level), this.IDToName);
     }
 
     private string IDToName(ushort buildingID)
@@ -836,22 +840,22 @@ namespace ImprovedPublicTransport
       return instance.GetBuildingName(buildingID, InstanceID.Empty) ?? "";
     }
 
-    private void PopulatePrefabListBox(ItemClass.SubService subService)
+    private void PopulatePrefabListBox(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
     {
       this._prefabListBox.ClearItems();
-      PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(subService);
+      PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(service, subService, level);
       int length = prefabs.Length;
       for (int index = 0; index < length; ++index)
         this._prefabListBox.AddItem(prefabs[index], (ushort) 0);
     }
 
-    private void PopulateLineVehicleListBox(ushort lineID, ItemClass.SubService subService)
+    private void PopulateLineVehicleListBox(ushort lineID, ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
     {
       this._lineVehicleListBox.ClearItems();
       TransportLine transportLine = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID];
       int num = TransportLineMod.CountLineActiveVehicles(lineID);
-      PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(subService);
-      int length = prefabs.Length;
+      PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(service, subService, level);
+            int length = prefabs.Length;
       for (int index1 = 0; index1 < num; ++index1)
       {
         ushort vehicle = transportLine.GetVehicle(index1);
@@ -885,12 +889,12 @@ namespace ImprovedPublicTransport
       }
     }
 
-    private void PopulateQueuedVehicleListBox(ushort lineID, ItemClass.SubService subService)
+    private void PopulateQueuedVehicleListBox(ushort lineID, ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
     {
       this._vehiclesInQueueListBox.ClearItems();
       string[] enqueuedVehicles = TransportLineMod.GetEnqueuedVehicles(lineID);
       int length1 = enqueuedVehicles.Length;
-      PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(subService);
+      PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(service, subService, level);
       int length2 = prefabs.Length;
       for (int index1 = 0; index1 < length1; ++index1)
       {

@@ -85,7 +85,11 @@ namespace ImprovedPublicTransport
       {
         this._publicTransportVehicleWorldInfoPanel.component.height = 332f;
         this._editType.isVisible = !ImprovedPublicTransportMod.Settings.HideVehicleEditor;
-        ItemClass.SubService subService = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineId].Info.m_class.m_subService;
+          ItemClass itemClass = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineId].Info.m_class;
+          ItemClass.SubService subService = itemClass.m_subService;
+          ItemClass.Service service = itemClass.m_service;
+          ItemClass.Level level = itemClass.m_level;
+
         switch (subService)
         {
           case ItemClass.SubService.PublicTransportBus:
@@ -94,13 +98,32 @@ namespace ImprovedPublicTransport
           case ItemClass.SubService.PublicTransportTram:
           case ItemClass.SubService.PublicTransportShip:
           case ItemClass.SubService.PublicTransportPlane:
+          case ItemClass.SubService.PublicTransportMonorail:
+          case ItemClass.SubService.PublicTransportCableCar:
             this._passengerPanel.Show();
             if ((int) vehicleID != 0)
             {
-              this._lastStopExchange.text = string.Format(Localization.Get("VEHICLE_PANEL_LAST_STOP_EXCHANGE"), (object) VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].LastStopGonePassengers, (object) VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].LastStopNewPassengers);
-              break;
+              this._lastStopExchange.text = string.Format(Localization.Get("VEHICLE_PANEL_LAST_STOP_EXCHANGE"),
+                  (object) VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].LastStopGonePassengers, 
+                  (object) VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].LastStopNewPassengers);
             }
             break;
+         case ItemClass.SubService.None:
+             if (service == ItemClass.Service.Disaster && level == ItemClass.Level.Level4)
+             {
+                 this._passengerPanel.Show();
+                 if ((int) vehicleID != 0)
+                 {
+                     this._lastStopExchange.text = string.Format(Localization.Get("VEHICLE_PANEL_LAST_STOP_EXCHANGE"),
+                         (object) VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].LastStopGonePassengers,
+                         (object) VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].LastStopNewPassengers);
+                 }
+             }
+             else
+             {
+                 this._passengerPanel.Hide();
+             }
+             break;
           default:
             this._passengerPanel.Hide();
             break;
@@ -153,7 +176,7 @@ namespace ImprovedPublicTransport
         this._passengersCurrentWeek.text = VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].PassengersThisWeek.ToString();
         this._passengersLastWeek.text = VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].PassengersLastWeek.ToString();
         this._passengersAverage.text = VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].PassengersAverage.ToString();
-        PrefabData prefabData = Array.Find<PrefabData>(VehiclePrefabs.instance.GetPrefabs(subService), (Predicate<PrefabData>) (item => item.PrefabDataIndex == vm.m_vehicles.m_buffer[(int) vehicleID].Info.m_prefabDataIndex));
+        PrefabData prefabData = Array.Find(VehiclePrefabs.instance.GetPrefabs(service, subService, level), item => item.PrefabDataIndex == vm.m_vehicles.m_buffer[(int) vehicleID].Info.m_prefabDataIndex);
         int num1 = VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].IncomeThisWeek - prefabData.MaintenanceCost;
         UILabel earningsCurrentWeek = this._earningsCurrentWeek;
         float num2 = (float) num1 * 0.01f;

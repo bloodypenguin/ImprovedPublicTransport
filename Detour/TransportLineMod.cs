@@ -401,7 +401,8 @@ namespace ImprovedPublicTransport.Detour
                 } while ((int) stops1 != (int) stop1 && (int) stop1 != 0);
 
                 VehicleManager instance3 = Singleton<VehicleManager>.instance;
-                PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(info.m_class.m_subService);
+                var itemClass = info.m_class;
+                PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(itemClass.m_service, itemClass.m_subService, itemClass.m_level);
                 int amount = 0;
 
                 //this part is very similar to beginning of vanilla method where active vehicles are counted
@@ -453,7 +454,7 @@ namespace ImprovedPublicTransport.Detour
                 //begin mod(+): this piece was moved from another place, earlier
                 if (amount != 0)
                     Singleton<EconomyManager>.instance.FetchResource(EconomyManager.Resource.Maintenance, amount,
-                        info.m_class);
+                        itemClass);
                 //end mod
             }
         }
@@ -546,7 +547,7 @@ namespace ImprovedPublicTransport.Detour
         {
             if (depotID != 0 &&
                 BuildingWatcher.IsValidDepot(ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[depotID],
-                    out ItemClass.SubService _))
+                    out _, out _, out _))
             {
                 return true;
             }
@@ -732,9 +733,9 @@ namespace ImprovedPublicTransport.Detour
                     return array[index];
                 }
             }
-            ItemClass.SubService subService = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID]
-                .Info.m_class.m_subService;
-            PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(subService);
+            var itemClass = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID]
+                .Info.m_class;
+            PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(itemClass.m_service, itemClass.m_subService, itemClass.m_level);
             int index1 = Singleton<SimulationManager>.instance.m_randomizer.Int32((uint) prefabs.Length);
             return prefabs[index1].ObjectName;
         }
@@ -854,14 +855,15 @@ namespace ImprovedPublicTransport.Detour
             return transportLine.m_vehicles;
         }
 
-        public static ushort GetClosestDepot(ushort lineID, Vector3 stopPosition) //TODO(earalov): fix for evacuation buses. Also, what happens if closest depot is not connected?
+        public static ushort GetClosestDepot(ushort lineID, Vector3 stopPosition) //TODO(earalov): What happens if closest depot is not connected/not reachable?
         {
             ushort num1 = 0;
             float num2 = float.MaxValue;
             BuildingManager instance = Singleton<BuildingManager>.instance;
-            ushort[] depots = BuildingWatcher.instance.GetDepots(Singleton<TransportManager>.instance.m_lines
+            ItemClass itemClass = Singleton<TransportManager>.instance.m_lines
                 .m_buffer[(int) lineID]
-                .Info.m_class.m_subService);
+                .Info.m_class;
+            ushort[] depots = BuildingWatcher.instance.GetDepots(itemClass.m_service, itemClass.m_subService, itemClass.m_level);
             for (int index = 0; index < depots.Length; ++index)
             {
                 float num3 = Vector3.Distance(stopPosition,

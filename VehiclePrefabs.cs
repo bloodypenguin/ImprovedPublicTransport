@@ -9,7 +9,6 @@ using UnityEngine;
 
 namespace ImprovedPublicTransport
 {
-    //TODO(earalov): add new vehicle types (monorail, blimp, cablecar, ferry, evacuation buses)
     public class VehiclePrefabs
     {
         public static VehiclePrefabs instance;
@@ -20,6 +19,11 @@ namespace ImprovedPublicTransport
         private PrefabData[] _planePrefabData;
         private PrefabData[] _taxiPrefabData;
         private PrefabData[] _tramPrefabData;
+        private PrefabData[] _evacuationBusPrefabData;
+        private PrefabData[] _monorailPrefabData;
+        private PrefabData[] _cablecarPrefabData;
+        private PrefabData[] _blimpPrefabData;
+        private PrefabData[] _ferryPrefabData;
 
         public static void Init()
         {
@@ -32,88 +36,154 @@ namespace ImprovedPublicTransport
             VehiclePrefabs.instance = (VehiclePrefabs) null;
         }
 
-        public PrefabData[]
-            GetPrefabs(
-                ItemClass.SubService
-                    subService) //TODO(earalov): add new vehicle types (monorail, blimp, cablecar, ferry, evacuation buses)
+        public PrefabData[] GetPrefabs(ItemClass.Service service,
+            ItemClass.SubService subService, ItemClass.Level level)
         {
-            switch (subService)
+            if (service == ItemClass.Service.Disaster && subService == ItemClass.SubService.None &&
+                level == ItemClass.Level.Level4)
             {
-                case ItemClass.SubService.PublicTransportBus:
-                    return this._busPrefabData;
-                case ItemClass.SubService.PublicTransportMetro:
-                    return this._metroPrefabData;
-                case ItemClass.SubService.PublicTransportTrain:
-                    return this._trainPrefabData;
-                case ItemClass.SubService.PublicTransportShip:
-                    return this._shipPrefabData;
-                case ItemClass.SubService.PublicTransportPlane:
-                    return this._planePrefabData;
-                case ItemClass.SubService.PublicTransportTaxi:
-                    return this._taxiPrefabData;
-                case ItemClass.SubService.PublicTransportTram:
-                    return this._tramPrefabData;
-                default:
-                {
-                    UnityEngine.Debug.LogWarning("IPT: Vehicles of sub service " + subService +
-                                                 " were requested. They are currently not supported.");
-                    return new PrefabData[] { };
-                }
+                return _evacuationBusPrefabData;
             }
-        }
-
-        private void
-            FindAllPrefabs() //TODO(earalov): add new vehicle types (monorail, blimp, cablecar, ferry, evacuation buses)
-        {
-            List<PrefabData> prefabDataList1 = new List<PrefabData>();
-            List<PrefabData> prefabDataList2 = new List<PrefabData>();
-            List<PrefabData> prefabDataList3 = new List<PrefabData>();
-            List<PrefabData> prefabDataList4 = new List<PrefabData>();
-            List<PrefabData> prefabDataList5 = new List<PrefabData>();
-            List<PrefabData> prefabDataList6 = new List<PrefabData>();
-            List<PrefabData> prefabDataList7 = new List<PrefabData>();
-            for (int index = 0; index < PrefabCollection<VehicleInfo>.PrefabCount(); ++index)
+            if (service == ItemClass.Service.PublicTransport)
             {
-                VehicleInfo prefab = PrefabCollection<VehicleInfo>.GetPrefab((uint) index);
-                if ((Object) prefab != (Object) null && !VehiclePrefabs.IsTrailer(prefab) &&
-                    (prefab.m_class.m_service == ItemClass.Service.PublicTransport &&
-                     prefab.m_class.m_level == ItemClass.Level.Level1))
+                if (level == ItemClass.Level.Level1)
                 {
-                    switch (prefab.m_class.m_subService)
+                    switch (subService)
                     {
                         case ItemClass.SubService.PublicTransportBus:
-                            prefabDataList1.Add(new PrefabData(prefab));
-                            continue;
+                            return this._busPrefabData;
                         case ItemClass.SubService.PublicTransportMetro:
-                            prefabDataList2.Add(new PrefabData(prefab));
-                            continue;
+                            return this._metroPrefabData;
                         case ItemClass.SubService.PublicTransportTrain:
-                            prefabDataList3.Add(new PrefabData(prefab));
-                            continue;
+                            return this._trainPrefabData;
                         case ItemClass.SubService.PublicTransportShip:
-                            prefabDataList4.Add(new PrefabData(prefab));
-                            continue;
+                            return this._shipPrefabData;
                         case ItemClass.SubService.PublicTransportPlane:
-                            prefabDataList5.Add(new PrefabData(prefab));
-                            continue;
+                            return this._planePrefabData;
                         case ItemClass.SubService.PublicTransportTaxi:
-                            prefabDataList6.Add(new PrefabData(prefab));
-                            continue;
+                            return this._taxiPrefabData;
                         case ItemClass.SubService.PublicTransportTram:
-                            prefabDataList7.Add(new PrefabData(prefab));
-                            continue;
-                        default:
-                            continue;
+                            return this._tramPrefabData;
+                        case ItemClass.SubService.PublicTransportMonorail:
+                            return this._monorailPrefabData;
+                        case ItemClass.SubService.PublicTransportCableCar:
+                            return this._cablecarPrefabData;
+                    }
+                }
+                else if (level == ItemClass.Level.Level2)
+                {
+                    switch (subService)
+                    {
+                        case ItemClass.SubService.PublicTransportShip:
+                            return this._ferryPrefabData;
+                        case ItemClass.SubService.PublicTransportPlane:
+                            return this._blimpPrefabData;
                     }
                 }
             }
-            this._busPrefabData = prefabDataList1.ToArray();
-            this._metroPrefabData = prefabDataList2.ToArray();
-            this._trainPrefabData = prefabDataList3.ToArray();
-            this._shipPrefabData = prefabDataList4.ToArray();
-            this._planePrefabData = prefabDataList5.ToArray();
-            this._taxiPrefabData = prefabDataList6.ToArray();
-            this._tramPrefabData = prefabDataList7.ToArray();
+            UnityEngine.Debug.LogWarning("IPT: Vehicles of item class [serrvice: " + service + ", sub service: " +
+                                         subService +
+                                         ", level: " + level + "] were requested. They are currently not supported.");
+            return new PrefabData[] { };
+        }
+
+        private void FindAllPrefabs() 
+        {
+            List<PrefabData> busList = new List<PrefabData>();
+            List<PrefabData> metroList = new List<PrefabData>();
+            List<PrefabData> trainList = new List<PrefabData>();
+            List<PrefabData> shipList = new List<PrefabData>();
+            List<PrefabData> planeList = new List<PrefabData>();
+            List<PrefabData> taxiList = new List<PrefabData>();
+            List<PrefabData> tramList = new List<PrefabData>();
+            List<PrefabData> monorailList = new List<PrefabData>();
+            List<PrefabData> blimpList = new List<PrefabData>();
+            List<PrefabData> evacuationBusList = new List<PrefabData>();
+            List<PrefabData> cableCarList = new List<PrefabData>();
+            List<PrefabData> ferryList = new List<PrefabData>();
+
+
+            for (int index = 0; index < PrefabCollection<VehicleInfo>.PrefabCount(); ++index)
+            {
+                VehicleInfo prefab = PrefabCollection<VehicleInfo>.GetPrefab((uint) index);
+                if ((Object) prefab != (Object) null && !VehiclePrefabs.IsTrailer(prefab))
+                {
+                    var service = prefab.m_class.m_service;
+                    var subService = prefab.m_class.m_subService;
+                    var level = prefab.m_class.m_level;
+
+                    if (service == ItemClass.Service.Disaster && subService == ItemClass.SubService.None &&
+                        level == ItemClass.Level.Level4)
+                    {
+                        evacuationBusList.Add(new PrefabData(prefab));
+                        continue;
+                    }
+                    if (service == ItemClass.Service.PublicTransport)
+                    {
+                        if (level == ItemClass.Level.Level1)
+                        {
+                            switch (subService)
+                            {
+                                case ItemClass.SubService.PublicTransportBus:
+                                    busList.Add(new PrefabData(prefab));
+                                    continue;
+                                case ItemClass.SubService.PublicTransportMetro:
+                                    metroList.Add(new PrefabData(prefab));
+                                    continue;
+                                case ItemClass.SubService.PublicTransportTrain:
+                                    trainList.Add(new PrefabData(prefab));
+                                    continue;
+                                case ItemClass.SubService.PublicTransportShip:
+                                    shipList.Add(new PrefabData(prefab));
+                                    continue;
+                                case ItemClass.SubService.PublicTransportPlane:
+                                    planeList.Add(new PrefabData(prefab));
+                                    continue;
+                                case ItemClass.SubService.PublicTransportTaxi:
+                                    taxiList.Add(new PrefabData(prefab));
+                                    continue;
+                                case ItemClass.SubService.PublicTransportTram:
+                                    tramList.Add(new PrefabData(prefab));
+                                    continue;
+                                case ItemClass.SubService.PublicTransportMonorail:
+                                    monorailList.Add(new PrefabData(prefab));
+                                    continue;
+                                case ItemClass.SubService.PublicTransportCableCar:
+                                    cableCarList.Add(new PrefabData(prefab));
+                                    continue;
+                                default:
+                                    continue;
+                            }
+                        }
+                        if (level == ItemClass.Level.Level2)
+                        {
+                            switch (subService)
+                            {
+                                case ItemClass.SubService.PublicTransportShip:
+                                    ferryList.Add(new PrefabData(prefab));
+                                    continue;
+                                case ItemClass.SubService.PublicTransportPlane:
+                                    blimpList.Add(new PrefabData(prefab));
+                                    continue;
+                                default:
+                                    continue;
+                            }
+                        }
+                    }
+                }
+            }
+            this._busPrefabData = busList.ToArray();
+            this._metroPrefabData = metroList.ToArray();
+            this._trainPrefabData = trainList.ToArray();
+            this._shipPrefabData = shipList.ToArray();
+            this._planePrefabData = planeList.ToArray();
+            this._taxiPrefabData = taxiList.ToArray();
+            this._tramPrefabData = tramList.ToArray();
+            this._evacuationBusPrefabData = evacuationBusList.ToArray();
+            this._blimpPrefabData = blimpList.ToArray();
+            this._monorailPrefabData = monorailList.ToArray();
+            this._ferryPrefabData = ferryList.ToArray();
+            this._cablecarPrefabData = cableCarList.ToArray();
         }
 
         private static bool IsTrailer(VehicleInfo info)

@@ -20,6 +20,9 @@ namespace ImprovedPublicTransport
     public static VehicleEditor Instance;
     private bool _initialized;
     private ItemClass.SubService _selectedSubService;
+    private ItemClass.Service _selectedService;
+    private ItemClass.Level _selectedLevel;
+
     private int _position;
     private bool _hide;
     private PublicTransportInfoViewPanel _publicTransportInfoViewPanel;
@@ -637,7 +640,7 @@ namespace ImprovedPublicTransport
     {
       if (this._selectedIndex <= -1 || this._selectedSubService == ItemClass.SubService.PublicTransportTaxi)
         return;
-      PrefabData prefab = VehiclePrefabs.instance.GetPrefabs(this._selectedSubService)[this._selectedIndex];
+      PrefabData prefab = VehiclePrefabs.instance.GetPrefabs(this._selectedService, this._selectedSubService, this._selectedLevel)[this._selectedIndex];
       int carCount = prefab.CarCount;
       int int32 = Utils.ToInt32(text);
       int num1 = 0;
@@ -662,7 +665,7 @@ namespace ImprovedPublicTransport
       UITextField uiTextField3 = this._rightSidePanel.Find<UITextField>("TicketPrice");
       UITextField uiTextField4 = this._rightSidePanel.Find<UITextField>("MaxSpeed");
       UICheckBox uiCheckBox = this._rightSidePanel.Find<UICheckBox>("EngineOnBothEnds");
-      PrefabData prefab = VehiclePrefabs.instance.GetPrefabs(this._selectedSubService)[this._selectedIndex];
+      PrefabData prefab = VehiclePrefabs.instance.GetPrefabs(this._selectedService, this._selectedSubService, this._selectedLevel)[this._selectedIndex];
       int capacity = Utils.ToInt32(uiTextField1.text) / prefab.CarCount;
       int int32_1 = Utils.ToInt32(uiTextField2.text);
       int int32_2 = Utils.ToInt32(uiTextField3.text);
@@ -675,14 +678,17 @@ namespace ImprovedPublicTransport
     private void OnDefaultButtonClick(UIComponent component, UIMouseEventParameter eventParam)
     {
       if (this._selectedIndex > -1)
-        VehiclePrefabs.instance.GetPrefabs(this._selectedSubService)[this._selectedIndex].SetDefaults();
+        VehiclePrefabs.instance.GetPrefabs(this._selectedService, this._selectedSubService, this._selectedLevel)[this._selectedIndex].SetDefaults();
       this.UpdateBindings();
     }
 
     private void SetTransportType(TransportInfo.TransportType transportType, VehicleInfo selectedPrefab = null)
     {
       Color transportColor = Singleton<TransportManager>.instance.m_properties.m_transportColors[(int) transportType];
-      this._selectedSubService = VehicleEditor.GetSubService(transportType);
+      ItemClassTriplet classTriplet = VehicleEditor.GetSubService(transportType);
+      this._selectedService = classTriplet.Service;
+      this._selectedSubService = classTriplet.SubService;
+      this._selectedLevel = classTriplet.Level;
       this._rightSidePanel.color = (Color32) transportColor;
       UIComponent uiComponent = this._rightSidePanel.Find("CaptionPanel");
       UIPanel uiPanel1 = this._rightSidePanel.Find<UIPanel>("MaintenanceRow");
@@ -733,26 +739,49 @@ namespace ImprovedPublicTransport
         this.SetTransportType(transportType, prefab);
     }
 
-    private static ItemClass.SubService GetSubService(TransportInfo.TransportType transportType)       //TODO(earalov): add new vehicle types (monorail, blimp, cablecar, ferry, evacuation buses)
+    public struct ItemClassTriplet
+    {
+
+        public ItemClassTriplet(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
+        {
+            this.Service = service;
+            this.SubService = subService;
+            this.Level = level;
+        }
+
+
+        public ItemClass.Service Service { get; }
+        public ItemClass.SubService SubService { get; }
+        public ItemClass.Level Level { get; }
+     }
+
+
+    private static ItemClassTriplet GetSubService(TransportInfo.TransportType transportType)
         {
       switch (transportType)
       {
         case TransportInfo.TransportType.Bus:
-          return ItemClass.SubService.PublicTransportBus;
+          return new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportBus, ItemClass.Level.Level1);
+        case TransportInfo.TransportType.EvacuationBus:
+              return new ItemClassTriplet(ItemClass.Service.Disaster, ItemClass.SubService.None, ItemClass.Level.Level4);
         case TransportInfo.TransportType.Metro:
-          return ItemClass.SubService.PublicTransportMetro;
+          return new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportMetro, ItemClass.Level.Level1);
         case TransportInfo.TransportType.Train:
-          return ItemClass.SubService.PublicTransportTrain;
-        case TransportInfo.TransportType.Ship:
-          return ItemClass.SubService.PublicTransportShip;
-        case TransportInfo.TransportType.Airplane:
-          return ItemClass.SubService.PublicTransportPlane;
+            return new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTrain, ItemClass.Level.Level1);
+        case TransportInfo.TransportType.Ship: //TODO(earalov): handle regional ships
+            return new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportShip, ItemClass.Level.Level2);
+        case TransportInfo.TransportType.Airplane: //TODO(earalov): handle regional planes
+            return new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportPlane, ItemClass.Level.Level2);
         case TransportInfo.TransportType.Taxi:
-          return ItemClass.SubService.PublicTransportTaxi;
+            return new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTaxi, ItemClass.Level.Level1);
         case TransportInfo.TransportType.Tram:
-          return ItemClass.SubService.PublicTransportTram;
+            return new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTram, ItemClass.Level.Level1);
+        case TransportInfo.TransportType.Monorail:
+            return new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportMonorail, ItemClass.Level.Level1);
+        case TransportInfo.TransportType.CableCar:
+           return new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportMonorail, ItemClass.Level.Level1);
         default:
-          return ItemClass.SubService.None;
+          return new ItemClassTriplet(ItemClass.Service.None, ItemClass.SubService.None, ItemClass.Level.None);
       }
     }
 
@@ -788,7 +817,7 @@ namespace ImprovedPublicTransport
       UICheckBox uiCheckBox = this._rightSidePanel.Find<UICheckBox>("EngineOnBothEnds");
       if (this._selectedIndex > -1)
       {
-        PrefabData prefab = VehiclePrefabs.instance.GetPrefabs(this._selectedSubService)[this._selectedIndex];
+        PrefabData prefab = VehiclePrefabs.instance.GetPrefabs(this._selectedService, this._selectedSubService, this._selectedLevel)[this._selectedIndex];
         uiTextField1.text = prefab.TotalCapacity.ToString();
         UITextField uiTextField5 = uiTextField2;
         int num = prefab.MaintenanceCost;
@@ -834,7 +863,7 @@ namespace ImprovedPublicTransport
       if ((UnityEngine.Object) dropDown == (UnityEngine.Object) null)
         return;
       dropDown.ClearItems();
-      PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(this._selectedSubService);
+      PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(this._selectedService, this._selectedSubService, this._selectedLevel);
       int length = prefabs.Length;
       int num = 0;
       for (int index = 0; index < length; ++index)

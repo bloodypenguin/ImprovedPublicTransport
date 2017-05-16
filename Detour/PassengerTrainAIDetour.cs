@@ -48,7 +48,7 @@ namespace ImprovedPublicTransport.Detour
           return true;
       }
 
-        [RedirectMethod]
+    [RedirectMethod]
     private void LoadPassengers(ushort vehicleID, ref Vehicle data, ushort currentStop, ushort nextStop)
     {
       if ((int) currentStop == 0 || (int) nextStop == 0)
@@ -146,7 +146,7 @@ namespace ImprovedPublicTransport.Detour
           break;
         }
       }
-      Singleton<StatisticsManager>.instance.Acquire<StatisticArray>(StatisticType.PassengerCount).Acquire<StatisticInt32>((int) this.m_transportInfo.m_transportType, 8).Add(serviceCounter);
+      Singleton<StatisticsManager>.instance.Acquire<StatisticArray>(StatisticType.PassengerCount).Acquire<StatisticInt32>((int) this.m_transportInfo.m_transportType, 10).Add(serviceCounter);
       serviceCounter += (int) instance2.m_nodes.m_buffer[(int) currentStop].m_tempCounter;
       instance2.m_nodes.m_buffer[(int) currentStop].m_tempCounter = (ushort) Mathf.Min(serviceCounter, (int) ushort.MaxValue);
       ushort num2 = (ushort) ((uint) bufferStatus - (uint) PassengerTrainAIDetour.GetBufferStatus(vehicleID1, ref instance1.m_vehicles.m_buffer[(int) vehicleID1]));

@@ -47,11 +47,12 @@ namespace ImprovedPublicTransport
             if (((long) updatedBuilding & 1L << index2) != 0L)
             {
               ushort num1 = (ushort) (index1 << 6 | index2);
-              ItemClass.SubService subService;
-              if (BuildingWatcher.IsValidDepot(ref this._buildingManager.m_buildings.m_buffer[(int) num1], out subService))
+
+              if (BuildingWatcher.IsValidDepot(ref _buildingManager.m_buildings.m_buffer[(int) num1], 
+                  out ItemClass.Service service, out ItemClass.SubService subService, out ItemClass.Level level)) 
               {
                 HashSet<ushort> ushortSet;
-                if (this._depotMap.TryGetValue(subService, out ushortSet))
+                if (this._depotMap.TryGetValue(subService, out ushortSet)) //TODO(earalov): handle sevice and level
                 {
                   ushortSet.Add(num1);
                 }
@@ -61,13 +62,7 @@ namespace ImprovedPublicTransport
                   ushortSet.Add(num1);
                   this._depotMap.Add(subService, ushortSet);
                 }
-                // ISSUE: reference to a compiler-generated field
-                BuildingWatcher.DepotAdded onDepotAdded = this.OnDepotAdded;
-                if (onDepotAdded != null)
-                {
-                  int num2 = (int) subService;
-                  onDepotAdded((ItemClass.SubService) num2);
-                }
+                this.OnDepotAdded?.Invoke(service, subService, level);
               }
             }
           }
@@ -84,27 +79,22 @@ namespace ImprovedPublicTransport
       {
         this._delta = 0.0f;
         HashSet<ushort> ushortSet1 = new HashSet<ushort>();
-        foreach (KeyValuePair<ItemClass.SubService, HashSet<ushort>> depot in this._depotMap)
+        foreach (KeyValuePair<ItemClass.SubService, HashSet<ushort>> depot in this._depotMap) //TODO(earalov): handle sevice and level
         {
           foreach (ushort num in depot.Value)
           {
-            ItemClass.SubService subService;
-            if (!BuildingWatcher.IsValidDepot(ref this._buildingManager.m_buildings.m_buffer[(int) num], out subService))
-              ushortSet1.Add(num);
+            ;
+            if (!BuildingWatcher.IsValidDepot(ref this._buildingManager.m_buildings.m_buffer[(int) num],
+                out ItemClass.Service service, out ItemClass.SubService subService, out ItemClass.Level level))
+                            ushortSet1.Add(num);
           }
           if (ushortSet1.Count != 0)
           {
             HashSet<ushort> ushortSet2;
-            if (this._depotMap.TryGetValue(depot.Key, out ushortSet2))
-            {
+            if (this._depotMap.TryGetValue(depot.Key, out ushortSet2))   //TODO(earalov): handle sevice and level
+            {  
               ushortSet2.ExceptWith((IEnumerable<ushort>) ushortSet1);
-              // ISSUE: reference to a compiler-generated field
-              BuildingWatcher.DepotRemoved onDepotRemoved = this.OnDepotRemoved;
-              if (onDepotRemoved != null)
-              {
-                int key = (int) depot.Key;
-                onDepotRemoved((ItemClass.SubService) key);
-              }
+              this.OnDepotRemoved?.Invoke(ItemClass.Service.PublicTransport, depot.Key, ItemClass.Level.Level1); //TODO(earalov): properly handle sevice and level
             }
             ushortSet1.Clear();
           }
@@ -125,20 +115,20 @@ namespace ImprovedPublicTransport
       this._buildingManager = Singleton<BuildingManager>.instance;
       for (int index = 0; index < this._buildingManager.m_buildings.m_buffer.Length; ++index)
       {
-        ItemClass.SubService subService;
-        if (BuildingWatcher.IsValidDepot(ref this._buildingManager.m_buildings.m_buffer[index], out subService))
-        {
+        if (BuildingWatcher.IsValidDepot(ref this._buildingManager.m_buildings.m_buffer[index], 
+            out ItemClass.Service service, out ItemClass.SubService subService, out ItemClass.Level level))  
+                {
           HashSet<ushort> ushortSet;
-          if (this._depotMap.TryGetValue(subService, out ushortSet))
-          {
+          if (this._depotMap.TryGetValue(subService, out ushortSet)) //TODO(earalov): handle sevice and level
+                    {
             ushortSet.Add((ushort) index);
           }
           else
           {
             ushortSet = new HashSet<ushort>();
             ushortSet.Add((ushort) index);
-            this._depotMap.Add(subService, ushortSet);
-          }
+            this._depotMap.Add(subService, ushortSet); //TODO(earalov): handle sevice and level
+                    }
         }
       }
       this._initialized = true;
@@ -158,39 +148,77 @@ namespace ImprovedPublicTransport
       this._depotMap.Clear();
     }
 
-    public static bool IsValidDepot(ref Building building, out ItemClass.SubService subService) //TODO(earalov): add support for Mass Transit vehicle types
+    public static bool IsValidDepot(ref Building building, 
+        out ItemClass.Service service,
+        out ItemClass.SubService subService,
+        out ItemClass.Level level)
     {
+      service = ItemClass.Service.None;
       subService = ItemClass.SubService.None;
-      if ((Object) building.Info == (Object) null)
+      level = ItemClass.Level.None;
+      if ((Object) building.Info == (Object) null || (building.m_flags & Building.Flags.Created) == Building.Flags.None)
         return false;
-      DepotAI buildingAi = building.Info.m_buildingAI as DepotAI;
-      if ((Object) buildingAi == (Object) null || (building.m_flags & Building.Flags.Created) == Building.Flags.None || buildingAi.m_maxVehicleCount == 0)
-        return false;
-      subService = building.Info.m_class.m_subService;
-      switch (subService)
-      {
-        case ItemClass.SubService.PublicTransportBus:
-        case ItemClass.SubService.PublicTransportMetro:
-        case ItemClass.SubService.PublicTransportTrain:
-        case ItemClass.SubService.PublicTransportShip:
-        case ItemClass.SubService.PublicTransportPlane:
-        case ItemClass.SubService.PublicTransportTram:
-          return true;
-        default:
-          return false;
+      if (building.Info.m_buildingAI is DepotAI)
+        {
+            DepotAI buildingAi = building.Info.m_buildingAI as DepotAI;
+            if (buildingAi.m_maxVehicleCount == 0)
+                return false;
+            service = building.Info.m_class.m_service;
+            subService = building.Info.m_class.m_subService;
+            level = building.Info.m_class.m_level;
+            if(service == ItemClass.Service.PublicTransport) { 
+                if (level == ItemClass.Level.Level1)
+                {
+                    switch (subService)
+                    {
+                        case ItemClass.SubService.PublicTransportBus:
+                        case ItemClass.SubService.PublicTransportMetro:
+                        case ItemClass.SubService.PublicTransportTrain:
+                        case ItemClass.SubService.PublicTransportShip:
+                        case ItemClass.SubService.PublicTransportPlane:
+                        case ItemClass.SubService.PublicTransportTram:
+                        case ItemClass.SubService.PublicTransportMonorail:
+                        case ItemClass.SubService.PublicTransportTaxi:
+                        case ItemClass.SubService.PublicTransportCableCar:
+                                return true;
+                    }
+                } else if (level == ItemClass.Level.Level2)
+                {
+                    switch (subService)
+                    {
+                        case ItemClass.SubService.PublicTransportShip:
+                        case ItemClass.SubService.PublicTransportPlane:
+                            return true;
+                    }
+                }
+            }
+
       }
+      else if (building.Info.m_buildingAI is ShelterAI)
+      {
+          service = building.Info.m_class.m_service;
+          subService = building.Info.m_class.m_subService;
+          level = building.Info.m_class.m_level;
+          if (service == ItemClass.Service.Disaster && subService == ItemClass.SubService.None &&
+              level == ItemClass.Level.Level4)
+          {
+              return true;
+          }
+      }
+      return false;
+
     }
 
-    public ushort[] GetDepots(ItemClass.SubService subService)
-    {
+    public ushort[] GetDepots(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)  
+        {
       HashSet<ushort> source;
-      if (this._depotMap.TryGetValue(subService, out source))
-        return source.ToArray<ushort>();
+      if (this._depotMap.TryGetValue(subService, out source)) //TODO(earalov): handle sevice and level
+                return source.ToArray<ushort>();
       return new ushort[0];
     }
 
-    public delegate void DepotAdded(ItemClass.SubService subService);
+    public delegate void DepotAdded(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level);
 
-    public delegate void DepotRemoved(ItemClass.SubService subService);
+    public delegate void DepotRemoved(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level);
   }
 }
