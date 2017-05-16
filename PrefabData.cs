@@ -64,7 +64,7 @@ namespace ImprovedPublicTransport
           for (int index = 0; index < this._trailerData.Length; ++index)
             num += this._trailerData[index].Capacity;
         }
-        return num + PrefabData.GetCapacity(this._info.m_class.m_subService, this._info.m_vehicleAI);
+        return num + PrefabData.GetCapacity(this._info.m_class.m_service, this._info.m_class.m_subService, this._info.m_class.m_level, this._info.m_vehicleAI);
       }
     }
 
@@ -72,7 +72,7 @@ namespace ImprovedPublicTransport
     {
       get
       {
-        return PrefabData.GetCapacity(this._info.m_class.m_subService, this._info.m_vehicleAI);
+        return PrefabData.GetCapacity(this._info.m_class.m_service, this._info.m_class.m_subService, this._info.m_class.m_level, this._info.m_vehicleAI);
       }
       set
       {
@@ -291,23 +291,45 @@ namespace ImprovedPublicTransport
       this._changeFlag = false;
     }
 
-    private static int GetCapacity(ItemClass.SubService subService, VehicleAI ai)       //TODO(earalov): add new vehicle types (monorail, blimp, cablecar, ferry, evacuation buses)
-        {
+    private static int GetCapacity(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level, VehicleAI ai)
+    {
       int num = 0;
-      if (subService == ItemClass.SubService.PublicTransportBus && (UnityEngine.Object) (ai as BusAI) != (UnityEngine.Object) null)
-        num = (ai as BusAI).m_passengerCapacity;
-      else if (subService == ItemClass.SubService.PublicTransportMetro && (UnityEngine.Object) (ai as PassengerTrainAI) != (UnityEngine.Object) null)
-        num = (ai as PassengerTrainAI).m_passengerCapacity;
-      else if (subService == ItemClass.SubService.PublicTransportTrain && (UnityEngine.Object) (ai as PassengerTrainAI) != (UnityEngine.Object) null)
-        num = (ai as PassengerTrainAI).m_passengerCapacity;
-      else if (subService == ItemClass.SubService.PublicTransportShip && (UnityEngine.Object) (ai as PassengerShipAI) != (UnityEngine.Object) null)
-        num = (ai as PassengerShipAI).m_passengerCapacity;
-      else if (subService == ItemClass.SubService.PublicTransportPlane && (UnityEngine.Object) (ai as PassengerPlaneAI) != (UnityEngine.Object) null)
-        num = (ai as PassengerPlaneAI).m_passengerCapacity;
-      else if (subService == ItemClass.SubService.PublicTransportTaxi && (UnityEngine.Object) (ai as TaxiAI) != (UnityEngine.Object) null)
-        num = (ai as TaxiAI).m_travelCapacity;
-      else if (subService == ItemClass.SubService.PublicTransportTram && (UnityEngine.Object) (ai as TramAI) != (UnityEngine.Object) null)
-        num = (ai as TramAI).m_passengerCapacity;
+        if (service == ItemClass.Service.PublicTransport)
+        {
+            if (level == ItemClass.Level.Level1)
+            {
+                if (subService == ItemClass.SubService.PublicTransportBus && ai is BusAI)
+                    num = (ai as BusAI).m_passengerCapacity;
+                else if (subService == ItemClass.SubService.PublicTransportMetro && ai is PassengerTrainAI)
+                    num = (ai as PassengerTrainAI).m_passengerCapacity;
+                else if (subService == ItemClass.SubService.PublicTransportTrain && ai is PassengerTrainAI)
+                    num = (ai as PassengerTrainAI).m_passengerCapacity;
+                else if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerShipAI)
+                    num = (ai as PassengerShipAI).m_passengerCapacity;
+                else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerPlaneAI)
+                    num = (ai as PassengerPlaneAI).m_passengerCapacity;
+                else if (subService == ItemClass.SubService.PublicTransportTaxi && ai is TaxiAI)
+                    num = (ai as TaxiAI).m_travelCapacity;
+                else if (subService == ItemClass.SubService.PublicTransportTram && ai is TramAI)
+                    num = (ai as TramAI).m_passengerCapacity;
+                else if (subService == ItemClass.SubService.PublicTransportMonorail && ai is PassengerTrainAI)
+                    num = (ai as PassengerTrainAI).m_passengerCapacity;
+                else if (subService == ItemClass.SubService.PublicTransportCableCar && ai is CableCarAI)
+                    num = (ai as CableCarAI).m_passengerCapacity;
+            }
+            else if (level == ItemClass.Level.Level2)
+            {
+                if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerFerryAI)
+                    num = (ai as PassengerFerryAI).m_passengerCapacity;
+                else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerBlimpAI)
+                    num = (ai as PassengerBlimpAI).m_passengerCapacity;
+            }
+
+        }
+        else if (service == ItemClass.Service.Disaster && subService == ItemClass.SubService.None && level == ItemClass.Level.Level4)
+        {
+            num = (ai as BusAI).m_passengerCapacity;
+        }
       return num;
     }
 

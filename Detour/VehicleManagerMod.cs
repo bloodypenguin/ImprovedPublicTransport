@@ -120,7 +120,8 @@ namespace ImprovedPublicTransport.Detour
 
     public static VehicleInfo GetVehicleInfo(ref Randomizer randomizer, ItemClass m_class, ushort lineID, string prefabName)
     {
-      PrefabData prefabData = Array.Find<PrefabData>(VehiclePrefabs.instance.GetPrefabs(m_class.m_subService), (Predicate<PrefabData>) (item => item.ObjectName == prefabName));
+      PrefabData prefabData = Array.Find(VehiclePrefabs.instance.GetPrefabs(m_class.m_service, m_class.m_subService, m_class.m_level),
+          item => item.ObjectName == prefabName);
       if (prefabData != null)
         return PrefabCollection<VehicleInfo>.GetPrefab((uint) prefabData.PrefabDataIndex);
       Utils.LogWarning((object) ("Unknown prefab: " + prefabName));

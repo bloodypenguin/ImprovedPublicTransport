@@ -42,13 +42,18 @@ namespace ImprovedPublicTransport
         BuildingManager instance1 = Singleton<BuildingManager>.instance;
         ushort building = Utils.GetPrivate<InstanceID>((object) this._cityServiceWorldInfoPanel, "m_InstanceID").Building;
         ItemClass.SubService subService = instance1.m_buildings.m_buffer[(int) building].Info.GetSubService();
-        switch (subService)       //TODO(earalov): add new vehicle types (monorail, blimp, cablecar, ferry, evacuation buses)
-                {
+        ItemClass.Service service = instance1.m_buildings.m_buffer[(int) building].Info.GetService();
+        ItemClass.Level level = instance1.m_buildings.m_buffer[(int) building].Info.GetClassLevel();
+
+        switch (subService)       //TODO(earalov): properly handle evacuation buses
+        {
           case ItemClass.SubService.PublicTransportBus:
           case ItemClass.SubService.PublicTransportMetro:
           case ItemClass.SubService.PublicTransportTrain:
           case ItemClass.SubService.PublicTransportShip:
           case ItemClass.SubService.PublicTransportPlane:
+          case ItemClass.SubService.PublicTransportMonorail:
+          case ItemClass.SubService.PublicTransportCableCar:
             this._vehicleListBox.Hide(); //TODO(earalov): display depot's vehicles? Also, maybe it makes sense to display list of lines served by depot?
             this._stopsListBox.Show();
             ushort[] numArray = PanelExtenderCityService.GetStationStops(building);
@@ -96,7 +101,7 @@ namespace ImprovedPublicTransport
               if ((int) this._cachedBuildingID != (int) building || this._cachedVehicleCount != count)
               {
                 this._vehicleListBox.ClearItems();
-                PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(subService);
+                PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(service, subService, level);
                 VehicleManager instance2 = Singleton<VehicleManager>.instance;
                 foreach (ushort vehicleID in depotVehicles)
                 {
