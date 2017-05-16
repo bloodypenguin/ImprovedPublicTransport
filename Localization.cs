@@ -49,18 +49,18 @@ namespace ImprovedPublicTransport
       try
       {
         if (Localization._defaultLocale == null)
-          Localization._defaultLocale = Localization.Load(Path.Combine(Path.Combine(Utils.ModPath, "Locale"), "en.txt"));
+          Localization._defaultLocale = Localization.Load(Path.Combine(Path.Combine(Utils.AssemblyPath, "Locale"), "en.txt"));
         string language = SingletonLite<LocaleManager>.instance.language;
         if (ImprovedPublicTransportMod.Settings.UseKoreanLocale)
         {
-          Localization._selectedLocale = Localization.Load(Path.Combine(Path.Combine(Utils.ModPath, "Locale"), "kr.txt"));
+          Localization._selectedLocale = Localization.Load(Path.Combine(Path.Combine(Utils.AssemblyPath, "Locale"), "kr.txt"));
           Localization._selectedLanguage = "kr";
         }
         else
         {
           if (Localization._selectedLanguage.Equals(language))
             return;
-          Localization._selectedLocale = Localization.Load(Path.Combine(Path.Combine(Utils.ModPath, "Locale"), language + ".txt"));
+          Localization._selectedLocale = Localization.Load(Path.Combine(Path.Combine(Utils.AssemblyPath, "Locale"), language + ".txt"));
           Localization._selectedLanguage = language;
         }
       }

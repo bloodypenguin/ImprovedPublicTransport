@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using ICities;
 using UnityEngine;
 
 namespace ImprovedPublicTransport
@@ -21,19 +22,38 @@ namespace ImprovedPublicTransport
   {
     private static readonly string _fileName = "ImprovedPublicTransport.log";
     private static readonly string _logPrefix = "ImprovedPublicTransport: ";
-    private static string _modPath;
 
-    public static string ModPath
-    {
-      get
+      public static string AssemblyPath => PluginInfo.modPath;
+
+      private static PluginManager.PluginInfo PluginInfo
       {
-        if (Utils._modPath == null)
-          Utils._modPath = Utils.GetModPath(typeof (ImprovedPublicTransportMod).Assembly.GetName().Name, 424106600UL);
-        return Utils._modPath;
-      }
-    }
+          get
+          {
+              var pluginManager = PluginManager.instance;
+              var plugins = pluginManager.GetPluginsInfo();
 
-    public static void ClearLogFile()
+              foreach (var item in plugins)
+              {
+                  try
+                  {
+                      var instances = item.GetInstances<IUserMod>();
+                      if (!(instances.FirstOrDefault() is ImprovedPublicTransportMod))
+                      {
+                          continue;
+                      }
+                      return item;
+                  }
+                  catch
+                  {
+
+                  }
+              }
+              throw new Exception("Failed to find ImprovedPublicTransportMod assembly!");
+
+          }
+      }
+
+        public static void ClearLogFile()
     {
       try
       {
