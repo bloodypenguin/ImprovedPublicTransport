@@ -127,10 +127,25 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Locale\de.txt" />
+    <Content Include="Locale\en.txt" />
+    <Content Include="Locale\es.txt" />
+    <Content Include="Locale\fr.txt" />
+    <Content Include="Locale\it.txt" />
+    <Content Include="Locale\kr.txt" />
+    <Content Include="Locale\pl.txt" />
+    <Content Include="Locale\pt.txt" />
+    <Content Include="Locale\ru.txt" />
+    <Content Include="Locale\zh-cn.txt" />
+    <Content Include="Locale\zh-tw.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>mkdir "$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)"
 del "$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)\$(TargetFileName)"
-xcopy /y "$(TargetPath)" "$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)"</PostBuildEvent>
+xcopy /y "$(TargetPath)" "$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)"
+mkdir "$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)"\Locale
+xcopy /y "$(ProjectDir)\Locale" "$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(TargetName)\Locale" /s /e</PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -1,0 +1,105 @@
+MOD_DESCRIPTION Расширенное управление общественным транспортом
+CURRENT_WEEK Текущая неделя
+LAST_WEEK Предыдущая неделя
+AVERAGE Среднее
+AVERAGE_TOOLTIP Среднее за последние {0} недель.
+CITY_SERVICE_PANEL_TITLE_STATION_STOPS Станций остановок
+CITY_SERVICE_PANEL_TITLE_DEPOT_VEHICLES Депо транспорта
+UNBUNCHING_ENABLED Распределение
+UNBUNCHING_DISABLED Распределение выключено.
+UNBUNCHING_TARGET_GAP Интервал: {0}m
+EXPLANATION_BUDGET_CONTROL Управляется бюджетом: количество транспорта настраивается через панель бюджета.
+EXPLANATION_UNBUNCHING Распределение транспорта: Игра пытается создать равный интервал между транспортными средствами.
+LINE_PANEL_STOPS Ост.: {0}
+LINE_PANEL_SPAWNTIMER Следующее транспортное средство через {0} секунд.
+LINE_PANEL_BUDGET_CONTROL Управляется бюджетом
+LINE_PANEL_BUDGET_CONTROL_TOOLTIP Включить или выключить управление через бюджет для этой линии.
+LINE_PANEL_UNBUNCHING_TOOLTIP Включить или выключить распределение для этой линии.\nРаспределение выключено, если Степень распределения установлена на 0.
+LINE_PANEL_DEPOT Депо:
+LINE_PANEL_DEPOT_MARKER_TOOLTIP Перейти к выбранному депо.\nЗажмите Shift, чтобы приблизить камеру.
+LINE_PANEL_SELECT_TYPES Выбор модели ТС
+LINE_PANEL_SELECT_TYPES_TOOLTIP Переключает панель выбора моделей транспорта.\nЕсли эта кнопка недоступна, сначала выберите депо.
+LINE_PANEL_LINE_STOPS Остановки на линии
+LINE_PANEL_LINE_VEHICLES Транспорт на линии
+LINE_PANEL_ENQUEUED Транспорт в очереди
+LINE_PANEL_TOTAL_WAITING_PEOPLE_TOOLTIP {0} пассажиров ожидает на этой линии.
+LINE_PANEL_ADD_VEHICLE Добавить транспорт
+LINE_PANEL_REMOVE_VEHICLE Удалить транспорт
+SETTINGS Настройки
+SETTINGS_UI Настройки UI 
+SETTINGS_VEHICLE_EDITOR_POSITION Расположение Редактора Транспорта
+SETTINGS_VEHICLE_EDITOR_POSITION_BOTTOM Внизу
+SETTINGS_VEHICLE_EDITOR_POSITION_RIGHT Справа
+SETTINGS_VEHICLE_EDITOR_HIDE Спрятать Редактор Транспорта
+SETTINGS_DELETE Удалить
+SETTINGS_RESET Сбросить
+SETTINGS_UPDATE Обновить
+SETTINGS_ENABLE_BUDGET_CONTROL Контролируется бюджетом
+SETTINGS_BUDGET_CONTROL_TOOLTIP Включает и отключает зависимость от настроек бюджета для новых линий.
+SETTINGS_BUDGET_BUTTON_TOOLTIP Применить выбранную настройку бюджетного контроля для всех линий.
+SETTINGS_COMPATIBILITY_MODE Режим совместимости
+SETTINGS_COMPATIBILITY_MODE_TOOLTIP Включите это, если у вас есть проблемы с бюджетным контролем: например, если транспорта на линии слишком мало.
+SETTINGS_SPAWN_TIME_INTERVAL Интервал выхода на линию:
+SETTINGS_SPAWN_TIME_INTERVAL_TOOLTIP Время в секундах между появлением нового транспортного средства.
+SETTINGS_SPAWN_TIME_INTERVAL_BUTTON_TOOLTIP Установить все таймеры на 0.
+SETTINGS_UNBUNCHING_AGGRESSION Степень распределения:
+SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP Насколько строго транспорт следует интервалам?\nВозможные значения: 0-9, где 0 отключает распределение.\nВысокие значения могут значительно повлиять на трафик вплоть до исчезновения транспортного средства из потока.
+SETTINGS_VEHICLE_COUNT Транспорт на новой линии:
+SETTINGS_VEHICLE_COUNT_TOOLTIP Количество транспорта, которое появится на новой линии, если выключен бюджетный контроль.
+SETTINGS_AUTOSHOW_LINE_INFO Автоматически показывать инфо
+SETTINGS_AUTOSHOW_LINE_INFO_TOOLTIP Автоматически показывает окно информации о линии, когда она создана.
+SETTINGS_SPEED Показывать скорость в:
+SETTINGS_LINE_DELETION_TOOL Инструмент Удаления Линий
+SETTINGS_LINE_DELETION_TOOL_BUTTON_TOOLTIP Удаляет все линии выбранного типа.
+SETTINGS_LINE_DELETION_TOOL_CONFIRM_TITLE ПОДТВЕРДИТЕ УДАЛЕНИЕ ЛИНИИ
+SETTINGS_LINE_DELETION_TOOL_CONFIRM_MSG Вы собираетесь удалить все линии.\nВы уверены?
+STOP_LIST_BOX_ROW_STOP Остановка #{0}
+STOP_LIST_BOX_ROW_TOOLTIP {0}\nОжидающих пассажиров: {1}\n\nПравый клик для перемещения к этой остановке.\nЗажмите шифт, чтобы сразу приблизить к ней камеру.
+STOP_PANEL_SUGGESTED_NAMES_TOOLTIP Список предлагаемых названий остановки.
+STOP_PANEL_REUSE_NAME_TOOLTIP Применить это название ко всем остановкам на этой станции / позиции.
+STOP_PANEL_WAITING_PEOPLE Ожидающих пассажиров: {0}
+STOP_PANEL_BORED_TIMER Времени до недовольства: <color #{0}>{1}</color>
+STOP_PANEL_BORED_TIMER_TOOLTIP Пассажиры покинут остановку, когда счётчик покажет 0.
+STOP_PANEL_PASSENGERS_IN Вошло:
+STOP_PANEL_PASSENGERS_IN_TOOLTIP Пассажиры, которые вошли в транспортное средство.
+STOP_PANEL_PASSENGERS_OUT Вышло:
+STOP_PANEL_PASSENGERS_OUT_TOOLTIP Пассажиры, которые покинули транспортное средство.
+STOP_PANEL_PASSENGERS_TOTAL Всего:
+STOP_PANEL_PASSENGERS_TOTAL_TOOLTIP Общее число обслуженных пассажиров.
+STOP_PANEL_UNBUNCHING_TOOLTIP Включает или отключает распределение транспорта на этой остановке.\nРаспределение отключено, если Степень распределения установлена на 0.
+STOP_PANEL_UPDATE_CLOSE_STOPS Обновить остановки
+STOP_PANEL_UPDATE_CLOSE_STOPS_TOOLTIP Установить статус распределения для всех остановок на этой станции / позиции.
+STOP_PANEL_PREVIOUS Предыдущая остановка
+STOP_PANEL_PREVIOUS_TOOLTIP Показать предыдущую остановку.\nЗажмите Shift, чтобы приблизить камеру.
+STOP_PANEL_DELETE_STOP Удалить остановку
+STOP_PANEL_DELETE_STOP_TOOLTIP Эта кнопка доступна, когда зажата кнопка Alt.\nИспользуйте на свой страх и риск!!!
+STOP_PANEL_NEXT Следующая остановка
+STOP_PANEL_NEXT_TOOLTIP Показать следующую остановку.\nЗажмите Shift, чтобы приблизить камеру.
+VEHICLE_EDITOR_TITLE Редактор Транспорта
+VEHICLE_EDITOR_SUB_TITLE {0} 
+VEHICLE_EDITOR_CAPACITY Вместимость
+VEHICLE_EDITOR_CAPACITY_TAXI Заказов за смену
+VEHICLE_EDITOR_CAPACITY_TAXI_TOOLTIP Количество пассажиров за смену.
+VEHICLE_EDITOR_MAINTENANCE Стоимость обслуживания
+VEHICLE_EDITOR_TICKET_PRICE Цена билета
+VEHICLE_EDITOR_PRICE_PER_KILOMETER Цена за Километр
+VEHICLE_EDITOR_MAX_SPEED Максимальная скорость
+VEHICLE_EDITOR_ENGINE_ON_BOTH_ENDS Локомотив на обоих концах
+VEHICLE_EDITOR_ENGINE_ON_BOTH_ENDS_TOOLTIP Включает и выключает отображение локомотива в конце состава.
+VEHICLE_EDITOR_APPLY Принять
+VEHICLE_EDITOR_DEFAULT Стандарт
+VEHICLE_LIST_BOX_ROW_TOOLTIP1 Правый клик, чтобы следовать за транспортным средством.\nЗажмите шифт, чтобы приблизить камеру.
+VEHICLE_LIST_BOX_ROW_TOOLTIP2 Shift + клик, чтобы добавить это ТС в очередь.
+VEHICLE_PANEL_EDIT_TYPE Редактировать транспортное средство
+VEHICLE_PANEL_EDIT_TYPE_TOOLTIP Редактировать это транспортное средства в Редакторе Транспорта
+VEHICLE_PANEL_STATUS_NEXT_STOP Следующая остановка:
+VEHICLE_PANEL_STATUS_UNBUNCHING Распределение в процессе
+VEHICLE_PANEL_LAST_STOP_EXCHANGE Пассажиропоток на предыдущей остановке: <color #FF0000>-{0}</color> | <color #00FF00>+{1}</color>
+VEHICLE_PANEL_PASSENGERS Пассажиры:
+VEHICLE_PANEL_EARNINGS Прибыль:
+VEHICLE_PANEL_EARNINGS_TOOLTIP Разница между прибылью от продажи билетов и стоимостью обслуживания.
+VEHICLE_PANEL_PREVIOUS Предыдущий транспорт
+VEHICLE_PANEL_PREVIOUS_TOOLTIP Показать предыдущее транспортное средство.\nЗажмите Shift, чтобы приблизить камеру.
+VEHICLE_PANEL_REMOVE_VEHICLE Удалить транспорт
+VEHICLE_PANEL_NEXT Следующий транспорт
+VEHICLE_PANEL_NEXT_TOOLTIP Показать следующее транспортное средство.\nЗажмите Shift, чтобы приблизить камеру.

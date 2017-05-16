@@ -1,0 +1,108 @@
+MOD_DESCRIPTION Improved control of public transportation.
+CURRENT_WEEK Current week
+LAST_WEEK Last week
+AVERAGE Average
+AVERAGE_TOOLTIP Average of the last {0} weeks.
+CITY_SERVICE_PANEL_TITLE_STATION_STOPS Station stops
+CITY_SERVICE_PANEL_TITLE_DEPOT_VEHICLES Depot vehicles
+UNBUNCHING_ENABLED Vehicle unbunching
+UNBUNCHING_DISABLED Unbunching is disabled.
+UNBUNCHING_TARGET_GAP Target gap: {0}m
+EXPLANATION_BUDGET_CONTROL Budget control: The vehicle count is controlled by the budget.
+EXPLANATION_UNBUNCHING Vehicle unbunching: The game tries to create a gap between vehicles.
+LINE_PANEL_STOPS Stops: {0}
+LINE_PANEL_SPAWNTIMER Next vehicle in {0} seconds.
+LINE_PANEL_DEPOT_WARNING <color #FF0000>The selected depot has no vehicles left.</color>
+LINE_PANEL_BUDGET_CONTROL Budget control
+LINE_PANEL_BUDGET_CONTROL_TOOLTIP Enables or disables budget control for this line.
+LINE_PANEL_UNBUNCHING_TOOLTIP Enables or disables vehicle unbunching for this line.\nUnbunching is disabled if unbunching aggression is set to 0.
+LINE_PANEL_DEPOT Depot:
+LINE_PANEL_NO_DEPOT_FOUND No depot found.
+LINE_PANEL_DEPOT_MARKER_TOOLTIP Jump towards the selected depot.\nHolding down a shift key when clicking will also zoom in.
+LINE_PANEL_SELECT_TYPES Select Types
+LINE_PANEL_SELECT_TYPES_TOOLTIP Toggles the 'Select Types' panel.\nIf this button is disabled you have to select a depot first.
+LINE_PANEL_LINE_STOPS Line stops
+LINE_PANEL_LINE_VEHICLES Vehicles on this line
+LINE_PANEL_ENQUEUED Vehicles queued
+LINE_PANEL_TOTAL_WAITING_PEOPLE_TOOLTIP {0} passengers waiting on this line.
+LINE_PANEL_ADD_VEHICLE Add Vehicle
+LINE_PANEL_ADD_VEHICLE_TOOLTIP Adds a new vehicle to the line.\nIf this button is disabled, the selected depot has no vehicles left.
+LINE_PANEL_REMOVE_VEHICLE Remove Vehicle
+SETTINGS Settings
+SETTINGS_UI UI Settings
+SETTINGS_VEHICLE_EDITOR_POSITION Vehicle Editor position
+SETTINGS_VEHICLE_EDITOR_POSITION_BOTTOM Bottom
+SETTINGS_VEHICLE_EDITOR_POSITION_RIGHT Right
+SETTINGS_VEHICLE_EDITOR_HIDE Hide Vehicle Editor
+SETTINGS_DELETE Delete
+SETTINGS_RESET Reset
+SETTINGS_UPDATE Update
+SETTINGS_ENABLE_BUDGET_CONTROL Budget control
+SETTINGS_BUDGET_CONTROL_TOOLTIP Enables or disables budget control as default for newly created lines.
+SETTINGS_BUDGET_BUTTON_TOOLTIP Sets the selected budget control mode to all lines.
+SETTINGS_COMPATIBILITY_MODE Compatibility mode
+SETTINGS_COMPATIBILITY_MODE_TOOLTIP Enable this if you have problems with budget control, e.g. vehicle count is too low.
+SETTINGS_SPAWN_TIME_INTERVAL Spawn time interval:
+SETTINGS_SPAWN_TIME_INTERVAL_TOOLTIP Time in seconds between vehicles spawns.
+SETTINGS_SPAWN_TIME_INTERVAL_BUTTON_TOOLTIP Resets all timers back to 0.
+SETTINGS_UNBUNCHING_AGGRESSION Unbunching aggression:
+SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP How strong should the vehicle unbunching act?\nPossible values: 0-9 where 0 will disable vehicle unbunching.\nHigher values will strongly impact traffic and probably cause vehicles to despawn.
+SETTINGS_VEHICLE_COUNT Vehicles on new lines:
+SETTINGS_VEHICLE_COUNT_TOOLTIP The number of vehicles that will be automatically added to new lines when budget control is off.
+SETTINGS_AUTOSHOW_LINE_INFO Auto show line info
+SETTINGS_AUTOSHOW_LINE_INFO_TOOLTIP Automatically show the line info window after a line has been created.
+SETTINGS_SPEED Show speed in:
+SETTINGS_LINE_DELETION_TOOL Lines Deletion Tool
+SETTINGS_LINE_DELETION_TOOL_BUTTON_TOOLTIP Deletes all lines of the selected types.
+SETTINGS_LINE_DELETION_TOOL_CONFIRM_TITLE CONFIRM LINE DELETION
+SETTINGS_LINE_DELETION_TOOL_CONFIRM_MSG You are about to delete all lines.\nDo you wish to proceed?
+STOP_LIST_BOX_ROW_STOP Stop #{0}
+STOP_LIST_BOX_ROW_TOOLTIP {0}\nWaiting passengers: {1}\n\nRight click to jump to this stop.\nHolding down a shift key when clicking will also zoom in.
+STOP_PANEL_SUGGESTED_NAMES_TOOLTIP List of suggested stop names.
+STOP_PANEL_REUSE_NAME_TOOLTIP Set this name to all other stops at this station / position.
+STOP_PANEL_WAITING_PEOPLE Waiting passengers: {0}
+STOP_PANEL_BORED_TIMER Time till bored: <color #{0}>{1}</color>
+STOP_PANEL_BORED_TIMER_TOOLTIP Passengers will leaving this stop when this countdown hits zero.
+STOP_PANEL_PASSENGERS_IN Passengers in:
+STOP_PANEL_PASSENGERS_IN_TOOLTIP Passengers that enter the transport vehicle here.
+STOP_PANEL_PASSENGERS_OUT Passengers out:
+STOP_PANEL_PASSENGERS_OUT_TOOLTIP Passengers that leave the transport vehicle here.
+STOP_PANEL_PASSENGERS_TOTAL Total:
+STOP_PANEL_PASSENGERS_TOTAL_TOOLTIP Total passengers serviced here.
+STOP_PANEL_UNBUNCHING_TOOLTIP Enables or disables vehicle unbunching at this stop.\nUnbunching is disabled if unbunching aggression is set to 0.
+STOP_PANEL_UPDATE_CLOSE_STOPS Update close stops
+STOP_PANEL_UPDATE_CLOSE_STOPS_TOOLTIP Set the unbunching state to all other stops at this station / position.
+STOP_PANEL_PREVIOUS Previous Stop
+STOP_PANEL_PREVIOUS_TOOLTIP Jump to the previous stop.\nHolding down a shift key when clicking will also zoom in.
+STOP_PANEL_DELETE_STOP Delete Stop
+STOP_PANEL_DELETE_STOP_TOOLTIP This button is enabled while holding down the Alt key.\nUse it at your own risk!!!
+STOP_PANEL_NEXT Next Stop
+STOP_PANEL_NEXT_TOOLTIP Jump to the next stop.\nHolding down a shift key when clicking will also zoom in.
+VEHICLE_EDITOR_TITLE Vehicle Editor
+VEHICLE_EDITOR_SUB_TITLE {0} vehicles
+VEHICLE_EDITOR_CAPACITY Passenger capacity
+VEHICLE_EDITOR_CAPACITY_TAXI Travel capacity
+VEHICLE_EDITOR_CAPACITY_TAXI_TOOLTIP Number of passengers per work shift.
+VEHICLE_EDITOR_MAINTENANCE Maintenance cost
+VEHICLE_EDITOR_TICKET_PRICE Ticket price
+VEHICLE_EDITOR_PRICE_PER_KILOMETER Price per Kilometer
+VEHICLE_EDITOR_MAX_SPEED Max speed
+VEHICLE_EDITOR_ENGINE_ON_BOTH_ENDS Train engine on both ends
+VEHICLE_EDITOR_ENGINE_ON_BOTH_ENDS_TOOLTIP Enables or disables train engines on both ends of the train.
+VEHICLE_EDITOR_APPLY Apply
+VEHICLE_EDITOR_DEFAULT Default
+VEHICLE_LIST_BOX_ROW_TOOLTIP1 Right click to follow this vehicle.\nHolding down a shift key when clicking will also zoom in.
+VEHICLE_LIST_BOX_ROW_TOOLTIP2 Shift + click to enqueue this vehicle.
+VEHICLE_PANEL_EDIT_TYPE Edit Vehicle Type
+VEHICLE_PANEL_EDIT_TYPE_TOOLTIP Edit this vehicle type with the Vehicle Editor.
+VEHICLE_PANEL_STATUS_NEXT_STOP Next stop:
+VEHICLE_PANEL_STATUS_UNBUNCHING Unbunching in progress
+VEHICLE_PANEL_LAST_STOP_EXCHANGE Last stop passenger exchange: <color #FF0000>-{0}</color> | <color #00FF00>+{1}</color>
+VEHICLE_PANEL_PASSENGERS Passengers:
+VEHICLE_PANEL_EARNINGS Earnings:
+VEHICLE_PANEL_EARNINGS_TOOLTIP Result of ticket sells minus vehicle maintenance cost.
+VEHICLE_PANEL_PREVIOUS Previous Vehicle
+VEHICLE_PANEL_PREVIOUS_TOOLTIP Jump to the previous vehicle.\nHolding down a shift key when clicking will also zoom in.
+VEHICLE_PANEL_REMOVE_VEHICLE Remove Vehicle
+VEHICLE_PANEL_NEXT Next Vehicle
+VEHICLE_PANEL_NEXT_TOOLTIP Jump to the next vehicle.\nHolding down a shift key when clicking will also zoom in.

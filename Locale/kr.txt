@@ -1,0 +1,105 @@
+MOD_DESCRIPTION 대중 교통 향상 모드(IPT)
+CURRENT_WEEK 이번 주
+LAST_WEEK 저번 주
+AVERAGE 평균
+AVERAGE_TOOLTIP {0} 주간의 평균 수치입니다
+CITY_SERVICE_PANEL_TITLE_STATION_STOPS 정거장 역
+CITY_SERVICE_PANEL_TITLE_DEPOT_VEHICLES 차고지 차량
+UNBUNCHING_ENABLED 차량간격 유지
+UNBUNCHING_DISABLED 차량간격 유지 해제
+UNBUNCHING_TARGET_GAP 차량 간격 : {0} 미터
+EXPLANATION_BUDGET_CONTROL 차량 예산 : 차량이 지정된 예산에 맞게 조절됩니다.
+EXPLANATION_UNBUNCHING 차량 간격유지 : 게임에서 차량이 일정한 간격을 유지하려고 노력합니다.
+LINE_PANEL_STOPS 정거장 수 : {0}
+LINE_PANEL_SPAWNTIMER 새 차량이 {0} 초 후 출발합니다.
+LINE_PANEL_BUDGET_CONTROL 차량 예산
+LINE_PANEL_BUDGET_CONTROL_TOOLTIP 이 노선의 차량 예산 기능을 키거나 끌 수 있습니다
+LINE_PANEL_UNBUNCHING_TOOLTIP 이 노선의 차량 간격 유지기능을 키거나 끌 수 있습니다.\n이 기능을 끌 경우 차량 간격이 0으로 조정됩니다.
+LINE_PANEL_DEPOT 차고지 :
+LINE_PANEL_DEPOT_MARKER_TOOLTIP 선택된 차고지로 이동합니다.\n쉬프트키를 누른 채 클릭하면 확대 됩니다.
+LINE_PANEL_SELECT_TYPES 종류 선택
+LINE_PANEL_SELECT_TYPES_TOOLTIP 종류 선택창을 열거나 닫습니다.\n이 기능으로 비활성화한 차량은 이 노선에 등장하지 않습니다.
+LINE_PANEL_LINE_STOPS 정류장 목록
+LINE_PANEL_LINE_VEHICLES 노선 차량 목록
+LINE_PANEL_ENQUEUED 대기 차량
+LINE_PANEL_TOTAL_WAITING_PEOPLE_TOOLTIP {0} 명의 승객이 이 노선에서 기다리고 있습니다.
+LINE_PANEL_ADD_VEHICLE 차량 추가
+LINE_PANEL_REMOVE_VEHICLE 차량 제거
+SETTINGS 설정
+SETTINGS_UI UI 설정
+SETTINGS_VEHICLE_EDITOR_POSITION 차량 에디터 위치
+SETTINGS_VEHICLE_EDITOR_POSITION_BOTTOM 아래
+SETTINGS_VEHICLE_EDITOR_POSITION_RIGHT 오른쪽
+SETTINGS_VEHICLE_EDITOR_HIDE 차량 에디터 숨기기
+SETTINGS_DELETE 삭제
+SETTINGS_RESET 초기화
+SETTINGS_UPDATE 업데이트
+SETTINGS_ENABLE_BUDGET_CONTROL 차량 예산
+SETTINGS_BUDGET_CONTROL_TOOLTIP 차량 예산기능이 키거나 꺼진 상태로 새 노선을 만들 수 있습니다.
+SETTINGS_BUDGET_BUTTON_TOOLTIP 차량 예산기능 상태를 모든 노선에 적용합니다.
+SETTINGS_COMPATIBILITY_MODE 호환성 모드
+SETTINGS_COMPATIBILITY_MODE_TOOLTIP 차량 예산 기능에 문제가 있을경우 설정하십시오. 예를 들면 소환되는 차량이 너무 적을 경우입니다.
+SETTINGS_SPAWN_TIME_INTERVAL 소환 간격 : 
+SETTINGS_SPAWN_TIME_INTERVAL_TOOLTIP 설정된 초 만큼 차이를 두며 차량이 소환됩니다.
+SETTINGS_SPAWN_TIME_INTERVAL_BUTTON_TOOLTIP 타이머를 0으로 초기화합니다.
+SETTINGS_UNBUNCHING_AGGRESSION 차랑 갼격 빈도 수 :
+SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP 어떻게 차량 간격 기능을 작동시키는지 궁금하신가요?\n 설정 범위 0-9, 0은 차량 간격 기능을 비 활성화합니다.\n높은 값 일 수록 더 향상된 교통 효과가 나타나지만 이로 인해 차량이 연착되어 사라질 수 있습니다.
+SETTINGS_VEHICLE_COUNT 새 노선의 차량 수 :
+SETTINGS_VEHICLE_COUNT_TOOLTIP 차량 예산기능이 꺼져 있을 경우 새 노선을 만들때 지정된 차량 수 만큼 차량을 소환합니다.
+SETTINGS_AUTOSHOW_LINE_INFO 자동 노선정보 표시
+SETTINGS_AUTOSHOW_LINE_INFO_TOOLTIP 새 노선이 생성될 때 노선정보를 자동으로 표시해 줍니다.
+SETTINGS_SPEED Show 속도계 값 :
+SETTINGS_LINE_DELETION_TOOL 노선 삭제 도구
+SETTINGS_LINE_DELETION_TOOL_BUTTON_TOOLTIP 선택된 종류의 노선을 일괄 삭제합니다.
+SETTINGS_LINE_DELETION_TOOL_CONFIRM_TITLE 노선 삭제 경고
+SETTINGS_LINE_DELETION_TOOL_CONFIRM_MSG 모든 노선 삭제를 요청하셨습니다.\n정말로 실행합니까?
+STOP_LIST_BOX_ROW_STOP 정거장 #{0}
+STOP_LIST_BOX_ROW_TOOLTIP {0}\n대기중인 승객 : {1}\n\n우클릭으로 해당 역으로 이동 할 수 있습니다.\n쉬프트 키를 누른 채 클릭하면 확대됩니다.
+STOP_PANEL_SUGGESTED_NAMES_TOOLTIP 제안된 역 명칭 목록입니다.
+STOP_PANEL_REUSE_NAME_TOOLTIP 이 이름으로 모든 정거장역을 설정합니다.
+STOP_PANEL_WAITING_PEOPLE 대기중인 승객 : {0}
+STOP_PANEL_BORED_TIMER 불만표출까지 남은 시간 : <color #{0}>{1}</color>
+STOP_PANEL_BORED_TIMER_TOOLTIP 승객들은 카운트가 0이되면 떠나기 시작합니다.
+STOP_PANEL_PASSENGERS_IN 탑승자 수 :
+STOP_PANEL_PASSENGERS_IN_TOOLTIP 대중교통 차량에 탑승한 승객 수 입니다.
+STOP_PANEL_PASSENGERS_OUT 하차자 수 :
+STOP_PANEL_PASSENGERS_OUT_TOOLTIP 대중교통 차량에서 하차한 승객 수 입니다.
+STOP_PANEL_PASSENGERS_TOTAL 총 이용객 :
+STOP_PANEL_PASSENGERS_TOTAL_TOOLTIP 서비스를 제공받은 승객 수입니다.
+STOP_PANEL_UNBUNCHING_TOOLTIP 이 정거장의 차량 간격유지 기능을 활성 및 비활성화 합니다.\n비 활성화 할 경우 차량 간격이 0으로 설정됩니다.
+STOP_PANEL_UPDATE_CLOSE_STOPS 인근 정거장 업데이트
+STOP_PANEL_UPDATE_CLOSE_STOPS_TOOLTIP 차량 간격유지 상태를 모든 정거장에 적용합니다.
+STOP_PANEL_PREVIOUS 이전 정거장
+STOP_PANEL_PREVIOUS_TOOLTIP 이전 전거장으로 이동합니다.\n쉬프트 키를 누른 채 클릭하면 확대 됩니다.
+STOP_PANEL_DELETE_STOP 역 삭제
+STOP_PANEL_DELETE_STOP_TOOLTIP 이 버튼은 알트키를 누르고 있어야지만 작동합니다\n이 기능 사용은 당신에게 책임이 있습니다!!!
+STOP_PANEL_NEXT 다음 정거장
+STOP_PANEL_NEXT_TOOLTIP 다음 정거장으로 이동합니다.\n쉬프트 키를 누른 채 클릭하면 확대 됩니다.
+VEHICLE_EDITOR_TITLE 차량 에디터
+VEHICLE_EDITOR_SUB_TITLE {0} 차량 설정
+VEHICLE_EDITOR_CAPACITY 총 탑승객 수
+VEHICLE_EDITOR_CAPACITY_TAXI 총 여행자 수
+VEHICLE_EDITOR_CAPACITY_TAXI_TOOLTIP 작업 교대마다 수송할 여행자 수입니다.
+VEHICLE_EDITOR_MAINTENANCE 차량 유지 비용
+VEHICLE_EDITOR_TICKET_PRICE 요금
+VEHICLE_EDITOR_PRICE_PER_KILOMETER 킬로미터 당 요금
+VEHICLE_EDITOR_MAX_SPEED 최대 속도
+VEHICLE_EDITOR_ENGINE_ON_BOTH_ENDS 운전석을 맨 뒷차량에 추가로 생성
+VEHICLE_EDITOR_ENGINE_ON_BOTH_ENDS_TOOLTIP 이 기능을 통해 기차 맨 뒷 차량에 운전석을 생성 할 수 있습니다.
+VEHICLE_EDITOR_APPLY 적용
+VEHICLE_EDITOR_DEFAULT 기본값
+VEHICLE_LIST_BOX_ROW_TOOLTIP1 오른족 클릭으로 차량을 따라 갈 수 있습니다\n쉬프트 키를 누른 채 클릭하면 확대 됩니다.
+VEHICLE_LIST_BOX_ROW_TOOLTIP2 쉬프트 클릭으로 해당 차량을 추가합니다
+VEHICLE_PANEL_EDIT_TYPE 차량 에디터 실행
+VEHICLE_PANEL_EDIT_TYPE_TOOLTIP 차량 에디터를 통해 이 차종을 설정 할 수 있습니다.
+VEHICLE_PANEL_STATUS_NEXT_STOP 다음 정거장 :
+VEHICLE_PANEL_STATUS_UNBUNCHING 차량 간격 유지상태
+VEHICLE_PANEL_LAST_STOP_EXCHANGE 최근 정거장 승객 승하차량 : <color #FF0000>-{0}</color> | <color #00FF00>+{1}</color>
+VEHICLE_PANEL_PASSENGERS 승객 수 :
+VEHICLE_PANEL_EARNINGS 수입 :
+VEHICLE_PANEL_EARNINGS_TOOLTIP 요금 수입과 차량 유지비를 뺀 합계입니다.
+VEHICLE_PANEL_PREVIOUS 이전 차량
+VEHICLE_PANEL_PREVIOUS_TOOLTIP 이전 차량으로 이동합니다.\n쉬프트 키를 누른 채 클릭하면 확대 됩니다.
+VEHICLE_PANEL_REMOVE_VEHICLE 차량 제거
+VEHICLE_PANEL_NEXT 다음 차량
+VEHICLE_PANEL_NEXT_TOOLTIP 다음 차량으로 이동합니다.\n쉬프트 키를 누른 채 클릭하면 확대 됩니다.

@@ -1,0 +1,99 @@
+CURRENT_WEEK Settimana corrente
+LAST_WEEK Ultima settimana
+AVERAGE Media
+AVERAGE_TOOLTIP Media delle ultime {0} settimane.
+CITY_SERVICE_PANEL_TITLE_STATION_STOPS Fermate
+CITY_SERVICE_PANEL_TITLE_DEPOT_VEHICLES Veicoli del deposito
+UNBUNCHING_ENABLED Veicoli convogliati
+UNBUNCHING_DISABLED Convogliamento disabilitato.
+UNBUNCHING_TARGET_GAP Distanza dalla destiazione: {0}m
+EXPLANATION_BUDGET_CONTROL Controllo del budget: Il conteggio del veicolo è controllato dal bilancio.
+EXPLANATION_UNBUNCHING Veicoli convogliati: Il gioco cerca di creare una distanza tra i veicoli.
+LINE_PANEL_STOPS Fermate: {0}
+LINE_PANEL_SPAWNTIMER Prossimo veicolo tra {0} secondi.
+LINE_PANEL_BUDGET_CONTROL Controllo del budget
+LINE_PANEL_BUDGET_CONTROL_TOOLTIP Attiva o disattiva il controllo del budget per questa linea.
+LINE_PANEL_UNBUNCHING_TOOLTIP Attiva o disattiva il Convogliamento dei veicoli per questa linea.\nIl raggruppamento è disabilitato se è settato a 0.
+LINE_PANEL_DEPOT Deposito:
+LINE_PANEL_SELECT_TYPES Seleziona il tipo
+LINE_PANEL_SELECT_TYPES_TOOLTIP Attiva 'Seleziona il tipo'.\nSe il tasto è disattivato, devi selezionare il deposito prima.
+LINE_PANEL_LINE_STOPS Fermate della linea
+LINE_PANEL_LINE_VEHICLES Veicoli in questa linea
+LINE_PANEL_ENQUEUED Veicoli in coda
+LINE_PANEL_TOTAL_WAITING_PEOPLE_TOOLTIP {0} persone stanno aspettando su questa linea.
+LINE_PANEL_ADD_VEHICLE Aggiungi Veicolo
+LINE_PANEL_REMOVE_VEHICLE Rimuovi Veicolo
+SETTINGS Impostazioni
+SETTINGS_UI UI Impostazioni
+SETTINGS_VEHICLE_EDITOR_POSITION Modifica la posizione del veicolo
+SETTINGS_VEHICLE_EDITOR_POSITION_BOTTOM In basso
+SETTINGS_VEHICLE_EDITOR_POSITION_RIGHT A destra
+SETTINGS_VEHICLE_EDITOR_HIDE Nascondi l'editor del veicolo
+SETTINGS_DELETE Cancella
+SETTINGS_RESET Resetta
+SETTINGS_UPDATE Aggiorna
+SETTINGS_ENABLE_BUDGET_CONTROL Controllo del budget
+SETTINGS_BUDGET_CONTROL_TOOLTIP Attiva o disattiva il controllo del budget di default per le nuove linee create.
+SETTINGS_BUDGET_BUTTON_TOOLTIP Imposta il controllo del budget a tutte le linee.
+SETTINGS_COMPATIBILITY_MODE Modalità di compatibilità
+SETTINGS_COMPATIBILITY_MODE_TOOLTIP Attiva questo se hai problemi con il controllo del budget.
+SETTINGS_SPAWN_TIME_INTERVAL Intervallo di tempo:
+SETTINGS_SPAWN_TIME_INTERVAL_TOOLTIP Tempo in secondi tra la creazione dei veicoli.
+SETTINGS_SPAWN_TIME_INTERVAL_BUTTON_TOOLTIP Resetta tutti i timer a 0.
+SETTINGS_UNBUNCHING_AGGRESSION Aggressione del convogliamento:
+SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP Quanto forte deve essere il convogliamento?\nValori possibili: 0-9 quando è 0 disabilita il convogliamento.\nValori più alti avranno effetto sul traffico e probabilmente causeranno la cancellazione del veicolo.
+SETTINGS_VEHICLE_COUNT Veicoli sulla linea:
+SETTINGS_VEHICLE_COUNT_TOOLTIP Il numero di veicoli che saranno automaticamente aggiunti alla nuova linea quando il controllo del budget è disattivo.
+SETTINGS_AUTOSHOW_LINE_INFO Visualizza le informazioni
+SETTINGS_AUTOSHOW_LINE_INFO_TOOLTIP Automaticamente viene mostrata la finestra di informzione dopo aver creato una nuova linea.
+SETTINGS_SPEED Mostra la velocità:
+SETTINGS_LINE_DELETION_TOOL Strumento per l'eliminazione delle linee
+SETTINGS_LINE_DELETION_TOOL_BUTTON_TOOLTIP Elimina tutte le linee del tipo selezionato.
+SETTINGS_LINE_DELETION_TOOL_CONFIRM_TITLE CONFERMA LA CANCELLAZIONE
+SETTINGS_LINE_DELETION_TOOL_CONFIRM_MSG Stai per cancellare tutte le linee.\nSei sicuro?
+STOP_LIST_BOX_ROW_STOP Stop #{0}
+STOP_LIST_BOX_ROW_TOOLTIP {0}\nPersone in attesa: {1}\n\nClick con il tasto destro per saltare a questa fermata.\nQuando clicchi tieni premuto il tasto Shift per ingrandire.
+STOP_PANEL_REUSE_NAME_TOOLTIP Imposta questo nome a tutte le altre fermate di questa stazione/posizione
+STOP_PANEL_SUGGESTED_NAMES_TOOLTIP Lista di nomi per le fermate.
+STOP_PANEL_WAITING_PEOPLE Persone in attesa: {0}
+STOP_PANEL_BORED_TIMER Tempo finchè non si annoiano: <color #{0}>{1}</color>
+STOP_PANEL_BORED_TIMER_TOOLTIP Le persone lasceranno la fermata quando questo coutdown raggiunge lo zero.
+STOP_PANEL_PASSENGERS_IN Passeggeri dentro:
+STOP_PANEL_PASSENGERS_IN_TOOLTIP Passeggeri che entrono nel veicolo qui.
+STOP_PANEL_PASSENGERS_OUT Passeggeri fuori:
+STOP_PANEL_PASSENGERS_OUT_TOOLTIP Passeggeri che lasciato il veicolo.
+STOP_PANEL_PASSENGERS_TOTAL Totale: 
+STOP_PANEL_PASSENGERS_TOTAL_TOOLTIP Totale Passeggeri serviti:
+STOP_PANEL_UNBUNCHING_TOOLTIP Attiva o disattiva il convogliamento di questa fermata.\nÈ disabilitato se il convogliamento è settato a zero.
+STOP_PANEL_UPDATE_CLOSE_STOPS Aggiorna le fermate vicine
+STOP_PANEL_UPDATE_CLOSE_STOPS_TOOLTIP Imposta il convogliamento a tutte le altre fermate di questa stazione.
+STOP_PANEL_PREVIOUS Precedente fermata
+STOP_PANEL_PREVIOUS_TOOLTIP Salta sulla fermata precedente.\nQuando clicchi tieni premuto il tasto Shift per ingrandire.
+STOP_PANEL_DELETE_STOP Cancella fermata
+STOP_PANEL_DELETE_STOP_TOOLTIP Questo pulsate è attivo mentre tieni premuto il tasto Alt.\nUsalo a tuo rischio!!!
+STOP_PANEL_NEXT Prossima fermata
+STOP_PANEL_NEXT_TOOLTIP Salta sulla prossima fermata.\nQuando clicchi tieni premuto il tasto Shift per ingrandire.
+VEHICLE_EDITOR_TITLE Editor del veicolo
+VEHICLE_EDITOR_SUB_TITLE {0} veicoli
+VEHICLE_EDITOR_CAPACITY Capacità di trasporto
+VEHICLE_EDITOR_CAPACITY_TAXI Capacità di viaggio
+VEHICLE_EDITOR_CAPACITY_TAXI_TOOLTIP Numero di passeggeri per turno di lavoro.
+VEHICLE_EDITOR_MAINTENANCE Costo di mantenimento
+VEHICLE_EDITOR_TICKET_PRICE Prezzo del bigletto
+VEHICLE_EDITOR_PRICE_PER_KILOMETER Prezzo per chilometro
+VEHICLE_EDITOR_MAX_SPEED Massima velocità
+VEHICLE_EDITOR_ENGINE_ON_BOTH_ENDS Motore su entrambe le estremità
+VEHICLE_EDITOR_ENGINE_ON_BOTH_ENDS_TOOLTIP Attiva o disattiva i motori dei treni su entrambe le estremità del treno.
+VEHICLE_EDITOR_APPLY Applica
+VEHICLE_EDITOR_DEFAULT Default
+VEHICLE_LIST_BOX_ROW_TOOLTIP1 Tasto destro per seguire questo veicolo.\nQuando clicchi tieni premuto il tasto Shift per ingrandire.
+VEHICLE_LIST_BOX_ROW_TOOLTIP2 Shift + click per accodare questo veicolo.
+VEHICLE_PANEL_LAST_STOP_EXCHANGE Ultima fermata: <color #FF0000>-{0}</color> | <color #00FF00>+{1}</color>
+VEHICLE_PANEL_PASSENGERS Passeggeri:
+VEHICLE_PANEL_EARNINGS Guadagno:
+VEHICLE_PANEL_EARNINGS_TOOLTIP Risultato della vendita dei biglietti meno il costo di manutenzione del veicolo.
+VEHICLE_PANEL_PREVIOUS Veicolo precedente
+VEHICLE_PANEL_PREVIOUS_TOOLTIP Salta sul veicolo precedente.\nQuando clicchi tieni premuto il tasto Shift per ingrandire.
+VEHICLE_PANEL_REMOVE_VEHICLE Rimuovi veicolo
+VEHICLE_PANEL_NEXT Aggiungi veicolo
+VEHICLE_PANEL_NEXT_TOOLTIP Salta sul prossimo veicolo.\nQuando clicchi tieni premuto il tasto Shift per ingrandire.
