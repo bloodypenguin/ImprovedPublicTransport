@@ -94,6 +94,7 @@ namespace ImprovedPublicTransport
           Redirector<PassengerShipAIDetour>.Deploy(); 
           Redirector<PassengerPlaneAIDetour>.Deploy();
           Redirector<TramAIDetour>.Deploy();
+          Redirector<CommonBuildingAIReverseDetour>.Deploy();  
           BuildingWatcher.instance.Init();
           LineWatcher.instance.Init();
           TransportLineMod.Init();
@@ -154,6 +155,7 @@ namespace ImprovedPublicTransport
       Redirector<PassengerShipAIDetour>.Revert();
       Redirector<PassengerPlaneAIDetour>.Revert();
       Redirector<BusAIDetour>.Revert();
+      Redirector<CommonBuildingAIReverseDetour>.Revert();
       TransportLineMod.Deinit();
       BuildingWatcher.instance.Deinit();
       NetManagerMod.Deinit();

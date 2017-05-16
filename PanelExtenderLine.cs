@@ -209,13 +209,14 @@ namespace ImprovedPublicTransport
         }
         bool flag1 = false;
         ushort depot = TransportLineMod.GetDepot(lineId);
-          if (!TransportLineMod.ValidateDepot(lineId, ref depot))
+          TransportInfo info = null;
+          if (!TransportLineMod.ValidateDepot(lineId, ref depot, ref info))
           {
               flag1 = true;
           }
           bool flag2 = true;
         if ((int) depot != 0)
-          flag2 = TransportLineMod.CanAddVehicle(depot, ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[(int) depot]);
+          flag2 = TransportLineMod.CanAddVehicle(depot, ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[(int) depot], info);
         if (flag2)
         {
           int num2 = Mathf.CeilToInt(TransportLineMod.GetNextSpawnTime(lineId) - SimHelper.instance.SimulationTime);
@@ -708,8 +709,9 @@ namespace ImprovedPublicTransport
             if ((int) lineId == 0)
                 return;
             ushort depot = TransportLineMod.GetDepot(lineId);
+            TransportInfo info = TransportManager.instance.m_lines.m_buffer[lineId].Info;
             if (!TransportLineMod.CanAddVehicle(depot,
-                ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[(int) depot]))
+                ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[(int) depot], info))
                 return;
             TransportLineMod.SetBudgetControlState(lineId, false);
             if ((int) depot == 0)

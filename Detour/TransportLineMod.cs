@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using ColossalFramework;
 using ColossalFramework.Math;
@@ -329,11 +330,10 @@ namespace ImprovedPublicTransport.Detour
                             offer.Amount = 1;
                             offer.Active = false;
                             ushort depot = TransportLineMod._lineData[(int) lineID].Depot;
-                            if (TransportLineMod.ValidateDepot(lineID, ref depot))
+                            if (TransportLineMod.ValidateDepot(lineID, ref depot, ref info))
                             {
                                 BuildingManager instance2 = Singleton<BuildingManager>.instance;
-                                if (TransportLineMod.CanAddVehicle(depot,
-                                    ref instance2.m_buildings.m_buffer[(int) depot]))
+                                if (TransportLineMod.CanAddVehicle(depot, ref instance2.m_buildings.m_buffer[(int) depot], info))
                                 {
                                     string prefabName;
                                     if (TransportLineMod.EnqueuedVehiclesCount(lineID) > 0)
@@ -543,10 +543,10 @@ namespace ImprovedPublicTransport.Detour
         }
 
 
-        public static bool ValidateDepot(ushort lineID, ref ushort depotID)
+        public static bool ValidateDepot(ushort lineID, ref ushort depotID, ref TransportInfo transportInfo)
         {
             if (depotID != 0 &&
-                BuildingWatcher.IsValidDepot(ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[depotID],
+                BuildingWatcher.IsValidDepot(ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[depotID], ref transportInfo,
                     out _, out _, out _))
             {
                 return true;
@@ -559,20 +559,43 @@ namespace ImprovedPublicTransport.Detour
             return depotID != 0;
         }
 
-        public static bool CanAddVehicle(ushort depotID, ref Building depot) //TODO(earalov): add support for buildingAi.m_maxVehicleCount2?
+        public static bool CanAddVehicle(ushort depotID, ref Building depot, TransportInfo transportInfo)
         {
-            DepotAI buildingAi = depot.Info.m_buildingAI as DepotAI;
-            int num = (PlayerBuildingAI.GetProductionRate(100,
-                           Singleton<EconomyManager>.instance.GetBudget(buildingAi.m_info.m_class)) *
-                       buildingAi.m_maxVehicleCount + 99) / 100;
-            return buildingAi.GetVehicleCount(depotID, ref depot) < num;
+            if (depot.Info.m_buildingAI is DepotAI)
+            {
+                DepotAI buildingAi = depot.Info.m_buildingAI as DepotAI;
+                if (transportInfo.m_vehicleType == buildingAi.m_transportInfo.m_vehicleType) //TODO(earalov): allow to serve as depot for secondary vehicle type
+                {
+                    int num = (PlayerBuildingAI.GetProductionRate(100,
+                                   Singleton<EconomyManager>.instance.GetBudget(buildingAi.m_info.m_class)) * 
+                               buildingAi.m_maxVehicleCount + 99) / 100;
+                    return buildingAi.GetVehicleCount(depotID, ref depot) < num;
+                }
+            }
+            if (depot.Info.m_buildingAI is ShelterAI)
+            {
+                ShelterAI buildingAi = depot.Info.m_buildingAI as ShelterAI;
+                int num = (PlayerBuildingAI.GetProductionRate(100, Singleton<EconomyManager>.instance.GetBudget(buildingAi.m_info.m_class)) * buildingAi.m_evacuationBusCount + 99) / 100;
+                int count = 0;
+                int cargo = 0;
+                int capacity = 0;
+                int outside = 0;
+                CommonBuildingAIReverseDetour.CalculateOwnVehicles(buildingAi, depotID, ref depot, buildingAi.m_transportInfo.m_vehicleReason, ref count, ref cargo, ref capacity, ref outside);
+                return count < num;
+            }
+            return false;
+
         }
 
         public static void RemoveActiveVehicle(ushort lineID, bool descreaseTargetVehicleCount)
         {
-            TransportLine transportLine = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID];
-            ushort index = GetActiveVehicle(ref transportLine, lineID);
-            TransportLineMod.RemoveVehicle(lineID, transportLine.GetVehicle(index), descreaseTargetVehicleCount);
+            int num2 = CountLineActiveVehicles(lineID);
+            ushort activeVehicle = GetActiveVehicle(ref Singleton<TransportManager>.instance.m_lines.m_buffer[(int)lineID],
+                Singleton<SimulationManager>.instance.m_randomizer.Int32((uint)num2));
+            if ((int) activeVehicle != 0)
+            {
+                TransportLineMod.RemoveVehicle(lineID, activeVehicle, descreaseTargetVehicleCount);
+            }
         }
 
         public static void RemoveVehicle(ushort lineID, ushort vehicleID, bool descreaseTargetVehicleCount)

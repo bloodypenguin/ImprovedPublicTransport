@@ -70,6 +70,7 @@
     <Compile Include="Detour\PublicTransportStopButtonDetour.cs" />
     <Compile Include="Detour\PublicTransportVehicleButtonDetour.cs" />
     <Compile Include="Detour\PublicTransportWorldInfoPanelDetour.cs" />
+    <Compile Include="Detour\CommonBuildingAIReverseDetour.cs" />
     <Compile Include="GameDefault.cs" />
     <Compile Include="LineData.cs" />
     <Compile Include="LocaleModifier.cs" />

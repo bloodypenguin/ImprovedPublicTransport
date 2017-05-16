@@ -47,8 +47,8 @@ namespace ImprovedPublicTransport
             if (((long) updatedBuilding & 1L << index2) != 0L)
             {
               ushort num1 = (ushort) (index1 << 6 | index2);
-
-              if (BuildingWatcher.IsValidDepot(ref _buildingManager.m_buildings.m_buffer[(int) num1], 
+                TransportInfo info = null;
+              if (BuildingWatcher.IsValidDepot(ref _buildingManager.m_buildings.m_buffer[(int) num1], ref info,
                   out ItemClass.Service service, out ItemClass.SubService subService, out ItemClass.Level level)) 
               {
                 HashSet<ushort> ushortSet;
@@ -83,8 +83,8 @@ namespace ImprovedPublicTransport
         {
           foreach (ushort num in depot.Value)
           {
-            ;
-            if (!BuildingWatcher.IsValidDepot(ref this._buildingManager.m_buildings.m_buffer[(int) num],
+              TransportInfo info = null;
+            if (!BuildingWatcher.IsValidDepot(ref this._buildingManager.m_buildings.m_buffer[(int) num],ref info,
                 out ItemClass.Service service, out ItemClass.SubService subService, out ItemClass.Level level))
                             ushortSet1.Add(num);
           }
@@ -115,7 +115,8 @@ namespace ImprovedPublicTransport
       this._buildingManager = Singleton<BuildingManager>.instance;
       for (int index = 0; index < this._buildingManager.m_buildings.m_buffer.Length; ++index)
       {
-        if (BuildingWatcher.IsValidDepot(ref this._buildingManager.m_buildings.m_buffer[index], 
+        TransportInfo info = null;
+        if (BuildingWatcher.IsValidDepot(ref this._buildingManager.m_buildings.m_buffer[index], ref info,
             out ItemClass.Service service, out ItemClass.SubService subService, out ItemClass.Level level))  
                 {
           HashSet<ushort> ushortSet;
@@ -148,7 +149,8 @@ namespace ImprovedPublicTransport
       this._depotMap.Clear();
     }
 
-    public static bool IsValidDepot(ref Building building, 
+    public static bool IsValidDepot(ref Building building,
+        ref TransportInfo transportInfo, 
         out ItemClass.Service service,
         out ItemClass.SubService subService,
         out ItemClass.Level level)
@@ -161,8 +163,18 @@ namespace ImprovedPublicTransport
       if (building.Info.m_buildingAI is DepotAI)
         {
             DepotAI buildingAi = building.Info.m_buildingAI as DepotAI;
-            if (buildingAi.m_maxVehicleCount == 0)
+            if (transportInfo!= null && buildingAi.m_transportInfo.m_vehicleType != transportInfo.m_vehicleType)  //TODO(earalov): allow to serve as depot for secondary vehicle type
+            {
                 return false;
+            }
+            if (transportInfo == null)
+            {
+                transportInfo = buildingAi.m_transportInfo;
+            }
+            if (buildingAi.m_maxVehicleCount == 0)
+            {
+                return false;
+            }
             service = building.Info.m_class.m_service;
             subService = building.Info.m_class.m_subService;
             level = building.Info.m_class.m_level;
