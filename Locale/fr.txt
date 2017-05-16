@@ -1,0 +1,105 @@
+MOD_DESCRIPTION Gestion avancée des transports en commun.
+CURRENT_WEEK Semaine en cours
+LAST_WEEK Semaine dernière
+AVERAGE Moyenne
+AVERAGE_TOOLTIP Moyenne des {0} dernières semaines.
+CITY_SERVICE_PANEL_TITLE_STATION_STOPS Arrêts
+CITY_SERVICE_PANEL_TITLE_DEPOT_VEHICLES Dépôt
+UNBUNCHING_ENABLED Distancement des véhicules
+UNBUNCHING_DISABLED Distancement inactif.
+UNBUNCHING_TARGET_GAP Distance désirée: {0} m
+EXPLANATION_BUDGET_CONTROL Contrôle du budget: La quantité de véhicules dépend du budget.
+EXPLANATION_UNBUNCHING Distancement: Gestion de la distance entre deux véhicules d'une même ligne.
+LINE_PANEL_STOPS Arrêts: {0}
+LINE_PANEL_SPAWNTIMER Prochain véhicule dans {0} secondes.
+LINE_PANEL_BUDGET_CONTROL Contrôle budgétaire
+LINE_PANEL_BUDGET_CONTROL_TOOLTIP Le budget défini le nombre de véhicules en service.
+LINE_PANEL_UNBUNCHING_TOOLTIP Activer ou désactiver le distancement pour cette ligne.\nLe distancement est inactif quand la valeur est 0.
+LINE_PANEL_DEPOT Dépôt:
+LINE_PANEL_DEPOT_MARKER_TOOLTIP Se rendre au dépôt sélectionné.\nCliquer en maintenant Shift pour zoomer.
+LINE_PANEL_SELECT_TYPES Modèles disponibles
+LINE_PANEL_SELECT_TYPES_TOOLTIP Afficher le panneau "Modèles disponibles".\nSi cette option est désactivée il faut d'abord sélectionner un dépôt.
+LINE_PANEL_LINE_STOPS Arrêts
+LINE_PANEL_LINE_VEHICLES Véhicules en service
+LINE_PANEL_ENQUEUED Vehicules en file d'attente.
+LINE_PANEL_TOTAL_WAITING_PEOPLE_TOOLTIP {0} passagers aux arrêts.
+LINE_PANEL_ADD_VEHICLE Ajouter véhicule
+LINE_PANEL_REMOVE_VEHICLE Supprimer véhicule
+SETTINGS Paramètres
+SETTINGS_UI Unités de mesure
+SETTINGS_VEHICLE_EDITOR_POSITION Position de l'éditeur de véhicules
+SETTINGS_VEHICLE_EDITOR_POSITION_BOTTOM En bas
+SETTINGS_VEHICLE_EDITOR_POSITION_RIGHT A droite
+SETTINGS_VEHICLE_EDITOR_HIDE Cacher l'éditeur de véhicules
+SETTINGS_DELETE Supprimer
+SETTINGS_RESET Réinitialiser
+SETTINGS_UPDATE Mettre à jour
+SETTINGS_ENABLE_BUDGET_CONTROL Contrôle budgétaire
+SETTINGS_BUDGET_CONTROL_TOOLTIP Le budget défini le nombre de véhicules en service.
+SETTINGS_BUDGET_BUTTON_TOOLTIP Appliquer le contrôle budgétaire à l'ensemble des lignes.
+SETTINGS_COMPATIBILITY_MODE Mode compatibilité
+SETTINGS_COMPATIBILITY_MODE_TOOLTIP Activer en cas de problème du contrôle budgétaire, par exemple s'il y a trop peu de véhicules.
+SETTINGS_SPAWN_TIME_INTERVAL Intervalle des départs:
+SETTINGS_SPAWN_TIME_INTERVAL_TOOLTIP Intervalle des départs aux dépôts en secondes.
+SETTINGS_SPAWN_TIME_INTERVAL_BUTTON_TOOLTIP Réinitialiser tous les minuteurs.
+SETTINGS_UNBUNCHING_AGGRESSION Agressivité du distancement:
+SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP Quelle distance entre deux véhicules?\nDe 0 à 9. A 0 les véhicules ignorent le distancement.\nSi la valeur est trop haute, les véhicules laissent trop d'espace entre eux et peuvent être supprimés.
+SETTINGS_VEHICLE_COUNT Véhicules:
+SETTINGS_VEHICLE_COUNT_TOOLTIP Le nombre de véhicules attribué par défaut à une ligne quand le contrôle du budget est inactif.
+SETTINGS_AUTOSHOW_LINE_INFO Affichage automatique de la fenêtre
+SETTINGS_AUTOSHOW_LINE_INFO_TOOLTIP Afficher automatiquement la fenêtre d'infos à la création.
+SETTINGS_SPEED Unité de vitesse:
+SETTINGS_LINE_DELETION_TOOL Suppression
+SETTINGS_LINE_DELETION_TOOL_BUTTON_TOOLTIP Supprimer toutes les lignes du type sélectionné.
+SETTINGS_LINE_DELETION_TOOL_CONFIRM_TITLE CONFIRMER SUPPRESSION
+SETTINGS_LINE_DELETION_TOOL_CONFIRM_MSG Vous allez supprimer toutes les lignes.\nVoulez-vous continuer?
+STOP_LIST_BOX_ROW_STOP Arrêt #{0}
+STOP_LIST_BOX_ROW_TOOLTIP {0}\nPassagers en attente à l'arrêt: {1}\n\nClic-droit pour se rendre à l'arrêt.\nCliquer en maintenant Shift pour zoomer.
+STOP_PANEL_SUGGESTED_NAMES_TOOLTIP Suggérer noms des arrêts.
+STOP_PANEL_REUSE_NAME_TOOLTIP Appliquer ce nom aux arrêts à proximité.
+STOP_PANEL_WAITING_PEOPLE Citoyens en attente: {0}
+STOP_PANEL_BORED_TIMER Impatience: <color #{0}>{1}</color>
+STOP_PANEL_BORED_TIMER_TOOLTIP Les citoyens partiront si ce chiffre atteint 0.
+STOP_PANEL_PASSENGERS_IN Passagers IN:
+STOP_PANEL_PASSENGERS_IN_TOOLTIP Nombre de passagers embarquant le véhicule.
+STOP_PANEL_PASSENGERS_OUT Passagers OUT:
+STOP_PANEL_PASSENGERS_OUT_TOOLTIP Nombre de passagers débarquants le véhicule.
+STOP_PANEL_PASSENGERS_TOTAL Total:
+STOP_PANEL_PASSENGERS_TOTAL_TOOLTIP Passagers déservis.
+STOP_PANEL_UNBUNCHING_TOOLTIP Activer ou désactiver le désembouteillage à cet arrêt.\nDésactivé si la valeur est 0.
+STOP_PANEL_UPDATE_CLOSE_STOPS Appliquer aux arrêts proches
+STOP_PANEL_UPDATE_CLOSE_STOPS_TOOLTIP Appliquer le temps de désembouteillage à toutes les lignes aux alentours.
+STOP_PANEL_PREVIOUS Arrêt précédent
+STOP_PANEL_PREVIOUS_TOOLTIP Se rendre à l'arrêt précédent.\nCliquer en maintenant Shift pour zoomer.
+STOP_PANEL_DELETE_STOP Supprimer l'arrêt
+STOP_PANEL_DELETE_STOP_TOOLTIP Ce boutton est actif quand Alt est enfoncé.\nUtilisé à vos propres risques!!!
+STOP_PANEL_NEXT Arrêt suivant
+STOP_PANEL_NEXT_TOOLTIP Se rendre à l'arrêt suivant.\nCliquer en maintenant Shift pour zoomer.
+VEHICLE_EDITOR_TITLE Editeur de véhicules
+VEHICLE_EDITOR_SUB_TITLE {0} vehicules
+VEHICLE_EDITOR_CAPACITY Capacité
+VEHICLE_EDITOR_CAPACITY_TAXI Capacité en mouvement
+VEHICLE_EDITOR_CAPACITY_TAXI_TOOLTIP Nombre de passagers par tournée.
+VEHICLE_EDITOR_MAINTENANCE Entretien
+VEHICLE_EDITOR_TICKET_PRICE Prix du ticket
+VEHICLE_EDITOR_PRICE_PER_KILOMETER Prix au kilomètre
+VEHICLE_EDITOR_MAX_SPEED Vitesse max
+VEHICLE_EDITOR_ENGINE_ON_BOTH_ENDS Trains bidirectionnels
+VEHICLE_EDITOR_ENGINE_ON_BOTH_ENDS_TOOLTIP Activer ou désactiver les locomotives aux deux extrémités.
+VEHICLE_EDITOR_APPLY Appliquer
+VEHICLE_EDITOR_DEFAULT Réinitialiser
+VEHICLE_LIST_BOX_ROW_TOOLTIP1 Clic-droit pour suivre le véhicule.\nCliquer en maintenant Shift pour zoomer.
+VEHICLE_LIST_BOX_ROW_TOOLTIP2 Shift + clic pour ajouter ce véhicule.
+VEHICLE_PANEL_EDIT_TYPE Ouvrir l'éditeur de véhicule
+VEHICLE_PANEL_EDIT_TYPE_TOOLTIP Modifier les véhicules.
+VEHICLE_PANEL_STATUS_NEXT_STOP Arrêt suivant:
+VEHICLE_PANEL_STATUS_UNBUNCHING Distancement en cours
+VEHICLE_PANEL_LAST_STOP_EXCHANGE Mouvements au dernier arrêt: <color #FF0000>-{0}</color> | <color #00FF00>+{1}</color>
+VEHICLE_PANEL_PASSENGERS Passagers/Capacité:
+VEHICLE_PANEL_EARNINGS Rentabilité:
+VEHICLE_PANEL_EARNINGS_TOOLTIP Différence entre les tickets achetés et les coûts de maintenance.
+VEHICLE_PANEL_PREVIOUS Véhicule précédent
+VEHICLE_PANEL_PREVIOUS_TOOLTIP Se rendre au véhicule précédent.\nCliquer en maintenant Shift pour zoomer.
+VEHICLE_PANEL_REMOVE_VEHICLE Supprimer le véhicule
+VEHICLE_PANEL_NEXT Véhicule suivant
+VEHICLE_PANEL_NEXT_TOOLTIP Se rendre au véhicule suivant.\nCliquer en maintenant Shift pour zoomer.

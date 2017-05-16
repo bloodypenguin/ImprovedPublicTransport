@@ -53,7 +53,6 @@ namespace ImprovedPublicTransport
           case ItemClass.SubService.PublicTransportShip:
           case ItemClass.SubService.PublicTransportPlane:
           case ItemClass.SubService.PublicTransportMonorail:
-          case ItemClass.SubService.PublicTransportCableCar:
             this._vehicleListBox.Hide(); //TODO(earalov): display depot's vehicles? Also, maybe it makes sense to display list of lines served by depot?
             this._stopsListBox.Show();
             ushort[] numArray = PanelExtenderCityService.GetStationStops(building);
@@ -87,6 +86,7 @@ namespace ImprovedPublicTransport
             this._cachedStopCount = length;
             break;
           case ItemClass.SubService.PublicTransportTaxi:
+          case ItemClass.SubService.PublicTransportCableCar:
             this._vehicleListBox.Show();
             this._stopsListBox.Hide();
             UIPanel uiPanel = this._cityServiceWorldInfoPanel.Find<UIPanel>("SvsVehicleTypes");

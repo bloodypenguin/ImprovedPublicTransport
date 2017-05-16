@@ -1,0 +1,103 @@
+MOD_DESCRIPTION Ulepszona kontrola transportu publicznego.
+CURRENT_WEEK Obecny tydzień
+LAST_WEEK Ostatni tydzień
+AVERAGE Średnia
+AVERAGE_TOOLTIP Średnia z ostatnich {0} tyg.
+CITY_SERVICE_PANEL_TITLE_STATION_STOPS Przystanki na stacji
+CITY_SERVICE_PANEL_TITLE_DEPOT_VEHICLES Pojazdy w użyciu
+UNBUNCHING_ENABLED Unbunching pojazdów
+UNBUNCHING_DISABLED Unbunching jest wyłączony.
+UNBUNCHING_TARGET_GAP Docelowy odstęp: {0}m
+EXPLANATION_BUDGET_CONTROL Regulacja budżetowa: Ilość pojazdów jest regulowana przez budżet.
+EXPLANATION_UNBUNCHING Unbunching pojazdów: Gra spróbuje stworzyć odstęp między pojazdami.
+LINE_PANEL_STOPS Przystanki: {0}
+LINE_PANEL_SPAWNTIMER Następny pojazd za {0} s.
+LINE_PANEL_BUDGET_CONTROL Regulacja budżetowa
+LINE_PANEL_BUDGET_CONTROL_TOOLTIP Włącza lub wyłącza regulację budżetową dla tej linii.
+LINE_PANEL_UNBUNCHING_TOOLTIP Włącza lub wyłącza unbunching pojazdów dla tej linii.\nUnbunching pojazdów jest wyłączony, jeśli agresja unbunchingu jest ustawiona na 0.
+LINE_PANEL_DEPOT Zajezdnia:
+LINE_PANEL_DEPOT_MARKER_TOOLTIP Przechodzi do wybranej zajezdni. \nPrzytrzymanie klawisza Shift podczas klikania dodatkowo przybliży widok.
+LINE_PANEL_SELECT_TYPES Wybierz typ
+LINE_PANEL_SELECT_TYPES_TOOLTIP Przełącza panel 'Wybierz typ'.\nJeśli ten przycisk jest wyłączony musisz najpierw wybrać zajezdnię.
+LINE_PANEL_LINE_STOPS Przystanki linii
+LINE_PANEL_LINE_VEHICLES Pojazdy na tej linii
+LINE_PANEL_ENQUEUED Pojazdy w kolejce
+LINE_PANEL_TOTAL_WAITING_PEOPLE_TOOLTIP {0} osób oczekujących na tej linii.
+LINE_PANEL_ADD_VEHICLE Dodaj pojazd
+LINE_PANEL_REMOVE_VEHICLE Usuń pojazd
+SETTINGS Ustawienia
+SETTINGS_UI Ustawienia interfejsu
+SETTINGS_VEHICLE_EDITOR_POSITION Pozycja Edytora Pojazdów
+SETTINGS_VEHICLE_EDITOR_POSITION_BOTTOM Dół
+SETTINGS_VEHICLE_EDITOR_POSITION_RIGHT Prawa
+SETTINGS_VEHICLE_EDITOR_HIDE Ukryj Edytor Pojazdów
+SETTINGS_DELETE Usuń
+SETTINGS_RESET Zresetuj
+SETTINGS_UPDATE Aktualizuj
+SETTINGS_ENABLE_BUDGET_CONTROL Regulacja budżetowa
+SETTINGS_BUDGET_CONTROL_TOOLTIP Włącza lub wyłącza regulację budżetową jako domyślną dla nowo stworzonych linii.
+SETTINGS_BUDGET_BUTTON_TOOLTIP Ustawia wybrany tryb regulacji budżetowej dla wszystkich linii.
+SETTINGS_COMPATIBILITY_MODE Tryb zgodności
+SETTINGS_COMPATIBILITY_MODE_TOOLTIP Włącz to, jeśli masz problemy z regulacją budżetową, np. ilość pojazdów jest za mała.
+SETTINGS_SPAWN_TIME_INTERVAL Odstępy czasowe wyjazdów:
+SETTINGS_SPAWN_TIME_INTERVAL_TOOLTIP Czas w sekundach pomiędzy wyjazdami nowych pojazdów z zajezdni.
+SETTINGS_SPAWN_TIME_INTERVAL_BUTTON_TOOLTIP Resetuje wszystkie liczniki z powrotem do 0.
+SETTINGS_UNBUNCHING_AGGRESSION Agresja unbunchingu:
+SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP Jak silnie powinien działać unbunching pojazdów?\nMożliwe wartości: 0-9, gdzie 0 wyłączy unbunching pojazdów.\nWiększe wartości będą miały duży wpływ na ruch drogowy i prawdopodobnie spowodują znikanie pojazdów.
+SETTINGS_VEHICLE_COUNT Pojazdy na nowych liniach:
+SETTINGS_VEHICLE_COUNT_TOOLTIP Ilość pojazdów, które będą automatycznie dodawane do nowych linii, gdy regulacja budżetowa jest wyłączona.
+SETTINGS_AUTOSHOW_LINE_INFO Auto pokazywanie panelu
+SETTINGS_AUTOSHOW_LINE_INFO_TOOLTIP Automatycznie pokazuje panel linii zaraz po jej stworzeniu.
+SETTINGS_SPEED Jednostka prędkości:
+SETTINGS_LINE_DELETION_TOOL Narzędzie Usuwania Linii
+SETTINGS_LINE_DELETION_TOOL_BUTTON_TOOLTIP Usuwa wszystkie linie wybranego typu.
+SETTINGS_LINE_DELETION_TOOL_CONFIRM_TITLE POTWIERDŹ USUNIĘCIE LINII
+SETTINGS_LINE_DELETION_TOOL_CONFIRM_MSG Zaraz usuniesz wszystkie linie.\nCzy chcesz kontynuować?
+STOP_LIST_BOX_ROW_STOP Przystanek #{0}
+STOP_LIST_BOX_ROW_TOOLTIP {0}\nOczekujące osoby: {1}\n\nKliknij prawym przyciskiem myszy, aby przejść do tego przystanku.\nPrzytrzymanie klawisza Shift podczas klikania dodatkowo przybliży widok.
+STOP_PANEL_SUGGESTED_NAMES_TOOLTIP Lista sugerowanych nazw przystanków.
+STOP_PANEL_REUSE_NAME_TOOLTIP Ustaw tę nazwę dla wszystkich innych przystanków na tej stacji / pozycji.
+STOP_PANEL_WAITING_PEOPLE Oczekujące osoby: {0}
+STOP_PANEL_BORED_TIMER Czas do znudzenia: <color #{0}>{1}</color>
+STOP_PANEL_BORED_TIMER_TOOLTIP Ludzie zaczną opuszczać ten przystanek, kiedy odliczanie osiągnie 0.
+STOP_PANEL_PASSENGERS_IN Wsiadający:
+STOP_PANEL_PASSENGERS_IN_TOOLTIP Pasażerowie wsiadający do pojazdów na tym przystanku.
+STOP_PANEL_PASSENGERS_OUT Wysiadający:
+STOP_PANEL_PASSENGERS_OUT_TOOLTIP Pasażerowie wysiadający z pojazdów na tym przystanku.
+STOP_PANEL_PASSENGERS_TOTAL Łącznie:
+STOP_PANEL_PASSENGERS_TOTAL_TOOLTIP Wszyscy pasażerowie korzystający z tego przystanku.
+STOP_PANEL_UNBUNCHING_TOOLTIP Włącza lub wyłącza unbunching pojazdów na tym przystanku.\nUnbunching pojazdów jest wyłączony, jeśli agresja unbunchingu jest ustawiona na 0.
+STOP_PANEL_UPDATE_CLOSE_STOPS Aktualizuj pobliskie przystanki
+STOP_PANEL_UPDATE_CLOSE_STOPS_TOOLTIP Ustawia wybrany stan unbunchingu pojazdów dla wszystkich innych przystanków na tej stacji / pozycji.
+STOP_PANEL_PREVIOUS Poprzedni przystanek
+STOP_PANEL_PREVIOUS_TOOLTIP Przeskakuje do poprzedniego przystanku.\nPrzytrzymanie klawisza Shift podczas klikania dodatkowo przybliży widok.
+STOP_PANEL_DELETE_STOP Usuń przystanek
+STOP_PANEL_DELETE_STOP_TOOLTIP Ten przycisk jest dostępny, gdy wciskasz klawisz Alt.\nUżywaj go na własne ryzyko!!!
+STOP_PANEL_NEXT Następny przystanek
+STOP_PANEL_NEXT_TOOLTIP Przeskakuje do następnego przystanku.\nPrzytrzymanie klawisza Shift podczas klikania dodatkowo przybliży widok.
+VEHICLE_EDITOR_TITLE Edytor pojazdów
+VEHICLE_EDITOR_SUB_TITLE Typ: {0}
+VEHICLE_EDITOR_CAPACITY Ilość pasażerów
+VEHICLE_EDITOR_CAPACITY_TAXI Ilość podróży
+VEHICLE_EDITOR_CAPACITY_TAXI_TOOLTIP Ilość pasażerów podczas jednej zmiany.
+VEHICLE_EDITOR_MAINTENANCE Koszt utrzymania
+VEHICLE_EDITOR_TICKET_PRICE Cena biletu
+VEHICLE_EDITOR_PRICE_PER_KILOMETER Stawka za kilometr
+VEHICLE_EDITOR_MAX_SPEED Max prędkość
+VEHICLE_EDITOR_ENGINE_ON_BOTH_ENDS Lokomotywa na obu końcach
+VEHICLE_EDITOR_ENGINE_ON_BOTH_ENDS_TOOLTIP Włącza lub wyłącza lokomotywę na obu końcach pociągu.
+VEHICLE_EDITOR_APPLY Zastosuj
+VEHICLE_EDITOR_DEFAULT Domyślne
+VEHICLE_LIST_BOX_ROW_TOOLTIP1 Kliknij prawym przyciskiem myszy, aby śledzić ten pojazd.\nPrzytrzymanie klawisza Shift podczas klikania dodatkowo przybliży widok.
+VEHICLE_LIST_BOX_ROW_TOOLTIP2 Shift + kliknięcie dodaje wybrany pojazd do kolejki.
+VEHICLE_PANEL_EDIT_TYPE Zmodyfikuj typ pojazdów
+VEHICLE_PANEL_EDIT_TYPE_TOOLTIP Otwiera wybrany typ pojazdów w Edytorze Pojazdów.
+VEHICLE_PANEL_LAST_STOP_EXCHANGE Ostatni przystanek: <color #FF0000>-{0}</color> | <color #00FF00>+{1}</color>
+VEHICLE_PANEL_PASSENGERS Pasażerowie:
+VEHICLE_PANEL_EARNINGS Zarobki:
+VEHICLE_PANEL_EARNINGS_TOOLTIP Zarobki ze sprzedaży biletów po odjęciu kosztów utrzymania pojazdu.
+VEHICLE_PANEL_PREVIOUS Poprzedni pojazd
+VEHICLE_PANEL_PREVIOUS_TOOLTIP Przeskakuje do poprzedniego pojazdu.\nPrzytrzymanie klawisza Shift podczas klikania dodatkowo przybliży widok.
+VEHICLE_PANEL_REMOVE_VEHICLE Usuń pojazd
+VEHICLE_PANEL_NEXT Następny pojazd
+VEHICLE_PANEL_NEXT_TOOLTIP Przeskakuje do następnego pojazdu.\nPrzytrzymanie klawisza Shift podczas klikania dodatkowo przybliży widok.

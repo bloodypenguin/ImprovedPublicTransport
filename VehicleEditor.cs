@@ -161,16 +161,18 @@ namespace ImprovedPublicTransport
       uiPanel.height = (float) num4;
       TransportManager instance = Singleton<TransportManager>.instance;
       this.CreateTabButton(TransportInfo.TransportType.Bus);
-      int num5 = 6;
-      if (instance.TransportTypeLoaded((TransportInfo.TransportType) num5))
-        this.CreateTabButton(TransportInfo.TransportType.Tram);
       this.CreateTabButton(TransportInfo.TransportType.Metro);
       this.CreateTabButton(TransportInfo.TransportType.Train);
       this.CreateTabButton(TransportInfo.TransportType.Ship);
       this.CreateTabButton(TransportInfo.TransportType.Airplane);
-      int num6 = 5;
-      if (instance.TransportTypeLoaded((TransportInfo.TransportType) num6))
+      if (instance.TransportTypeLoaded(TransportInfo.TransportType.Taxi))
         this.CreateTabButton(TransportInfo.TransportType.Taxi);
+      if (instance.TransportTypeLoaded(TransportInfo.TransportType.Tram))
+        this.CreateTabButton(TransportInfo.TransportType.Tram);
+      if (instance.TransportTypeLoaded(TransportInfo.TransportType.Monorail))
+        this.CreateTabButton(TransportInfo.TransportType.Monorail);
+      if (instance.TransportTypeLoaded(TransportInfo.TransportType.CableCar))
+        this.CreateTabButton(TransportInfo.TransportType.CableCar);
       this.CreateVehicleOptionsPanel();
     }
 
@@ -194,7 +196,7 @@ namespace ImprovedPublicTransport
       uiPanel.color = transportColor;
       string str1 = "InfoviewPanel";
       uiPanel.backgroundSprite = str1;
-      string vehicleTypeIcon = PublicTransportWorldInfoPanel.GetVehicleTypeIcon(transportType);
+      string vehicleTypeIcon = PublicTransportWorldInfoPanel.GetVehicleTypeIcon(transportType > TransportInfo.TransportType.EvacuationBus ? transportType - 1 : transportType);
       UIButton uiButton = uiPanel.AddUIComponent<UIButton>();
       double num6 = 32.0;
       uiButton.width = (float) num6;
@@ -699,6 +701,7 @@ namespace ImprovedPublicTransport
       this._rightSidePanel.Find<UIPanel>("ButtonRow");
       Color32 color32 = (Color32) transportColor;
       uiComponent.color = color32;
+      //TODO(earalov): disable some elements for new transport types
       if (this._selectedSubService == ItemClass.SubService.PublicTransportTaxi)
       {
         uiPanel1.enabled = false;
@@ -779,7 +782,7 @@ namespace ImprovedPublicTransport
         case TransportInfo.TransportType.Monorail:
             return new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportMonorail, ItemClass.Level.Level1);
         case TransportInfo.TransportType.CableCar:
-           return new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportMonorail, ItemClass.Level.Level1);
+           return new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportCableCar, ItemClass.Level.Level1);
         default:
           return new ItemClassTriplet(ItemClass.Service.None, ItemClass.SubService.None, ItemClass.Level.None);
       }
@@ -803,6 +806,10 @@ namespace ImprovedPublicTransport
           return "INFO_PUBLICTRANSPORT_TAXI";
         case TransportInfo.TransportType.Tram:
           return "INFO_PUBLICTRANSPORT_TRAM";
+        case TransportInfo.TransportType.CableCar:
+          return "INFO_PUBLICTRANSPORT_CABLECAR";
+        case TransportInfo.TransportType.Monorail:
+          return "INFO_PUBLICTRANSPORT_MONORAIL";
         default:
           return string.Empty;
       }

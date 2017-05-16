@@ -1,0 +1,105 @@
+MOD_DESCRIPTION Mejora la gestión del transporte público.
+CURRENT_WEEK Semana actual
+LAST_WEEK Semana pasada
+AVERAGE Media
+AVERAGE_TOOLTIP Media de las últimas {0} semanas
+CITY_SERVICE_PANEL_TITLE_STATION_STOPS Paradas
+CITY_SERVICE_PANEL_TITLE_DEPOT_VEHICLES Vehículos del depósito
+UNBUNCHING_ENABLED Desagrupar vehículos
+UNBUNCHING_DISABLED La desagrupación está desactivada
+UNBUNCHING_TARGET_GAP Espacio medio: {0}m
+EXPLANATION_BUDGET_CONTROL Control por presupuesto: el número de vehículos se controla mediante el presupuesto
+EXPLANATION_UNBUNCHING Desagrupación de vehículos: el juego trata de dejar un espacio entre los vehículos de una misma línea
+LINE_PANEL_STOPS Paradas: {0}
+LINE_PANEL_SPAWNTIMER El siguiente vehículo podrá ser generado en {0}s
+LINE_PANEL_BUDGET_CONTROL Control por presupuesto
+LINE_PANEL_BUDGET_CONTROL_TOOLTIP Activa/desactiva el control por presupuesto en esta línea
+LINE_PANEL_UNBUNCHING_TOOLTIP Activa/desactiva la desagrupación de vehículos en esta línea.\nLa desagrupación se desactiva si la fuerza de la desagrupación es 0.
+LINE_PANEL_DEPOT Depósito:
+LINE_PANEL_DEPOT_MARKER_TOOLTIP Saltar al depósito seleccionado.\nShift + clic para ver detalles.
+LINE_PANEL_SELECT_TYPES Elegir modelos
+LINE_PANEL_SELECT_TYPES_TOOLTIP Abre un panel para elegir entre los diferentes modelos de vehículo que haya disponibles.\nSi no está activado deberás seleccionar primero un depósito.
+LINE_PANEL_LINE_STOPS Paradas de la línea
+LINE_PANEL_LINE_VEHICLES Vehículos en esta línea
+LINE_PANEL_ENQUEUED Vehículos en cola
+LINE_PANEL_TOTAL_WAITING_PEOPLE_TOOLTIP Hay {0} personas esperando esta línea
+LINE_PANEL_ADD_VEHICLE Añadir un vehículo
+LINE_PANEL_REMOVE_VEHICLE Eliminar un vehículo
+SETTINGS Ajustes
+SETTINGS_UI Ajustes de la IU
+SETTINGS_VEHICLE_EDITOR_POSITION Modificar la posición del Editor de vehículos
+SETTINGS_VEHICLE_EDITOR_POSITION_BOTTOM Abajo
+SETTINGS_VEHICLE_EDITOR_POSITION_RIGHT Derecha
+SETTINGS_VEHICLE_EDITOR_HIDE Ocultar el Editor de vehículos
+SETTINGS_DELETE Eliminar
+SETTINGS_RESET Reiniciar
+SETTINGS_UPDATE Actualizar
+SETTINGS_ENABLE_BUDGET_CONTROL Control por presupuesto
+SETTINGS_BUDGET_CONTROL_TOOLTIP Activa/desactiva el control por presupuesto en las nuevas líneas
+SETTINGS_BUDGET_BUTTON_TOOLTIP Aplicar el modo de control seleccionado a todas las líneas
+SETTINGS_COMPATIBILITY_MODE Modo de compatibilidad
+SETTINGS_COMPATIBILITY_MODE_TOOLTIP Actívalo si tienes problemas con el control por presupuesto (por ejemplo, que apenas haya vehículos)
+SETTINGS_SPAWN_TIME_INTERVAL Intervalo de tiempo:
+SETTINGS_SPAWN_TIME_INTERVAL_TOOLTIP El tiempo en segundos que tarda el depósito en volver a generar un vehículo 
+SETTINGS_SPAWN_TIME_INTERVAL_BUTTON_TOOLTIP Reiniciar
+SETTINGS_UNBUNCHING_AGGRESSION Fuerza de la desagrupación:
+SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP ¿Con cuánta agresividad debería actuar la desagrupación?\nValores posibles: 0-9 (el valor 0 desactiva la desagrupación).\nValores superiores tienen un fuerte impacto en el tráfico y podrían hacer desaparecer los vehículos.
+SETTINGS_VEHICLE_COUNT Vehículos en las nuevas líneas:
+SETTINGS_VEHICLE_COUNT_TOOLTIP El número de vehículos que será automáticamente incorporado a las nuevas líneas si el control por presupuesto está desactivado
+SETTINGS_AUTOSHOW_LINE_INFO Ver líneas automáticamente
+SETTINGS_AUTOSHOW_LINE_INFO_TOOLTIP Abrir automáticamente el Panel de Información de Línea de cada nueva línea que crees
+SETTINGS_SPEED Mostrar la velocidad en:
+SETTINGS_LINE_DELETION_TOOL Eliminar líneas por tipo
+SETTINGS_LINE_DELETION_TOOL_BUTTON_TOOLTIP Elimina todas las líneas de los tipos de vehículo seleccionados
+SETTINGS_LINE_DELETION_TOOL_CONFIRM_TITLE CONFIRMAR ELIMINAR LÍNEAS
+SETTINGS_LINE_DELETION_TOOL_CONFIRM_MSG Estás a punto de eliminar todas las líneas.\n¿Quieres continuar?
+STOP_LIST_BOX_ROW_STOP Parada {0}
+STOP_LIST_BOX_ROW_TOOLTIP {0}\nPasajeros esperando: {1}\n\nClic derecho para saltar a esta parada.\nShift + clic para ver detalles.
+STOP_PANEL_SUGGESTED_NAMES_TOOLTIP Lista de nombres sugeridos para la parada
+STOP_PANEL_REUSE_NAME_TOOLTIP Aplicar este nombre a todas las paradas en esta estación/posición
+STOP_PANEL_WAITING_PEOPLE Pasajeros esperando: {0}
+STOP_PANEL_BORED_TIMER Tiempo hasta el aburrimiento: <color #{0}>{1}</color>
+STOP_PANEL_BORED_TIMER_TOOLTIP Los pasajeros abandonarán la parada cuando la cuenta atrás llegue a 0
+STOP_PANEL_PASSENGERS_IN Subidas:
+STOP_PANEL_PASSENGERS_IN_TOOLTIP Número de pasajeros que acceden al vehículo en esta parada
+STOP_PANEL_PASSENGERS_OUT Bajadas:
+STOP_PANEL_PASSENGERS_OUT_TOOLTIP Número de pasajeros que abandonan el vehículo en esta parada
+STOP_PANEL_PASSENGERS_TOTAL Total:
+STOP_PANEL_PASSENGERS_TOTAL_TOOLTIP Total de pasajeros atendidos aquí
+STOP_PANEL_UNBUNCHING_TOOLTIP Activa/desactiva la desagrupación de vehículos en esta parada.\nLa desagrupación se desactiva si la fuerza de la desagrupación es 0.
+STOP_PANEL_UPDATE_CLOSE_STOPS Aplicar en esta zona
+STOP_PANEL_UPDATE_CLOSE_STOPS_TOOLTIP Aplica la opción seleccionada a todas las paradas de esta estación/posición
+STOP_PANEL_PREVIOUS Parada anterior
+STOP_PANEL_PREVIOUS_TOOLTIP Saltar a la parada anterior.\nShift + clic para ver detalles.
+STOP_PANEL_DELETE_STOP ELiminar esta parada
+STOP_PANEL_DELETE_STOP_TOOLTIP Este botón se activa apretando la tecla Alt.\n¡Úsalo a tu propio riesgo!
+STOP_PANEL_NEXT Parada siguiente
+STOP_PANEL_NEXT_TOOLTIP Saltar a la parada siguiente.\nShift + clic para ver detalles.
+VEHICLE_EDITOR_TITLE Editor de vehículos
+VEHICLE_EDITOR_SUB_TITLE {0}
+VEHICLE_EDITOR_CAPACITY Capacidad máxima
+VEHICLE_EDITOR_CAPACITY_TAXI Capacidad de viajes
+VEHICLE_EDITOR_CAPACITY_TAXI_TOOLTIP Número de pasajeros por turno
+VEHICLE_EDITOR_MAINTENANCE Mantenimiento
+VEHICLE_EDITOR_TICKET_PRICE Precio del billete
+VEHICLE_EDITOR_PRICE_PER_KILOMETER Precio por km
+VEHICLE_EDITOR_MAX_SPEED Velocidad máxima
+VEHICLE_EDITOR_ENGINE_ON_BOTH_ENDS Motor en ambos extremos
+VEHICLE_EDITOR_ENGINE_ON_BOTH_ENDS_TOOLTIP Activa/desactiva el motor en ambos extremos
+VEHICLE_EDITOR_APPLY Aplicar
+VEHICLE_EDITOR_DEFAULT Por defecto
+VEHICLE_LIST_BOX_ROW_TOOLTIP1 Clic derecho para ver este vehículo.\nShift + clic para ver detalles.
+VEHICLE_LIST_BOX_ROW_TOOLTIP2 Shift + clic para poner este vehículo en cola
+VEHICLE_PANEL_EDIT_TYPE Editar modelo
+VEHICLE_PANEL_EDIT_TYPE_TOOLTIP Modifica este modelo de vehículo con el Editor de vehículos
+VEHICLE_PANEL_STATUS_NEXT_STOP Siguiente parada:
+VEHICLE_PANEL_STATUS_UNBUNCHING Desagrupación en proceso
+VEHICLE_PANEL_LAST_STOP_EXCHANGE Intercambio de pasajeros en la parada anterior: <color #FF0000>-{0}</color> | <color #00FF00>+{1}</color>
+VEHICLE_PANEL_PASSENGERS Pasajeros:
+VEHICLE_PANEL_EARNINGS Balance:
+VEHICLE_PANEL_EARNINGS_TOOLTIP Diferencia de los ingresos obtenidos con la venta de billetes menos el coste de mantenimiento del vehículo
+VEHICLE_PANEL_PREVIOUS Vehículo anterior
+VEHICLE_PANEL_PREVIOUS_TOOLTIP Saltar al vehículo anterior.\nShift + clic para ver detalles.
+VEHICLE_PANEL_REMOVE_VEHICLE Eliminar vehículo
+VEHICLE_PANEL_NEXT Vehículo siguiente
+VEHICLE_PANEL_NEXT_TOOLTIP Saltar al vehículo siguiente.\nShift + clic para ver detalles.

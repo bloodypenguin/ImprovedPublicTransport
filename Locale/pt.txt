@@ -1,0 +1,99 @@
+CURRENT_WEEK Semana atual
+LAST_WEEK Semana passada
+AVERAGE Média
+AVERAGE_TOOLTIP Média das últimas {0} semanas.
+CITY_SERVICE_PANEL_TITLE_STATION_STOPS Paradas da estação
+CITY_SERVICE_PANEL_TITLE_DEPOT_VEHICLES Veículos da garagem
+UNBUNCHING_ENABLED Distribuição de veículos
+UNBUNCHING_DISABLED Distribuição desativado.
+UNBUNCHING_TARGET_GAP Intervalo: {0}m
+EXPLANATION_BUDGET_CONTROL Quantidade de veículos será controlada pelo orçamento de transporte.
+EXPLANATION_UNBUNCHING Distribuição de veículos: O jogo tenta manter uma distribuição regular entre os veículos.
+LINE_PANEL_STOPS Paradas: {0}
+LINE_PANEL_SPAWNTIMER Próximo veículo em {0} segundos.
+LINE_PANEL_BUDGET_CONTROL Controle via orçamento
+LINE_PANEL_BUDGET_CONTROL_TOOLTIP Liga ou desliga controle via orçamento para essa linha.
+LINE_PANEL_UNBUNCHING_TOOLTIP Liga ou desliga distribuição de veículos para essa linha.\nA distribuição é desativado se o valor da agressividade for 0.
+LINE_PANEL_DEPOT Garagem:
+LINE_PANEL_SELECT_TYPES Selecionar tipos
+LINE_PANEL_SELECT_TYPES_TOOLTIP Ativa o painel 'Selecionar tipos'\nSe esse botão está desabilitado, você precisa selecionar uma garagem primeiro.
+LINE_PANEL_LINE_STOPS Paradas da linha
+LINE_PANEL_LINE_VEHICLES Veículos da linha
+LINE_PANEL_ENQUEUED Veículos em fila
+LINE_PANEL_TOTAL_WAITING_PEOPLE_TOOLTIP {0} passageiros esperando por essa linha.
+LINE_PANEL_ADD_VEHICLE Adicionar veículo
+LINE_PANEL_REMOVE_VEHICLE Remover veículo
+SETTINGS Configurações
+SETTINGS_UI Configuração de IU
+SETTINGS_VEHICLE_EDITOR_POSITION Posição do Editor de Veículos
+SETTINGS_VEHICLE_EDITOR_POSITION_BOTTOM Em baixo
+SETTINGS_VEHICLE_EDITOR_POSITION_RIGHT Direita
+SETTINGS_VEHICLE_EDITOR_HIDE Esconder Editor de Veículos
+SETTINGS_DELETE Excluir
+SETTINGS_RESET Reiniciar
+SETTINGS_UPDATE Atualizar
+SETTINGS_ENABLE_BUDGET_CONTROL Controle via Orçamento
+SETTINGS_BUDGET_CONTROL_TOOLTIP Liga ou desliga controle via orçamento para novas linhas.
+SETTINGS_BUDGET_BUTTON_TOOLTIP Aplica o modo selecionado de controle para todas as linhas.
+SETTINGS_COMPATIBILITY_MODE Modo de compatibilidade
+SETTINGS_COMPATIBILITY_MODE_TOOLTIP Ative se você estiver tendo problemas com o controle via orçamento, Ex: número de veículos muito baixo.
+SETTINGS_SPAWN_TIME_INTERVAL Tempo de adição:
+SETTINGS_SPAWN_TIME_INTERVAL_TOOLTIP Intervalo de tempo entre a adição de novos veículos (em segundos).
+SETTINGS_SPAWN_TIME_INTERVAL_BUTTON_TOOLTIP Restaura todos os tempos de adição para 0.
+SETTINGS_UNBUNCHING_AGGRESSION Agressividade de distribuição:
+SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP O quão agressivo a distribuição deve agir?\nValores: 0-9 onde 0 desabilitará a distribuição.\nValores altos afetarão fortemente o trânsito e provavelmente causará despawn de veículos.
+SETTINGS_VEHICLE_COUNT Veiculos em novas linhas:
+SETTINGS_VEHICLE_COUNT_TOOLTIP Número de veículos adicionados a uma nova linha quado o controle via orçamento estiver desativado.
+SETTINGS_AUTOSHOW_LINE_INFO Mostrar informações automaticamente
+SETTINGS_AUTOSHOW_LINE_INFO_TOOLTIP Automaticamente mostra as informações da linha depois de criada.
+SETTINGS_SPEED Mostrar velocidade em:
+SETTINGS_LINE_DELETION_TOOL Ferramenta Remoção de Linhas
+SETTINGS_LINE_DELETION_TOOL_BUTTON_TOOLTIP Exclui todas as linhas do tipo selecionado.
+SETTINGS_LINE_DELETION_TOOL_CONFIRM_TITLE CONFIRMAR REMOÇÃO DE LINHAS
+SETTINGS_LINE_DELETION_TOOL_CONFIRM_MSG Isto excluirá todas as linhas.\nTem certeza?
+STOP_LIST_BOX_ROW_STOP Parada #{0}
+STOP_LIST_BOX_ROW_TOOLTIP {0}\nPassageiros esperando: {1}\n\nButão direito do mouse para ir para o local.\nSegurar Shift ao clicar também dará zoom.
+STOP_PANEL_SUGGESTED_NAMES_TOOLTIP Sugestões de nomes.
+STOP_PANEL_REUSE_NAME_TOOLTIP Usar esse nome para todas as paradas nessa estação / local.
+STOP_PANEL_WAITING_PEOPLE Passageiros esperando: {0}
+STOP_PANEL_BORED_TIMER Tempo até desistir: <color #{0}>{1}</color>
+STOP_PANEL_BORED_TIMER_TOOLTIP Passageiros desistirão da viagem se a contagem chegar a 0.
+STOP_PANEL_PASSENGERS_IN Embarques:
+STOP_PANEL_PASSENGERS_IN_TOOLTIP Passageiros que embarcaram aqui.
+STOP_PANEL_PASSENGERS_OUT Desembarques:
+STOP_PANEL_PASSENGERS_OUT_TOOLTIP Passageiros que desembarcam aqui.
+STOP_PANEL_PASSENGERS_TOTAL Total:
+STOP_PANEL_PASSENGERS_TOTAL_TOOLTIP Total de passageiros servidos aqui.
+STOP_PANEL_UNBUNCHING_TOOLTIP Liga ou desliga distribuição de veículos para essa parada.\nA distribuição é desativado se o valor da agressividade for 0.
+STOP_PANEL_UPDATE_CLOSE_STOPS Atualizar paradas proximas
+STOP_PANEL_UPDATE_CLOSE_STOPS_TOOLTIP Usar a configuração de distribuição para todas as paradas dessa estação / local.
+STOP_PANEL_PREVIOUS Parada Anterior
+STOP_PANEL_PREVIOUS_TOOLTIP Ir para a parada anterior.\nSegurar Shift ao clicar também dará zoom.
+STOP_PANEL_DELETE_STOP Excluir parada
+STOP_PANEL_DELETE_STOP_TOOLTIP Esse botão é habilitado ao segurar a tecla Alt.\nUse ao seu próprio risco!!!
+STOP_PANEL_NEXT Próxima Parada
+STOP_PANEL_NEXT_TOOLTIP Ir para a próxima parada.\nSegurar Shift ao clicar também dará zoom.
+VEHICLE_EDITOR_TITLE Editor de Veículos
+VEHICLE_EDITOR_SUB_TITLE {0} veículos
+VEHICLE_EDITOR_CAPACITY Capacidade de passageiros
+VEHICLE_EDITOR_CAPACITY_TAXI Capacidade por viagem
+VEHICLE_EDITOR_CAPACITY_TAXI_TOOLTIP Número de passageiros por turno de trabalho.
+VEHICLE_EDITOR_MAINTENANCE Custo de manutenção
+VEHICLE_EDITOR_TICKET_PRICE Valor da passagem
+VEHICLE_EDITOR_PRICE_PER_KILOMETER Preço por Quilômetro
+VEHICLE_EDITOR_MAX_SPEED Velocidade máxima
+VEHICLE_EDITOR_ENGINE_ON_BOTH_ENDS Motor do trem nas duas pontas
+VEHICLE_EDITOR_ENGINE_ON_BOTH_ENDS_TOOLTIP Liga ou desliga motor nas duas pontas do trem.
+VEHICLE_EDITOR_APPLY Aplicar
+VEHICLE_EDITOR_DEFAULT Padrão
+VEHICLE_LIST_BOX_ROW_TOOLTIP1 Butão direito do mouse para seguir esse veículo.\nSegurar Shift ao clicar também dará zoom.
+VEHICLE_LIST_BOX_ROW_TOOLTIP2 Shift + clique adicionará o veículo a fila.
+VEHICLE_PANEL_LAST_STOP_EXCHANGE Trocas na parada anterior: <color #FF0000>-{0}</color> | <color #00FF00>+{1}</color>
+VEHICLE_PANEL_PASSENGERS Passageiros:
+VEHICLE_PANEL_EARNINGS Lucro:
+VEHICLE_PANEL_EARNINGS_TOOLTIP Resultado das passagens vendidas menos custo de manutenção.
+VEHICLE_PANEL_PREVIOUS Veículo anterior
+VEHICLE_PANEL_PREVIOUS_TOOLTIP Ir para veículo anterior.\nSegurar Shift ao clicar também dará zoom.
+VEHICLE_PANEL_REMOVE_VEHICLE Remover Veículo
+VEHICLE_PANEL_NEXT Próximo Veículo
+VEHICLE_PANEL_NEXT_TOOLTIP Ir para próximo veículo.\nSegurar Shift ao clicar também dará zoom.
