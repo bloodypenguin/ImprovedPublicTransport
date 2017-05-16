@@ -47,7 +47,7 @@ namespace ImprovedPublicTransport.Detour
         return true;
     }
 
-        [RedirectMethod]
+    [RedirectMethod]
     private bool ArriveAtTarget(ushort vehicleID, ref Vehicle data)
     {
       if ((int) data.m_targetBuilding == 0 || (data.m_flags & Vehicle.Flags.DummyTraffic) != ~(Vehicle.Flags.Created | Vehicle.Flags.Deleted | Vehicle.Flags.Spawned | Vehicle.Flags.Inverted | Vehicle.Flags.TransferToTarget | Vehicle.Flags.TransferToSource | Vehicle.Flags.Emergency1 | Vehicle.Flags.Emergency2 | Vehicle.Flags.WaitingPath | Vehicle.Flags.Stopped | Vehicle.Flags.Leaving | Vehicle.Flags.Arriving | Vehicle.Flags.Reversed | Vehicle.Flags.TakingOff | Vehicle.Flags.Flying | Vehicle.Flags.Landing | Vehicle.Flags.WaitingSpace | Vehicle.Flags.WaitingCargo | Vehicle.Flags.GoingBack | Vehicle.Flags.WaitingTarget | Vehicle.Flags.Importing | Vehicle.Flags.Exporting | Vehicle.Flags.Parking | Vehicle.Flags.CustomName | Vehicle.Flags.OnGravel | Vehicle.Flags.WaitingLoading | Vehicle.Flags.Congestion | Vehicle.Flags.DummyTraffic | Vehicle.Flags.Underground | Vehicle.Flags.Transition | Vehicle.Flags.InsideBuilding | Vehicle.Flags.LeftHandDrive))
@@ -63,16 +63,19 @@ namespace ImprovedPublicTransport.Detour
       {
         nextStop = TransportLine.GetNextStop(data.m_targetBuilding);
         Vector3 lastFramePosition = data.GetLastFramePosition();
-        byte max;
-        if ((double) Mathf.Max(Mathf.Abs(lastFramePosition.x), Mathf.Abs(lastFramePosition.z)) > 4800.0 && PanelExtenderLine.CountWaitingPassengers(targetBuilding, nextStop, out max) == 0)
+        if ((double) Mathf.Max(Mathf.Abs(lastFramePosition.x), Mathf.Abs(lastFramePosition.z)) > 4800.0 && this.CheckPassengers(vehicleID, ref data, targetBuilding, nextStop) == 0)
           nextStop = (ushort) 0;
       }
+      //begin mod(+): track stats
       ushort transferSize1 = data.m_transferSize;
+      //end mod  
       PassengerShipAIDetour.UnloadPassengers(data.Info.m_vehicleAI as PassengerShipAI, vehicleID, ref data, targetBuilding, nextStop);
+      //begin mod(+): track stats
       ushort num1 = (ushort) ((uint) transferSize1 - (uint) data.m_transferSize);
       VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].LastStopGonePassengers = (int) num1;
       VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].CurrentStop = targetBuilding;
       NetManagerMod.m_cachedNodeData[(int) targetBuilding].PassengersOut += (int) num1;
+        //end mod
       if ((int) nextStop == 0)
       {
         data.m_waitCounter = (byte) 0;
@@ -83,12 +86,16 @@ namespace ImprovedPublicTransport.Detour
         data.m_targetBuilding = nextStop;
         if (!this.StartPathFind(vehicleID, ref data))
           return true;
+        //begin mod(+): track stats
         ushort transferSize2 = data.m_transferSize;
+        //end mod
         PassengerShipAIDetour.LoadPassengers(data.Info.m_vehicleAI as PassengerShipAI, vehicleID, ref data, targetBuilding, nextStop);
+        //begin mod(+): track stats
         ushort num2 = (ushort) ((uint) data.m_transferSize - (uint) transferSize2);
         int ticketPrice = data.Info.m_vehicleAI.GetTicketPrice(vehicleID, ref data);
         VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].Add((int) num2, ticketPrice);
         NetManagerMod.m_cachedNodeData[(int) targetBuilding].PassengersIn += (int) num2;
+        //end mod
         data.m_flags &= Vehicle.Flags.Created | Vehicle.Flags.Deleted | Vehicle.Flags.Spawned | Vehicle.Flags.Inverted | Vehicle.Flags.TransferToTarget | Vehicle.Flags.TransferToSource | Vehicle.Flags.Emergency1 | Vehicle.Flags.Emergency2 | Vehicle.Flags.WaitingPath | Vehicle.Flags.Stopped | Vehicle.Flags.Leaving | Vehicle.Flags.Reversed | Vehicle.Flags.TakingOff | Vehicle.Flags.Flying | Vehicle.Flags.Landing | Vehicle.Flags.WaitingSpace | Vehicle.Flags.WaitingCargo | Vehicle.Flags.GoingBack | Vehicle.Flags.WaitingTarget | Vehicle.Flags.Importing | Vehicle.Flags.Exporting | Vehicle.Flags.Parking | Vehicle.Flags.CustomName | Vehicle.Flags.OnGravel | Vehicle.Flags.WaitingLoading | Vehicle.Flags.Congestion | Vehicle.Flags.DummyTraffic | Vehicle.Flags.Underground | Vehicle.Flags.Transition | Vehicle.Flags.InsideBuilding | Vehicle.Flags.LeftHandDrive;
         data.m_flags |= Vehicle.Flags.Stopped;
         data.m_waitCounter = (byte) 0;
@@ -109,5 +116,12 @@ namespace ImprovedPublicTransport.Detour
       {
           UnityEngine.Debug.Log("UnloadPassengers");
         }
-  }
+
+      [RedirectReverse]
+      private int CheckPassengers(ushort vehicleID, ref Vehicle data, ushort currentStop, ushort nextStop)
+      {
+          UnityEngine.Debug.Log("CheckPassengers");
+          return 0;
+      }
+    }
 }

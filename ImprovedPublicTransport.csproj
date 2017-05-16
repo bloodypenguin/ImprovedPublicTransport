@@ -65,6 +65,8 @@
     <Compile Include="BuildingWatcher.cs" />
     <Compile Include="Detour\BusAIDetour.cs" />
     <Compile Include="Detour\DepotAIMod.cs" />
+    <Compile Include="Detour\PassengerBlimpAIDetour.cs" />
+    <Compile Include="Detour\PassengerFerryAIDetour.cs" />
     <Compile Include="Detour\PassengerPlaneAIDetour.cs" />
     <Compile Include="Detour\PassengerShipAIDetour.cs" />
     <Compile Include="Detour\PublicTransportStopButtonDetour.cs" />
