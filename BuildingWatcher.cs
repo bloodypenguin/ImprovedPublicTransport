@@ -18,7 +18,7 @@ namespace ImprovedPublicTransport
     private bool _initialized;
     private float _delta;
     private BuildingManager _buildingManager;
-    private Dictionary<ItemClass.SubService, HashSet<ushort>> _depotMap;
+    private Dictionary<ItemClassTriplet, HashSet<ushort>> _depotMap;
 
     public event BuildingWatcher.DepotAdded OnDepotAdded;
 
@@ -29,7 +29,7 @@ namespace ImprovedPublicTransport
       BuildingWatcher.instance = this;
       this._initialized = false;
       this._delta = 0.0f;
-      this._depotMap = new Dictionary<ItemClass.SubService, HashSet<ushort>>();
+      this._depotMap = new Dictionary<ItemClassTriplet, HashSet<ushort>>();
       base.OnCreated(threading);
     }
 
@@ -52,7 +52,8 @@ namespace ImprovedPublicTransport
                   out ItemClass.Service service, out ItemClass.SubService subService, out ItemClass.Level level)) 
               {
                 HashSet<ushort> ushortSet;
-                if (this._depotMap.TryGetValue(subService, out ushortSet)) //TODO(earalov): handle sevice and level
+                var itemClassTriplet = new ItemClassTriplet(service, subService, level);
+                if (this._depotMap.TryGetValue(itemClassTriplet, out ushortSet))
                 {
                   ushortSet.Add(num1);
                 }
@@ -60,7 +61,7 @@ namespace ImprovedPublicTransport
                 {
                   ushortSet = new HashSet<ushort>();
                   ushortSet.Add(num1);
-                  this._depotMap.Add(subService, ushortSet);
+                  this._depotMap.Add(itemClassTriplet, ushortSet);
                 }
                 this.OnDepotAdded?.Invoke(service, subService, level);
               }
@@ -79,7 +80,7 @@ namespace ImprovedPublicTransport
       {
         this._delta = 0.0f;
         HashSet<ushort> ushortSet1 = new HashSet<ushort>();
-        foreach (KeyValuePair<ItemClass.SubService, HashSet<ushort>> depot in this._depotMap) //TODO(earalov): handle sevice and level
+        foreach (KeyValuePair<ItemClassTriplet, HashSet<ushort>> depot in this._depotMap)
         {
           foreach (ushort num in depot.Value)
           {
@@ -91,10 +92,10 @@ namespace ImprovedPublicTransport
           if (ushortSet1.Count != 0)
           {
             HashSet<ushort> ushortSet2;
-            if (this._depotMap.TryGetValue(depot.Key, out ushortSet2))   //TODO(earalov): handle sevice and level
+            if (this._depotMap.TryGetValue(depot.Key, out ushortSet2))
             {  
               ushortSet2.ExceptWith((IEnumerable<ushort>) ushortSet1);
-              this.OnDepotRemoved?.Invoke(ItemClass.Service.PublicTransport, depot.Key, ItemClass.Level.Level1); //TODO(earalov): properly handle sevice and level
+              this.OnDepotRemoved?.Invoke(depot.Key.Service, depot.Key.SubService, depot.Key.Level);
             }
             ushortSet1.Clear();
           }
@@ -120,7 +121,8 @@ namespace ImprovedPublicTransport
             out ItemClass.Service service, out ItemClass.SubService subService, out ItemClass.Level level))  
                 {
           HashSet<ushort> ushortSet;
-          if (this._depotMap.TryGetValue(subService, out ushortSet)) //TODO(earalov): handle sevice and level
+          var itemClassTriplet = new ItemClassTriplet(service, subService, level);
+          if (this._depotMap.TryGetValue(itemClassTriplet, out ushortSet))
                     {
             ushortSet.Add((ushort) index);
           }
@@ -128,8 +130,8 @@ namespace ImprovedPublicTransport
           {
             ushortSet = new HashSet<ushort>();
             ushortSet.Add((ushort) index);
-            this._depotMap.Add(subService, ushortSet); //TODO(earalov): handle sevice and level
-                    }
+            this._depotMap.Add(itemClassTriplet, ushortSet);
+          }
         }
       }
       this._initialized = true;
@@ -224,7 +226,7 @@ namespace ImprovedPublicTransport
     public ushort[] GetDepots(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)  
         {
       HashSet<ushort> source;
-      if (this._depotMap.TryGetValue(subService, out source)) //TODO(earalov): handle sevice and level
+      if (this._depotMap.TryGetValue(new ItemClassTriplet(service, subService, level), out source))
                 return source.ToArray<ushort>();
       return new ushort[0];
     }
