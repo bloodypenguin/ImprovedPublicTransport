@@ -83,7 +83,7 @@ namespace ImprovedPublicTransport
           for (int index = 0; index < this._trailerData.Length; ++index)
             this._trailerData[index].Capacity = value;
         }
-        PrefabData.SetCapacity(this._info.m_class.m_subService, this._info.m_vehicleAI, value);
+        PrefabData.SetCapacity(this._info.m_class.m_service, this._info.m_class.m_subService, this._info.m_class.m_level, this._info.m_vehicleAI, value);
         if (this._info.m_class.m_subService != ItemClass.SubService.PublicTransportTaxi)
           this.EnsureCitizenUnits();
         this._changeFlag = true;
@@ -126,7 +126,9 @@ namespace ImprovedPublicTransport
     {
       get
       {
+        ItemClass.Service service = this._info.GetService();
         ItemClass.SubService subService = this._info.GetSubService();
+        ItemClass.Level level = this._info.GetClassLevel();
         switch (subService)
         {
           case ItemClass.SubService.PublicTransportBus:
@@ -135,10 +137,12 @@ namespace ImprovedPublicTransport
           case ItemClass.SubService.PublicTransportTram:
           case ItemClass.SubService.PublicTransportShip:
           case ItemClass.SubService.PublicTransportPlane:
+          case ItemClass.SubService.PublicTransportMonorail:
+          case ItemClass.SubService.PublicTransportCableCar:
             if (this._maintenanceCost == 0)
             {
-              float num = (float) this.TotalCapacity / (float) this.CarCount / (float) GameDefault.GetCapacity(subService);
-              this.MaintenanceCost = Mathf.RoundToInt((float) (PrefabData.GetMaintenanceCost(subService, this._info.m_vehicleAI) * 16) * num);
+              float num = (float) this.TotalCapacity / (float) this.CarCount / (float) GameDefault.GetCapacity(service, subService, level);
+              this.MaintenanceCost = Mathf.RoundToInt((float) (PrefabData.GetMaintenanceCost(service, subService, level, this._info.m_vehicleAI) * 16) * num);
             }
             return this._maintenanceCost;
           default:
@@ -158,13 +162,13 @@ namespace ImprovedPublicTransport
     {
       get
       {
-        return PrefabData.GetTicketPrice(this._info.m_class.m_subService, this._info.m_vehicleAI);
+        return PrefabData.GetTicketPrice(this._info.m_class.m_service, this._info.m_class.m_subService, this._info.m_class.m_level, this._info.m_vehicleAI);
       }
       set
       {
         if (this.TicketPrice == value)
           return;
-        PrefabData.SetTicketPrice(this._info.m_class.m_subService, this._info.m_vehicleAI, value);
+        PrefabData.SetTicketPrice(this._info.m_class.m_service, this._info.m_class.m_subService, this._info.m_class.m_level, this._info.m_vehicleAI, value);
         this._changeFlag = true;
       }
     }
@@ -326,98 +330,176 @@ namespace ImprovedPublicTransport
             }
 
         }
-        else if (service == ItemClass.Service.Disaster && subService == ItemClass.SubService.None && level == ItemClass.Level.Level4)
+        else if (service == ItemClass.Service.Disaster && subService == ItemClass.SubService.None && level == ItemClass.Level.Level4 && ai is BusAI)
         {
             num = (ai as BusAI).m_passengerCapacity;
         }
       return num;
     }
 
-    private static void SetCapacity(ItemClass.SubService subService, VehicleAI ai, int capacity)
+    private static void SetCapacity(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level, VehicleAI ai, int capacity)
     {
-      if (subService == ItemClass.SubService.PublicTransportBus && (UnityEngine.Object) (ai as BusAI) != (UnityEngine.Object) null)
-        (ai as BusAI).m_passengerCapacity = capacity;
-      else if (subService == ItemClass.SubService.PublicTransportMetro && (UnityEngine.Object) (ai as PassengerTrainAI) != (UnityEngine.Object) null)
-        (ai as PassengerTrainAI).m_passengerCapacity = capacity;
-      else if (subService == ItemClass.SubService.PublicTransportTrain && (UnityEngine.Object) (ai as PassengerTrainAI) != (UnityEngine.Object) null)
-        (ai as PassengerTrainAI).m_passengerCapacity = capacity;
-      else if (subService == ItemClass.SubService.PublicTransportShip && (UnityEngine.Object) (ai as PassengerShipAI) != (UnityEngine.Object) null)
-        (ai as PassengerShipAI).m_passengerCapacity = capacity;
-      else if (subService == ItemClass.SubService.PublicTransportPlane && (UnityEngine.Object) (ai as PassengerPlaneAI) != (UnityEngine.Object) null)
-        (ai as PassengerPlaneAI).m_passengerCapacity = capacity;
-      else if (subService == ItemClass.SubService.PublicTransportTaxi && (UnityEngine.Object) (ai as TaxiAI) != (UnityEngine.Object) null)
-      {
-        (ai as TaxiAI).m_travelCapacity = capacity;
-      }
-      else
-      {
-        if (subService != ItemClass.SubService.PublicTransportTram || !((UnityEngine.Object) (ai as TramAI) != (UnityEngine.Object) null))
-          return;
-        (ai as TramAI).m_passengerCapacity = capacity;
-      }
-    }
+        if (service == ItemClass.Service.PublicTransport)
+        {
+            if (level == ItemClass.Level.Level1)
+            {
+                if (subService == ItemClass.SubService.PublicTransportBus && ai is BusAI)
+                    (ai as BusAI).m_passengerCapacity = capacity;
+                else if (subService == ItemClass.SubService.PublicTransportMetro && ai is PassengerTrainAI)
+                    (ai as PassengerTrainAI).m_passengerCapacity = capacity;
+                    else if (subService == ItemClass.SubService.PublicTransportTrain && ai is PassengerTrainAI)
+                    (ai as PassengerTrainAI).m_passengerCapacity = capacity;
+                    else if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerShipAI)
+                    (ai as PassengerShipAI).m_passengerCapacity = capacity;
+                    else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerPlaneAI)
+                    (ai as PassengerPlaneAI).m_passengerCapacity = capacity;
+                    else if (subService == ItemClass.SubService.PublicTransportTaxi && ai is TaxiAI)
+                    (ai as TaxiAI).m_travelCapacity = capacity;
+                    else if (subService == ItemClass.SubService.PublicTransportTram && ai is TramAI)
+                    (ai as TramAI).m_passengerCapacity = capacity;
+                    else if (subService == ItemClass.SubService.PublicTransportMonorail && ai is PassengerTrainAI)
+                    (ai as PassengerTrainAI).m_passengerCapacity = capacity;
+                    else if (subService == ItemClass.SubService.PublicTransportCableCar && ai is CableCarAI)
+                    (ai as CableCarAI).m_passengerCapacity = capacity;
+                }
+            else if (level == ItemClass.Level.Level2)
+            {
+                if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerFerryAI)
+                    (ai as PassengerFerryAI).m_passengerCapacity = capacity;
+                    else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerBlimpAI)
+                    (ai as PassengerBlimpAI).m_passengerCapacity = capacity;
+                }
 
-    public static int GetMaintenanceCost(ItemClass.SubService subService, VehicleAI ai)
-    {
-      int num = 0;
-      if (subService == ItemClass.SubService.PublicTransportBus && (UnityEngine.Object) (ai as BusAI) != (UnityEngine.Object) null)
-        num = (ai as BusAI).m_transportInfo.m_maintenanceCostPerVehicle;
-      else if (subService == ItemClass.SubService.PublicTransportMetro && (UnityEngine.Object) (ai as PassengerTrainAI) != (UnityEngine.Object) null)
-        num = (ai as PassengerTrainAI).m_transportInfo.m_maintenanceCostPerVehicle;
-      else if (subService == ItemClass.SubService.PublicTransportTrain && (UnityEngine.Object) (ai as PassengerTrainAI) != (UnityEngine.Object) null)
-        num = (ai as PassengerTrainAI).m_transportInfo.m_maintenanceCostPerVehicle;
-      else if (subService == ItemClass.SubService.PublicTransportShip && (UnityEngine.Object) (ai as PassengerShipAI) != (UnityEngine.Object) null)
-        num = (ai as PassengerShipAI).m_transportInfo.m_maintenanceCostPerVehicle;
-      else if (subService == ItemClass.SubService.PublicTransportPlane && (UnityEngine.Object) (ai as PassengerPlaneAI) != (UnityEngine.Object) null)
-        num = (ai as PassengerPlaneAI).m_transportInfo.m_maintenanceCostPerVehicle;
-      else if (subService == ItemClass.SubService.PublicTransportTram && (UnityEngine.Object) (ai as TramAI) != (UnityEngine.Object) null)
-        num = (ai as TramAI).m_transportInfo.m_maintenanceCostPerVehicle;
-      return num;
-    }
+        }
+        else if (service == ItemClass.Service.Disaster && subService == ItemClass.SubService.None && level == ItemClass.Level.Level4 && ai is BusAI)
+        {
+            (ai as BusAI).m_passengerCapacity = capacity;
+            }
+        }
 
-    private static int GetTicketPrice(ItemClass.SubService subService, VehicleAI ai)
+    public static int GetMaintenanceCost(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level, VehicleAI ai)
     {
-      int num = 0;
-      if (subService == ItemClass.SubService.PublicTransportBus && (UnityEngine.Object) (ai as BusAI) != (UnityEngine.Object) null)
-        num = (ai as BusAI).m_ticketPrice;
-      else if (subService == ItemClass.SubService.PublicTransportMetro && (UnityEngine.Object) (ai as PassengerTrainAI) != (UnityEngine.Object) null)
-        num = (ai as PassengerTrainAI).m_ticketPrice;
-      else if (subService == ItemClass.SubService.PublicTransportTrain && (UnityEngine.Object) (ai as PassengerTrainAI) != (UnityEngine.Object) null)
-        num = (ai as PassengerTrainAI).m_ticketPrice;
-      else if (subService == ItemClass.SubService.PublicTransportShip && (UnityEngine.Object) (ai as PassengerShipAI) != (UnityEngine.Object) null)
-        num = (ai as PassengerShipAI).m_ticketPrice;
-      else if (subService == ItemClass.SubService.PublicTransportPlane && (UnityEngine.Object) (ai as PassengerPlaneAI) != (UnityEngine.Object) null)
-        num = (ai as PassengerPlaneAI).m_ticketPrice;
-      else if (subService == ItemClass.SubService.PublicTransportTaxi && (UnityEngine.Object) (ai as TaxiAI) != (UnityEngine.Object) null)
-        num = (ai as TaxiAI).m_pricePerKilometer;
-      else if (subService == ItemClass.SubService.PublicTransportTram && (UnityEngine.Object) (ai as TramAI) != (UnityEngine.Object) null)
-        num = (ai as TramAI).m_ticketPrice;
-      return num;
-    }
+        int num = 0;
+        if (service == ItemClass.Service.PublicTransport)
+        {
+            if (level == ItemClass.Level.Level1)
+            {
+                if (subService == ItemClass.SubService.PublicTransportBus && ai is BusAI)
+                    num = (ai as BusAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+                    else if (subService == ItemClass.SubService.PublicTransportMetro && ai is PassengerTrainAI)
+                    num = (ai as PassengerTrainAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+                    else if (subService == ItemClass.SubService.PublicTransportTrain && ai is PassengerTrainAI)
+                    num = (ai as PassengerTrainAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+                    else if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerShipAI)
+                    num = (ai as PassengerShipAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+                    else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerPlaneAI)
+                    num = (ai as PassengerPlaneAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+                    else if (subService == ItemClass.SubService.PublicTransportTaxi && ai is TaxiAI)
+                    num = (ai as TaxiAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+                    else if (subService == ItemClass.SubService.PublicTransportTram && ai is TramAI)
+                    num = (ai as TramAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+                    else if (subService == ItemClass.SubService.PublicTransportMonorail && ai is PassengerTrainAI)
+                    num = (ai as PassengerTrainAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+                    else if (subService == ItemClass.SubService.PublicTransportCableCar && ai is CableCarAI)
+                    num = (ai as CableCarAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+                }
+            else if (level == ItemClass.Level.Level2)
+            {
+                if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerFerryAI)
+                    num = (ai as PassengerFerryAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+                    else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerBlimpAI)
+                    num = (ai as PassengerBlimpAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+                }
 
-    private static void SetTicketPrice(ItemClass.SubService subService, VehicleAI ai, int ticketPrice)
+        }
+        else if (service == ItemClass.Service.Disaster && subService == ItemClass.SubService.None && level == ItemClass.Level.Level4 && ai is BusAI)
+        {
+            num = (ai as BusAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+        }
+        return num;
+        }
+
+    private static int GetTicketPrice(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level, VehicleAI ai)
     {
-      if (subService == ItemClass.SubService.PublicTransportBus && (UnityEngine.Object) (ai as BusAI) != (UnityEngine.Object) null)
-        (ai as BusAI).m_ticketPrice = ticketPrice;
-      else if (subService == ItemClass.SubService.PublicTransportMetro && (UnityEngine.Object) (ai as PassengerTrainAI) != (UnityEngine.Object) null)
-        (ai as PassengerTrainAI).m_ticketPrice = ticketPrice;
-      else if (subService == ItemClass.SubService.PublicTransportTrain && (UnityEngine.Object) (ai as PassengerTrainAI) != (UnityEngine.Object) null)
-        (ai as PassengerTrainAI).m_ticketPrice = ticketPrice;
-      else if (subService == ItemClass.SubService.PublicTransportShip && (UnityEngine.Object) (ai as PassengerShipAI) != (UnityEngine.Object) null)
-        (ai as PassengerShipAI).m_ticketPrice = ticketPrice;
-      else if (subService == ItemClass.SubService.PublicTransportPlane && (UnityEngine.Object) (ai as PassengerPlaneAI) != (UnityEngine.Object) null)
-        (ai as PassengerPlaneAI).m_ticketPrice = ticketPrice;
-      else if (subService == ItemClass.SubService.PublicTransportTaxi && (UnityEngine.Object) (ai as TaxiAI) != (UnityEngine.Object) null)
-      {
-        (ai as TaxiAI).m_pricePerKilometer = ticketPrice;
-      }
-      else
-      {
-        if (subService != ItemClass.SubService.PublicTransportTram || !((UnityEngine.Object) (ai as TramAI) != (UnityEngine.Object) null))
-          return;
-        (ai as TramAI).m_ticketPrice = ticketPrice;
-      }
-    }
+        int num = 0;
+        if (service == ItemClass.Service.PublicTransport)
+        {
+            if (level == ItemClass.Level.Level1)
+            {
+                if (subService == ItemClass.SubService.PublicTransportBus && ai is BusAI)
+                    num = (ai as BusAI).m_ticketPrice;
+                else if (subService == ItemClass.SubService.PublicTransportMetro && ai is PassengerTrainAI)
+                    num = (ai as PassengerTrainAI).m_ticketPrice;
+                    else if (subService == ItemClass.SubService.PublicTransportTrain && ai is PassengerTrainAI)
+                    num = (ai as PassengerTrainAI).m_ticketPrice;
+                    else if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerShipAI)
+                    num = (ai as PassengerShipAI).m_ticketPrice;
+                    else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerPlaneAI)
+                    num = (ai as PassengerPlaneAI).m_ticketPrice;
+                    else if (subService == ItemClass.SubService.PublicTransportTaxi && ai is TaxiAI)
+                    num = (ai as TaxiAI).m_pricePerKilometer;
+                    else if (subService == ItemClass.SubService.PublicTransportTram && ai is TramAI)
+                    num = (ai as TramAI).m_ticketPrice;
+                    else if (subService == ItemClass.SubService.PublicTransportMonorail && ai is PassengerTrainAI)
+                    num = (ai as PassengerTrainAI).m_ticketPrice;
+                    else if (subService == ItemClass.SubService.PublicTransportCableCar && ai is CableCarAI)
+                    num = (ai as CableCarAI).m_ticketPrice;
+                }
+            else if (level == ItemClass.Level.Level2)
+            {
+                if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerFerryAI)
+                    num = (ai as PassengerFerryAI).m_ticketPrice;
+                    else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerBlimpAI)
+                    num = (ai as PassengerBlimpAI).m_ticketPrice;
+                }
+
+        }
+        else if (service == ItemClass.Service.Disaster && subService == ItemClass.SubService.None && level == ItemClass.Level.Level4 && ai is BusAI)
+        {
+            num = (ai as BusAI).m_ticketPrice;
+            }
+        return num;
+        }
+
+    private static void SetTicketPrice(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level, VehicleAI ai, int ticketPrice)
+    {
+        if (service == ItemClass.Service.PublicTransport)
+        {
+            if (level == ItemClass.Level.Level1)
+            {
+                if (subService == ItemClass.SubService.PublicTransportBus && ai is BusAI)
+                    (ai as BusAI).m_ticketPrice = ticketPrice;
+                else if (subService == ItemClass.SubService.PublicTransportMetro && ai is PassengerTrainAI)
+                    (ai as PassengerTrainAI).m_ticketPrice = ticketPrice;
+                    else if (subService == ItemClass.SubService.PublicTransportTrain && ai is PassengerTrainAI)
+                    (ai as PassengerTrainAI).m_ticketPrice = ticketPrice;
+                    else if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerShipAI)
+                    (ai as PassengerShipAI).m_ticketPrice = ticketPrice;
+                    else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerPlaneAI)
+                    (ai as PassengerPlaneAI).m_ticketPrice = ticketPrice;
+                    else if (subService == ItemClass.SubService.PublicTransportTaxi && ai is TaxiAI)
+                    (ai as TaxiAI).m_pricePerKilometer = ticketPrice;
+                    else if (subService == ItemClass.SubService.PublicTransportTram && ai is TramAI)
+                    (ai as TramAI).m_ticketPrice = ticketPrice;
+                    else if (subService == ItemClass.SubService.PublicTransportMonorail && ai is PassengerTrainAI)
+                    (ai as PassengerTrainAI).m_ticketPrice = ticketPrice;
+                    else if (subService == ItemClass.SubService.PublicTransportCableCar && ai is CableCarAI)
+                    (ai as CableCarAI).m_ticketPrice = ticketPrice;
+                }
+            else if (level == ItemClass.Level.Level2)
+            {
+                if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerFerryAI)
+                    (ai as PassengerFerryAI).m_ticketPrice = ticketPrice;
+                    else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerBlimpAI)
+                    (ai as PassengerBlimpAI).m_ticketPrice = ticketPrice;
+                }
+
+        }
+        else if (service == ItemClass.Service.Disaster && subService == ItemClass.SubService.None && level == ItemClass.Level.Level4 && ai is BusAI)
+        {
+            (ai as BusAI).m_ticketPrice = ticketPrice;
+            }
+        }
 
     private void LoadPrefabData()
     {

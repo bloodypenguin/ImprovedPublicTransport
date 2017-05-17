@@ -8,6 +8,7 @@ using ColossalFramework;
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using System;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
@@ -21,7 +22,6 @@ namespace ImprovedPublicTransport
     private bool _initialized;
     private ItemClass.SubService _selectedSubService;
     private ItemClass.Service _selectedService;
-    private ItemClass.Level _selectedLevel;
 
     private int _position;
     private bool _hide;
@@ -642,7 +642,7 @@ namespace ImprovedPublicTransport
     {
       if (this._selectedIndex <= -1 || this._selectedSubService == ItemClass.SubService.PublicTransportTaxi)
         return;
-      PrefabData prefab = VehiclePrefabs.instance.GetPrefabs(this._selectedService, this._selectedSubService, this._selectedLevel)[this._selectedIndex];
+      PrefabData prefab = GetPrefabs()[this._selectedIndex];
       int carCount = prefab.CarCount;
       int int32 = Utils.ToInt32(text);
       int num1 = 0;
@@ -654,11 +654,21 @@ namespace ImprovedPublicTransport
       UITextField uiTextField = this._rightSidePanel.Find<UITextField>("MaintenanceCost");
       if (!uiTextField.parent.enabled)
         return;
-      float num2 = (float) num1 / (float) carCount / (float) GameDefault.GetCapacity(this._selectedSubService);
-      uiTextField.text = Mathf.RoundToInt((float) (PrefabData.GetMaintenanceCost(this._selectedSubService, prefab.Info.m_vehicleAI) * 16) * num2).ToString();
+      float num2 = (float) num1 / (float) carCount / (float) GameDefault.GetCapacity(this._selectedService, this._selectedSubService, SelectedLevel);
+      uiTextField.text = Mathf.RoundToInt((float) (PrefabData.GetMaintenanceCost(this._selectedService, this._selectedSubService, SelectedLevel, prefab.Info.m_vehicleAI) * 16) * num2).ToString();
     }
 
-    private void OnApplyButtonClick(UIComponent component, UIMouseEventParameter eventParam)
+      private ItemClass.Level SelectedLevel => (this._selectedSubService == ItemClass.SubService.PublicTransportPlane ||
+                                                this._selectedSubService == ItemClass.SubService.PublicTransportShip)
+          ? ItemClass.Level.Level2
+          : ItemClass.Level.Level1; //TODO(earalov): handle regional trains and planes
+
+      private PrefabData[] GetPrefabs()
+      {
+          return VehiclePrefabs.instance.GetPrefabs(this._selectedService, this._selectedSubService, SelectedLevel);
+      }
+
+      private void OnApplyButtonClick(UIComponent component, UIMouseEventParameter eventParam)
     {
       if (this._selectedIndex <= -1)
         return;
@@ -667,7 +677,7 @@ namespace ImprovedPublicTransport
       UITextField uiTextField3 = this._rightSidePanel.Find<UITextField>("TicketPrice");
       UITextField uiTextField4 = this._rightSidePanel.Find<UITextField>("MaxSpeed");
       UICheckBox uiCheckBox = this._rightSidePanel.Find<UICheckBox>("EngineOnBothEnds");
-      PrefabData prefab = VehiclePrefabs.instance.GetPrefabs(this._selectedService, this._selectedSubService, this._selectedLevel)[this._selectedIndex];
+      PrefabData prefab = GetPrefabs()[this._selectedIndex];
       int capacity = Utils.ToInt32(uiTextField1.text) / prefab.CarCount;
       int int32_1 = Utils.ToInt32(uiTextField2.text);
       int int32_2 = Utils.ToInt32(uiTextField3.text);
@@ -680,17 +690,16 @@ namespace ImprovedPublicTransport
     private void OnDefaultButtonClick(UIComponent component, UIMouseEventParameter eventParam)
     {
       if (this._selectedIndex > -1)
-        VehiclePrefabs.instance.GetPrefabs(this._selectedService, this._selectedSubService, this._selectedLevel)[this._selectedIndex].SetDefaults();
+        GetPrefabs()[this._selectedIndex].SetDefaults();
       this.UpdateBindings();
     }
 
     private void SetTransportType(TransportInfo.TransportType transportType, VehicleInfo selectedPrefab = null)
     {
       Color transportColor = Singleton<TransportManager>.instance.m_properties.m_transportColors[(int) transportType];
-      ItemClassTriplet classTriplet = VehicleEditor.GetSubService(transportType);
+      ItemClassTriplet classTriplet = VehicleEditor.GetItemClass(transportType);
       this._selectedService = classTriplet.Service;
       this._selectedSubService = classTriplet.SubService;
-      this._selectedLevel = classTriplet.Level;
       this._rightSidePanel.color = (Color32) transportColor;
       UIComponent uiComponent = this._rightSidePanel.Find("CaptionPanel");
       UIPanel uiPanel1 = this._rightSidePanel.Find<UIPanel>("MaintenanceRow");
@@ -701,7 +710,6 @@ namespace ImprovedPublicTransport
       this._rightSidePanel.Find<UIPanel>("ButtonRow");
       Color32 color32 = (Color32) transportColor;
       uiComponent.color = color32;
-      //TODO(earalov): disable some elements for new transport types
       if (this._selectedSubService == ItemClass.SubService.PublicTransportTaxi)
       {
         uiPanel1.enabled = false;
@@ -742,24 +750,7 @@ namespace ImprovedPublicTransport
         this.SetTransportType(transportType, prefab);
     }
 
-    public struct ItemClassTriplet
-    {
-
-        public ItemClassTriplet(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
-        {
-            this.Service = service;
-            this.SubService = subService;
-            this.Level = level;
-        }
-
-
-        public ItemClass.Service Service { get; }
-        public ItemClass.SubService SubService { get; }
-        public ItemClass.Level Level { get; }
-     }
-
-
-    private static ItemClassTriplet GetSubService(TransportInfo.TransportType transportType)
+    private static ItemClassTriplet GetItemClass(TransportInfo.TransportType transportType)
         {
       switch (transportType)
       {
@@ -824,7 +815,7 @@ namespace ImprovedPublicTransport
       UICheckBox uiCheckBox = this._rightSidePanel.Find<UICheckBox>("EngineOnBothEnds");
       if (this._selectedIndex > -1)
       {
-        PrefabData prefab = VehiclePrefabs.instance.GetPrefabs(this._selectedService, this._selectedSubService, this._selectedLevel)[this._selectedIndex];
+        PrefabData prefab = GetPrefabs()[this._selectedIndex];
         uiTextField1.text = prefab.TotalCapacity.ToString();
         UITextField uiTextField5 = uiTextField2;
         int num = prefab.MaintenanceCost;
@@ -870,7 +861,7 @@ namespace ImprovedPublicTransport
       if ((UnityEngine.Object) dropDown == (UnityEngine.Object) null)
         return;
       dropDown.ClearItems();
-      PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(this._selectedService, this._selectedSubService, this._selectedLevel);
+      PrefabData[] prefabs = GetPrefabs();
       int length = prefabs.Length;
       int num = 0;
       for (int index = 0; index < length; ++index)
