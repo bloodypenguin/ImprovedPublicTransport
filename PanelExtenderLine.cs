@@ -19,7 +19,7 @@ namespace ImprovedPublicTransport
     private bool _initialized;
     private int _cachedLineID;
     private ItemClass.SubService _cachedSubService;
-    private Dictionary<ItemClass.SubService, bool> _updateDepots;
+    private Dictionary<ItemClassTriplet, bool> _updateDepots;
     private int _cachedSimCount;
     private int _cachedQueuedCount;
     private int _cachedStopCount;
@@ -47,25 +47,25 @@ namespace ImprovedPublicTransport
 
     public PanelExtenderLine()
     {
-      Dictionary<ItemClass.SubService, bool> dictionary = new Dictionary<ItemClass.SubService, bool>();
-      int num1 = 10;
-      int num2 = 1;
-      dictionary.Add((ItemClass.SubService) num1, num2 != 0);
-      int num3 = 11;
-      int num4 = 1;
-      dictionary.Add((ItemClass.SubService) num3, num4 != 0);
-      int num5 = 12;
-      int num6 = 1;
-      dictionary.Add((ItemClass.SubService) num5, num6 != 0);
-      int num7 = 13;
-      int num8 = 1;
-      dictionary.Add((ItemClass.SubService) num7, num8 != 0);
-      int num9 = 14;
-      int num10 = 1;
-      dictionary.Add((ItemClass.SubService) num9, num10 != 0);
-      int num11 = 16;
-      int num12 = 1;
-      dictionary.Add((ItemClass.SubService) num11, num12 != 0);
+      Dictionary<ItemClassTriplet, bool> dictionary = new Dictionary<ItemClassTriplet, bool>();
+        dictionary.Add(new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportBus,
+            ItemClass.Level.Level1), true);
+        dictionary.Add(new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTrain,
+            ItemClass.Level.Level1), true);
+        dictionary.Add(new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportMetro,
+            ItemClass.Level.Level1), true);
+        dictionary.Add(new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportPlane,
+            ItemClass.Level.Level1), true);
+        dictionary.Add(new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportPlane,
+            ItemClass.Level.Level2), true);
+        dictionary.Add(new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportShip,
+            ItemClass.Level.Level1), true);
+        dictionary.Add(new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportShip,
+            ItemClass.Level.Level2), true);
+        dictionary.Add(new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTram,
+            ItemClass.Level.Level1), true);
+            dictionary.Add(new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportMonorail,
+            ItemClass.Level.Level1), true);
       this._updateDepots = dictionary;
     }
 
@@ -230,12 +230,13 @@ namespace ImprovedPublicTransport
         ItemClass.SubService subService = itemClass.m_subService;
         ItemClass.Service service = itemClass.m_service;
         ItemClass.Level level = itemClass.m_level;
+                ItemClassTriplet triplet = new ItemClassTriplet(service, subService,  level);
 
-        if (subService != this._cachedSubService | flag1 || this._updateDepots[subService])
+        if (subService != this._cachedSubService | flag1 || this._updateDepots[triplet])
         {
           this.PopulateDepotDropDown(service, subService, level);
           this.PopulatePrefabListBox(service, subService, level);
-          this._updateDepots[subService] = false;
+          this._updateDepots[triplet] = false;
         }
         if (this._depotDropDown.Items.Length == 0)
           this._depotDropDown.Text = Localization.Get("LINE_PANEL_NO_DEPOT_FOUND");
@@ -825,7 +826,7 @@ namespace ImprovedPublicTransport
 
     private void OnDepotChanged(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
     {
-      this._updateDepots[subService] = true; //TODO(earalov): handle service and level
+        this._updateDepots[new ItemClassTriplet(service, subService, level)] = true;
     }
 
     private void PopulateDepotDropDown(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)

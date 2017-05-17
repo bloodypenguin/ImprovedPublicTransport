@@ -14,5 +14,7 @@
         public ItemClass.Service Service { get; }
         public ItemClass.SubService SubService { get; }
         public ItemClass.Level Level { get; }
+
+
     }
 }
