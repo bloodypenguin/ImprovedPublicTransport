@@ -81,6 +81,11 @@ namespace ImprovedPublicTransport2.OptionsFramework.Extensions
             {
                 return group.AddSlider<T>(description, propertyName, sliderAttribute);
             }
+            var buttonAttribute = OptionsWrapper<T>.Options.GetAttribute<T, ButtonAttribute>(propertyName);
+            if (buttonAttribute != null)
+            {
+                return group.AddButton<T>(description, propertyName, buttonAttribute);
+            }
             //TODO: more control types
             return null;
         }
@@ -118,6 +123,14 @@ namespace ImprovedPublicTransport2.OptionsFramework.Extensions
                     property.SetValue(OptionsWrapper<T>.Options, b, null);
                     OptionsWrapper<T>.SaveOptions();
                     attr.Action<bool>().Invoke(b);
+                });
+        }
+
+        private static UIButton AddButton<T>(this UIHelperBase group, string text, string propertyName, ButtonAttribute attr)
+        {
+            return (UIButton)group.AddButton(text, ()=> 
+                {
+                    attr.Action().Invoke();
                 });
         }
 
