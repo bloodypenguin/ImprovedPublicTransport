@@ -111,7 +111,7 @@ namespace ImprovedPublicTransport2
             this.m_VehicleType = uiSprite1;
             UITextField uiTextField = uiPanel1.AddUIComponent<UITextField>();
             uiTextField.name = "StopName";
-            uiTextField.font = UIHelper.Font;
+            uiTextField.font = UIUtils.Font;
             uiTextField.height = 25f;
             uiTextField.width = 200f;
             uiTextField.maxLength = 32;
@@ -131,7 +131,7 @@ namespace ImprovedPublicTransport2
             dropDown.size = new Vector2(30f, 25f);
             dropDown.ListWidth = 200f;
             dropDown.DropDownPanelAlignParent = (UIComponent) this;
-            dropDown.Font = UIHelper.Font;
+            dropDown.Font = UIUtils.Font;
             dropDown.position = new Vector3((float) ((double) this.width / 2.0 + (double) uiTextField.width / 2.0),
                 (float) ((double) dropDown.height / 2.0 - 20.0));
             dropDown.tooltip = Localization.Get("STOP_PANEL_SUGGESTED_NAMES_TOOLTIP");
@@ -191,7 +191,7 @@ namespace ImprovedPublicTransport2
             uiPanel3.size = vector2_1;
             UILabel uiLabel1 = uiPanel3.AddUIComponent<UILabel>();
             uiLabel1.name = "PassengerCount";
-            uiLabel1.font = UIHelper.Font;
+            uiLabel1.font = UIUtils.Font;
             uiLabel1.autoSize = true;
             uiLabel1.height = 15f;
             uiLabel1.textScale = 13f / 16f;
@@ -215,7 +215,7 @@ namespace ImprovedPublicTransport2
             UILabel uiLabel2 = uiPanel4.AddUIComponent<UILabel>();
             uiLabel2.name = "BoredCountdown";
             uiLabel2.tooltip = Localization.Get("STOP_PANEL_BORED_TIMER_TOOLTIP");
-            uiLabel2.font = UIHelper.Font;
+            uiLabel2.font = UIUtils.Font;
             uiLabel2.autoSize = true;
             uiLabel2.height = 15f;
             uiLabel2.textScale = 13f / 16f;
@@ -300,7 +300,7 @@ namespace ImprovedPublicTransport2
             uiCheckBox.checkedBoxObject.size = new Vector2(16f, 16f);
             uiCheckBox.checkedBoxObject.relativePosition = Vector3.zero;
             uiCheckBox.label = uiCheckBox.AddUIComponent<UILabel>();
-            uiCheckBox.label.font = UIHelper.Font;
+            uiCheckBox.label.font = UIUtils.Font;
             uiCheckBox.label.textColor = new Color32((byte) 185, (byte) 221, (byte) 254, byte.MaxValue);
             uiCheckBox.label.disabledTextColor = (Color32) Color.black;
             uiCheckBox.label.textScale = 13f / 16f;
@@ -330,7 +330,7 @@ namespace ImprovedPublicTransport2
             UILabel uiLabel7 = uiPanel7.AddUIComponent<UILabel>();
             uiLabel7.name = "Line";
             uiLabel7.anchor = UIAnchorStyle.Left | UIAnchorStyle.CenterVertical;
-            uiLabel7.font = UIHelper.Font;
+            uiLabel7.font = UIUtils.Font;
             uiLabel7.autoSize = true;
             uiLabel7.height = 25f;
             uiLabel7.textScale = 13f / 16f;
@@ -338,7 +338,7 @@ namespace ImprovedPublicTransport2
             uiLabel7.verticalAlignment = UIVerticalAlignment.Middle;
             uiLabel7.relativePosition = new Vector3(0.0f, 5f);
             this.m_Line = uiLabel7;
-            UIButton button1 = UIHelper.CreateButton((UIComponent) uiPanel7);
+            UIButton button1 = UIUtils.CreateButton((UIComponent) uiPanel7);
             button1.name = "ModifyLine";
             button1.autoSize = true;
             button1.textPadding = new RectOffset(10, 10, 4, 2);
@@ -361,7 +361,7 @@ namespace ImprovedPublicTransport2
             uiPanel8.autoLayoutStart = (LayoutStart) num36;
             Vector2 vector2_6 = new Vector2(345f, 32f);
             uiPanel8.size = vector2_6;
-            UIButton button2 = UIHelper.CreateButton((UIComponent) uiPanel8);
+            UIButton button2 = UIUtils.CreateButton((UIComponent) uiPanel8);
             button2.name = "PreviousStop";
             button2.textPadding = new RectOffset(10, 10, 4, 0);
             button2.text = Localization.Get("STOP_PANEL_PREVIOUS");
@@ -370,7 +370,7 @@ namespace ImprovedPublicTransport2
             button2.size = new Vector2(110f, 32f);
             button2.wordWrap = true;
             button2.eventClick += new MouseEventHandler(this.OnPreviousStopClick);
-            UIButton button3 = UIHelper.CreateButton((UIComponent) uiPanel8);
+            UIButton button3 = UIUtils.CreateButton((UIComponent) uiPanel8);
             button3.name = "DeleteStop";
             button3.textPadding = new RectOffset(10, 10, 4, 0);
             button3.text = Localization.Get("STOP_PANEL_DELETE_STOP");
@@ -384,7 +384,7 @@ namespace ImprovedPublicTransport2
             button3.pressedTextColor = (Color32) Color.red;
             button3.eventClick += new MouseEventHandler(this.OnDeleteStopClick);
             this.m_DeleteStop = button3;
-            UIButton button4 = UIHelper.CreateButton((UIComponent) uiPanel8);
+            UIButton button4 = UIUtils.CreateButton((UIComponent) uiPanel8);
             button4.name = "NextStop";
             button4.textPadding = new RectOffset(10, 10, 4, 0);
             button4.text = Localization.Get("STOP_PANEL_NEXT");
@@ -410,14 +410,14 @@ namespace ImprovedPublicTransport2
             uiPanel.autoLayoutStart = LayoutStart.TopLeft;
             uiPanel.size = new Vector2(width, y);
             label1 = uiPanel.AddUIComponent<UILabel>();
-            label1.font = UIHelper.Font;
+            label1.font = UIUtils.Font;
             label1.autoSize = false;
             label1.size = new Vector2((float) (((double) width - 3.0) * 0.340000003576279), y);
             label1.textScale = 13f / 16f;
             label1.textColor = new Color32((byte) 185, (byte) 221, (byte) 254, byte.MaxValue);
             label1.wordWrap = true;
             label2 = uiPanel.AddUIComponent<UILabel>();
-            label2.font = UIHelper.Font;
+            label2.font = UIUtils.Font;
             label2.autoSize = false;
             label2.size = new Vector2((float) (((double) width - 3.0) * 0.219999998807907), y);
             label2.textScale = 13f / 16f;
@@ -425,7 +425,7 @@ namespace ImprovedPublicTransport2
             label2.textAlignment = UIHorizontalAlignment.Right;
             label2.wordWrap = true;
             label3 = uiPanel.AddUIComponent<UILabel>();
-            label3.font = UIHelper.Font;
+            label3.font = UIUtils.Font;
             label3.autoSize = false;
             label3.size = new Vector2((float) (((double) width - 3.0) * 0.219999998807907), y);
             label3.textScale = 13f / 16f;
@@ -433,7 +433,7 @@ namespace ImprovedPublicTransport2
             label3.textAlignment = UIHorizontalAlignment.Right;
             label3.wordWrap = true;
             label4 = uiPanel.AddUIComponent<UILabel>();
-            label4.font = UIHelper.Font;
+            label4.font = UIUtils.Font;
             label4.autoSize = false;
             label4.size = new Vector2((float) (((double) width - 3.0) * 0.219999998807907), y);
             label4.textScale = 13f / 16f;
@@ -611,7 +611,7 @@ namespace ImprovedPublicTransport2
 
         private void CreateButton()
         {
-            UIButton button = UIHelper.CreateButton(this.m_unbunching.parent);
+            UIButton button = UIUtils.CreateButton(this.m_unbunching.parent);
             button.name = "UpdateCloseStops";
             button.autoSize = true;
             button.textPadding = new RectOffset(10, 10, 4, 2);

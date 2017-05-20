@@ -50,7 +50,7 @@ namespace ImprovedPublicTransport2
       uiLabel1.name = "Title";
       uiLabel1.text = Localization.Get("SETTINGS");
       uiLabel1.textAlignment = UIHorizontalAlignment.Center;
-      uiLabel1.font = UIHelper.Font;
+      uiLabel1.font = UIUtils.Font;
       uiLabel1.position = new Vector3((float) ((double) this.width / 2.0 - (double) uiLabel1.width / 2.0), (float) ((double) uiLabel1.height / 2.0 - 20.0));
       UIButton uiButton = this.AddUIComponent<UIButton>();
       uiButton.name = "CloseButton";
@@ -101,14 +101,14 @@ namespace ImprovedPublicTransport2
       uiPanel3.autoLayoutPadding = rectOffset2;
       int num9 = 1;
       uiPanel3.autoLayout = num9 != 0;
-      UICheckBox checkBox1 = UIHelper.CreateCheckBox((UIComponent) uiPanel3);
+      UICheckBox checkBox1 = UIUtils.CreateCheckBox((UIComponent) uiPanel3);
       checkBox1.name = "BudgetControl";
       checkBox1.text = Localization.Get("SETTINGS_ENABLE_BUDGET_CONTROL");
       checkBox1.tooltip = Localization.Get("SETTINGS_BUDGET_CONTROL_TOOLTIP") + System.Environment.NewLine + Localization.Get("EXPLANATION_BUDGET_CONTROL");
       checkBox1.size = new Vector2(229f, 30f);
       checkBox1.eventCheckChanged += new PropertyChangedEventHandler<bool>(this.OnBudgetCheckChanged);
       this._budgetControl = checkBox1;
-      UIButton button1 = UIHelper.CreateButton((UIComponent) uiPanel2);
+      UIButton button1 = UIUtils.CreateButton((UIComponent) uiPanel2);
       string str2 = Localization.Get("SETTINGS_UPDATE");
       button1.text = str2;
       string str3 = Localization.Get("SETTINGS_BUDGET_BUTTON_TOOLTIP");
@@ -141,7 +141,7 @@ namespace ImprovedPublicTransport2
       uiPanel5.autoLayoutPadding = rectOffset3;
       int num15 = 1;
       uiPanel5.autoLayout = num15 != 0;
-      UICheckBox checkBox2 = UIHelper.CreateCheckBox((UIComponent) uiPanel5);
+      UICheckBox checkBox2 = UIUtils.CreateCheckBox((UIComponent) uiPanel5);
       checkBox2.name = "CompatibilityMode";
       checkBox2.text = Localization.Get("SETTINGS_COMPATIBILITY_MODE");
       checkBox2.tooltip = Localization.Get("SETTINGS_COMPATIBILITY_MODE_TOOLTIP");
@@ -160,7 +160,7 @@ namespace ImprovedPublicTransport2
       UILabel uiLabel2 = uiPanel6.AddUIComponent<UILabel>();
       string str4 = Localization.Get("SETTINGS_SPAWN_TIME_INTERVAL");
       uiLabel2.text = str4;
-      UIFont font1 = UIHelper.Font;
+      UIFont font1 = UIUtils.Font;
       uiLabel2.font = font1;
       Color32 white1 = (Color32) Color.white;
       uiLabel2.textColor = white1;
@@ -192,7 +192,7 @@ namespace ImprovedPublicTransport2
       uiTextField1.verticalAlignment = UIVerticalAlignment.Middle;
       uiTextField1.padding = new RectOffset(0, 0, 4, 0);
       this._spawnTimeInterval = uiTextField1;
-      UIButton button2 = UIHelper.CreateButton((UIComponent) uiPanel6);
+      UIButton button2 = UIUtils.CreateButton((UIComponent) uiPanel6);
       string str5 = Localization.Get("SETTINGS_RESET");
       button2.text = str5;
       string str6 = Localization.Get("SETTINGS_SPAWN_TIME_INTERVAL_BUTTON_TOOLTIP");
@@ -217,7 +217,7 @@ namespace ImprovedPublicTransport2
       UILabel uiLabel3 = uiPanel7.AddUIComponent<UILabel>();
       string str7 = Localization.Get("SETTINGS_UNBUNCHING_AGGRESSION");
       uiLabel3.text = str7;
-      UIFont font2 = UIHelper.Font;
+      UIFont font2 = UIUtils.Font;
       uiLabel3.font = font2;
       Color32 white2 = (Color32) Color.white;
       uiLabel3.textColor = white2;
@@ -261,7 +261,7 @@ namespace ImprovedPublicTransport2
       UILabel uiLabel4 = uiPanel8.AddUIComponent<UILabel>();
       string str8 = Localization.Get("SETTINGS_VEHICLE_COUNT");
       uiLabel4.text = str8;
-      UIFont font3 = UIHelper.Font;
+      UIFont font3 = UIUtils.Font;
       uiLabel4.font = font3;
       Color32 white3 = (Color32) Color.white;
       uiLabel4.textColor = white3;
@@ -313,7 +313,7 @@ namespace ImprovedPublicTransport2
       uiPanel10.autoLayoutPadding = rectOffset4;
       int num36 = 1;
       uiPanel10.autoLayout = num36 != 0;
-      UICheckBox checkBox3 = UIHelper.CreateCheckBox((UIComponent) uiPanel10);
+      UICheckBox checkBox3 = UIUtils.CreateCheckBox((UIComponent) uiPanel10);
       checkBox3.name = "ShowLineInfo";
       checkBox3.text = Localization.Get("SETTINGS_AUTOSHOW_LINE_INFO");
       checkBox3.tooltip = Localization.Get("SETTINGS_AUTOSHOW_LINE_INFO_TOOLTIP");
@@ -332,7 +332,7 @@ namespace ImprovedPublicTransport2
       UILabel uiLabel5 = uiPanel11.AddUIComponent<UILabel>();
       string str9 = Localization.Get("SETTINGS_SPEED");
       uiLabel5.text = str9;
-      UIFont font4 = UIHelper.Font;
+      UIFont font4 = UIUtils.Font;
       uiLabel5.font = font4;
       Color32 white4 = (Color32) Color.white;
       uiLabel5.textColor = white4;
@@ -381,7 +381,7 @@ namespace ImprovedPublicTransport2
       UILabel uiLabel6 = uiPanel13.AddUIComponent<UILabel>();
       string str10 = Localization.Get("SETTINGS_LINE_DELETION_TOOL");
       uiLabel6.text = str10;
-      UIFont font5 = UIHelper.Font;
+      UIFont font5 = UIUtils.Font;
       uiLabel6.font = font5;
       Color32 white5 = (Color32) Color.white;
       uiLabel6.textColor = white5;
@@ -395,7 +395,7 @@ namespace ImprovedPublicTransport2
       uiLabel6.width = (float) num45;
       int num46 = 1;
       uiLabel6.verticalAlignment = (UIVerticalAlignment) num46;
-      UIButton button3 = UIHelper.CreateButton((UIComponent) uiPanel13);
+      UIButton button3 = UIUtils.CreateButton((UIComponent) uiPanel13);
       string str11 = Localization.Get("SETTINGS_DELETE");
       button3.text = str11;
       string str12 = Localization.Get("SETTINGS_LINE_DELETION_TOOL_BUTTON_TOOLTIP");
@@ -415,13 +415,13 @@ namespace ImprovedPublicTransport2
       uiPanel14.autoLayoutStart = LayoutStart.TopLeft;
       uiPanel14.autoLayoutPadding = new RectOffset(0, 0, 7, 0);
       uiPanel14.autoLayout = true;
-      this._deleteBusLines = UIHelper.CreateCheckBox((UIComponent) uiPanel14);
+      this._deleteBusLines = UIUtils.CreateCheckBox((UIComponent) uiPanel14);
       this._deleteBusLines.text = ColossalFramework.Globalization.Locale.Get("INFO_PUBLICTRANSPORT_BUS");
       this._deleteBusLines.width = uiPanel14.width / 3f;
-      this._deleteTramLines = UIHelper.CreateCheckBox((UIComponent) uiPanel14);
+      this._deleteTramLines = UIUtils.CreateCheckBox((UIComponent) uiPanel14);
       this._deleteTramLines.text = ColossalFramework.Globalization.Locale.Get("INFO_PUBLICTRANSPORT_TRAM");
       this._deleteTramLines.width = uiPanel14.width / 3f;
-      this._deleteMetroLines = UIHelper.CreateCheckBox((UIComponent) uiPanel14);
+      this._deleteMetroLines = UIUtils.CreateCheckBox((UIComponent) uiPanel14);
       this._deleteMetroLines.text = ColossalFramework.Globalization.Locale.Get("INFO_PUBLICTRANSPORT_METRO");
       this._deleteMetroLines.width = uiPanel14.width / 3f;
       UIPanel uiPanel15 = uiPanel12.AddUIComponent<UIPanel>();
@@ -431,13 +431,13 @@ namespace ImprovedPublicTransport2
       uiPanel15.autoLayoutStart = LayoutStart.TopLeft;
       uiPanel15.autoLayoutPadding = new RectOffset(0, 0, 7, 0);
       uiPanel15.autoLayout = true;
-      this._deleteTrainLines = UIHelper.CreateCheckBox((UIComponent) uiPanel15);
+      this._deleteTrainLines = UIUtils.CreateCheckBox((UIComponent) uiPanel15);
       this._deleteTrainLines.text = ColossalFramework.Globalization.Locale.Get("INFO_PUBLICTRANSPORT_TRAIN");
       this._deleteTrainLines.width = uiPanel15.width / 3f;
-      this._deleteShipLines = UIHelper.CreateCheckBox((UIComponent) uiPanel15);
+      this._deleteShipLines = UIUtils.CreateCheckBox((UIComponent) uiPanel15);
       this._deleteShipLines.text = ColossalFramework.Globalization.Locale.Get("INFO_PUBLICTRANSPORT_SHIP");
       this._deleteShipLines.width = uiPanel15.width / 3f;
-      this._deleteAirLines = UIHelper.CreateCheckBox((UIComponent) uiPanel15);
+      this._deleteAirLines = UIUtils.CreateCheckBox((UIComponent) uiPanel15);
       this._deleteAirLines.text = ColossalFramework.Globalization.Locale.Get("INFO_PUBLICTRANSPORT_PLANE");
       this._deleteAirLines.width = uiPanel15.width / 3f;
     }

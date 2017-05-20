@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace ImprovedPublicTransport2
 {
-  public static class UIHelper
+  public static class UIUtils
   {
     private static UIFont _font;
 
@@ -17,9 +17,9 @@ namespace ImprovedPublicTransport2
     {
       get
       {
-        if ((Object) UIHelper._font == (Object) null)
-          UIHelper._font = GameObject.Find("(Library) PublicTransportInfoViewPanel").GetComponent<PublicTransportInfoViewPanel>().Find<UILabel>("Label").font;
-        return UIHelper._font;
+        if ((Object) UIUtils._font == (Object) null)
+          UIUtils._font = GameObject.Find("(Library) PublicTransportInfoViewPanel").GetComponent<PublicTransportInfoViewPanel>().Find<UILabel>("Label").font;
+        return UIUtils._font;
       }
     }
 
@@ -34,7 +34,7 @@ namespace ImprovedPublicTransport2
     public static UIButton CreateButton(UIComponent parent)
     {
       UIButton uiButton = parent.AddUIComponent<UIButton>();
-      UIFont font = UIHelper.Font;
+      UIFont font = UIUtils.Font;
       uiButton.font = font;
       RectOffset rectOffset = new RectOffset(0, 0, 4, 0);
       uiButton.textPadding = rectOffset;
@@ -79,7 +79,7 @@ namespace ImprovedPublicTransport2
       uiCheckBox.checkedBoxObject.relativePosition = Vector3.zero;
       UILabel uiLabel = uiCheckBox.AddUIComponent<UILabel>();
       uiCheckBox.label = uiLabel;
-      uiCheckBox.label.font = UIHelper.Font;
+      uiCheckBox.label.font = UIUtils.Font;
       uiCheckBox.label.textColor = (Color32) Color.white;
       uiCheckBox.label.textScale = 0.8f;
       uiCheckBox.label.relativePosition = new Vector3(22f, 2f);

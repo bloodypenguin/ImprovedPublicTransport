@@ -152,7 +152,7 @@ namespace ImprovedPublicTransport2
       uiLabel.size = new Vector2(180f, 20f);
       uiLabel.autoSize = false;
       uiLabel.textAlignment = UIHorizontalAlignment.Center;
-      uiLabel.font = UIHelper.Font;
+      uiLabel.font = UIUtils.Font;
       uiLabel.position = new Vector3((float) ((double) uiPanel.width / 2.0 - (double) uiLabel.width / 2.0), (float) ((double) uiLabel.height / 2.0 - 20.0));
       this._titleLabel = uiLabel;
       StopListBox stopListBox = StopListBox.Create((UIComponent) uiPanel);
@@ -161,7 +161,7 @@ namespace ImprovedPublicTransport2
       stopListBox.relativePosition = new Vector3(3f, 40f);
       stopListBox.width = uiPanel.width - 6f;
       stopListBox.height = uiPanel.parent.height - 61f;
-      stopListBox.Font = UIHelper.Font;
+      stopListBox.Font = UIUtils.Font;
       this._stopsListBox = stopListBox;
       VehicleListBox vehicleListBox = VehicleListBox.Create((UIComponent) uiPanel);
       vehicleListBox.name = "DepotVehiclesListBox";
@@ -169,7 +169,7 @@ namespace ImprovedPublicTransport2
       vehicleListBox.relativePosition = new Vector3(3f, 40f);
       vehicleListBox.width = uiPanel.width - 6f;
       vehicleListBox.height = uiPanel.parent.height - 61f;
-      vehicleListBox.Font = UIHelper.Font;
+      vehicleListBox.Font = UIUtils.Font;
       this._vehicleListBox = vehicleListBox;
     }
 
