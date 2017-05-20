@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using ColossalFramework.Globalization;
@@ -10,18 +11,20 @@ namespace ImprovedPublicTransport2.TranslationFramework
     /// <summary>
     /// Handles localisation for a mod.
     /// </summary>
-    public class Translation
+    public class Localization
     {
         public event LanguageChangedEventHandler OnLanguageChanged;
 
-        protected List<Language> _languages = new List<Language>();
-        protected Language _currentLanguage = null;
+        protected List<ILanguage> _languages = new List<ILanguage>();
+        protected ILanguage _currentLanguage = null;
         protected bool _languagesLoaded = false;
         protected bool _loadLanguageAutomatically = true;
         private string fallbackLanguage = "en";
+        private ILanguageDeserializer languageDeserializer;
 
-        public Translation(bool loadLanguageAutomatically = true)
+        public Localization(ILanguageDeserializer languageDeserializer = null, bool loadLanguageAutomatically = true)
         {
+            this.languageDeserializer = languageDeserializer ?? new DefaultLanguageDeserializer();
             _loadLanguageAutomatically = loadLanguageAutomatically;
             LocaleManager.eventLocaleChanged += SetCurrentLanguage;
         }
@@ -32,8 +35,8 @@ namespace ImprovedPublicTransport2.TranslationFramework
             {
                 return;
             }
-            _currentLanguage = _languages.Find(l => l._uniqueName == LocaleManager.instance.language) ??
-                               _languages.Find(l => l._uniqueName == fallbackLanguage);
+            _currentLanguage = _languages.Find(l => l.LocaleName() == LocaleManager.instance.language) ??
+                               _languages.Find(l => l.LocaleName() == fallbackLanguage);
         }
 
 
@@ -70,8 +73,21 @@ namespace ImprovedPublicTransport2.TranslationFramework
                     foreach (string languageFile in languageFiles)
                     {
                         StreamReader reader = new StreamReader(languageFile);
-                        Language loadedLanguage = DeserialiseLanguage(reader);
-
+                        ILanguage loadedLanguage = null;
+                        try
+                        {
+                            loadedLanguage = languageDeserializer.DeserialiseLanguage(languageFile, reader);
+                        }
+                        catch (Exception e)
+                        {
+                            UnityEngine.Debug.LogError(
+                                "Error happened when deserializing language file " + languageFile);
+                            UnityEngine.Debug.LogException(e);
+                        }
+                        finally
+                        {
+                            reader.Close();
+                        }
                         if (loadedLanguage != null)
                         {
                             _languages.Add(loadedLanguage);
@@ -86,21 +102,6 @@ namespace ImprovedPublicTransport2.TranslationFramework
         }
 
         /// <summary>
-        /// Deserialise a language file using a TextReader
-        /// </summary>
-        /// <param name="reader">The text to deserialise</param>
-        /// <returns>A deserialised language</returns>
-        protected Language DeserialiseLanguage(TextReader reader)
-        {
-            XmlSerializer xmlSerialiser = new XmlSerializer(typeof(Language));
-
-            Language loadedLanguage = (Language)xmlSerialiser.Deserialize(reader);
-            reader.Close();
-
-            return loadedLanguage;
-        }
-
-        /// <summary>
         /// Returns a list of languages which are available to the mod. This will return readable languages for use on the UI
         /// </summary>
         /// <returns>A list of languages available.</returns>
@@ -110,7 +111,7 @@ namespace ImprovedPublicTransport2.TranslationFramework
 
             List<string> languageNames = new List<string>();
 
-            foreach (Language availableLanguage in _languages)
+            foreach (DefaultLanguage availableLanguage in _languages)
             {
                 languageNames.Add(availableLanguage._readableName);
             }
@@ -128,7 +129,7 @@ namespace ImprovedPublicTransport2.TranslationFramework
 
             List<string> languageNames = new List<string>();
 
-            foreach (Language availableLanguage in _languages)
+            foreach (DefaultLanguage availableLanguage in _languages)
             {
                 languageNames.Add(availableLanguage._uniqueName);
             }
@@ -145,7 +146,7 @@ namespace ImprovedPublicTransport2.TranslationFramework
         {
             List<string> returnLanguages = new List<string>();
 
-            foreach (Language availableLanguage in _languages)
+            foreach (DefaultLanguage availableLanguage in _languages)
             {
                 if (availableLanguage._readableName == name)
                 {
@@ -165,7 +166,7 @@ namespace ImprovedPublicTransport2.TranslationFramework
         {
             LoadLanguages();
 
-            return _currentLanguage != null && _currentLanguage._conversionDictionary.ContainsKey(translationId);
+            return _currentLanguage != null && _currentLanguage.HasTranslation(translationId);
         }
 
         /// <summary>
@@ -183,11 +184,11 @@ namespace ImprovedPublicTransport2.TranslationFramework
             {
                 if (HasTranslation(translationId))
                 {
-                    translatedText = _currentLanguage._conversionDictionary[translationId];
+                    translatedText = _currentLanguage.GetTranslation(translationId);
                 }
                 else
                 {
-                    UnityEngine.Debug.LogWarning("Returned translation for language \"" + _currentLanguage._uniqueName + "\" doesn't contain a suitable translation for \"" + translationId + "\"");
+                    UnityEngine.Debug.LogWarning("Returned translation for language \"" + _currentLanguage.LocaleName() + "\" doesn't contain a suitable translation for \"" + translationId + "\"");
                 }
             }
             else
