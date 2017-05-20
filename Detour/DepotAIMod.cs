@@ -1,10 +1,10 @@
 ﻿using System;
 using ColossalFramework;
-using ImprovedPublicTransport.Redirection.Attributes;
+using ImprovedPublicTransport2.Redirection.Attributes;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace ImprovedPublicTransport.Detour
+namespace ImprovedPublicTransport2.Detour
 {
     [TargetType(typeof(DepotAI))]
     public class DepotAIMod : DepotAI

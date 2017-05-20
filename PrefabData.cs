@@ -10,7 +10,7 @@ using System.IO;
 using System.Xml.Serialization;
 using UnityEngine;
 
-namespace ImprovedPublicTransport
+namespace ImprovedPublicTransport2
 {
   public class PrefabData
   {

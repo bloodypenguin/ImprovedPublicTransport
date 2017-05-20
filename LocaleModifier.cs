@@ -9,7 +9,7 @@ using ColossalFramework.Globalization;
 using System;
 using System.Collections.Generic;
 
-namespace ImprovedPublicTransport
+namespace ImprovedPublicTransport2
 {
   public static class LocaleModifier
   {

@@ -1,4 +1,4 @@
-﻿namespace ImprovedPublicTransport.Redirection
+﻿namespace ImprovedPublicTransport2.Redirection
 {
     public class Tuple<T1, T2>
     {

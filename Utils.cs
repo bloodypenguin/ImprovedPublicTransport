@@ -7,7 +7,7 @@
 using ColossalFramework;
 using ColossalFramework.Plugins;
 using ColossalFramework.UI;
-using ImprovedPublicTransport.Detour;
+using ImprovedPublicTransport2.Detour;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +16,7 @@ using System.Reflection;
 using ICities;
 using UnityEngine;
 
-namespace ImprovedPublicTransport
+namespace ImprovedPublicTransport2
 {
   public static class Utils
   {
