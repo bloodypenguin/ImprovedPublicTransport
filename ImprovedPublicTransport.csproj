@@ -85,6 +85,7 @@
     <Compile Include="NodeData.cs" />
     <Compile Include="Detour\PassengerTrainAIDetour.cs" />
     <Compile Include="OptionsFramework\Attibutes\AbstractOptionsAttribute.cs" />
+    <Compile Include="OptionsFramework\Attibutes\ButtonAttribute.cs" />
     <Compile Include="OptionsFramework\Attibutes\CheckboxAttribute.cs" />
     <Compile Include="OptionsFramework\Attibutes\DropDownAttribute.cs" />
     <Compile Include="OptionsFramework\Attibutes\OptionsAttribute.cs" />
