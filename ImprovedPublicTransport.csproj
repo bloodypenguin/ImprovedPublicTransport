@@ -116,7 +116,7 @@
     <Compile Include="TranslationFramework\Language.cs" />
     <Compile Include="TranslationFramework\DefaultLanguage.cs" />
     <Compile Include="TranslationFramework\LanguageDeserializer.cs" />
-    <Compile Include="TranslationFramework\Translation.cs" />
+    <Compile Include="TranslationFramework\LocalizationManager.cs" />
     <Compile Include="TranslationFramework\TranslatableAttribute.cs" />
     <Compile Include="TranslationFramework\Util.cs" />
     <Compile Include="UIUtils.cs" />

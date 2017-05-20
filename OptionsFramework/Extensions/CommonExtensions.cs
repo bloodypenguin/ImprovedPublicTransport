@@ -1,4 +1,5 @@
-﻿using ImprovedPublicTransport2.OptionsFramework.Attibutes;
+﻿using System;
+using ImprovedPublicTransport2.OptionsFramework.Attibutes;
 
 namespace ImprovedPublicTransport2.OptionsFramework.Extensions
 {
@@ -9,7 +10,7 @@ namespace ImprovedPublicTransport2.OptionsFramework.Extensions
             var fi = value.GetType().GetProperty(propertyName);
             var attributes =
                 (AbstractOptionsAttribute[]) fi.GetCustomAttributes(typeof(AbstractOptionsAttribute), false);
-            return attributes.Length > 0 ? attributes[0].Description : null;
+            return attributes.Length > 0 ? attributes[0].Description : throw new Exception($"Property {propertyName} wasn't annotated with AbstractOptionsAttribute");
         }
 
         public static string GetPropertyGroup<T>(this T value, string propertyName)
@@ -17,7 +18,7 @@ namespace ImprovedPublicTransport2.OptionsFramework.Extensions
             var fi = value.GetType().GetProperty(propertyName);
             var attributes =
                 (AbstractOptionsAttribute[]) fi.GetCustomAttributes(typeof(AbstractOptionsAttribute), false);
-            return attributes.Length > 0 ? attributes[0].Group : null;
+            return attributes.Length > 0 ? attributes[0].Group : throw new Exception($"Property {propertyName} wasn't annotated with AbstractOptionsAttribute");
         }
 
         public static TR GetAttribute<T, TR>(this T value, string propertyName)where TR : AbstractOptionsAttribute

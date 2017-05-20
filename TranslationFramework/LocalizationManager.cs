@@ -102,6 +102,11 @@ namespace ImprovedPublicTransport2.TranslationFramework
         {
             LoadLanguages();
 
+            if (translationId == null)
+            {
+                return true;
+            }
+
             return _currentLanguage != null && _currentLanguage.HasTranslation(translationId);
         }
 
@@ -113,6 +118,11 @@ namespace ImprovedPublicTransport2.TranslationFramework
         public string GetTranslation(string translationId)
         {
             LoadLanguages();
+
+            if (translationId == null)
+            {
+                return "null";
+            }
 
             string translatedText = translationId;
 

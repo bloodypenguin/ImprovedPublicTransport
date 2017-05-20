@@ -15,7 +15,12 @@ namespace ImprovedPublicTransport2.OptionsFramework.Extensions
         public static IEnumerable<UIComponent> AddOptionsGroup<T>(this UIHelperBase helper, Func<string, string> translator = null)
         {
             var result = new List<UIComponent>();
-            var properties = from property in typeof(T).GetProperties() select property.Name;
+            var properties = from property in typeof(T).GetProperties().Where(p =>
+            {
+                var attributes =
+                    (AbstractOptionsAttribute[])p.GetCustomAttributes(typeof(AbstractOptionsAttribute), false);
+                return attributes.Length > 0;
+            }) select property.Name;
             var groups = new Dictionary<string, UIHelperBase>();
             foreach (var propertyName in properties.ToArray())
             {
@@ -69,7 +74,7 @@ namespace ImprovedPublicTransport2.OptionsFramework.Extensions
             var dropDownAttribute = OptionsWrapper<T>.Options.GetAttribute<T, DropDownAttribute>(propertyName);
             if (dropDownAttribute != null)
             {
-                return group.AddDropdown<T>(description, propertyName, dropDownAttribute);
+                return group.AddDropdown<T>(description, propertyName, dropDownAttribute, translator);
             }
             var sliderAttribute = OptionsWrapper<T>.Options.GetAttribute<T, SliderAttribute>(propertyName);
             if (sliderAttribute != null)
@@ -80,23 +85,24 @@ namespace ImprovedPublicTransport2.OptionsFramework.Extensions
             return null;
         }
 
-        private static UIDropDown AddDropdown<T>(this UIHelperBase group, string text, string propertyName, DropDownAttribute attr)
+        private static UIDropDown AddDropdown<T>(this UIHelperBase group, string text, string propertyName, DropDownAttribute attr, Func<string, string> translator = null)
         {
             var property = typeof(T).GetProperty(propertyName);
             var defaultCode = (int)property.GetValue(OptionsWrapper<T>.Options, null);
             int defaultSelection;
+            var items = attr.GetItems(translator);
             try
             {
-                defaultSelection = attr.Items.First(kvp => kvp.Value == defaultCode).Value;
+                defaultSelection = items.First(kvp => kvp.Value == defaultCode).Value;
             }
             catch
             {
                 defaultSelection = 0;
-                property.SetValue(OptionsWrapper<T>.Options, attr.Items.First().Value, null);
+                property.SetValue(OptionsWrapper<T>.Options, items.First().Value, null);
             }
-            return (UIDropDown)group.AddDropdown(text, attr.Items.Select(kvp => kvp.Key).ToArray(), defaultSelection, sel =>
+            return (UIDropDown)group.AddDropdown(text, items.Select(kvp => kvp.Key).ToArray(), defaultSelection, sel =>
            {
-               var code = attr.Items[sel].Value;
+               var code = items[sel].Value;
                property.SetValue(OptionsWrapper<T>.Options, code, null);
                OptionsWrapper<T>.SaveOptions();
                attr.Action<int>().Invoke(code);
