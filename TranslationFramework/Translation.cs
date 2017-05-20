@@ -1,31 +1,28 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Xml.Serialization;
 using ColossalFramework.Globalization;
 
 namespace ImprovedPublicTransport2.TranslationFramework
 {
-    public delegate void LanguageChangedEventHandler(string languageIdentifier);
-
     /// <summary>
     /// Handles localisation for a mod.
     /// </summary>
-    public class Localization
+    public class LocalizationManager
     {
-        public event LanguageChangedEventHandler OnLanguageChanged;
-
         protected List<ILanguage> _languages = new List<ILanguage>();
         protected ILanguage _currentLanguage = null;
         protected bool _languagesLoaded = false;
         protected bool _loadLanguageAutomatically = true;
-        private string fallbackLanguage = "en";
+        private string fallbackLanguage;
         private ILanguageDeserializer languageDeserializer;
 
-        public Localization(ILanguageDeserializer languageDeserializer = null, bool loadLanguageAutomatically = true)
+        public LocalizationManager(ILanguageDeserializer languageDeserializer = null, bool loadLanguageAutomatically = true, 
+            string fallbackLanguage = "en")
         {
             this.languageDeserializer = languageDeserializer ?? new DefaultLanguageDeserializer();
-            _loadLanguageAutomatically = loadLanguageAutomatically;
+            this._loadLanguageAutomatically = loadLanguageAutomatically;
+            this.fallbackLanguage = fallbackLanguage;
             LocaleManager.eventLocaleChanged += SetCurrentLanguage;
         }
 
@@ -95,69 +92,13 @@ namespace ImprovedPublicTransport2.TranslationFramework
                 }
             }
         }
-
-        /// <summary>
-        /// Returns a list of languages which are available to the mod. This will return readable languages for use on the UI
-        /// </summary>
-        /// <returns>A list of languages available.</returns>
-        public List<string> AvailableLanguagesReadable()
-        {
-            LoadLanguages();
-
-            List<string> languageNames = new List<string>();
-
-            foreach (DefaultLanguage availableLanguage in _languages)
-            {
-                languageNames.Add(availableLanguage._readableName);
-            }
-
-            return languageNames;
-        }
-
-        /// <summary>
-        /// Returns a list of languages which are available to the mod. This will return language IDs for searching.
-        /// </summary>
-        /// <returns>A list of languages available.</returns>
-        public List<string> AvailableLanguages()
-        {
-            LoadLanguages();
-
-            List<string> languageNames = new List<string>();
-
-            foreach (DefaultLanguage availableLanguage in _languages)
-            {
-                languageNames.Add(availableLanguage._uniqueName);
-            }
-
-            return languageNames;
-        }
-
-        /// <summary>
-        /// Returns a list of Language unique IDs that have the name
-        /// </summary>
-        /// <param name="name">The name of the language to get IDs for</param>
-        /// <returns>A list of IDs that match</returns>
-        public List<string> GetLanguageIDsFromName(string name)
-        {
-            List<string> returnLanguages = new List<string>();
-
-            foreach (DefaultLanguage availableLanguage in _languages)
-            {
-                if (availableLanguage._readableName == name)
-                {
-                    returnLanguages.Add(availableLanguage._uniqueName);
-                }
-            }
-
-            return returnLanguages;
-        }
-
+        
         /// <summary>
         /// Returns whether you can translate into a specific translation ID
         /// </summary>
         /// <param name="translationId">The ID of the translation to check</param>
         /// <returns>Whether a translation into this ID is possible</returns>
-        public bool HasTranslation(string translationId)
+        private bool HasTranslation(string translationId)
         {
             LoadLanguages();
 
@@ -194,6 +135,4 @@ namespace ImprovedPublicTransport2.TranslationFramework
             return translatedText;
         }
     }
-
-
 }
