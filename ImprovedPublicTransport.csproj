@@ -110,6 +110,10 @@
     <Compile Include="PublicTransportStopWorldInfoPanel.cs" />
     <Compile Include="DropDown.cs" />
     <Compile Include="DropDownRow.cs" />
+    <Compile Include="TranslationFramework\Language.cs" />
+    <Compile Include="TranslationFramework\TranslatableAttribute.cs" />
+    <Compile Include="TranslationFramework\Translation.cs" />
+    <Compile Include="TranslationFramework\Util.cs" />
     <Compile Include="UIUtils.cs" />
     <Compile Include="VehicleEditorPositions.cs" />
     <Compile Include="VehicleListBoxRow.cs" />
