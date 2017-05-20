@@ -494,7 +494,7 @@ namespace ImprovedPublicTransport2
       uiPanel.autoLayoutPadding = rectOffset;
       int num4 = 1;
       uiPanel.autoLayout = num4 != 0;
-      UIButton button1 = UIHelper.CreateButton((UIComponent) uiPanel);
+      UIButton button1 = UIUtils.CreateButton((UIComponent) uiPanel);
       button1.name = "SelectTypes";
       button1.textPadding = new RectOffset(10, 10, 4, 0);
       button1.text = Localization.Get("LINE_PANEL_SELECT_TYPES");
@@ -510,7 +510,7 @@ namespace ImprovedPublicTransport2
         this._prefabPanel.isVisible = !this._prefabPanel.isVisible;
       });
       this._selectTypes = button1;
-      UIButton button2 = UIHelper.CreateButton((UIComponent) uiPanel);
+      UIButton button2 = UIUtils.CreateButton((UIComponent) uiPanel);
       button2.name = "AddVehicle";
       button2.textPadding = new RectOffset(10, 10, 4, 0);
       button2.text = Localization.Get("LINE_PANEL_ADD_VEHICLE");
@@ -521,7 +521,7 @@ namespace ImprovedPublicTransport2
       button2.wordWrap = true;
       button2.eventClick += new MouseEventHandler(this.OnAddVehicleClick);
       this._addVehicle = button2;
-      UIButton button3 = UIHelper.CreateButton((UIComponent) uiPanel);
+      UIButton button3 = UIUtils.CreateButton((UIComponent) uiPanel);
       button3.name = "RemoveVehicle";
       button3.textPadding = new RectOffset(10, 10, 4, 0);
       button3.text = Localization.Get("LINE_PANEL_REMOVE_VEHICLE");
@@ -548,7 +548,7 @@ namespace ImprovedPublicTransport2
       int num4 = 1;
       uiPanel.autoLayout = num4 != 0;
       float num5 = (float) (((double) uiPanel.parent.width - 4.0) / 2.0);
-      UIButton button1 = UIHelper.CreateButton((UIComponent) uiPanel);
+      UIButton button1 = UIUtils.CreateButton((UIComponent) uiPanel);
       string str1 = "VEHICLE_LINESOVERVIEW";
       button1.localeID = str1;
       double num6 = 0.800000011920929;
@@ -559,7 +559,7 @@ namespace ImprovedPublicTransport2
       button1.height = (float) num8;
       MouseEventHandler mouseEventHandler1 = (MouseEventHandler) ((c, p) => this._publicTransportWorldInfoPanel.OnLinesOverviewClicked());
       button1.eventClick += mouseEventHandler1;
-      UIButton button2 = UIHelper.CreateButton((UIComponent) uiPanel);
+      UIButton button2 = UIUtils.CreateButton((UIComponent) uiPanel);
       string str2 = "LINE_DELETE";
       button2.localeID = str2;
       double num9 = 0.800000011920929;

@@ -124,7 +124,7 @@ namespace ImprovedPublicTransport2
       uiLabel.name = "Title";
       uiLabel.text = Localization.Get("VEHICLE_EDITOR_TITLE");
       uiLabel.textAlignment = UIHorizontalAlignment.Center;
-      uiLabel.font = UIHelper.Font;
+      uiLabel.font = UIUtils.Font;
       uiLabel.position = new Vector3((float) ((double) this.width / 2.0 - (double) uiLabel.width / 2.0), (float) ((double) uiLabel.height / 2.0 - 20.0));
       UIButton uiButton = this.AddUIComponent<UIButton>();
       string str1 = "SettingsButton";
@@ -234,7 +234,7 @@ namespace ImprovedPublicTransport2
       uiPanel2.backgroundSprite = "InfoviewPanel";
       UILabel uiLabel1 = uiPanel2.AddUIComponent<UILabel>();
       uiLabel1.name = "CaptionLabel";
-      uiLabel1.font = UIHelper.Font;
+      uiLabel1.font = UIUtils.Font;
       uiLabel1.textColor = (Color32) Color.white;
       uiLabel1.textScale = 0.95f;
       uiLabel1.textAlignment = UIHorizontalAlignment.Center;
@@ -296,7 +296,7 @@ namespace ImprovedPublicTransport2
       double num17 = (double) dropDown.parent.width - 6.0;
       dropDown.width = (float) num17;
       dropDown.DropDownPanelAlignParent = (UIComponent) this;
-      UIFont font = UIHelper.Font;
+      UIFont font = UIUtils.Font;
       dropDown.Font = font;
       PropertyChangedEventHandler<ushort> changedEventHandler1 = new PropertyChangedEventHandler<ushort>(this.OnSelectedItemChanged);
       dropDown.eventSelectedItemChanged += changedEventHandler1;
@@ -316,7 +316,7 @@ namespace ImprovedPublicTransport2
       UILabel uiLabel2 = uiPanel6.AddUIComponent<UILabel>();
       uiLabel2.name = "CapacityLabel";
       uiLabel2.text = Localization.Get("VEHICLE_EDITOR_CAPACITY");
-      uiLabel2.font = UIHelper.Font;
+      uiLabel2.font = UIUtils.Font;
       uiLabel2.textColor = (Color32) Color.white;
       uiLabel2.textScale = 0.8f;
       uiLabel2.autoSize = false;
@@ -373,7 +373,7 @@ namespace ImprovedPublicTransport2
       uiPanel7.autoLayout = num34 != 0;
       UILabel uiLabel3 = uiPanel7.AddUIComponent<UILabel>();
       uiLabel3.text = Localization.Get("VEHICLE_EDITOR_MAINTENANCE");
-      uiLabel3.font = UIHelper.Font;
+      uiLabel3.font = UIUtils.Font;
       uiLabel3.textColor = (Color32) Color.white;
       uiLabel3.textScale = 0.8f;
       uiLabel3.autoSize = false;
@@ -413,7 +413,7 @@ namespace ImprovedPublicTransport2
       UILabel uiLabel4 = uiPanel7.AddUIComponent<UILabel>();
       uiLabel4.name = "MaintenanceCostLabel";
       uiLabel4.text = "0";
-      uiLabel4.font = UIHelper.Font;
+      uiLabel4.font = UIUtils.Font;
       uiLabel4.textColor = (Color32) Color.white;
       uiLabel4.textScale = 0.8f;
       uiLabel4.textAlignment = UIHorizontalAlignment.Right;
@@ -437,7 +437,7 @@ namespace ImprovedPublicTransport2
       UILabel uiLabel5 = uiPanel8.AddUIComponent<UILabel>();
       uiLabel5.name = "TicketPriceLabel2";
       uiLabel5.text = Localization.Get("VEHICLE_EDITOR_TICKET_PRICE");
-      uiLabel5.font = UIHelper.Font;
+      uiLabel5.font = UIUtils.Font;
       uiLabel5.textColor = (Color32) Color.white;
       uiLabel5.textScale = 0.8f;
       uiLabel5.autoSize = false;
@@ -477,7 +477,7 @@ namespace ImprovedPublicTransport2
       UILabel uiLabel6 = uiPanel8.AddUIComponent<UILabel>();
       uiLabel6.name = "TicketPriceLabel";
       uiLabel6.text = "0";
-      uiLabel6.font = UIHelper.Font;
+      uiLabel6.font = UIUtils.Font;
       uiLabel6.textColor = (Color32) Color.white;
       uiLabel6.textScale = 0.8f;
       uiLabel6.textAlignment = UIHorizontalAlignment.Right;
@@ -500,7 +500,7 @@ namespace ImprovedPublicTransport2
       uiPanel9.autoLayout = num58 != 0;
       UILabel uiLabel7 = uiPanel9.AddUIComponent<UILabel>();
       uiLabel7.text = Localization.Get("VEHICLE_EDITOR_MAX_SPEED");
-      uiLabel7.font = UIHelper.Font;
+      uiLabel7.font = UIUtils.Font;
       uiLabel7.textColor = (Color32) Color.white;
       uiLabel7.textScale = 0.8f;
       uiLabel7.autoSize = false;
@@ -540,7 +540,7 @@ namespace ImprovedPublicTransport2
       UILabel uiLabel8 = uiPanel9.AddUIComponent<UILabel>();
       uiLabel8.name = "MaxSpeedLabel";
       uiLabel8.text = "0";
-      uiLabel8.font = UIHelper.Font;
+      uiLabel8.font = UIUtils.Font;
       uiLabel8.textColor = (Color32) Color.white;
       uiLabel8.textScale = 0.8f;
       uiLabel8.textAlignment = UIHorizontalAlignment.Right;
@@ -563,7 +563,7 @@ namespace ImprovedPublicTransport2
       uiPanel10.autoLayoutPadding = rectOffset12;
       int num70 = 1;
       uiPanel10.autoLayout = num70 != 0;
-      UICheckBox checkBox = UIHelper.CreateCheckBox((UIComponent) uiPanel10);
+      UICheckBox checkBox = UIUtils.CreateCheckBox((UIComponent) uiPanel10);
       string str26 = "EngineOnBothEnds";
       checkBox.name = str26;
       string str27 = Localization.Get("VEHICLE_EDITOR_ENGINE_ON_BOTH_ENDS_TOOLTIP");
@@ -584,7 +584,7 @@ namespace ImprovedPublicTransport2
       uiPanel11.autoLayoutPadding = rectOffset13;
       int num75 = 1;
       uiPanel11.autoLayout = num75 != 0;
-      UIButton button1 = UIHelper.CreateButton((UIComponent) uiPanel11);
+      UIButton button1 = UIUtils.CreateButton((UIComponent) uiPanel11);
       string str29 = "Apply";
       button1.name = str29;
       string str30 = Localization.Get("VEHICLE_EDITOR_APPLY");
@@ -597,7 +597,7 @@ namespace ImprovedPublicTransport2
       button1.height = (float) num78;
       MouseEventHandler mouseEventHandler1 = new MouseEventHandler(this.OnApplyButtonClick);
       button1.eventClick += mouseEventHandler1;
-      UIButton button2 = UIHelper.CreateButton((UIComponent) uiPanel11);
+      UIButton button2 = UIUtils.CreateButton((UIComponent) uiPanel11);
       string str31 = "Default";
       button2.name = str31;
       string str32 = Localization.Get("VEHICLE_EDITOR_DEFAULT");

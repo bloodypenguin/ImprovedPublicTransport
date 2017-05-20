@@ -82,6 +82,16 @@
     <Compile Include="Detour\NetManagerMod.cs" />
     <Compile Include="NodeData.cs" />
     <Compile Include="Detour\PassengerTrainAIDetour.cs" />
+    <Compile Include="OptionsFramework\Attibutes\AbstractOptionsAttribute.cs" />
+    <Compile Include="OptionsFramework\Attibutes\CheckboxAttribute.cs" />
+    <Compile Include="OptionsFramework\Attibutes\DropDownAttribute.cs" />
+    <Compile Include="OptionsFramework\Attibutes\OptionsAttribute.cs" />
+    <Compile Include="OptionsFramework\Attibutes\SliderAttribute.cs" />
+    <Compile Include="OptionsFramework\Attibutes\TextFieldAttribute.cs" />
+    <Compile Include="OptionsFramework\Extensions\CommonExtensions.cs" />
+    <Compile Include="OptionsFramework\Extensions\UIHelperBaseExtensions.cs" />
+    <Compile Include="OptionsFramework\OptionsWrapper.cs" />
+    <Compile Include="OptionsFramework\Util.cs" />
     <Compile Include="Redirection\AssemblyRedirector.cs" />
     <Compile Include="Redirection\Attributes\IgnoreConditionAttribute.cs" />
     <Compile Include="Redirection\Attributes\RedirectAttribute.cs" />
@@ -100,7 +110,7 @@
     <Compile Include="PublicTransportStopWorldInfoPanel.cs" />
     <Compile Include="DropDown.cs" />
     <Compile Include="DropDownRow.cs" />
-    <Compile Include="UIHelper.cs" />
+    <Compile Include="UIUtils.cs" />
     <Compile Include="VehicleListBoxRow.cs" />
     <Compile Include="LineWatcher.cs" />
     <Compile Include="PrefabData.cs" />

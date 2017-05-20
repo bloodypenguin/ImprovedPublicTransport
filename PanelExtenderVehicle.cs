@@ -226,7 +226,7 @@ namespace ImprovedPublicTransport2
       parent.height = (float) num2;
       int num3 = 1;
       parent.useCenter = num3 != 0;
-      UIButton button1 = UIHelper.CreateButton((UIComponent) parent);
+      UIButton button1 = UIUtils.CreateButton((UIComponent) parent);
       button1.name = "EditType";
       button1.autoSize = true;
       button1.anchor = UIAnchorStyle.Left | UIAnchorStyle.Right | UIAnchorStyle.CenterVertical;
@@ -287,7 +287,7 @@ namespace ImprovedPublicTransport2
       uiPanel4.autoLayoutStart = LayoutStart.TopLeft;
       uiPanel4.size = new Vector2(345f, 32f);
       this._buttonPanel = uiPanel4;
-      UIButton button2 = UIHelper.CreateButton((UIComponent) uiPanel4);
+      UIButton button2 = UIUtils.CreateButton((UIComponent) uiPanel4);
       button2.name = "PreviousVehicle";
       button2.textPadding = new RectOffset(10, 10, 4, 0);
       button2.text = Localization.Get("VEHICLE_PANEL_PREVIOUS");
@@ -296,7 +296,7 @@ namespace ImprovedPublicTransport2
       button2.size = new Vector2(110f, 32f);
       button2.wordWrap = true;
       button2.eventClick += new MouseEventHandler(this.OnChangeVehicleClick);
-      UIButton button3 = UIHelper.CreateButton((UIComponent) uiPanel4);
+      UIButton button3 = UIUtils.CreateButton((UIComponent) uiPanel4);
       button3.name = "RemoveVehicle";
       button3.textPadding = new RectOffset(10, 10, 4, 0);
       button3.text = Localization.Get("VEHICLE_PANEL_REMOVE_VEHICLE");
@@ -307,7 +307,7 @@ namespace ImprovedPublicTransport2
       button3.focusedTextColor = (Color32) Color.red;
       button3.pressedTextColor = (Color32) Color.red;
       button3.eventClick += new MouseEventHandler(this.OnRemoveVehicleClick);
-      UIButton button4 = UIHelper.CreateButton((UIComponent) uiPanel4);
+      UIButton button4 = UIUtils.CreateButton((UIComponent) uiPanel4);
       button4.name = "NextVehicle";
       button4.textPadding = new RectOffset(10, 10, 4, 0);
       button4.text = Localization.Get("VEHICLE_PANEL_NEXT");

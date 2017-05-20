@@ -87,7 +87,7 @@ namespace ImprovedPublicTransport2
 
     public override void Update()
     {
-      if (this.isVisible && !UIHelper.IsFullyClippedFromParent((UIComponent) this))
+      if (this.isVisible && !UIUtils.IsFullyClippedFromParent((UIComponent) this))
         this._label.text = this.Text;
       base.Update();
     }
