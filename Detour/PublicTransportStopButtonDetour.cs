@@ -1,9 +1,9 @@
 ﻿using ColossalFramework;
 using ColossalFramework.UI;
-using ImprovedPublicTransport.Redirection.Attributes;
+using ImprovedPublicTransport2.Redirection.Attributes;
 using UnityEngine;
 
-namespace ImprovedPublicTransport.Detour
+namespace ImprovedPublicTransport2.Detour
 {
     [TargetType(typeof(PublicTransportStopButton))]
     public class PublicTransportStopButtonDetour : PublicTransportStopButton

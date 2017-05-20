@@ -1,7 +1,7 @@
 ﻿using ColossalFramework;
-using ImprovedPublicTransport.Redirection.Attributes;
+using ImprovedPublicTransport2.Redirection.Attributes;
 
-namespace ImprovedPublicTransport.Detour
+namespace ImprovedPublicTransport2.Detour
 {
     [TargetType(typeof(PassengerFerryAI))]
     public class PassengerFerryAIDetour : FerryAI

@@ -7,10 +7,10 @@
 using System;
 using ColossalFramework;
 using ColossalFramework.Math;
-using ImprovedPublicTransport.Redirection;
-using ImprovedPublicTransport.Redirection.Attributes;
+using ImprovedPublicTransport2.Redirection;
+using ImprovedPublicTransport2.Redirection.Attributes;
 
-namespace ImprovedPublicTransport.Detour
+namespace ImprovedPublicTransport2.Detour
 {
   [TargetType(typeof(VehicleManager))]
   public class VehicleManagerMod

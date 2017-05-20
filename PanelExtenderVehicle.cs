@@ -9,10 +9,10 @@ using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using System;
 using System.Reflection;
-using ImprovedPublicTransport.Detour;
+using ImprovedPublicTransport2.Detour;
 using UnityEngine;
 
-namespace ImprovedPublicTransport
+namespace ImprovedPublicTransport2
 {
   public class PanelExtenderVehicle : MonoBehaviour
   {

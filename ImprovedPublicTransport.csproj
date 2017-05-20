@@ -6,10 +6,10 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{36C6DFFD-7B77-4665-91F9-5AAF6ED147A9}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AssemblyName>ImprovedPublicTransport</AssemblyName>
+    <AssemblyName>ImprovedPublicTransport2</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <RootNamespace>ImprovedPublicTransport</RootNamespace>
+    <RootNamespace>ImprovedPublicTransport2</RootNamespace>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>

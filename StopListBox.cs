@@ -9,7 +9,7 @@ using ColossalFramework.UI;
 using System;
 using UnityEngine;
 
-namespace ImprovedPublicTransport
+namespace ImprovedPublicTransport2
 {
   public class StopListBox : UIPanel
   {

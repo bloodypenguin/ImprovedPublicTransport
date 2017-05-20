@@ -21,7 +21,7 @@ THE SOFTWARE.
 using System;
 using System.Reflection;
 
-namespace ImprovedPublicTransport.Redirection
+namespace ImprovedPublicTransport2.Redirection
 {
 
     public class RedirectCallsState

@@ -1,6 +1,6 @@
-﻿using ImprovedPublicTransport.Redirection.Extensions;
+﻿using ImprovedPublicTransport2.Redirection.Extensions;
 
-namespace ImprovedPublicTransport.Redirection
+namespace ImprovedPublicTransport2.Redirection
 {
     public class Redirector<T>
     {

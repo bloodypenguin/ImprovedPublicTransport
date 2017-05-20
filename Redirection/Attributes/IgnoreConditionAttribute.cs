@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace ImprovedPublicTransport.Redirection.Attributes
+namespace ImprovedPublicTransport2.Redirection.Attributes
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public abstract class IgnoreConditionAttribute : Attribute

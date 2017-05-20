@@ -1,6 +1,6 @@
-﻿using ImprovedPublicTransport.Redirection.Attributes;
+﻿using ImprovedPublicTransport2.Redirection.Attributes;
 
-namespace ImprovedPublicTransport.Detour
+namespace ImprovedPublicTransport2.Detour
 {
     [TargetType(typeof(CommonBuildingAI))]
     public class CommonBuildingAIReverseDetour : ShelterAI

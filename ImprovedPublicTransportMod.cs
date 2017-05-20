@@ -8,11 +8,11 @@ using ColossalFramework;
 using ColossalFramework.UI;
 using ICities;
 using System;
-using ImprovedPublicTransport.Detour;
-using ImprovedPublicTransport.Redirection;
+using ImprovedPublicTransport2.Detour;
+using ImprovedPublicTransport2.Redirection;
 using UnityEngine;
 
-namespace ImprovedPublicTransport
+namespace ImprovedPublicTransport2
 {
   public class ImprovedPublicTransportMod : IUserMod, ILoadingExtension
   {

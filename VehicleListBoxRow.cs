@@ -11,7 +11,7 @@ using System;
 using System.Text;
 using UnityEngine;
 
-namespace ImprovedPublicTransport
+namespace ImprovedPublicTransport2
 {
   public class VehicleListBoxRow : UIPanel
   {

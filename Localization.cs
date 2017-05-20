@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace ImprovedPublicTransport
+namespace ImprovedPublicTransport2
 {
   public class Localization
   {

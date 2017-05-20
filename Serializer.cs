@@ -8,7 +8,7 @@ using System;
 using System.IO;
 using System.Xml.Serialization;
 
-namespace ImprovedPublicTransport
+namespace ImprovedPublicTransport2
 {
   public static class Serializer
   {

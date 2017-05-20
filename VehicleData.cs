@@ -6,7 +6,7 @@
 
 using UnityEngine;
 
-namespace ImprovedPublicTransport
+namespace ImprovedPublicTransport2
 {
   public struct VehicleData
   {

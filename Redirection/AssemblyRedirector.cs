@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using ImprovedPublicTransport.Redirection.Attributes;
-using ImprovedPublicTransport.Redirection.Extensions;
+using ImprovedPublicTransport2.Redirection.Extensions;
+using ImprovedPublicTransport2.Redirection.Attributes;
 
-namespace ImprovedPublicTransport.Redirection
+namespace ImprovedPublicTransport2.Redirection
 {
 
     public class AssemblyRedirector

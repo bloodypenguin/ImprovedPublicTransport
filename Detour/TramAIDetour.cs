@@ -5,10 +5,10 @@
 // Assembly location: C:\Games\Steam\steamapps\workshop\content\255710\424106600\ImprovedPublicTransport.dll
 
 using ColossalFramework;
-using ImprovedPublicTransport.Redirection.Attributes;
+using ImprovedPublicTransport2.Redirection.Attributes;
 using UnityEngine;
 
-namespace ImprovedPublicTransport.Detour
+namespace ImprovedPublicTransport2.Detour
 {
     [TargetType(typeof(TramAI))] //detoured methods are same as in PassengerTrainAI
     public class TramAIDetour : TramBaseAI

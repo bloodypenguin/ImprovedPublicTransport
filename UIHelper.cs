@@ -7,7 +7,7 @@
 using ColossalFramework.UI;
 using UnityEngine;
 
-namespace ImprovedPublicTransport
+namespace ImprovedPublicTransport2
 {
   public static class UIHelper
   {
