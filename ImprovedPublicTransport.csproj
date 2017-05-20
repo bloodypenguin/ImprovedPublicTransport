@@ -75,6 +75,8 @@
     <Compile Include="Detour\CommonBuildingAIReverseDetour.cs" />
     <Compile Include="GameDefault.cs" />
     <Compile Include="ItemClassTriplet.cs" />
+    <Compile Include="LanguageFormat\LanguageDictionaryWrapper.cs" />
+    <Compile Include="LanguageFormat\PlainTextLanguageDeserializer.cs" />
     <Compile Include="LineData.cs" />
     <Compile Include="LocaleModifier.cs" />
     <Compile Include="Localization.cs" />
@@ -114,8 +116,8 @@
     <Compile Include="TranslationFramework\Language.cs" />
     <Compile Include="TranslationFramework\DefaultLanguage.cs" />
     <Compile Include="TranslationFramework\LanguageDeserializer.cs" />
+    <Compile Include="TranslationFramework\Translation.cs" />
     <Compile Include="TranslationFramework\TranslatableAttribute.cs" />
-    <Compile Include="TranslationFramework\Localization.cs" />
     <Compile Include="TranslationFramework\Util.cs" />
     <Compile Include="UIUtils.cs" />
     <Compile Include="VehicleEditorPositions.cs" />
@@ -151,7 +153,7 @@
     <Content Include="Locale\es.txt" />
     <Content Include="Locale\fr.txt" />
     <Content Include="Locale\it.txt" />
-    <Content Include="Locale\kr.txt" />
+    <Content Include="Locale\ko.txt" />
     <Content Include="Locale\pl.txt" />
     <Content Include="Locale\pt.txt" />
     <Content Include="Locale\ru.txt" />

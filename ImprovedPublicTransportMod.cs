@@ -1,14 +1,7 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: ImprovedPublicTransport.ImprovedPublicTransportMod
-// Assembly: ImprovedPublicTransport, Version=1.0.6177.17409, Culture=neutral, PublicKeyToken=null
-// MVID: 76F370C5-F40B-41AE-AA9D-1E3F87E934D3
-// Assembly location: C:\Games\Steam\steamapps\workshop\content\255710\424106600\ImprovedPublicTransport.dll
-
-using ColossalFramework;
+﻿using ColossalFramework;
 using ColossalFramework.UI;
 using ICities;
 using System;
-using System.Linq;
 using ImprovedPublicTransport2.Detour;
 using ImprovedPublicTransport2.OptionsFramework.Extensions;
 using ImprovedPublicTransport2.Redirection;
@@ -16,7 +9,7 @@ using UnityEngine;
 
 namespace ImprovedPublicTransport2
 {
-  public class ImprovedPublicTransportMod : IUserMod, ILoadingExtension
+  public class ImprovedPublicTransportMod : LoadingExtensionBase, IUserMod
   {
     private LoadMode _loadMode;
     private GameObject _iptGameObject;
@@ -28,16 +21,12 @@ namespace ImprovedPublicTransport2
 
       public void OnSettingsUI(UIHelperBase helper)
       {
-          helper.AddOptionsGroup<Settings>(Localization.Get);
+          helper.AddOptionsGroup<Settings>(s => Localization.Get(s));
       }
 
-    public void OnCreated(ILoading loading)
+    public override void OnLevelLoaded(LoadMode mode)
     {
-            //TODO(earalov): was going to do something here?
-    }
-
-    public void OnLevelLoaded(LoadMode mode)
-    {
+            base.OnLevelLoaded(mode);
       this._loadMode = mode;
       if (mode != LoadMode.LoadGame && mode != LoadMode.NewGame && mode != LoadMode.NewGameFromScenario)
         return;
@@ -90,16 +79,13 @@ namespace ImprovedPublicTransport2
       }
     }
 
-    public void OnLevelUnloading()
+    public override void OnLevelUnloading()
     {
+            base.OnLevelUnloading();
       if (this._loadMode != LoadMode.LoadGame && this._loadMode != LoadMode.NewGame && this._loadMode == LoadMode.NewGameFromScenario)
         return;
       this.Deinit();
       Utils.Log((object) ("Unloading done!" + System.Environment.NewLine));
-    }
-
-    public void OnReleased()
-    {
     }
 
     private void ReleaseUnusedCitizenUnits()

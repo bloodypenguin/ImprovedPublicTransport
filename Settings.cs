@@ -28,7 +28,5 @@ namespace ImprovedPublicTransport2
 
         [Checkbox("SETTINGS_VEHICLE_EDITOR_HIDE", "SETTINGS_UI")]
         public bool HideVehicleEditor { get; set; }
-
-        public bool UseKoreanLocale { get; set; }
     }
 }
