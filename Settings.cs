@@ -13,7 +13,7 @@ namespace ImprovedPublicTransport
     private string _speedString = "km/h";
     private bool _showLineInfo = true;
     private int _defaultVehicleCount = 1;
-    private byte _intervalAggressionFactor = 3;
+    private byte _intervalAggressionFactor = 13; //13*4+12=64s default, like in vanilla
     private bool _unbunching = true;
     private int _statisticWeeks = 10;
     private bool _compatibilityMode;
