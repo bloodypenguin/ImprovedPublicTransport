@@ -10,12 +10,18 @@ namespace ImprovedPublicTransport2.TranslationFramework
         /// </summary>
         /// <param name="reader">The text to deserialise</param>
         /// <returns>A deserialised language</returns>
-        public ILanguage DeserialiseLanguage(string fileName, TextReader reader)
+        public ILanguage DeserialiseLanguage(string languageFile)
         {
             XmlSerializer xmlSerialiser = new XmlSerializer(typeof(DefaultLanguage));
-
-            DefaultLanguage loadedLanguage = (DefaultLanguage)xmlSerialiser.Deserialize(reader);
-            return loadedLanguage;
+            StreamReader reader = new StreamReader(languageFile);
+            try
+            {
+                return (DefaultLanguage) xmlSerialiser.Deserialize(reader);
+            }
+            finally
+            {
+                reader.Close();
+            }
         }
     }
 }

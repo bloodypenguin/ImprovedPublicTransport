@@ -72,21 +72,16 @@ namespace ImprovedPublicTransport2.TranslationFramework
 
                     foreach (string languageFile in languageFiles)
                     {
-                        StreamReader reader = new StreamReader(languageFile);
                         ILanguage loadedLanguage = null;
                         try
                         {
-                            loadedLanguage = languageDeserializer.DeserialiseLanguage(languageFile, reader);
+                            loadedLanguage = languageDeserializer.DeserialiseLanguage(languageFile);
                         }
                         catch (Exception e)
                         {
                             UnityEngine.Debug.LogError(
                                 "Error happened when deserializing language file " + languageFile);
                             UnityEngine.Debug.LogException(e);
-                        }
-                        finally
-                        {
-                            reader.Close();
                         }
                         if (loadedLanguage != null)
                         {
