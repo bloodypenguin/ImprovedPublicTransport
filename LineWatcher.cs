@@ -7,6 +7,7 @@
 using ColossalFramework;
 using System.Collections.Generic;
 using ImprovedPublicTransport2.Detour;
+using ImprovedPublicTransport2.OptionsFramework;
 using UnityEngine;
 
 namespace ImprovedPublicTransport2
@@ -54,7 +55,7 @@ namespace ImprovedPublicTransport2
             ushort closestDepot = TransportLineMod.GetClosestDepot(lineID, position);
             if ((int) closestDepot != 0)
               TransportLineMod.SetDepot(lineID, closestDepot);
-            if (ImprovedPublicTransportMod.Settings.ShowLineInfo)
+            if (OptionsWrapper<Settings>.Options.ShowLineInfo)
               WorldInfoPanel.Show<PublicTransportWorldInfoPanel>(position, new InstanceID()
               {
                 TransportLine = lineID

@@ -9,6 +9,7 @@ using ColossalFramework.Globalization;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using ImprovedPublicTransport2.OptionsFramework;
 
 namespace ImprovedPublicTransport2
 {
@@ -51,7 +52,7 @@ namespace ImprovedPublicTransport2
         if (Localization._defaultLocale == null)
           Localization._defaultLocale = Localization.Load(Path.Combine(Path.Combine(Utils.AssemblyPath, "Locale"), "en.txt"));
         string language = SingletonLite<LocaleManager>.instance.language;
-        if (ImprovedPublicTransportMod.Settings.UseKoreanLocale)
+        if (OptionsWrapper<Settings>.Options.UseKoreanLocale)
         {
           Localization._selectedLocale = Localization.Load(Path.Combine(Path.Combine(Utils.AssemblyPath, "Locale"), "kr.txt"));
           Localization._selectedLanguage = "kr";

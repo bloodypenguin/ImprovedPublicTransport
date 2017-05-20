@@ -111,6 +111,7 @@
     <Compile Include="DropDown.cs" />
     <Compile Include="DropDownRow.cs" />
     <Compile Include="UIUtils.cs" />
+    <Compile Include="VehicleEditorPositions.cs" />
     <Compile Include="VehicleListBoxRow.cs" />
     <Compile Include="LineWatcher.cs" />
     <Compile Include="PrefabData.cs" />
@@ -118,7 +119,6 @@
     <Compile Include="SettingsPanel.cs" />
     <Compile Include="VehicleEditor.cs" />
     <Compile Include="SerializableDataExtension.cs" />
-    <Compile Include="Serializer.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SimHelper.cs" />
     <Compile Include="Detour\TransportLineMod.cs" />

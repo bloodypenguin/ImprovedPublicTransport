@@ -4,6 +4,7 @@
 // MVID: 76F370C5-F40B-41AE-AA9D-1E3F87E934D3
 // Assembly location: C:\Games\Steam\steamapps\workshop\content\255710\424106600\ImprovedPublicTransport.dll
 
+using ImprovedPublicTransport2.OptionsFramework;
 using UnityEngine;
 
 namespace ImprovedPublicTransport2
@@ -48,7 +49,7 @@ namespace ImprovedPublicTransport2
       }
       set
       {
-        this._passengerInData = new MovingAverage(value, ImprovedPublicTransportMod.Settings.StatisticWeeks);
+        this._passengerInData = new MovingAverage(value, OptionsWrapper<Settings>.Options.StatisticWeeks);
         this._averagePassengersIn = Mathf.RoundToInt(this._passengerInData.Average);
       }
     }
@@ -63,7 +64,7 @@ namespace ImprovedPublicTransport2
       }
       set
       {
-        this._passengerOutData = new MovingAverage(value, ImprovedPublicTransportMod.Settings.StatisticWeeks);
+        this._passengerOutData = new MovingAverage(value, OptionsWrapper<Settings>.Options.StatisticWeeks);
         this._averagePassengersOut = Mathf.RoundToInt(this._passengerOutData.Average);
       }
     }
@@ -119,13 +120,13 @@ namespace ImprovedPublicTransport2
     public void StartNewWeek()
     {
       if (this._passengerInData == null)
-        this._passengerInData = new MovingAverage(ImprovedPublicTransportMod.Settings.StatisticWeeks);
+        this._passengerInData = new MovingAverage(OptionsWrapper<Settings>.Options.StatisticWeeks);
       this._passengerInData.Push((float) this.PassengersIn);
       this._averagePassengersIn = Mathf.RoundToInt(this._passengerInData.Average);
       this.LastWeekPassengersIn = this.PassengersIn;
       this.PassengersIn = 0;
       if (this._passengerOutData == null)
-        this._passengerOutData = new MovingAverage(ImprovedPublicTransportMod.Settings.StatisticWeeks);
+        this._passengerOutData = new MovingAverage(OptionsWrapper<Settings>.Options.StatisticWeeks);
       this._passengerOutData.Push((float) this.PassengersOut);
       this._averagePassengersOut = Mathf.RoundToInt(this._passengerOutData.Average);
       this.LastWeekPassengersOut = this.PassengersOut;

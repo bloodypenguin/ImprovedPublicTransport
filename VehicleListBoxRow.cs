@@ -9,6 +9,7 @@ using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using System;
 using System.Text;
+using ImprovedPublicTransport2.OptionsFramework;
 using UnityEngine;
 
 namespace ImprovedPublicTransport2
@@ -71,7 +72,7 @@ namespace ImprovedPublicTransport2
         stringBuilder.AppendLine(Localization.Get("VEHICLE_EDITOR_PRICE_PER_KILOMETER") + ": " + (object) this._prefab.TicketPrice + " (" + str2 + ")");
       else
         stringBuilder.AppendLine(Localization.Get("VEHICLE_EDITOR_TICKET_PRICE") + ": " + (object) this._prefab.TicketPrice + " (" + str2 + ")");
-      stringBuilder.AppendLine(Localization.Get("VEHICLE_EDITOR_MAX_SPEED") + ": " + (object) this._prefab.MaxSpeed + " (" + (object) (this._prefab.MaxSpeed * 5) + " " + ImprovedPublicTransportMod.Settings.SpeedString + ")");
+      stringBuilder.AppendLine(Localization.Get("VEHICLE_EDITOR_MAX_SPEED") + ": " + (object) this._prefab.MaxSpeed + " (" + (object) (this._prefab.MaxSpeed * 5) + " " + OptionsWrapper<Settings>.Options.SpeedString + ")");
       stringBuilder.AppendLine();
       if ((int) this.VehicleID != 0)
         stringBuilder.AppendLine(Localization.Get("VEHICLE_LIST_BOX_ROW_TOOLTIP1"));

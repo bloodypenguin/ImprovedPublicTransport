@@ -8,7 +8,9 @@ using ColossalFramework;
 using ColossalFramework.UI;
 using ICities;
 using System;
+using System.Linq;
 using ImprovedPublicTransport2.Detour;
+using ImprovedPublicTransport2.OptionsFramework.Extensions;
 using ImprovedPublicTransport2.Redirection;
 using UnityEngine;
 
@@ -16,7 +18,6 @@ namespace ImprovedPublicTransport2
 {
   public class ImprovedPublicTransportMod : IUserMod, ILoadingExtension
   {
-    public static Settings Settings = Serializer.LoadSettings();
     private LoadMode _loadMode;
     private GameObject _iptGameObject;
     private GameObject _worldInfoPanel;
@@ -32,35 +33,14 @@ namespace ImprovedPublicTransport2
       }
     }
 
-    public void OnSettingsUI(UIHelperBase helper)
-    {
-      ImprovedPublicTransportMod.Settings = Serializer.LoadSettings();
-      Localization.Load();
-      UIHelperBase uiHelperBase = helper.AddGroup(Localization.Get("SETTINGS_UI"));
-      uiHelperBase.AddDropdown(Localization.Get("SETTINGS_VEHICLE_EDITOR_POSITION"), new string[2]
+      public void OnSettingsUI(UIHelperBase helper)
       {
-        Localization.Get("SETTINGS_VEHICLE_EDITOR_POSITION_BOTTOM"),
-        Localization.Get("SETTINGS_VEHICLE_EDITOR_POSITION_RIGHT")
-      }, ImprovedPublicTransportMod.Settings.VehicleEditorPosition, new OnDropdownSelectionChanged(this.SelectedIndexChanged));
-      uiHelperBase.AddCheckbox(Localization.Get("SETTINGS_VEHICLE_EDITOR_HIDE"), ImprovedPublicTransportMod.Settings.HideVehicleEditor, new OnCheckChanged(this.CheckChanged));
-    }
-
-    private void SelectedIndexChanged(int selectedIndex)
-    {
-      if (selectedIndex > 1)
-        throw new ArgumentOutOfRangeException("selectedIndex");
-      ImprovedPublicTransportMod.Settings.VehicleEditorPosition = selectedIndex;
-      Serializer.SaveSettings(ImprovedPublicTransportMod.Settings);
-    }
-
-    private void CheckChanged(bool isChecked)
-    {
-      ImprovedPublicTransportMod.Settings.HideVehicleEditor = isChecked;
-      Serializer.SaveSettings(ImprovedPublicTransportMod.Settings);
-    }
+          helper.AddOptionsGroup<Settings>(Localization.Get);
+      }
 
     public void OnCreated(ILoading loading)
     {
+            //TODO(earalov): was going to do something here?
     }
 
     public void OnLevelLoaded(LoadMode mode)
@@ -71,7 +51,6 @@ namespace ImprovedPublicTransport2
       try
       {
         Utils.Log((object) "Begin init version: 3.8.10");
-        ImprovedPublicTransportMod.Settings.LogSettings();
         this.ReleaseUnusedCitizenUnits();
         UIView objectOfType = UnityEngine.Object.FindObjectOfType<UIView>();
         if ((UnityEngine.Object) objectOfType != (UnityEngine.Object) null)
@@ -122,7 +101,6 @@ namespace ImprovedPublicTransport2
     {
       if (this._loadMode != LoadMode.LoadGame && this._loadMode != LoadMode.NewGame && this._loadMode == LoadMode.NewGameFromScenario)
         return;
-      Serializer.SaveSettings(ImprovedPublicTransportMod.Settings);
       this.Deinit();
       Utils.Log((object) ("Unloading done!" + System.Environment.NewLine));
     }

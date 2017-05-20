@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using ColossalFramework;
 using ColossalFramework.Math;
+using ImprovedPublicTransport2.OptionsFramework;
 using ImprovedPublicTransport2.Redirection;
 using ImprovedPublicTransport2.Redirection.Attributes;
 using UnityEngine;
@@ -42,11 +43,11 @@ namespace ImprovedPublicTransport2.Detour
                     }
                     else
                         TransportLineMod._lineData[index].TargetVehicleCount =
-                            ImprovedPublicTransportMod.Settings.DefaultVehicleCount;
-                    TransportLineMod._lineData[index].BudgetControl = ImprovedPublicTransportMod.Settings.BudgetControl;
+                            OptionsWrapper<Settings>.Options.DefaultVehicleCount;
+                    TransportLineMod._lineData[index].BudgetControl = OptionsWrapper<Settings>.Options.BudgetControl;
                     TransportLineMod._lineData[index].Depot = TransportLineMod.GetClosestDepot((ushort) index,
                         instance1.m_nodes.m_buffer[(int) instance2.m_lines.m_buffer[index].GetStop(0)].m_position);
-                    TransportLineMod._lineData[index].Unbunching = ImprovedPublicTransportMod.Settings.Unbunching;
+                    TransportLineMod._lineData[index].Unbunching = OptionsWrapper<Settings>.Options.Unbunching;
                 }
             }
             SerializableDataExtension.instance.EventSaveData +=
@@ -94,7 +95,7 @@ namespace ImprovedPublicTransport2.Detour
                     }
                     index1 += 4;
                     float num = Mathf.Min(BitConverter.ToSingle(data1, index1),
-                        (float) ImprovedPublicTransportMod.Settings.SpawnTimeInterval);
+                        (float) OptionsWrapper<Settings>.Options.SpawnTimeInterval);
                     if ((double) num > 0.0)
                         data[(int) lineID].NextSpawnTime = SimHelper.instance.SimulationTime + num;
                     index1 += 4;
@@ -157,7 +158,7 @@ namespace ImprovedPublicTransport2.Detour
                     if (str == "v003")
                         ++index1;
                     data[(int) lineID].Unbunching = str != "v004"
-                        ? ImprovedPublicTransportMod.Settings.Unbunching
+                        ? OptionsWrapper<Settings>.Options.Unbunching
                         : SerializableDataExtension.ReadBool(data1, ref index1);
                     ++lineID;
                 }
@@ -226,7 +227,7 @@ namespace ImprovedPublicTransport2.Detour
             if ((int)prevSegment == 0 || ((int)thisLine.m_averageInterval - (int)Singleton<NetManager>.instance.m_segments.m_buffer[(int)prevSegment].m_trafficLightState0 + 2) / 4 <= 0)
                 return true;
             //begin mod(*): compare with interval aggression setup instead of default 16 secs
-            var targetWaitTime = Mathf.Min(ImprovedPublicTransportMod.Settings.IntervalAggressionFactor * 4 + 12, byte.MaxValue);
+            var targetWaitTime = Mathf.Min(OptionsWrapper<Settings>.Options.IntervalAggressionFactor * 4 + 12, byte.MaxValue);
             return waitTime >= targetWaitTime; //4 * 16 = 64s is max waiting time in vanilla, 12s is min waiting time
             //end mod
         }
@@ -378,7 +379,7 @@ namespace ImprovedPublicTransport2.Detour
                                     }
                                     TransportLineMod._lineData[(int) lineID].NextSpawnTime =
                                         SimHelper.instance.SimulationTime +
-                                        (float) ImprovedPublicTransportMod.Settings.SpawnTimeInterval;
+                                        (float) OptionsWrapper<Settings>.Options.SpawnTimeInterval;
                                 }
                                 else
                                 {
@@ -477,9 +478,9 @@ namespace ImprovedPublicTransport2.Detour
         {
             TransportLineMod._lineData[(int) lineID] = new LineData();
             TransportLineMod._lineData[(int) lineID].TargetVehicleCount =
-                ImprovedPublicTransportMod.Settings.DefaultVehicleCount;
-            TransportLineMod._lineData[(int) lineID].BudgetControl = ImprovedPublicTransportMod.Settings.BudgetControl;
-            TransportLineMod._lineData[(int) lineID].Unbunching = ImprovedPublicTransportMod.Settings.Unbunching;
+                OptionsWrapper<Settings>.Options.DefaultVehicleCount;
+            TransportLineMod._lineData[(int) lineID].BudgetControl = OptionsWrapper<Settings>.Options.BudgetControl;
+            TransportLineMod._lineData[(int) lineID].Unbunching = OptionsWrapper<Settings>.Options.Unbunching;
         }
 
         private static bool SetLineStatus(ushort lineID, bool isLineEnabled)
