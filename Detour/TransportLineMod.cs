@@ -575,6 +575,10 @@ namespace ImprovedPublicTransport2.Detour
 
         public static bool CanAddVehicle(ushort depotID, ref Building depot, TransportInfo transportInfo)
         {
+            if (depot.Info == null)
+            {
+                return false;
+            }
             if (depot.Info.m_buildingAI is DepotAI)
             {
                 DepotAI buildingAi = depot.Info.m_buildingAI as DepotAI;
