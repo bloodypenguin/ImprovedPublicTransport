@@ -10,6 +10,7 @@ using ColossalFramework.UI;
 using System;
 using System.Linq;
 using System.Reflection;
+using ImprovedPublicTransport2.OptionsFramework;
 using UnityEngine;
 
 namespace ImprovedPublicTransport2
@@ -33,14 +34,14 @@ namespace ImprovedPublicTransport2
     public override void Update()
     {
       base.Update();
-      if (ImprovedPublicTransportMod.Settings.HideVehicleEditor != this._hide)
+      if (OptionsWrapper<Settings>.Options.HideVehicleEditor != this._hide)
       {
-        this._hide = ImprovedPublicTransportMod.Settings.HideVehicleEditor;
+        this._hide = OptionsWrapper<Settings>.Options.HideVehicleEditor;
         this.isVisible = !this._hide;
       }
-      if (ImprovedPublicTransportMod.Settings.VehicleEditorPosition != this._position)
+      if (OptionsWrapper<Settings>.Options.VehicleEditorPosition != this._position)
       {
-        this._position = ImprovedPublicTransportMod.Settings.VehicleEditorPosition;
+        this._position = OptionsWrapper<Settings>.Options.VehicleEditorPosition;
         if (this.isVisible)
           this.UpdatePosition();
       }
@@ -66,7 +67,7 @@ namespace ImprovedPublicTransport2
           return;
         this._rightSidePanel.Find<UILabel>("MaintenanceCostLabel").text = (Utils.ToSingle(this._rightSidePanel.Find<UITextField>("MaintenanceCost").text) * 0.01f).ToString(ColossalFramework.Globalization.Locale.Get("MONEY_FORMAT"), (IFormatProvider) LocaleManager.cultureInfo);
         this._rightSidePanel.Find<UILabel>("TicketPriceLabel").text = (Utils.ToSingle(this._rightSidePanel.Find<UITextField>("TicketPrice").text) * 0.01f).ToString(ColossalFramework.Globalization.Locale.Get("MONEY_FORMAT"), (IFormatProvider) LocaleManager.cultureInfo);
-        this._rightSidePanel.Find<UILabel>("MaxSpeedLabel").text = (Utils.ToInt32(this._rightSidePanel.Find<UITextField>("MaxSpeed").text) * 5).ToString() + " " + ImprovedPublicTransportMod.Settings.SpeedString;
+        this._rightSidePanel.Find<UILabel>("MaxSpeedLabel").text = (Utils.ToInt32(this._rightSidePanel.Find<UITextField>("MaxSpeed").text) * 5).ToString() + " " + OptionsWrapper<Settings>.Options.SpeedString;
       }
     }
 
@@ -96,7 +97,7 @@ namespace ImprovedPublicTransport2
       bool flag1 = instance.TransportTypeLoaded((TransportInfo.TransportType) num1);
       int num2 = 6;
       bool flag2 = instance.TransportTypeLoaded((TransportInfo.TransportType) num2);
-      if (ImprovedPublicTransportMod.Settings.VehicleEditorPosition == 0)
+      if (OptionsWrapper<Settings>.Options.VehicleEditorPosition == 0)
       {
         float x = this._publicTransportInfoViewPanel.component.absolutePosition.x;
         if (flag1 & flag2)

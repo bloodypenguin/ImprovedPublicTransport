@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using ImprovedPublicTransport2.Detour;
+using ImprovedPublicTransport2.OptionsFramework;
 using UnityEngine;
 
 namespace ImprovedPublicTransport2
@@ -189,7 +190,7 @@ namespace ImprovedPublicTransport2
         this._stopCountLabel.text = string.Format(Localization.Get("LINE_PANEL_STOPS"), (object) num1);
         this._budgetControl.isChecked = TransportLineMod.GetBudgetControlState(lineId);
 
-        if ((int) ImprovedPublicTransportMod.Settings.IntervalAggressionFactor == 0)
+        if ((int) OptionsWrapper<Settings>.Options.IntervalAggressionFactor == 0)
         {
           this._unbunching.Disable();
           this._unbunching.isChecked = false;

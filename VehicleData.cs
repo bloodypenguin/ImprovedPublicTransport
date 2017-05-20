@@ -4,6 +4,7 @@
 // MVID: 76F370C5-F40B-41AE-AA9D-1E3F87E934D3
 // Assembly location: C:\Games\Steam\steamapps\workshop\content\255710\424106600\ImprovedPublicTransport.dll
 
+using ImprovedPublicTransport2.OptionsFramework;
 using UnityEngine;
 
 namespace ImprovedPublicTransport2
@@ -36,7 +37,7 @@ namespace ImprovedPublicTransport2
       }
       set
       {
-        this._passengerData = new MovingAverage(value, ImprovedPublicTransportMod.Settings.StatisticWeeks);
+        this._passengerData = new MovingAverage(value, OptionsWrapper<Settings>.Options.StatisticWeeks);
         this._averagePassengers = Mathf.RoundToInt(this._passengerData.Average);
       }
     }
@@ -51,7 +52,7 @@ namespace ImprovedPublicTransport2
       }
       set
       {
-        this._incomeData = new MovingAverage(value, ImprovedPublicTransportMod.Settings.StatisticWeeks);
+        this._incomeData = new MovingAverage(value, OptionsWrapper<Settings>.Options.StatisticWeeks);
         this._averageIncome = Mathf.RoundToInt(this._incomeData.Average);
       }
     }
@@ -108,14 +109,14 @@ namespace ImprovedPublicTransport2
     public void StartNewWeek(int maintenanceCost)
     {
       if (this._passengerData == null)
-        this._passengerData = new MovingAverage(ImprovedPublicTransportMod.Settings.StatisticWeeks);
+        this._passengerData = new MovingAverage(OptionsWrapper<Settings>.Options.StatisticWeeks);
       this._passengerData.Push((float) this.PassengersThisWeek);
       this._averagePassengers = Mathf.RoundToInt(this._passengerData.Average);
       this.PassengersLastWeek = this.PassengersThisWeek;
       this.PassengersThisWeek = 0;
       this.IncomeThisWeek = this.IncomeThisWeek - maintenanceCost;
       if (this._incomeData == null)
-        this._incomeData = new MovingAverage(ImprovedPublicTransportMod.Settings.StatisticWeeks);
+        this._incomeData = new MovingAverage(OptionsWrapper<Settings>.Options.StatisticWeeks);
       this._incomeData.Push((float) this.IncomeThisWeek);
       this._averageIncome = Mathf.RoundToInt(this._incomeData.Average);
       this.IncomeLastWeek = this.IncomeThisWeek;

@@ -7,6 +7,7 @@
 using ColossalFramework;
 using ColossalFramework.UI;
 using ImprovedPublicTransport2.Detour;
+using ImprovedPublicTransport2.OptionsFramework;
 using UnityEngine;
 
 namespace ImprovedPublicTransport2
@@ -446,13 +447,13 @@ namespace ImprovedPublicTransport2
     {
       if (!visible)
         return;
-      this._budgetControl.isChecked = ImprovedPublicTransportMod.Settings.BudgetControl;
-      this._compatibilityMode.isChecked = ImprovedPublicTransportMod.Settings.CompatibilityMode;
-      this._spawnTimeInterval.text = ImprovedPublicTransportMod.Settings.SpawnTimeInterval.ToString();
-      this._intervalAggressionFactor.text = ImprovedPublicTransportMod.Settings.IntervalAggressionFactor.ToString();
-      this._speedString.text = ImprovedPublicTransportMod.Settings.SpeedString;
-      this._showLineInfo.isChecked = ImprovedPublicTransportMod.Settings.ShowLineInfo;
-      this._defaultVehicleCount.text = ImprovedPublicTransportMod.Settings.DefaultVehicleCount.ToString();
+      this._budgetControl.isChecked = OptionsWrapper<Settings>.Options.BudgetControl;
+      this._compatibilityMode.isChecked = OptionsWrapper<Settings>.Options.CompatibilityMode;
+      this._spawnTimeInterval.text = OptionsWrapper<Settings>.Options.SpawnTimeInterval.ToString();
+      this._intervalAggressionFactor.text = OptionsWrapper<Settings>.Options.IntervalAggressionFactor.ToString();
+      this._speedString.text = OptionsWrapper<Settings>.Options.SpeedString;
+      this._showLineInfo.isChecked = OptionsWrapper<Settings>.Options.ShowLineInfo;
+      this._defaultVehicleCount.text = OptionsWrapper<Settings>.Options.DefaultVehicleCount.ToString();
       this._deleteBusLines.isChecked = false;
       this._deleteTramLines.isChecked = false;
       this._deleteMetroLines.isChecked = false;
@@ -468,9 +469,9 @@ namespace ImprovedPublicTransport2
 
     private void OnBudgetCheckChanged(UIComponent component, bool isChecked)
     {
-      if (ImprovedPublicTransportMod.Settings.BudgetControl == isChecked)
+      if (OptionsWrapper<Settings>.Options.BudgetControl == isChecked)
         return;
-      ImprovedPublicTransportMod.Settings.BudgetControl = isChecked;
+      OptionsWrapper<Settings>.Options.BudgetControl = isChecked;
       TransportManager instance = Singleton<TransportManager>.instance;
       int length = instance.m_lines.m_buffer.Length;
       for (int index = 0; index < length; ++index)
@@ -482,10 +483,10 @@ namespace ImprovedPublicTransport2
 
     private void OnCompatibilityModeChanged(UIComponent component, bool isChecked)
     {
-      if (ImprovedPublicTransportMod.Settings.CompatibilityMode == isChecked)
+      if (OptionsWrapper<Settings>.Options.CompatibilityMode == isChecked)
         return;
       Utils.Log((object) ("Changing compatibility mode: " + (isChecked ? "on" : "off")));
-      ImprovedPublicTransportMod.Settings.CompatibilityMode = isChecked;
+      OptionsWrapper<Settings>.Options.CompatibilityMode = isChecked;
         if (isChecked)
         {
             //TODO(earalov): do something
@@ -498,7 +499,7 @@ namespace ImprovedPublicTransport2
 
     private void OnShowLineCheckChanged(UIComponent component, bool isChecked)
     {
-      ImprovedPublicTransportMod.Settings.ShowLineInfo = isChecked;
+      OptionsWrapper<Settings>.Options.ShowLineInfo = isChecked;
     }
 
     private void OnUpdateButtonClick(UIComponent component, UIMouseEventParameter eventParam)
@@ -514,18 +515,18 @@ namespace ImprovedPublicTransport2
 
     private void OnSpawnTimeIntervalSubmitted(UIComponent component, string text)
     {
-      ImprovedPublicTransportMod.Settings.SpawnTimeInterval = Utils.ToInt32(text);
+      OptionsWrapper<Settings>.Options.SpawnTimeInterval = Utils.ToInt32(text);
     }
 
     private void OnIntervalAggressionFactorSubmitted(UIComponent component, string text)
     {
-      ImprovedPublicTransportMod.Settings.IntervalAggressionFactor = Utils.ToByte(text);
+      OptionsWrapper<Settings>.Options.IntervalAggressionFactor = Utils.ToByte(text);
     }
 
     private void OnDefaultVehicleCountSubmitted(UIComponent component, string text)
     {
       int int32 = Utils.ToInt32(text);
-      ImprovedPublicTransportMod.Settings.DefaultVehicleCount = int32;
+      OptionsWrapper<Settings>.Options.DefaultVehicleCount = int32;
       TransportManager instance = Singleton<TransportManager>.instance;
       int length = instance.m_lines.m_buffer.Length;
       for (int index = 0; index < length; ++index)
@@ -544,7 +545,7 @@ namespace ImprovedPublicTransport2
 
     private void OnMaxSpeedSubmitted(UIComponent component, string text)
     {
-      ImprovedPublicTransportMod.Settings.SpeedString = text;
+      OptionsWrapper<Settings>.Options.SpeedString = text;
     }
 
     private void OnDeleteLinesClick(UIComponent component, UIMouseEventParameter eventParam)

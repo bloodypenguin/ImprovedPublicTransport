@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ImprovedPublicTransport2.Detour;
+using ImprovedPublicTransport2.OptionsFramework;
 using UnityEngine;
 
 namespace ImprovedPublicTransport2
@@ -248,7 +249,7 @@ namespace ImprovedPublicTransport2
             uiLabel5.text = Localization.Get("LAST_WEEK");
             uiLabel6.text = Localization.Get("AVERAGE");
             uiLabel6.tooltip = string.Format(Localization.Get("AVERAGE_TOOLTIP"),
-                (object) ImprovedPublicTransportMod.Settings.StatisticWeeks);
+                (object) OptionsWrapper<Settings>.Options.StatisticWeeks);
 
             int num20 = 0;
             PublicTransportStopWorldInfoPanel.CreateStatisticRow((UIComponent) uiPanel5, out uiLabel3,
@@ -304,7 +305,7 @@ namespace ImprovedPublicTransport2
             uiCheckBox.label.textColor = new Color32((byte) 185, (byte) 221, (byte) 254, byte.MaxValue);
             uiCheckBox.label.disabledTextColor = (Color32) Color.black;
             uiCheckBox.label.textScale = 13f / 16f;
-            uiCheckBox.label.text = (int) ImprovedPublicTransportMod.Settings.IntervalAggressionFactor == 0
+            uiCheckBox.label.text = (int) OptionsWrapper<Settings>.Options.IntervalAggressionFactor == 0
                 ? Localization.Get("UNBUNCHING_DISABLED")
                 : Localization.Get("UNBUNCHING_ENABLED");
             uiCheckBox.label.relativePosition = new Vector3(22f, 2f);
@@ -683,7 +684,7 @@ namespace ImprovedPublicTransport2
                 .LastWeekPassengersTotal.ToString();
             this.m_passengersTotalAverage.text = NetManagerMod.m_cachedNodeData[(int) netNode]
                 .AveragePassengersTotal.ToString();
-            if ((int) ImprovedPublicTransportMod.Settings.IntervalAggressionFactor == 0)
+            if ((int) OptionsWrapper<Settings>.Options.IntervalAggressionFactor == 0)
             {
                 this.m_unbunching.Disable();
                 this.m_unbunching.isChecked = false;

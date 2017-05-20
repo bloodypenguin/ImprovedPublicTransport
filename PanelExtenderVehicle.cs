@@ -10,6 +10,7 @@ using ColossalFramework.UI;
 using System;
 using System.Reflection;
 using ImprovedPublicTransport2.Detour;
+using ImprovedPublicTransport2.OptionsFramework;
 using UnityEngine;
 
 namespace ImprovedPublicTransport2
@@ -84,7 +85,7 @@ namespace ImprovedPublicTransport2
       else
       {
         this._publicTransportVehicleWorldInfoPanel.component.height = 332f;
-        this._editType.isVisible = !ImprovedPublicTransportMod.Settings.HideVehicleEditor;
+        this._editType.isVisible = !OptionsWrapper<Settings>.Options.HideVehicleEditor;
           ItemClass itemClass = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineId].Info.m_class;
           ItemClass.SubService subService = itemClass.m_subService;
           ItemClass.Service service = itemClass.m_service;
@@ -235,7 +236,7 @@ namespace ImprovedPublicTransport2
       button1.tooltip = string.Format(Localization.Get("VEHICLE_PANEL_EDIT_TYPE_TOOLTIP"));
       button1.textScale = 0.75f;
       button1.eventClick += new MouseEventHandler(this.OnEditTypeClick);
-      button1.isVisible = !ImprovedPublicTransportMod.Settings.HideVehicleEditor;
+      button1.isVisible = !OptionsWrapper<Settings>.Options.HideVehicleEditor;
       this._editType = button1;
       UILabel uiLabel2 = Utils.GetPrivate<UILabel>((object) this._publicTransportVehicleWorldInfoPanel, "m_Passengers");
       UIPanel uiPanel1 = this._publicTransportVehicleWorldInfoPanel.component.Find<UIPanel>("Panel");
@@ -272,7 +273,7 @@ namespace ImprovedPublicTransport2
       label2.text = Localization.Get("CURRENT_WEEK");
       label3.text = Localization.Get("LAST_WEEK");
       label4.text = Localization.Get("AVERAGE");
-      label4.tooltip = string.Format(Localization.Get("AVERAGE_TOOLTIP"), (object) ImprovedPublicTransportMod.Settings.StatisticWeeks);
+      label4.tooltip = string.Format(Localization.Get("AVERAGE_TOOLTIP"), (object) OptionsWrapper<Settings>.Options.StatisticWeeks);
       PublicTransportStopWorldInfoPanel.CreateStatisticRow((UIComponent) uiPanel3, out label1, out this._passengersCurrentWeek, out this._passengersLastWeek, out this._passengersAverage, false);
       label1.text = Localization.Get("VEHICLE_PANEL_PASSENGERS");
       PublicTransportStopWorldInfoPanel.CreateStatisticRow((UIComponent) uiPanel3, out label1, out this._earningsCurrentWeek, out this._earningsLastWeek, out this._earningsAverage, false);
