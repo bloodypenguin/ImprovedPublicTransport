@@ -24,14 +24,7 @@ namespace ImprovedPublicTransport2
 
     public string Name => "Improved Public Transport 2";
 
-    public string Description
-    {
-      get
-      {
-        Localization.Load();
-        return Localization.Get("MOD_DESCRIPTION");
-      }
-    }
+    public string Description => Localization.Get("MOD_DESCRIPTION");
 
       public void OnSettingsUI(UIHelperBase helper)
       {

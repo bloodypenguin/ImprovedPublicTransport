@@ -19,8 +19,22 @@ namespace ImprovedPublicTransport2
     private static Dictionary<string, string> _defaultLocale;
     private static Dictionary<string, string> _selectedLocale;
 
+
+      public static bool bootstrapped = false;
+
     public static string Get(string id)
     {
+            UnityEngine.Debug.Log("Get locale: " + id);
+        if (!bootstrapped)
+        {
+            Localization.Load();
+            bootstrapped = true;
+        }
+        if (string.IsNullOrEmpty(id))
+        {
+            return id;
+        }
+
       string str1;
       try
       {
