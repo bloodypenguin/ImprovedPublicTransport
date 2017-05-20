@@ -218,7 +218,7 @@ namespace ImprovedPublicTransport2.Detour
         }
 
         [RedirectMethod]
-        public bool CanLeaveStop(ref TransportLine thisLine, ushort nextStop, int waitTime)
+        public static bool CanLeaveStop(ref TransportLine thisLine, ushort nextStop, int waitTime)
         {
             if ((int)nextStop == 0)
                 return true;
