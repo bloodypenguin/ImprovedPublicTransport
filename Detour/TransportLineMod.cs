@@ -218,6 +218,20 @@ namespace ImprovedPublicTransport.Detour
         }
 
         [RedirectMethod]
+        public bool CanLeaveStop(ref TransportLine thisLine, ushort nextStop, int waitTime)
+        {
+            if ((int)nextStop == 0)
+                return true;
+            ushort prevSegment = TransportLine.GetPrevSegment(nextStop);
+            if ((int)prevSegment == 0 || ((int)thisLine.m_averageInterval - (int)Singleton<NetManager>.instance.m_segments.m_buffer[(int)prevSegment].m_trafficLightState0 + 2) / 4 <= 0)
+                return true;
+            //begin mod(*): compare with interval aggression setup instead of default 16 secs
+            var targetWaitTime = Mathf.Min(ImprovedPublicTransportMod.Settings.IntervalAggressionFactor * 4 + 12, byte.MaxValue);
+            return waitTime >= targetWaitTime; //4 * 16 = 64s is max waiting time in vanilla, 12s is min waiting time
+            //end mod
+        }
+
+        [RedirectMethod]
         public static void SimulationStep(ref TransportLine thisLine, ushort lineID)
         {
             //begin mod(+): change for initialization
