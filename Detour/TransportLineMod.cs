@@ -226,9 +226,9 @@ namespace ImprovedPublicTransport2.Detour
             ushort prevSegment = TransportLine.GetPrevSegment(nextStop);
             if ((int)prevSegment == 0 || ((int)thisLine.m_averageInterval - (int)Singleton<NetManager>.instance.m_segments.m_buffer[(int)prevSegment].m_trafficLightState0 + 2) / 4 <= 0)
                 return true;
-            //begin mod(*): compare with interval aggression setup instead of default 16 secs
+            //begin mod(*): compare with interval aggression setup instead of default 64
             var targetWaitTime = Mathf.Min(OptionsWrapper<Settings>.Options.IntervalAggressionFactor + 12, byte.MaxValue);
-            return waitTime >= targetWaitTime; //4 * 16 = 64s is max waiting time in vanilla, 12s is min waiting time
+            return waitTime >= targetWaitTime; //4 * 16 = 64 is max waiting time in vanilla, 12 is min waiting time
             //end mod
         }
 
