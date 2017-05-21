@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -60,34 +61,40 @@ namespace ImprovedPublicTransport2.OptionsFramework.Extensions
             {
                 description = translator.Invoke(description);
             }
-
+            UIComponent component = null;
             var checkboxAttribute = OptionsWrapper<T>.Options.GetAttribute<T, CheckboxAttribute>(propertyName);
             if (checkboxAttribute != null)
             {
-                return group.AddCheckbox<T>(description, propertyName, checkboxAttribute);
+                component = group.AddCheckbox<T>(description, propertyName, checkboxAttribute);
             }
             var textfieldAttribute = OptionsWrapper<T>.Options.GetAttribute<T, TextfieldAttribute>(propertyName);
             if (textfieldAttribute != null)
             {
-                return group.AddTextfield<T>(description, propertyName, textfieldAttribute);
+                component = group.AddTextfield<T>(description, propertyName, textfieldAttribute);
             }
             var dropDownAttribute = OptionsWrapper<T>.Options.GetAttribute<T, DropDownAttribute>(propertyName);
             if (dropDownAttribute != null)
             {
-                return group.AddDropdown<T>(description, propertyName, dropDownAttribute, translator);
+                component = group.AddDropdown<T>(description, propertyName, dropDownAttribute, translator);
             }
             var sliderAttribute = OptionsWrapper<T>.Options.GetAttribute<T, SliderAttribute>(propertyName);
             if (sliderAttribute != null)
             {
-                return group.AddSlider<T>(description, propertyName, sliderAttribute);
+                component = group.AddSlider<T>(description, propertyName, sliderAttribute);
             }
             var buttonAttribute = OptionsWrapper<T>.Options.GetAttribute<T, ButtonAttribute>(propertyName);
             if (buttonAttribute != null)
             {
-                return group.AddButton<T>(description, propertyName, buttonAttribute);
+                component = group.AddButton<T>(description, propertyName, buttonAttribute);
             }
             //TODO: more control types
-            return null;
+
+            var descriptionAttribute = OptionsWrapper<T>.Options.GetAttribute<T, DescriptionAttribute>(propertyName);
+            if (component != null && descriptionAttribute != null)
+            {
+                component.tooltip = translator != null ? translator.Invoke(descriptionAttribute.Description) : descriptionAttribute.Description;
+            }
+            return component;
         }
 
         private static UIDropDown AddDropdown<T>(this UIHelperBase group, string text, string propertyName, DropDownAttribute attr, Func<string, string> translator = null)
