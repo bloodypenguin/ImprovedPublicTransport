@@ -8,9 +8,17 @@ namespace ImprovedPublicTransport2
     [Options("ImprovedPublicTransport2", "ImprovedPublicTransportSettings")]
     public class Settings
     {
-        private const string UI = "SETTINGS_UI";
+        private const string SETTINGS_COMMON = "SETTINGS";
+        private const string SETTINGS_UI = "SETTINGS_UI";
         private const string SETTINGS_BUDGET = "SETTINGS_ENABLE_BUDGET_CONTROL";
         private const string SETTINGS_UNBUNCHING = "UNBUNCHING_ENABLED";
+
+        [Textfield("SETTINGS_SPEED", SETTINGS_COMMON)]
+        public string SpeedString { get; set; } = "km/h";
+
+        [Description("SETTINGS_AUTOSHOW_LINE_INFO_TOOLTIP")]
+        [Checkbox("SETTINGS_AUTOSHOW_LINE_INFO", SETTINGS_COMMON)]
+        public bool ShowLineInfo { get; set; } = true;
 
         [BudgetDescription]
         [Checkbox(SETTINGS_BUDGET, SETTINGS_BUDGET, nameof(SettingsActions), nameof(SettingsActions.OnBudgetCheckChanged))]  //TODO(earalov): add new locale?
@@ -25,11 +33,6 @@ namespace ImprovedPublicTransport2
 
         public int SpawnTimeInterval { get; set; } = 10;
 
-        [Textfield("SETTINGS_SPEED")]
-        public string SpeedString { get; set; } = "km/h";
-
-        public bool ShowLineInfo { get; set; } = true;
-
         public int DefaultVehicleCount { get; set; } = 0;
 
         [AggressionDescription]
@@ -40,10 +43,10 @@ namespace ImprovedPublicTransport2
 
         public int StatisticWeeks { get; set; } = 10;
 
-        [DropDown("SETTINGS_VEHICLE_EDITOR_POSITION", nameof(VehicleEditorPositions), UI)]
+        [DropDown("SETTINGS_VEHICLE_EDITOR_POSITION", nameof(VehicleEditorPositions), SETTINGS_UI)]
         public int VehicleEditorPosition { get; set; } = (int) VehicleEditorPositions.Bottom;
 
-        [Checkbox("SETTINGS_VEHICLE_EDITOR_HIDE", UI)]
+        [Checkbox("SETTINGS_VEHICLE_EDITOR_HIDE", SETTINGS_UI)]
         public bool HideVehicleEditor { get; set; }
 
         [AttributeUsage(AttributeTargets.All)]
