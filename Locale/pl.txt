@@ -7,7 +7,7 @@ CITY_SERVICE_PANEL_TITLE_STATION_STOPS Przystanki na stacji
 CITY_SERVICE_PANEL_TITLE_DEPOT_VEHICLES Pojazdy w użyciu
 UNBUNCHING_ENABLED Unbunching pojazdów
 UNBUNCHING_DISABLED Unbunching jest wyłączony.
-UNBUNCHING_TARGET_GAP Docelowy odstęp: {0}m
+UNBUNCHING_TARGET_GAP Docelowy odstęp: {0}
 EXPLANATION_BUDGET_CONTROL Regulacja budżetowa: Ilość pojazdów jest regulowana przez budżet.
 EXPLANATION_UNBUNCHING Unbunching pojazdów: Gra spróbuje stworzyć odstęp między pojazdami.
 LINE_PANEL_STOPS Przystanki: {0}

@@ -7,7 +7,7 @@ CITY_SERVICE_PANEL_TITLE_STATION_STOPS Paradas
 CITY_SERVICE_PANEL_TITLE_DEPOT_VEHICLES Vehículos del depósito
 UNBUNCHING_ENABLED Desagrupar vehículos
 UNBUNCHING_DISABLED La desagrupación está desactivada
-UNBUNCHING_TARGET_GAP Espacio medio: {0}m
+UNBUNCHING_TARGET_GAP Espacio medio: {0}
 EXPLANATION_BUDGET_CONTROL Control por presupuesto: el número de vehículos se controla mediante el presupuesto
 EXPLANATION_UNBUNCHING Desagrupación de vehículos: el juego trata de dejar un espacio entre los vehículos de una misma línea
 LINE_PANEL_STOPS Paradas: {0}

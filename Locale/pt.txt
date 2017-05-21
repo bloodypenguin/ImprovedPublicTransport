@@ -6,7 +6,7 @@ CITY_SERVICE_PANEL_TITLE_STATION_STOPS Paradas da estação
 CITY_SERVICE_PANEL_TITLE_DEPOT_VEHICLES Veículos da garagem
 UNBUNCHING_ENABLED Distribuição de veículos
 UNBUNCHING_DISABLED Distribuição desativado.
-UNBUNCHING_TARGET_GAP Intervalo: {0}m
+UNBUNCHING_TARGET_GAP Intervalo: {0}
 EXPLANATION_BUDGET_CONTROL Quantidade de veículos será controlada pelo orçamento de transporte.
 EXPLANATION_UNBUNCHING Distribuição de veículos: O jogo tenta manter uma distribuição regular entre os veículos.
 LINE_PANEL_STOPS Paradas: {0}

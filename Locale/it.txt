@@ -6,7 +6,7 @@ CITY_SERVICE_PANEL_TITLE_STATION_STOPS Fermate
 CITY_SERVICE_PANEL_TITLE_DEPOT_VEHICLES Veicoli del deposito
 UNBUNCHING_ENABLED Veicoli convogliati
 UNBUNCHING_DISABLED Convogliamento disabilitato.
-UNBUNCHING_TARGET_GAP Distanza dalla destiazione: {0}m
+UNBUNCHING_TARGET_GAP Distanza dalla destiazione: {0}
 EXPLANATION_BUDGET_CONTROL Controllo del budget: Il conteggio del veicolo è controllato dal bilancio.
 EXPLANATION_UNBUNCHING Veicoli convogliati: Il gioco cerca di creare una distanza tra i veicoli.
 LINE_PANEL_STOPS Fermate: {0}
