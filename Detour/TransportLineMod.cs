@@ -12,8 +12,8 @@ using System.Threading;
 using ColossalFramework;
 using ColossalFramework.Math;
 using ImprovedPublicTransport2.OptionsFramework;
-using ImprovedPublicTransport2.Redirection;
-using ImprovedPublicTransport2.Redirection.Attributes;
+using ImprovedPublicTransport2.RedirectionFramework;
+using ImprovedPublicTransport2.RedirectionFramework.Attributes;
 using UnityEngine;
 
 namespace ImprovedPublicTransport2.Detour

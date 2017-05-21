@@ -5,7 +5,7 @@
 // Assembly location: C:\Games\Steam\steamapps\workshop\content\255710\424106600\ImprovedPublicTransport.dll
 
 using ColossalFramework;
-using ImprovedPublicTransport2.Redirection.Attributes;
+using ImprovedPublicTransport2.RedirectionFramework.Attributes;
 using UnityEngine;
 
 namespace ImprovedPublicTransport2.Detour

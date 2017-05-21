@@ -4,7 +4,7 @@ using ICities;
 using System;
 using ImprovedPublicTransport2.Detour;
 using ImprovedPublicTransport2.OptionsFramework.Extensions;
-using ImprovedPublicTransport2.Redirection;
+using ImprovedPublicTransport2.RedirectionFramework;
 using UnityEngine;
 
 namespace ImprovedPublicTransport2
