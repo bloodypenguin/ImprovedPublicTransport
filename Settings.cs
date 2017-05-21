@@ -12,11 +12,11 @@ namespace ImprovedPublicTransport2
         private const string SETTINGS_BUDGET = "SETTINGS_ENABLE_BUDGET_CONTROL"; //TODO(earalov): add new locale
 
         [BudgetDescription]
-        [Checkbox("SETTINGS_ENABLE_BUDGET_CONTROL", SETTINGS_BUDGET)] //TODO(earalov): add action!
+        [Checkbox("SETTINGS_ENABLE_BUDGET_CONTROL", SETTINGS_BUDGET, nameof(SettingsActions), nameof(SettingsActions.OnBudgetCheckChanged))]
         public bool BudgetControl { get; set; } = true;
 
         [BudgetDescription]
-        [Button("SETTINGS_UPDATE", SETTINGS_BUDGET)] //TODO(earalov): add action!
+        [Button("SETTINGS_UPDATE", SETTINGS_BUDGET, nameof(SettingsActions), nameof(SettingsActions.OnUpdateButtonClick))]
         [XmlIgnore]
         public object BudgetControlUpdateButton { get; set; }
 
