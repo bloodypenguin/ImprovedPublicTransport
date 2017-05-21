@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using ImprovedPublicTransport2.Redirection.Attributes;
+using ImprovedPublicTransport2.RedirectionFramework.Attributes;
 
-namespace ImprovedPublicTransport2.Redirection
+namespace ImprovedPublicTransport2.RedirectionFramework
 {
     public static class RedirectionUtil
     {

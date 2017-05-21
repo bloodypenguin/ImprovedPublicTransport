@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ImprovedPublicTransport2.Redirection.Attributes
+namespace ImprovedPublicTransport2.RedirectionFramework.Attributes
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
     public class TargetTypeAttribute : Attribute

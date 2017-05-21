@@ -1,6 +1,6 @@
 ﻿using System;
 using ColossalFramework;
-using ImprovedPublicTransport2.Redirection.Attributes;
+using ImprovedPublicTransport2.RedirectionFramework.Attributes;
 using UnityEngine;
 using Object = UnityEngine.Object;
 

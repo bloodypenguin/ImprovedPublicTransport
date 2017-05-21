@@ -1,5 +1,5 @@
 ﻿using ColossalFramework.UI;
-using ImprovedPublicTransport2.Redirection.Attributes;
+using ImprovedPublicTransport2.RedirectionFramework.Attributes;
 using UnityEngine;
 
 namespace ImprovedPublicTransport2.Detour

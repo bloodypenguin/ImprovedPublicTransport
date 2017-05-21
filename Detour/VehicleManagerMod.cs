@@ -7,8 +7,8 @@
 using System;
 using ColossalFramework;
 using ColossalFramework.Math;
-using ImprovedPublicTransport2.Redirection;
-using ImprovedPublicTransport2.Redirection.Attributes;
+using ImprovedPublicTransport2.RedirectionFramework;
+using ImprovedPublicTransport2.RedirectionFramework.Attributes;
 
 namespace ImprovedPublicTransport2.Detour
 {

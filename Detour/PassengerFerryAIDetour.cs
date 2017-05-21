@@ -1,5 +1,5 @@
 ﻿using ColossalFramework;
-using ImprovedPublicTransport2.Redirection.Attributes;
+using ImprovedPublicTransport2.RedirectionFramework.Attributes;
 
 namespace ImprovedPublicTransport2.Detour
 {

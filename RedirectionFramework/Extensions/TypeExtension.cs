@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace ImprovedPublicTransport2.Redirection.Extensions
+namespace ImprovedPublicTransport2.RedirectionFramework.Extensions
 {
     public static class TypeExtension
     {
