@@ -13,6 +13,7 @@ namespace ImprovedPublicTransport2
         private const string SETTINGS_BUDGET = "SETTINGS_ENABLE_BUDGET_CONTROL";
         private const string SETTINGS_UNBUNCHING = "UNBUNCHING_ENABLED";
         private const string SETTINGS_SPAWN_TIME_INTERVAL = "SETTINGS_SPAWN_TIME_INTERVAL";
+        private const string SETTINGS_LINE_DELETION_TOOL = "SETTINGS_LINE_DELETION_TOOL";
 
         [Textfield("SETTINGS_SPEED", SETTINGS_COMMON)]
         public string SpeedString { get; set; } = "km/h";
@@ -59,11 +60,44 @@ namespace ImprovedPublicTransport2
         [Checkbox("SETTINGS_VEHICLE_EDITOR_HIDE", SETTINGS_UI)]
         public bool HideVehicleEditor { get; set; }
 
+        [Description("SETTINGS_LINE_DELETION_TOOL_BUTTON_TOOLTIP")]
+        [Button("SETTINGS_DELETE", SETTINGS_LINE_DELETION_TOOL, nameof(SettingsActions), nameof(SettingsActions.OnDeleteLinesClick))]
+        [XmlIgnore]
+        public object DeleteLinesButton { get; } = null;
+
+        [XmlIgnore]
+        [Checkbox("INFO_PUBLICTRANSPORT_BUS", SETTINGS_LINE_DELETION_TOOL)]
+        public bool DeleteBusLines { get; set; }
+
+        [XmlIgnore]
+        [Checkbox("INFO_PUBLICTRANSPORT_TRAM", SETTINGS_LINE_DELETION_TOOL)] //TODO(earalov): don't display if Snowfall not owned
+        public bool DeleteTramLines { get; set; }
+
+        [XmlIgnore]
+        [Checkbox("INFO_PUBLICTRANSPORT_TRAIN", SETTINGS_LINE_DELETION_TOOL)]
+        public bool DeleteTrainLines { get; set; }
+
+        [XmlIgnore]
+        [Checkbox("INFO_PUBLICTRANSPORT_METRO", SETTINGS_LINE_DELETION_TOOL)]
+        public bool DeleteMetroLines { get; set; }
+
+        [XmlIgnore]
+        [Checkbox("INFO_PUBLICTRANSPORT_MONORAIL", SETTINGS_LINE_DELETION_TOOL)] //TODO(earalov): don't display if Mass Transit not owned
+        public bool DeleteMonorailLines { get; set; }
+
+        [XmlIgnore]
+        [Checkbox("INFO_PUBLICTRANSPORT_SHIP", SETTINGS_LINE_DELETION_TOOL)]
+        public bool DeleteShipLines { get; set; }
+
+        [XmlIgnore]
+        [Checkbox("INFO_PUBLICTRANSPORT_PLANE", SETTINGS_LINE_DELETION_TOOL)]
+        public bool DeletePlaneLines { get; set; }
+
         [AttributeUsage(AttributeTargets.All)]
         public class BudgetDescriptionAttribute : DescriptionAttribute
         {
             public BudgetDescriptionAttribute() : 
-                base(Localization.Get("SETTINGS_BUDGET_CONTROL_TOOLTIP") + System.Environment.NewLine + Localization.Get("EXPLANATION_BUDGET_CONTROL"))
+                base(Localization.Get("SETTINGS_BUDGET_CONTROL_TOOLTIP") + Environment.NewLine + Localization.Get("EXPLANATION_BUDGET_CONTROL"))
             {
                 
             }
@@ -73,7 +107,7 @@ namespace ImprovedPublicTransport2
         public class AggressionDescriptionAttribute : DescriptionAttribute
         {
             public AggressionDescriptionAttribute() :
-                base(Localization.Get("SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP") + System.Environment.NewLine + Localization.Get("EXPLANATION_UNBUNCHING"))
+                base(Localization.Get("SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP") + Environment.NewLine + Localization.Get("EXPLANATION_UNBUNCHING"))
             {
 
             }

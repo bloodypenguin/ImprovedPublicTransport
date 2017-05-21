@@ -5,12 +5,16 @@ namespace ImprovedPublicTransport2
 {
     public static class Localization
     {
-        private static readonly LocalizationManager localizationManager = 
+        private static readonly LocalizationManager LocalizationManager = 
             new LocalizationManager(new PlainTextLanguageDeserializer());
 
         public static string Get(string translationId)
         {
-            return localizationManager.GetTranslation(translationId);
+            if (translationId.StartsWith("INFO_PUBLICTRANSPORT"))
+            {
+                return ColossalFramework.Globalization.Locale.Get(translationId);
+            }
+            return LocalizationManager.GetTranslation(translationId);
         }
     }
 }
