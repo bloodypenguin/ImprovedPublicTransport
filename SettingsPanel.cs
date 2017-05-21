@@ -356,7 +356,7 @@ namespace ImprovedPublicTransport2
       uiTextField4.focusedBgSprite = "TextFieldPanel";
       uiTextField4.builtinKeyNavigation = true;
       uiTextField4.submitOnFocusLost = true;
-      uiTextField4.eventTextSubmitted += new PropertyChangedEventHandler<string>(this.OnMaxSpeedSubmitted);
+      //uiTextField4.eventTextSubmitted += new PropertyChangedEventHandler<string>(this.OnMaxSpeedSubmitted);
       uiTextField4.width = 45f;
       uiTextField4.height = 22f;
       uiTextField4.maxLength = 4;
@@ -511,11 +511,6 @@ namespace ImprovedPublicTransport2
       int length = Singleton<TransportManager>.instance.m_lines.m_buffer.Length;
       for (int index = 0; index < length; ++index)
         TransportLineMod.SetNextSpawnTime((ushort) index, 0.0f);
-    }
-
-    private void OnMaxSpeedSubmitted(UIComponent component, string text)
-    {
-      OptionsWrapper<Settings>.Options.SpeedString = text;
     }
 
     private void OnDeleteLinesClick(UIComponent component, UIMouseEventParameter eventParam)

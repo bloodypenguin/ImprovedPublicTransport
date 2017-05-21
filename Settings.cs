@@ -25,6 +25,7 @@ namespace ImprovedPublicTransport2
 
         public int SpawnTimeInterval { get; set; } = 10;
 
+        [Textfield("SETTINGS_SPEED")]
         public string SpeedString { get; set; } = "km/h";
 
         public bool ShowLineInfo { get; set; } = true;
