@@ -60,16 +60,16 @@ namespace ImprovedPublicTransport2
           Redirector<PassengerFerryAIDetour>.Deploy();
           Redirector<PassengerBlimpAIDetour>.Deploy();
           Redirector<TramAIDetour>.Deploy();
-          Redirector<CommonBuildingAIReverseDetour>.Deploy();  
-          BuildingWatcher.instance.Init();
+          Redirector<CommonBuildingAIReverseDetour>.Deploy();
+          Redirector<PublicTransportStopButtonDetour>.Deploy();
+          Redirector<PublicTransportVehicleButtonDetour>.Deploy();
+          Redirector<PublicTransportWorldInfoPanelDetour>.Deploy();
+          BuildingExtension.instance.Init();
           LineWatcher.instance.Init();
           TransportLineMod.Init();
           VehiclePrefabs.Init();
           SerializableDataExtension.instance.Loaded = true;
           LocaleModifier.Init();
-          Redirector<PublicTransportStopButtonDetour>.Deploy();
-          Redirector<PublicTransportVehicleButtonDetour>.Deploy();
-          Redirector<PublicTransportWorldInfoPanelDetour>.Deploy();
           Utils.Log((object) "Loading done!");
         }
         else
@@ -121,16 +121,16 @@ namespace ImprovedPublicTransport2
       Redirector<PassengerBlimpAIDetour>.Revert();
       Redirector<BusAIDetour>.Revert();
       Redirector<CommonBuildingAIReverseDetour>.Revert();
+      Redirector<PublicTransportStopButtonDetour>.Revert();
+      Redirector<PublicTransportVehicleButtonDetour>.Revert();
+      Redirector<PublicTransportWorldInfoPanelDetour>.Revert();
       TransportLineMod.Deinit();
-      BuildingWatcher.instance.Deinit();
+      BuildingExtension.instance.Deinit();
       NetManagerMod.Deinit();
       VehicleManagerMod.Deinit();
       VehiclePrefabs.Deinit();
       SerializableDataExtension.instance.Loaded = false;
       LocaleModifier.Deinit();
-      Redirector<PublicTransportStopButtonDetour>.Revert();
-      Redirector<PublicTransportVehicleButtonDetour>.Revert();
-      Redirector<PublicTransportWorldInfoPanelDetour>.Revert();
 
       if ((UnityEngine.Object) this._iptGameObject != (UnityEngine.Object) null)
         UnityEngine.Object.Destroy((UnityEngine.Object) this._iptGameObject);

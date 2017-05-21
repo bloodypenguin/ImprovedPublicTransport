@@ -561,7 +561,7 @@ namespace ImprovedPublicTransport2.Detour
         public static bool ValidateDepot(ushort lineID, ref ushort depotID, ref TransportInfo transportInfo)
         {
             if (depotID != 0 &&
-                BuildingWatcher.IsValidDepot(ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[depotID], ref transportInfo,
+                DepotUtil.IsValidDepot(ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[depotID], ref transportInfo,
                     out _, out _, out _))
             {
                 return true;
@@ -905,7 +905,7 @@ namespace ImprovedPublicTransport2.Detour
             ItemClass itemClass = Singleton<TransportManager>.instance.m_lines
                 .m_buffer[(int) lineID]
                 .Info.m_class;
-            ushort[] depots = BuildingWatcher.instance.GetDepots(itemClass.m_service, itemClass.m_subService, itemClass.m_level);
+            ushort[] depots = BuildingExtension.instance.GetDepots(itemClass.m_service, itemClass.m_subService, itemClass.m_level);
             for (int index = 0; index < depots.Length; ++index)
             {
                 float num3 = Vector3.Distance(stopPosition,
