@@ -319,7 +319,7 @@ namespace ImprovedPublicTransport2
       checkBox3.text = Localization.Get("SETTINGS_AUTOSHOW_LINE_INFO");
       checkBox3.tooltip = Localization.Get("SETTINGS_AUTOSHOW_LINE_INFO_TOOLTIP");
       checkBox3.size = new Vector2(uiPanel9.width - 8f, uiPanel9.height);
-      checkBox3.eventCheckChanged += new PropertyChangedEventHandler<bool>(this.OnShowLineCheckChanged);
+      //checkBox3.eventCheckChanged += new PropertyChangedEventHandler<bool>(this.OnShowLineCheckChanged);
       this._showLineInfo = checkBox3;
       UIPanel uiPanel11 = uiPanel1.AddUIComponent<UIPanel>();
       uiPanel11.width = uiPanel11.parent.width;
@@ -483,10 +483,6 @@ namespace ImprovedPublicTransport2
             }
         }
 
-    private void OnShowLineCheckChanged(UIComponent component, bool isChecked)
-    {
-      OptionsWrapper<Settings>.Options.ShowLineInfo = isChecked;
-    }
 
     private void OnSpawnTimeIntervalSubmitted(UIComponent component, string text)
     {
