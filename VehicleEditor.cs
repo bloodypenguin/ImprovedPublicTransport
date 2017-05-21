@@ -27,7 +27,6 @@ namespace ImprovedPublicTransport2
     private int _position;
     private bool _hide;
     private PublicTransportInfoViewPanel _publicTransportInfoViewPanel;
-    private SettingsPanel _settingsPanel;
     private UIPanel _containerPanel;
     private UIPanel _rightSidePanel;
 
@@ -53,7 +52,6 @@ namespace ImprovedPublicTransport2
         this._publicTransportInfoViewPanel.component.eventVisibilityChanged += new PropertyChangedEventHandler<bool>(this.ParentVisibilityChanged);
         this._publicTransportInfoViewPanel.component.eventPositionChanged += new PropertyChangedEventHandler<Vector2>(this.ParentPositionChanged);
         this.CreatePanel();
-        this._settingsPanel = this.AddUIComponent<SettingsPanel>();
         VehicleEditor.Instance = this;
         this._initialized = true;
       }
@@ -84,8 +82,6 @@ namespace ImprovedPublicTransport2
         UnityEngine.Object.Destroy((UnityEngine.Object) this._containerPanel.gameObject);
       if ((UnityEngine.Object) this._rightSidePanel != (UnityEngine.Object) null)
         UnityEngine.Object.Destroy((UnityEngine.Object) this._rightSidePanel.gameObject);
-      if ((UnityEngine.Object) this._settingsPanel != (UnityEngine.Object) null)
-        UnityEngine.Object.Destroy((UnityEngine.Object) this._settingsPanel.gameObject);
       base.OnDestroy();
     }
 
@@ -127,23 +123,7 @@ namespace ImprovedPublicTransport2
       uiLabel.textAlignment = UIHorizontalAlignment.Center;
       uiLabel.font = UIUtils.Font;
       uiLabel.position = new Vector3((float) ((double) this.width / 2.0 - (double) uiLabel.width / 2.0), (float) ((double) uiLabel.height / 2.0 - 20.0));
-      UIButton uiButton = this.AddUIComponent<UIButton>();
-      string str1 = "SettingsButton";
-      uiButton.name = str1;
-      double num1 = 32.0;
-      uiButton.width = (float) num1;
-      double num2 = 32.0;
-      uiButton.height = (float) num2;
-      string str2 = "Options";
-      uiButton.normalBgSprite = str2;
-      string str3 = "OptionsHovered";
-      uiButton.hoveredBgSprite = str3;
-      string str4 = "OptionsPressed";
-      uiButton.pressedBgSprite = str4;
-      Vector3 vector3 = new Vector3(278f, 4f);
-      uiButton.relativePosition = vector3;
-      MouseEventHandler mouseEventHandler = new MouseEventHandler(this.OnSettingsButtonClick);
-      uiButton.eventClick += mouseEventHandler;
+
       this._containerPanel = this.AddUIComponent<UIPanel>();
       this._containerPanel.name = "ContainerPanel";
       this._containerPanel.anchor = UIAnchorStyle.Top | UIAnchorStyle.Left | UIAnchorStyle.Right;
@@ -626,11 +606,6 @@ namespace ImprovedPublicTransport2
     private void ParentPositionChanged(UIComponent component, Vector2 value)
     {
       this.UpdatePosition();
-    }
-
-    private void OnSettingsButtonClick(UIComponent component, UIMouseEventParameter eventParam)
-    {
-      this._settingsPanel.isVisible = !this._settingsPanel.isVisible;
     }
 
     private void OnSelectedItemChanged(UIComponent component, ushort item)

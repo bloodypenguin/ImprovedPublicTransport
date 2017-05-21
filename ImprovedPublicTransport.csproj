@@ -127,7 +127,6 @@
     <Compile Include="LineWatcher.cs" />
     <Compile Include="PrefabData.cs" />
     <Compile Include="VehicleListBox.cs" />
-    <Compile Include="SettingsPanel.cs" />
     <Compile Include="VehicleEditor.cs" />
     <Compile Include="SerializableDataExtension.cs" />
     <Compile Include="Settings.cs" />
