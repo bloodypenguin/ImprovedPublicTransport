@@ -12,6 +12,7 @@ namespace ImprovedPublicTransport2
         private const string SETTINGS_UI = "SETTINGS_UI";
         private const string SETTINGS_BUDGET = "SETTINGS_ENABLE_BUDGET_CONTROL";
         private const string SETTINGS_UNBUNCHING = "UNBUNCHING_ENABLED";
+        private const string SETTINGS_SPAWN_TIME_INTERVAL = "SETTINGS_SPAWN_TIME_INTERVAL";
 
         [Textfield("SETTINGS_SPEED", SETTINGS_COMMON)]
         public string SpeedString { get; set; } = "km/h";
@@ -31,17 +32,26 @@ namespace ImprovedPublicTransport2
 
         public bool CompatibilityMode { get; set; } //deprecated
 
-        public int SpawnTimeInterval { get; set; } = 10;
-
-        public int DefaultVehicleCount { get; set; } = 0;
-
         [AggressionDescription]
         [Slider("SETTINGS_UNBUNCHING_AGGRESSION", 0.0f, 52.0f, 1.0f, SETTINGS_UNBUNCHING)]
         public byte IntervalAggressionFactor { get; set; } = 52; //TODO(earalov): convert into max seconds at stop
 
-        public bool Unbunching { get; } = true; //deprecated
+        [Description("SETTINGS_VEHICLE_COUNT_TOOLTIP")]
+        [Slider("SETTINGS_VEHICLE_COUNT", 0.0f, 100.0f, 1.0f, SETTINGS_UNBUNCHING, nameof(SettingsActions), nameof(SettingsActions.OnDefaultVehicleCountSubmitted))]
+        public int DefaultVehicleCount { get; set; } = 0;
 
-        public int StatisticWeeks { get; set; } = 10;
+        [Description("SETTINGS_SPAWN_TIME_INTERVAL_TOOLTIP")]
+        [Slider(SETTINGS_SPAWN_TIME_INTERVAL, 0.0f, 100.0f, 1.0f, SETTINGS_SPAWN_TIME_INTERVAL)]
+        public int SpawnTimeInterval { get; set; } = 10;
+
+        [Description("SETTINGS_SPAWN_TIME_INTERVAL_BUTTON_TOOLTIP")]
+        [Button("SETTINGS_RESET", SETTINGS_SPAWN_TIME_INTERVAL, nameof(SettingsActions), nameof(SettingsActions.OnUpdateButtonClick))]
+        [XmlIgnore]
+        public object SpawnTimeIntervalResetButton { get; } = null;
+
+        public bool Unbunching { get; } = true; //hidden
+
+        public int StatisticWeeks { get; set; } = 10; //hidden
 
         [DropDown("SETTINGS_VEHICLE_EDITOR_POSITION", nameof(VehicleEditorPositions), SETTINGS_UI)]
         public int VehicleEditorPosition { get; set; } = (int) VehicleEditorPositions.Bottom;

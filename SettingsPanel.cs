@@ -185,7 +185,7 @@ namespace ImprovedPublicTransport2
       uiTextField1.focusedBgSprite = "TextFieldPanel";
       uiTextField1.builtinKeyNavigation = true;
       uiTextField1.submitOnFocusLost = true;
-      uiTextField1.eventTextSubmitted += new PropertyChangedEventHandler<string>(this.OnSpawnTimeIntervalSubmitted);
+      //uiTextField1.eventTextSubmitted += new PropertyChangedEventHandler<string>(this.OnSpawnTimeIntervalSubmitted);
       uiTextField1.width = 45f;
       uiTextField1.height = 22f;
       uiTextField1.maxLength = 4;
@@ -204,8 +204,8 @@ namespace ImprovedPublicTransport2
       button2.width = (float) num22;
       double num23 = 22.0;
       button2.height = (float) num23;
-      MouseEventHandler mouseEventHandler2 = new MouseEventHandler(this.OnResetButtonClick);
-      button2.eventClick += mouseEventHandler2;
+      //MouseEventHandler mouseEventHandler2 = new MouseEventHandler(this.OnResetButtonClick);
+      //button2.eventClick += mouseEventHandler2;
       UIPanel uiPanel7 = uiPanel1.AddUIComponent<UIPanel>();
       uiPanel7.width = uiPanel7.parent.width;
       uiPanel7.height = 30f;
@@ -286,7 +286,7 @@ namespace ImprovedPublicTransport2
       uiTextField3.focusedBgSprite = "TextFieldPanel";
       uiTextField3.builtinKeyNavigation = true;
       uiTextField3.submitOnFocusLost = true;
-      uiTextField3.eventTextSubmitted += new PropertyChangedEventHandler<string>(this.OnDefaultVehicleCountSubmitted);
+      //uiTextField3.eventTextSubmitted += new PropertyChangedEventHandler<string>(this.OnDefaultVehicleCountSubmitted);
       uiTextField3.width = 45f;
       uiTextField3.height = 22f;
       uiTextField3.maxLength = 1;
@@ -482,32 +482,6 @@ namespace ImprovedPublicTransport2
                 //TODO(earalov): do something
             }
         }
-
-
-    private void OnSpawnTimeIntervalSubmitted(UIComponent component, string text)
-    {
-      OptionsWrapper<Settings>.Options.SpawnTimeInterval = Utils.ToInt32(text);
-    }
-
-    private void OnDefaultVehicleCountSubmitted(UIComponent component, string text)
-    {
-      int int32 = Utils.ToInt32(text);
-      OptionsWrapper<Settings>.Options.DefaultVehicleCount = int32;
-      TransportManager instance = Singleton<TransportManager>.instance;
-      int length = instance.m_lines.m_buffer.Length;
-      for (int index = 0; index < length; ++index)
-      {
-        if (!instance.m_lines.m_buffer[index].Complete)
-          TransportLineMod.SetTargetVehicleCount((ushort) index, int32);
-      }
-    }
-
-    private void OnResetButtonClick(UIComponent component, UIMouseEventParameter eventParam)
-    {
-      int length = Singleton<TransportManager>.instance.m_lines.m_buffer.Length;
-      for (int index = 0; index < length; ++index)
-        TransportLineMod.SetNextSpawnTime((ushort) index, 0.0f);
-    }
 
     private void OnDeleteLinesClick(UIComponent component, UIMouseEventParameter eventParam)
     {
