@@ -46,7 +46,7 @@ SETTINGS_SPAWN_TIME_INTERVAL Spawn time interval:
 SETTINGS_SPAWN_TIME_INTERVAL_TOOLTIP Time in seconds between vehicles spawns.
 SETTINGS_SPAWN_TIME_INTERVAL_BUTTON_TOOLTIP Resets all timers back to 0.
 SETTINGS_UNBUNCHING_AGGRESSION Unbunching aggression:
-SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP How strong should the vehicle unbunching act?\nPossible values: 0-13 where 0 will disable vehicle unbunching.\nHigher values will strongly impact traffic and probably cause vehicles to despawn.
+SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP How strong should the vehicle unbunching act?\nPossible values: 0-52 where 0 will disable vehicle unbunching.\nHigher values will strongly impact traffic and probably cause vehicles to despawn.
 SETTINGS_VEHICLE_COUNT Vehicles on new lines:
 SETTINGS_VEHICLE_COUNT_TOOLTIP The number of vehicles that will be automatically added to new lines when budget control is off.
 SETTINGS_AUTOSHOW_LINE_INFO Auto show line info
