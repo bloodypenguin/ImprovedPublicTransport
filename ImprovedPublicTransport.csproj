@@ -159,6 +159,7 @@
     <Content Include="Locale\pl.txt" />
     <Content Include="Locale\pt.txt" />
     <Content Include="Locale\ru.txt" />
+    <Content Include="Locale\zh.txt" />
     <Content Include="Locale\zh-cn.txt" />
     <Content Include="Locale\zh-tw.txt" />
   </ItemGroup>
