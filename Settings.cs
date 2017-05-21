@@ -9,16 +9,17 @@ namespace ImprovedPublicTransport2
     public class Settings
     {
         private const string UI = "SETTINGS_UI";
-        private const string SETTINGS_BUDGET = "SETTINGS_ENABLE_BUDGET_CONTROL"; //TODO(earalov): add new locale
+        private const string SETTINGS_BUDGET = "SETTINGS_ENABLE_BUDGET_CONTROL";
+        private const string SETTINGS_UNBUNCHING = "UNBUNCHING_ENABLED";
 
         [BudgetDescription]
-        [Checkbox("SETTINGS_ENABLE_BUDGET_CONTROL", SETTINGS_BUDGET, nameof(SettingsActions), nameof(SettingsActions.OnBudgetCheckChanged))]
+        [Checkbox(SETTINGS_BUDGET, SETTINGS_BUDGET, nameof(SettingsActions), nameof(SettingsActions.OnBudgetCheckChanged))]  //TODO(earalov): add new locale?
         public bool BudgetControl { get; set; } = true;
 
         [BudgetDescription]
         [Button("SETTINGS_UPDATE", SETTINGS_BUDGET, nameof(SettingsActions), nameof(SettingsActions.OnUpdateButtonClick))]
         [XmlIgnore]
-        public object BudgetControlUpdateButton { get; set; }
+        public object BudgetControlUpdateButton { get; } = null;
 
         public bool CompatibilityMode { get; set; } //deprecated
 
@@ -30,9 +31,10 @@ namespace ImprovedPublicTransport2
 
         public int DefaultVehicleCount { get; set; } = (int)VehicleEditorPositions.Bottom;
 
-        public byte IntervalAggressionFactor { get; set; } = 13;
+        [Slider("SETTINGS_UNBUNCHING_AGGRESSION", 1.0f, 60.0f, 1.0f, SETTINGS_UNBUNCHING)] //TODO(earalov): action and tooltip
+        public byte IntervalAggressionFactor { get; set; } = 13; //TODO(earalov): convert into max seconds at stop
 
-        public bool Unbunching { get; set; } = true;
+        public bool Unbunching { get; } = true;
 
         public int StatisticWeeks { get; set; } = 10;
 
