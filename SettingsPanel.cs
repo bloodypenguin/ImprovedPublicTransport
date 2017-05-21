@@ -107,7 +107,7 @@ namespace ImprovedPublicTransport2
       checkBox1.text = Localization.Get("SETTINGS_ENABLE_BUDGET_CONTROL");
       checkBox1.tooltip = Localization.Get("SETTINGS_BUDGET_CONTROL_TOOLTIP") + System.Environment.NewLine + Localization.Get("EXPLANATION_BUDGET_CONTROL");
       checkBox1.size = new Vector2(229f, 30f);
-      checkBox1.eventCheckChanged += new PropertyChangedEventHandler<bool>(this.OnBudgetCheckChanged);
+     // checkBox1.eventCheckChanged += new PropertyChangedEventHandler<bool>(this.OnBudgetCheckChanged);
       this._budgetControl = checkBox1;
       UIButton button1 = UIUtils.CreateButton((UIComponent) uiPanel2);
       string str2 = Localization.Get("SETTINGS_UPDATE");
@@ -120,8 +120,8 @@ namespace ImprovedPublicTransport2
       button1.width = (float) num11;
       double num12 = 22.0;
       button1.height = (float) num12;
-      MouseEventHandler mouseEventHandler1 = new MouseEventHandler(this.OnUpdateButtonClick);
-      button1.eventClick += mouseEventHandler1;
+      //MouseEventHandler mouseEventHandler1 = new MouseEventHandler(this.OnUpdateButtonClick);
+      //button1.eventClick += mouseEventHandler1;
       UIPanel uiPanel4 = uiPanel1.AddUIComponent<UIPanel>();
       uiPanel4.width = uiPanel4.parent.width;
       uiPanel4.height = 30f;
@@ -467,20 +467,6 @@ namespace ImprovedPublicTransport2
       this.isVisible = !this.isVisible;
     }
 
-    private void OnBudgetCheckChanged(UIComponent component, bool isChecked)
-    {
-      if (OptionsWrapper<Settings>.Options.BudgetControl == isChecked)
-        return;
-      OptionsWrapper<Settings>.Options.BudgetControl = isChecked;
-      TransportManager instance = Singleton<TransportManager>.instance;
-      int length = instance.m_lines.m_buffer.Length;
-      for (int index = 0; index < length; ++index)
-      {
-        if (!instance.m_lines.m_buffer[index].Complete)
-          TransportLineMod.SetBudgetControlState((ushort) index, isChecked);
-      }
-    }
-
     private void OnCompatibilityModeChanged(UIComponent component, bool isChecked)
     {
       if (OptionsWrapper<Settings>.Options.CompatibilityMode == isChecked)
@@ -500,17 +486,6 @@ namespace ImprovedPublicTransport2
     private void OnShowLineCheckChanged(UIComponent component, bool isChecked)
     {
       OptionsWrapper<Settings>.Options.ShowLineInfo = isChecked;
-    }
-
-    private void OnUpdateButtonClick(UIComponent component, UIMouseEventParameter eventParam)
-    {
-      int length = Singleton<TransportManager>.instance.m_lines.m_buffer.Length;
-      for (int index = 0; index < length; ++index)
-      {
-        TransportLineMod.SetBudgetControlState((ushort) index, this._budgetControl.isChecked);
-        if (this._budgetControl.isChecked)
-          TransportLineMod.ClearEnqueuedVehicles((ushort) index);
-      }
     }
 
     private void OnSpawnTimeIntervalSubmitted(UIComponent component, string text)

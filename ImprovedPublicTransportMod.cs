@@ -11,11 +11,12 @@ namespace ImprovedPublicTransport2
 {
   public class ImprovedPublicTransportMod : LoadingExtensionBase, IUserMod
   {
-    private LoadMode _loadMode;
+    public static bool inGame = false;
     private GameObject _iptGameObject;
     private GameObject _worldInfoPanel;
+    private readonly string version = "4.0.1";
 
-    public string Name => "Improved Public Transport 2";
+    public string Name => $"Improved Public Transport 2 [r{version}]";
 
     public string Description => Localization.Get("MOD_DESCRIPTION");
 
@@ -27,12 +28,14 @@ namespace ImprovedPublicTransport2
     public override void OnLevelLoaded(LoadMode mode)
     {
             base.OnLevelLoaded(mode);
-      this._loadMode = mode;
-      if (mode != LoadMode.LoadGame && mode != LoadMode.NewGame && mode != LoadMode.NewGameFromScenario)
-        return;
-      try
+        if (mode != LoadMode.LoadGame && mode != LoadMode.NewGame && mode != LoadMode.NewGameFromScenario)
+        {
+            return;
+        }
+        inGame = true;
+        try
       {
-        Utils.Log((object) "Begin init version: 3.8.10");
+        Utils.Log((object) $"Begin init version: {version}");
         this.ReleaseUnusedCitizenUnits();
         UIView objectOfType = UnityEngine.Object.FindObjectOfType<UIView>();
         if ((UnityEngine.Object) objectOfType != (UnityEngine.Object) null)
@@ -82,8 +85,9 @@ namespace ImprovedPublicTransport2
     public override void OnLevelUnloading()
     {
             base.OnLevelUnloading();
-      if (this._loadMode != LoadMode.LoadGame && this._loadMode != LoadMode.NewGame && this._loadMode == LoadMode.NewGameFromScenario)
+      if (!inGame)
         return;
+        inGame = false;
       this.Deinit();
       Utils.Log((object) ("Unloading done!" + System.Environment.NewLine));
     }

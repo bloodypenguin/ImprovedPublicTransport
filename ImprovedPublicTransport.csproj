@@ -106,6 +106,7 @@
     <Compile Include="Redirection\RedirectionUtil.cs" />
     <Compile Include="Redirection\Redirector.cs" />
     <Compile Include="Redirection\Tuple.cs" />
+    <Compile Include="SettingsActions.cs" />
     <Compile Include="StopListBox.cs" />
     <Compile Include="StopListBoxRow.cs" />
     <Compile Include="Detour\TramAIDetour.cs" />
