@@ -22,7 +22,7 @@ namespace ImprovedPublicTransport2
 
       public void OnSettingsUI(UIHelperBase helper)
       {
-          helper.AddOptionsGroup<Settings>(s => Localization.Get(s));
+          helper.AddOptionsGroup<Settings>(Localization.Get);
       }
 
     public override void OnLevelLoaded(LoadMode mode)

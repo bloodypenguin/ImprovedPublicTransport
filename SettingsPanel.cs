@@ -407,8 +407,8 @@ namespace ImprovedPublicTransport2
       button3.width = (float) num48;
       double num49 = 22.0;
       button3.height = (float) num49;
-      MouseEventHandler mouseEventHandler3 = new MouseEventHandler(this.OnDeleteLinesClick);
-      button3.eventClick += mouseEventHandler3;
+      //MouseEventHandler mouseEventHandler3 = new MouseEventHandler(this.OnDeleteLinesClick);
+      //button3.eventClick += mouseEventHandler3;
       UIPanel uiPanel14 = uiPanel12.AddUIComponent<UIPanel>();
       uiPanel14.width = uiPanel12.width - (float) uiPanel12.autoLayoutPadding.left;
       uiPanel14.height = 30f;
@@ -483,60 +483,5 @@ namespace ImprovedPublicTransport2
             }
         }
 
-    private void OnDeleteLinesClick(UIComponent component, UIMouseEventParameter eventParam)
-    {
-      if (!this._deleteBusLines.isChecked && !this._deleteTramLines.isChecked && (!this._deleteMetroLines.isChecked && !this._deleteTrainLines.isChecked) && (!this._deleteShipLines.isChecked && !this._deleteAirLines.isChecked))
-        return;
-      WorldInfoPanel.Hide<PublicTransportWorldInfoPanel>();
-      ConfirmPanel.ShowModal(Localization.Get("SETTINGS_LINE_DELETION_TOOL_CONFIRM_TITLE"), Localization.Get("SETTINGS_LINE_DELETION_TOOL_CONFIRM_MSG"), (UIView.ModalPoppedReturnCallback) ((s, r) =>
-      {
-        if (r != 1)
-          return;
-        Singleton<SimulationManager>.instance.AddAction(new System.Action(this.DeleteLines));
-      }));
-    }
-
-    private void DeleteLines()
-        {
-      TransportManager instance = Singleton<TransportManager>.instance;
-      int length = instance.m_lines.m_buffer.Length;
-      for (int index = 0; index < length; ++index)
-      {
-        TransportInfo info = instance.m_lines.m_buffer[index].Info;
-        if (!((UnityEngine.Object) info == (UnityEngine.Object) null))
-        {
-          bool flag = false;
-          var subService = info.GetSubService();
-          var service = info.GetService();
-          var level = info.GetClassLevel();
-            if (service == ItemClass.Service.PublicTransport && level == ItemClass.Level.Level1) //TODO(earalov): handle evacuation buses, blimps, monorails, cable cars, ferries
-            {
-                switch (subService)
-                {
-                    case ItemClass.SubService.PublicTransportBus:
-                        flag = this._deleteBusLines.isChecked;
-                        break;
-                    case ItemClass.SubService.PublicTransportMetro:
-                        flag = this._deleteMetroLines.isChecked;
-                        break;
-                    case ItemClass.SubService.PublicTransportTrain:
-                        flag = this._deleteTrainLines.isChecked;
-                        break;
-                    case ItemClass.SubService.PublicTransportShip:
-                        flag = this._deleteShipLines.isChecked;
-                        break;
-                    case ItemClass.SubService.PublicTransportPlane:
-                        flag = this._deleteAirLines.isChecked;
-                        break;
-                    case ItemClass.SubService.PublicTransportTram:
-                        flag = this._deleteTramLines.isChecked;
-                        break;
-                }
-            }
-            if (flag)
-                instance.ReleaseLine((ushort) index);
-        }
-      }
-    }
   }
 }
