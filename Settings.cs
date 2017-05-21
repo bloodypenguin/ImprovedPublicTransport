@@ -1,4 +1,6 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.ComponentModel;
+using System.Xml.Serialization;
 using ImprovedPublicTransport2.OptionsFramework.Attibutes;
 
 namespace ImprovedPublicTransport2
@@ -9,10 +11,12 @@ namespace ImprovedPublicTransport2
         private const string UI = "SETTINGS_UI";
         private const string SETTINGS_BUDGET = "SETTINGS_ENABLE_BUDGET_CONTROL"; //TODO(earalov): add new locale
 
-        [Checkbox("SETTINGS_ENABLE_BUDGET_CONTROL", SETTINGS_BUDGET)] //TODO(earalov): add action and tooltip!
+        [BudgetDescription]
+        [Checkbox("SETTINGS_ENABLE_BUDGET_CONTROL", SETTINGS_BUDGET)] //TODO(earalov): add action!
         public bool BudgetControl { get; set; } = true;
 
-        [Button("SETTINGS_UPDATE", SETTINGS_BUDGET)] //TODO(earalov): add action add tooltip!
+        [BudgetDescription]
+        [Button("SETTINGS_UPDATE", SETTINGS_BUDGET)] //TODO(earalov): add action!
         [XmlIgnore]
         public object BudgetControlUpdateButton { get; set; }
 
@@ -37,5 +41,17 @@ namespace ImprovedPublicTransport2
 
         [Checkbox("SETTINGS_VEHICLE_EDITOR_HIDE", UI)]
         public bool HideVehicleEditor { get; set; }
+
+        [AttributeUsage(AttributeTargets.All)]
+        public class BudgetDescriptionAttribute : DescriptionAttribute
+        {
+            public BudgetDescriptionAttribute() : 
+                base(Localization.Get("SETTINGS_BUDGET_CONTROL_TOOLTIP") + System.Environment.NewLine + Localization.Get("EXPLANATION_BUDGET_CONTROL"))
+            {
+                
+            }
+        }
     }
+
+
 }
