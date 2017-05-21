@@ -191,11 +191,39 @@ namespace ImprovedPublicTransport2.OptionsFramework.Extensions
                 }
             }
 
+            float finalValue;
+            var value = property.GetValue(OptionsWrapper<T>.Options, null);
+            if (value is float)
+            {
+                finalValue = (float)value;
+            } else if (value is byte)
+            {
+                finalValue = (byte) value;
+            }
+            else if (value is int)
+            {
+                finalValue = (int)value;
+            }
+            else
+            {
+                throw new Exception("Unsupported numeric type for slider!");
+            }
 
-            var slider = (UISlider)group.AddSlider(text, attr.Min, attr.Max, attr.Step, (float)property.GetValue(OptionsWrapper<T>.Options, null),
+            var slider = (UISlider)group.AddSlider(text, attr.Min, attr.Max, attr.Step, finalValue,
                 f =>
                 {
-                    property.SetValue(OptionsWrapper<T>.Options, f, null);
+                    if (value is float)
+                    {
+                        property.SetValue(OptionsWrapper<T>.Options, f, null);
+                    }
+                    else if (value is byte)
+                    {
+                        property.SetValue(OptionsWrapper<T>.Options, (byte)Math.Round(f, MidpointRounding.AwayFromZero), null);
+                    }
+                    else if (value is int)
+                    {
+                        property.SetValue(OptionsWrapper<T>.Options, (int)Math.Round(f, MidpointRounding.AwayFromZero), null);
+                    }
                     OptionsWrapper<T>.SaveOptions();
                     attr.Action<float>().Invoke(f);
                     if (valueLabel != null)
@@ -214,7 +242,7 @@ namespace ImprovedPublicTransport2.OptionsFramework.Extensions
             }
             valueLabel.AlignTo(slider, UIAlignAnchor.TopLeft);
             valueLabel.relativePosition = new Vector3(240, 0, 0);
-            valueLabel.text = property.GetValue(OptionsWrapper<T>.Options, null).ToString();
+            valueLabel.text = value.ToString();
             return slider;
         }
     }
