@@ -169,8 +169,8 @@ namespace ImprovedPublicTransport2
 
               this.CreateVehiclesOnLinePanel();
               this.CreateVehiclesInQueuePanel();
-              BuildingWatcher.instance.OnDepotAdded += new BuildingWatcher.DepotAdded(this.OnDepotChanged);
-              BuildingWatcher.instance.OnDepotRemoved += new BuildingWatcher.DepotRemoved(this.OnDepotChanged);
+              BuildingExtension.instance.OnDepotAdded += this.OnDepotChanged;
+              BuildingExtension.instance.OnDepotRemoved += this.OnDepotChanged;
               this._initialized = true;
             }
           }
@@ -833,7 +833,7 @@ namespace ImprovedPublicTransport2
     private void PopulateDepotDropDown(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
     {
       this._depotDropDown.ClearItems();
-      this._depotDropDown.AddItems(BuildingWatcher.instance.GetDepots(service, subService, level), this.IDToName);
+      this._depotDropDown.AddItems(BuildingExtension.instance.GetDepots(service, subService, level), this.IDToName);
     }
 
     private string IDToName(ushort buildingID)
