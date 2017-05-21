@@ -7,7 +7,7 @@ CITY_SERVICE_PANEL_TITLE_STATION_STOPS Arrêts
 CITY_SERVICE_PANEL_TITLE_DEPOT_VEHICLES Dépôt
 UNBUNCHING_ENABLED Distancement des véhicules
 UNBUNCHING_DISABLED Distancement inactif.
-UNBUNCHING_TARGET_GAP Distance désirée: {0} m
+UNBUNCHING_TARGET_GAP Distance désirée: {0}
 EXPLANATION_BUDGET_CONTROL Contrôle du budget: La quantité de véhicules dépend du budget.
 EXPLANATION_UNBUNCHING Distancement: Gestion de la distance entre deux véhicules d'une même ligne.
 LINE_PANEL_STOPS Arrêts: {0}

@@ -7,7 +7,7 @@ CITY_SERVICE_PANEL_TITLE_STATION_STOPS Станций остановок
 CITY_SERVICE_PANEL_TITLE_DEPOT_VEHICLES Депо транспорта
 UNBUNCHING_ENABLED Распределение
 UNBUNCHING_DISABLED Распределение выключено.
-UNBUNCHING_TARGET_GAP Интервал: {0}m
+UNBUNCHING_TARGET_GAP Интервал: {0}
 EXPLANATION_BUDGET_CONTROL Управляется бюджетом: количество транспорта настраивается через панель бюджета.
 EXPLANATION_UNBUNCHING Распределение транспорта: Игра пытается создать равный интервал между транспортными средствами.
 LINE_PANEL_STOPS Ост.: {0}

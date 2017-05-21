@@ -203,7 +203,7 @@ namespace ImprovedPublicTransport2
 
           if (targetVehicleCount > 1)
           {
-            this._unbunching.label.text = string.Format(Localization.Get("UNBUNCHING_ENABLED") + " - " + Localization.Get("UNBUNCHING_TARGET_GAP"), Singleton<TransportManager>.instance.m_lines.m_buffer[(int)lineId].m_averageInterval * 100) ;
+            this._unbunching.label.text = string.Format(Localization.Get("UNBUNCHING_ENABLED") + " - " + Localization.Get("UNBUNCHING_TARGET_GAP"), Singleton<TransportManager>.instance.m_lines.m_buffer[(int)lineId].m_averageInterval) ;
           }
           else
             this._unbunching.label.text = Localization.Get("UNBUNCHING_ENABLED");

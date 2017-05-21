@@ -7,7 +7,7 @@ CITY_SERVICE_PANEL_TITLE_STATION_STOPS Haltestellen
 CITY_SERVICE_PANEL_TITLE_DEPOT_VEHICLES Fahrzeuge
 UNBUNCHING_ENABLED Abstandskontrolle
 UNBUNCHING_DISABLED Abstandskontrolle ist deaktiviert.
-UNBUNCHING_TARGET_GAP Zielabstand: {0}m
+UNBUNCHING_TARGET_GAP Zielabstand: {0}
 EXPLANATION_BUDGET_CONTROL Budget-Kontrolle: Die Fahrzeuganzahl wird über das Budget gesteuert.
 EXPLANATION_UNBUNCHING Abstandskontrolle: Das Spiel versucht Abstände zwischen den Fahrzeugen zu erzeugen.
 LINE_PANEL_STOPS Haltestellen: {0}

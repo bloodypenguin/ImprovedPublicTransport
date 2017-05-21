@@ -7,7 +7,7 @@ CITY_SERVICE_PANEL_TITLE_STATION_STOPS Station stops
 CITY_SERVICE_PANEL_TITLE_DEPOT_VEHICLES Depot vehicles
 UNBUNCHING_ENABLED Vehicle unbunching
 UNBUNCHING_DISABLED Unbunching is disabled.
-UNBUNCHING_TARGET_GAP Target gap: {0}m
+UNBUNCHING_TARGET_GAP Target gap: {0}
 EXPLANATION_BUDGET_CONTROL Budget control: The vehicle count is controlled by the budget.
 EXPLANATION_UNBUNCHING Vehicle unbunching: The game tries to create a gap between vehicles.
 LINE_PANEL_STOPS Stops: {0}
