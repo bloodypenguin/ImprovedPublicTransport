@@ -43,7 +43,7 @@ SETTINGS_SPAWN_TIME_INTERVAL Intervalle des départs:
 SETTINGS_SPAWN_TIME_INTERVAL_TOOLTIP Intervalle des départs aux dépôts en secondes.
 SETTINGS_SPAWN_TIME_INTERVAL_BUTTON_TOOLTIP Réinitialiser tous les minuteurs.
 SETTINGS_UNBUNCHING_AGGRESSION Agressivité du distancement:
-SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP Quelle distance entre deux véhicules?\nDe 0 à 13. A 0 les véhicules ignorent le distancement.\nSi la valeur est trop haute, les véhicules laissent trop d'espace entre eux et peuvent être supprimés.
+SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP Quelle distance entre deux véhicules?\nDe 0 à 52. A 0 les véhicules ignorent le distancement.\nSi la valeur est trop haute, les véhicules laissent trop d'espace entre eux et peuvent être supprimés.
 SETTINGS_VEHICLE_COUNT Véhicules:
 SETTINGS_VEHICLE_COUNT_TOOLTIP Le nombre de véhicules attribué par défaut à une ligne quand le contrôle du budget est inactif.
 SETTINGS_AUTOSHOW_LINE_INFO Affichage automatique de la fenêtre

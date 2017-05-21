@@ -41,7 +41,7 @@ SETTINGS_SPAWN_TIME_INTERVAL Intervallo di tempo:
 SETTINGS_SPAWN_TIME_INTERVAL_TOOLTIP Tempo in secondi tra la creazione dei veicoli.
 SETTINGS_SPAWN_TIME_INTERVAL_BUTTON_TOOLTIP Resetta tutti i timer a 0.
 SETTINGS_UNBUNCHING_AGGRESSION Aggressione del convogliamento:
-SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP Quanto forte deve essere il convogliamento?\nValori possibili: 0-13 quando è 0 disabilita il convogliamento.\nValori più alti avranno effetto sul traffico e probabilmente causeranno la cancellazione del veicolo.
+SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP Quanto forte deve essere il convogliamento?\nValori possibili: 0-52 quando è 0 disabilita il convogliamento.\nValori più alti avranno effetto sul traffico e probabilmente causeranno la cancellazione del veicolo.
 SETTINGS_VEHICLE_COUNT Veicoli sulla linea:
 SETTINGS_VEHICLE_COUNT_TOOLTIP Il numero di veicoli che saranno automaticamente aggiunti alla nuova linea quando il controllo del budget è disattivo.
 SETTINGS_AUTOSHOW_LINE_INFO Visualizza le informazioni

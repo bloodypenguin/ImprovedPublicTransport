@@ -36,8 +36,8 @@ namespace ImprovedPublicTransport2
         public int DefaultVehicleCount { get; set; } = 0;
 
         [AggressionDescription]
-        [Slider("SETTINGS_UNBUNCHING_AGGRESSION", 0.0f, 13.0f, 1.0f, SETTINGS_UNBUNCHING)]
-        public byte IntervalAggressionFactor { get; set; } = 13; //TODO(earalov): convert into max seconds at stop
+        [Slider("SETTINGS_UNBUNCHING_AGGRESSION", 0.0f, 52.0f, 1.0f, SETTINGS_UNBUNCHING)]
+        public byte IntervalAggressionFactor { get; set; } = 52; //TODO(earalov): convert into max seconds at stop
 
         public bool Unbunching { get; } = true; //deprecated
 

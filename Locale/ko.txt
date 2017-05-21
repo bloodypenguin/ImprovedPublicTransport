@@ -43,7 +43,7 @@ SETTINGS_SPAWN_TIME_INTERVAL 소환 간격 :
 SETTINGS_SPAWN_TIME_INTERVAL_TOOLTIP 설정된 초 만큼 차이를 두며 차량이 소환됩니다.
 SETTINGS_SPAWN_TIME_INTERVAL_BUTTON_TOOLTIP 타이머를 0으로 초기화합니다.
 SETTINGS_UNBUNCHING_AGGRESSION 차랑 갼격 빈도 수 :
-SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP 어떻게 차량 간격 기능을 작동시키는지 궁금하신가요?\n 설정 범위 0-13, 0은 차량 간격 기능을 비 활성화합니다.\n높은 값 일 수록 더 향상된 교통 효과가 나타나지만 이로 인해 차량이 연착되어 사라질 수 있습니다.
+SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP 어떻게 차량 간격 기능을 작동시키는지 궁금하신가요?\n 설정 범위 0-52, 0은 차량 간격 기능을 비 활성화합니다.\n높은 값 일 수록 더 향상된 교통 효과가 나타나지만 이로 인해 차량이 연착되어 사라질 수 있습니다.
 SETTINGS_VEHICLE_COUNT 새 노선의 차량 수 :
 SETTINGS_VEHICLE_COUNT_TOOLTIP 차량 예산기능이 꺼져 있을 경우 새 노선을 만들때 지정된 차량 수 만큼 차량을 소환합니다.
 SETTINGS_AUTOSHOW_LINE_INFO 자동 노선정보 표시
