@@ -112,7 +112,7 @@ namespace ImprovedPublicTransport2
     {
       this.name = "VehicleEditor";
       this.width = 314f;
-      this.height = 303f;
+      this.height = 363f;
       this.backgroundSprite = "MenuPanel2";
       this.canFocus = true;
       this.isInteractive = true;
@@ -177,7 +177,7 @@ namespace ImprovedPublicTransport2
       uiPanel.color = transportColor;
       string str1 = "InfoviewPanel";
       uiPanel.backgroundSprite = str1;
-      string vehicleTypeIcon = PublicTransportWorldInfoPanel.GetVehicleTypeIcon(transportType > TransportInfo.TransportType.EvacuationBus ? transportType - 1 : transportType);
+      string vehicleTypeIcon = PublicTransportWorldInfoPanel.GetVehicleTypeIcon(transportType == TransportInfo.TransportType.CableCar ?  TransportInfo.TransportType.EvacuationBus : transportType);
       UIButton uiButton = uiPanel.AddUIComponent<UIButton>();
       double num6 = 32.0;
       uiButton.width = (float) num6;
@@ -200,7 +200,7 @@ namespace ImprovedPublicTransport2
       uiPanel1.anchor = UIAnchorStyle.Top | UIAnchorStyle.Left | UIAnchorStyle.Right;
       uiPanel1.transform.localPosition = Vector3.zero;
       uiPanel1.width = 246f;
-      uiPanel1.height = 244f;
+      uiPanel1.height = 304f;
       uiPanel1.autoLayout = true;
       uiPanel1.autoLayoutDirection = LayoutDirection.Vertical;
       uiPanel1.autoLayoutPadding = new RectOffset(3, 3, 0, 0);
@@ -229,7 +229,7 @@ namespace ImprovedPublicTransport2
       uiPanel3.name = str1;
       double num1 = (double) uiPanel3.parent.width - 6.0;
       uiPanel3.width = (float) num1;
-      double num2 = 211.0;
+      double num2 = 271.0;
       uiPanel3.height = (float) num2;
       int num3 = 1;
       uiPanel3.autoLayoutDirection = (LayoutDirection) num3;

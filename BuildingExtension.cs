@@ -97,7 +97,10 @@ namespace ImprovedPublicTransport2
         public ushort[] GetDepots(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
         {
             HashSet<ushort> source;
-            return _depotMap.TryGetValue(new ItemClassTriplet(service, subService, level), out source) ? source.ToArray() : new ushort[]{};
+            TransportInfo info = null;
+            return _depotMap.TryGetValue(new ItemClassTriplet(service, subService, level), out source) ? 
+                source.Where(d => DepotUtil.IsValidDepot(ref BuildingManager.instance.m_buildings.m_buffer[d], ref info, out _, out _ ,out _)).ToArray() : 
+                new ushort[]{}; //we validate here to be compatible with MOM (if MOM sets max vehicle count later than this mod loads)
         }
 
         public delegate void DepotAdded(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level);
