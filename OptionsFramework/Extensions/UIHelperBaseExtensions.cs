@@ -209,7 +209,7 @@ namespace ImprovedPublicTransport2.OptionsFramework.Extensions
                 throw new Exception("Unsupported numeric type for slider!");
             }
 
-            var slider = (UISlider)group.AddSlider(text, attr.Min, attr.Max, attr.Step, finalValue,
+            var slider = (UISlider)group.AddSlider(text, attr.Min, attr.Max, attr.Step, Mathf.Clamp(finalValue, attr.Min, attr.Max),
                 f =>
                 {
                     if (value is float)

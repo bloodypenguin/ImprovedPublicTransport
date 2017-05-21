@@ -41,7 +41,7 @@ SETTINGS_SPAWN_TIME_INTERVAL Tempo de adição:
 SETTINGS_SPAWN_TIME_INTERVAL_TOOLTIP Intervalo de tempo entre a adição de novos veículos (em segundos).
 SETTINGS_SPAWN_TIME_INTERVAL_BUTTON_TOOLTIP Restaura todos os tempos de adição para 0.
 SETTINGS_UNBUNCHING_AGGRESSION Agressividade de distribuição:
-SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP O quão agressivo a distribuição deve agir?\nValores: 0-9 onde 0 desabilitará a distribuição.\nValores altos afetarão fortemente o trânsito e provavelmente causará despawn de veículos.
+SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP O quão agressivo a distribuição deve agir?\nValores: 0-13 onde 0 desabilitará a distribuição.\nValores altos afetarão fortemente o trânsito e provavelmente causará despawn de veículos.
 SETTINGS_VEHICLE_COUNT Veiculos em novas linhas:
 SETTINGS_VEHICLE_COUNT_TOOLTIP Número de veículos adicionados a uma nova linha quado o controle via orçamento estiver desativado.
 SETTINGS_AUTOSHOW_LINE_INFO Mostrar informações automaticamente

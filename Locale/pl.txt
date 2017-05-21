@@ -43,7 +43,7 @@ SETTINGS_SPAWN_TIME_INTERVAL Odstępy czasowe wyjazdów:
 SETTINGS_SPAWN_TIME_INTERVAL_TOOLTIP Czas w sekundach pomiędzy wyjazdami nowych pojazdów z zajezdni.
 SETTINGS_SPAWN_TIME_INTERVAL_BUTTON_TOOLTIP Resetuje wszystkie liczniki z powrotem do 0.
 SETTINGS_UNBUNCHING_AGGRESSION Agresja unbunchingu:
-SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP Jak silnie powinien działać unbunching pojazdów?\nMożliwe wartości: 0-9, gdzie 0 wyłączy unbunching pojazdów.\nWiększe wartości będą miały duży wpływ na ruch drogowy i prawdopodobnie spowodują znikanie pojazdów.
+SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP Jak silnie powinien działać unbunching pojazdów?\nMożliwe wartości: 0-13, gdzie 0 wyłączy unbunching pojazdów.\nWiększe wartości będą miały duży wpływ na ruch drogowy i prawdopodobnie spowodują znikanie pojazdów.
 SETTINGS_VEHICLE_COUNT Pojazdy na nowych liniach:
 SETTINGS_VEHICLE_COUNT_TOOLTIP Ilość pojazdów, które będą automatycznie dodawane do nowych linii, gdy regulacja budżetowa jest wyłączona.
 SETTINGS_AUTOSHOW_LINE_INFO Auto pokazywanie panelu
