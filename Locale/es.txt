@@ -43,7 +43,7 @@ SETTINGS_SPAWN_TIME_INTERVAL Intervalo de tiempo:
 SETTINGS_SPAWN_TIME_INTERVAL_TOOLTIP El tiempo en segundos que tarda el depósito en volver a generar un vehículo 
 SETTINGS_SPAWN_TIME_INTERVAL_BUTTON_TOOLTIP Reiniciar
 SETTINGS_UNBUNCHING_AGGRESSION Fuerza de la desagrupación:
-SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP ¿Con cuánta agresividad debería actuar la desagrupación?\nValores posibles: 0-9 (el valor 0 desactiva la desagrupación).\nValores superiores tienen un fuerte impacto en el tráfico y podrían hacer desaparecer los vehículos.
+SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP ¿Con cuánta agresividad debería actuar la desagrupación?\nValores posibles: 0-13 (el valor 0 desactiva la desagrupación).\nValores superiores tienen un fuerte impacto en el tráfico y podrían hacer desaparecer los vehículos.
 SETTINGS_VEHICLE_COUNT Vehículos en las nuevas líneas:
 SETTINGS_VEHICLE_COUNT_TOOLTIP El número de vehículos que será automáticamente incorporado a las nuevas líneas si el control por presupuesto está desactivado
 SETTINGS_AUTOSHOW_LINE_INFO Ver líneas automáticamente

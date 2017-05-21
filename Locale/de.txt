@@ -46,7 +46,7 @@ SETTINGS_SPAWN_TIME_INTERVAL Fahrzeugintervall:
 SETTINGS_SPAWN_TIME_INTERVAL_TOOLTIP Zeit in Sekunden bis ein neues Fahrzeug los geschickt wird.
 SETTINGS_SPAWN_TIME_INTERVAL_BUTTON_TOOLTIP Setze alle Zeitmesser zurück.
 SETTINGS_UNBUNCHING_AGGRESSION Abstandskontr.-Aggressivität:
-SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP Wie stark soll die Abstandskontrolle sein?\nMögliche Werte: 0-9. 0 deaktivert die Abstandskontrolle.\nHöhere Werte haben einen starken Einfluß auf den Verkehr und verursachen wahrscheinlich das Fahrzeuge verschwinden.
+SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP Wie stark soll die Abstandskontrolle sein?\nMögliche Werte: 0-13. 0 deaktivert die Abstandskontrolle.\nHöhere Werte haben einen starken Einfluß auf den Verkehr und verursachen wahrscheinlich das Fahrzeuge verschwinden.
 SETTINGS_VEHICLE_COUNT Fahrzeuge auf neuen Linien:
 SETTINGS_VEHICLE_COUNT_TOOLTIP Die Anzahl an Fahrzeugen die automatisch einer Linie hinzugefügt werden sollen wenn Budget-Kontrolle aus ist.
 SETTINGS_AUTOSHOW_LINE_INFO Zeige automatisch Linienfenster

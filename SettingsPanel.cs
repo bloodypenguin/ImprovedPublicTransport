@@ -242,7 +242,7 @@ namespace ImprovedPublicTransport2
       uiTextField2.focusedBgSprite = "TextFieldPanel";
       uiTextField2.builtinKeyNavigation = true;
       uiTextField2.submitOnFocusLost = true;
-      uiTextField2.eventTextSubmitted += new PropertyChangedEventHandler<string>(this.OnIntervalAggressionFactorSubmitted);
+      //uiTextField2.eventTextSubmitted += new PropertyChangedEventHandler<string>(this.OnIntervalAggressionFactorSubmitted);
       uiTextField2.width = 45f;
       uiTextField2.height = 22f;
       uiTextField2.maxLength = 1;
@@ -491,11 +491,6 @@ namespace ImprovedPublicTransport2
     private void OnSpawnTimeIntervalSubmitted(UIComponent component, string text)
     {
       OptionsWrapper<Settings>.Options.SpawnTimeInterval = Utils.ToInt32(text);
-    }
-
-    private void OnIntervalAggressionFactorSubmitted(UIComponent component, string text)
-    {
-      OptionsWrapper<Settings>.Options.IntervalAggressionFactor = Utils.ToByte(text);
     }
 
     private void OnDefaultVehicleCountSubmitted(UIComponent component, string text)

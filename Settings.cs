@@ -29,17 +29,18 @@ namespace ImprovedPublicTransport2
 
         public bool ShowLineInfo { get; set; } = true;
 
-        public int DefaultVehicleCount { get; set; } = (int)VehicleEditorPositions.Bottom;
+        public int DefaultVehicleCount { get; set; } = 0;
 
-        [Slider("SETTINGS_UNBUNCHING_AGGRESSION", 1.0f, 60.0f, 1.0f, SETTINGS_UNBUNCHING)] //TODO(earalov): action and tooltip
+        [AggressionDescription]
+        [Slider("SETTINGS_UNBUNCHING_AGGRESSION", 0.0f, 13.0f, 1.0f, SETTINGS_UNBUNCHING)]
         public byte IntervalAggressionFactor { get; set; } = 13; //TODO(earalov): convert into max seconds at stop
 
-        public bool Unbunching { get; } = true;
+        public bool Unbunching { get; } = true; //deprecated
 
         public int StatisticWeeks { get; set; } = 10;
 
         [DropDown("SETTINGS_VEHICLE_EDITOR_POSITION", nameof(VehicleEditorPositions), UI)]
-        public int VehicleEditorPosition { get; set; }
+        public int VehicleEditorPosition { get; set; } = (int) VehicleEditorPositions.Bottom;
 
         [Checkbox("SETTINGS_VEHICLE_EDITOR_HIDE", UI)]
         public bool HideVehicleEditor { get; set; }
@@ -53,7 +54,16 @@ namespace ImprovedPublicTransport2
                 
             }
         }
-    }
 
+        [AttributeUsage(AttributeTargets.All)]
+        public class AggressionDescriptionAttribute : DescriptionAttribute
+        {
+            public AggressionDescriptionAttribute() :
+                base(Localization.Get("SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP") + System.Environment.NewLine + Localization.Get("EXPLANATION_UNBUNCHING"))
+            {
+
+            }
+        }
+    }
 
 }
