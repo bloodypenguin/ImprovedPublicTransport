@@ -89,6 +89,16 @@ namespace ImprovedPublicTransport2
       this._publicTransportWorldInfoPanel = GameObject.Find("(Library) PublicTransportWorldInfoPanel").GetComponent<PublicTransportWorldInfoPanel>();
       if (!((UnityEngine.Object) this._publicTransportWorldInfoPanel != (UnityEngine.Object) null))
         return;
+      UIComponent passengers = this._publicTransportWorldInfoPanel.Find("Passengers");
+    passengers.parent.relativePosition = new Vector3(passengers.parent.relativePosition.x,
+        76.0f, passengers.parent.relativePosition.z);
+        UIComponent agePanel = this._publicTransportWorldInfoPanel.Find("AgePanel");
+        agePanel.relativePosition = new Vector3(0.0f,
+            84.0f, agePanel.relativePosition.z);
+        UIComponent tripSaved = this._publicTransportWorldInfoPanel.Find("TripSaved");
+        tripSaved.parent.relativePosition = new Vector3(tripSaved.parent.relativePosition.x,
+            200.0f, tripSaved.parent.relativePosition.z);
+
       UIComponent uiComponent1 = this._publicTransportWorldInfoPanel.Find("DeleteLine");
       if ((UnityEngine.Object) uiComponent1 == (UnityEngine.Object) null)
       {
@@ -96,11 +106,16 @@ namespace ImprovedPublicTransport2
       }
       else
       {
-        uiComponent1.enabled = false;
-        UIComponent uiComponent2 = this._publicTransportWorldInfoPanel.Find("LinesOverview");
+        uiComponent1.isVisible = false;
+          UIComponent vehicleAmount = this._publicTransportWorldInfoPanel.Find("VehicleAmount");
+          vehicleAmount.AlignTo(uiComponent1.parent, UIAlignAnchor.TopLeft);
+          vehicleAmount.relativePosition = uiComponent1.relativePosition;
+
+
+                UIComponent uiComponent2 = this._publicTransportWorldInfoPanel.Find("LinesOverview");
         if ((UnityEngine.Object) uiComponent2 != (UnityEngine.Object) null)
           uiComponent2.enabled = false;
-        this._mainSubPanel = uiComponent1.parent;
+          this._mainSubPanel = agePanel.parent;
         if ((UnityEngine.Object) this._mainSubPanel == (UnityEngine.Object) null)
         {
           Utils.LogError((object) "Could not found Panel!");
@@ -115,7 +130,7 @@ namespace ImprovedPublicTransport2
           uiPanel.autoLayoutStart = LayoutStart.TopLeft;
           uiPanel.autoLayoutPadding = new RectOffset(0, 0, 0, 5);
           uiPanel.autoLayout = true;
-          uiPanel.relativePosition = new Vector3(10f, 0.0f);
+          uiPanel.relativePosition = new Vector3(10f, 224.0f);
           this._iptContainer = uiPanel;
           this._vehicleAmount = Utils.GetPrivate<UILabel>((object) this._publicTransportWorldInfoPanel, "m_VehicleAmount");
           if ((UnityEngine.Object) this._vehicleAmount == (UnityEngine.Object) null)
