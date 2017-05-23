@@ -55,7 +55,7 @@ namespace ImprovedPublicTransport2
             ushort closestDepot = TransportLineMod.GetClosestDepot(lineID, position);
             if ((int) closestDepot != 0)
               TransportLineMod.SetDepot(lineID, closestDepot);
-            if (OptionsWrapper<Settings>.Options.ShowLineInfo)
+            if (OptionsWrapper<Settings>.Options.ShowLineInfo && lines.m_buffer[(int)lineID].Info?.m_class?.m_service != ItemClass.Service.Disaster)
               WorldInfoPanel.Show<PublicTransportWorldInfoPanel>(position, new InstanceID()
               {
                 TransportLine = lineID
