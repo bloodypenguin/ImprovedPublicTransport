@@ -583,7 +583,7 @@ namespace ImprovedPublicTransport2.Detour
                               Vehicle.Flags.InsideBuilding | Vehicle.Flags.LeftHandDrive))
                         {
                             //begin mod(+): callback
-                            callback.Invoke(num3);
+                            callback?.Invoke(num3);
                             //end mod
                             ++num2;
                         }
