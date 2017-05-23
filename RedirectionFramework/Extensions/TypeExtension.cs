@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using ImprovedPublicTransport2.RedirectionFramework.Attributes;
 
 namespace ImprovedPublicTransport2.RedirectionFramework.Extensions
 {
@@ -12,6 +14,11 @@ namespace ImprovedPublicTransport2.RedirectionFramework.Extensions
         public static void Redirect(this Type type)
         {
             if (IsRedirected(type))
+            {
+                return;
+            }
+            var customAttributes = type.GetCustomAttributes(typeof(IgnoreConditionAttribute), false);
+            if (customAttributes.Any(a => ((IgnoreConditionAttribute)a).IsIgnored(type)))
             {
                 return;
             }

@@ -97,6 +97,7 @@
     <Compile Include="OptionsFramework\OptionsWrapper.cs" />
     <Compile Include="OptionsFramework\Util.cs" />
     <Compile Include="RedirectionFramework\AssemblyRedirector.cs" />
+    <Compile Include="RedirectionFramework\Attributes\IgnoreConditions\DisableAttribute.cs" />
     <Compile Include="RedirectionFramework\Attributes\IgnoreConditionAttribute.cs" />
     <Compile Include="RedirectionFramework\Attributes\RedirectAttribute.cs" />
     <Compile Include="RedirectionFramework\Attributes\RedirectMethodAttribute.cs" />
