@@ -746,6 +746,7 @@ namespace ImprovedPublicTransport2
         });
     }
 
+    //TODO(earalov): consider corner cases
     private void OnRemoveVehicleClick(UIComponent component, UIMouseEventParameter eventParam)
     {
         SimulationManager.instance.AddAction(() =>
@@ -767,15 +768,19 @@ namespace ImprovedPublicTransport2
             {
                 TransportLineMod.DequeueVehicle(lineId);
             }
-            else if (TransportLineMod.CountLineActiveVehicles(lineId) > 0)
-            {
-                TransportLineMod.RemoveActiveVehicle(lineId, true);
-            }
             else
             {
-                if (TransportLineMod.GetTargetVehicleCount(lineId) <= 0)
-                    return;
-                TransportLineMod.DecreaseTargetVehicleCount(lineId);
+                var activeVehicles = TransportLineMod.CountLineActiveVehicles(lineId);
+                if (activeVehicles > 0)
+                {
+                    TransportLineMod.RemoveActiveVehicle(lineId, true, activeVehicles);
+                }
+                else
+                {
+                    if (TransportLineMod.GetTargetVehicleCount(lineId) <= 0)
+                        return;
+                    TransportLineMod.DecreaseTargetVehicleCount(lineId);
+                }
             }
         });
     }
