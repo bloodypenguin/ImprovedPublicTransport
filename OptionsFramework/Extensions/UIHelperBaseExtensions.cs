@@ -20,7 +20,12 @@ namespace ImprovedPublicTransport2.OptionsFramework.Extensions
             {
                 var attributes =
                     (AbstractOptionsAttribute[])p.GetCustomAttributes(typeof(AbstractOptionsAttribute), false);
-                return attributes.Length > 0;
+                return attributes.Any();
+            }).Where(p =>
+            {
+                var attributes =
+                    (HideConditionAttribute[])p.GetCustomAttributes(typeof(HideConditionAttribute), false);
+                return !attributes.Any(a => a.IsHidden());
             }) select property.Name;
             var groups = new Dictionary<string, UIHelperBase>();
             foreach (var propertyName in properties.ToArray())
