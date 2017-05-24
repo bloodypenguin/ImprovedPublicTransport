@@ -24,6 +24,7 @@ LINE_PANEL_LINE_VEHICLES Транспорт на линии
 LINE_PANEL_ENQUEUED Транспорт в очереди
 LINE_PANEL_TOTAL_WAITING_PEOPLE_TOOLTIP {0} пассажиров ожидает на этой линии.
 LINE_PANEL_ADD_VEHICLE Добавить транспорт
+LINE_PANEL_ADD_VEHICLE_TOOLTIP Добавлят транспорт на линию.\nЕсли кнопка неактивна, значит в депо не осталось свобнодных треанспортных средств
 LINE_PANEL_REMOVE_VEHICLE Удалить транспорт
 SETTINGS Настройки
 SETTINGS_UI Настройки UI 
