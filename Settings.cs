@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
+using ColossalFramework.PlatformServices;
 using ImprovedPublicTransport2.OptionsFramework.Attibutes;
 
 namespace ImprovedPublicTransport2
@@ -69,8 +70,9 @@ namespace ImprovedPublicTransport2
         [Checkbox("INFO_PUBLICTRANSPORT_BUS", SETTINGS_LINE_DELETION_TOOL)]
         public bool DeleteBusLines { get; set; }
 
+        [HideIfSnowfallNotOwned]
         [XmlIgnore]
-        [Checkbox("INFO_PUBLICTRANSPORT_TRAM", SETTINGS_LINE_DELETION_TOOL)] //TODO(earalov): don't display if Snowfall not owned
+        [Checkbox("INFO_PUBLICTRANSPORT_TRAM", SETTINGS_LINE_DELETION_TOOL)]
         public bool DeleteTramLines { get; set; }
 
         [XmlIgnore]
@@ -81,8 +83,9 @@ namespace ImprovedPublicTransport2
         [Checkbox("INFO_PUBLICTRANSPORT_METRO", SETTINGS_LINE_DELETION_TOOL)]
         public bool DeleteMetroLines { get; set; }
 
+        [HideIfMassTransitNotOwned]
         [XmlIgnore]
-        [Checkbox("INFO_PUBLICTRANSPORT_MONORAIL", SETTINGS_LINE_DELETION_TOOL)] //TODO(earalov): don't display if Mass Transit not owned
+        [Checkbox("INFO_PUBLICTRANSPORT_MONORAIL", SETTINGS_LINE_DELETION_TOOL)]
         public bool DeleteMonorailLines { get; set; }
 
         [XmlIgnore]
@@ -110,6 +113,24 @@ namespace ImprovedPublicTransport2
                 base(Localization.Get("SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP") + Environment.NewLine + Localization.Get("EXPLANATION_UNBUNCHING"))
             {
 
+            }
+        }
+
+        [AttributeUsage(AttributeTargets.All)]
+        public class HideIfMassTransitNotOwnedAttribute : HideConditionAttribute
+        {
+            public override bool IsHidden()
+            {
+                return !PlatformService.IsDlcInstalled(SteamHelper.kMotionDLCAppID);
+            }
+        }
+
+        [AttributeUsage(AttributeTargets.All)]
+        public class HideIfSnowfallNotOwnedAttribute : HideConditionAttribute
+        {
+            public override bool IsHidden()
+            {
+                return !PlatformService.IsDlcInstalled(SteamHelper.kWinterDLCAppID);
             }
         }
     }
