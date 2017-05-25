@@ -42,10 +42,6 @@ namespace ImprovedPublicTransport2
         {
           this._iptGameObject = new GameObject("IptGameObject");
           this._iptGameObject.transform.parent = objectOfType.transform;
-          this._iptGameObject.AddComponent<VehicleEditor>();
-          this._iptGameObject.AddComponent<PanelExtenderLine>();
-          this._iptGameObject.AddComponent<PanelExtenderVehicle>();
-          this._iptGameObject.AddComponent<PanelExtenderCityService>();
           this._iptGameObject.AddComponent<SimHelper>();
           this._iptGameObject.AddComponent<LineWatcher>();
           this._worldInfoPanel = new GameObject("PublicTransportStopWorldInfoPanel");
@@ -64,12 +60,16 @@ namespace ImprovedPublicTransport2
           Redirector<PublicTransportStopButtonDetour>.Deploy();
           Redirector<PublicTransportVehicleButtonDetour>.Deploy();
           Redirector<PublicTransportWorldInfoPanelDetour>.Deploy();
-          BuildingExtension.instance.Init();
+          BuildingExtension.Init();
           LineWatcher.instance.Init();
           TransportLineMod.Init();
           VehiclePrefabs.Init();
           SerializableDataExtension.instance.Loaded = true;
           LocaleModifier.Init();
+          this._iptGameObject.AddComponent<VehicleEditor>();
+          this._iptGameObject.AddComponent<PanelExtenderLine>();
+          this._iptGameObject.AddComponent<PanelExtenderVehicle>();
+          this._iptGameObject.AddComponent<PanelExtenderCityService>();
           Utils.Log((object) "Loading done!");
         }
         else
@@ -125,7 +125,7 @@ namespace ImprovedPublicTransport2
       Redirector<PublicTransportVehicleButtonDetour>.Revert();
       Redirector<PublicTransportWorldInfoPanelDetour>.Revert();
       TransportLineMod.Deinit();
-      BuildingExtension.instance.Deinit();
+      BuildingExtension.Deinit();
       NetManagerMod.Deinit();
       VehicleManagerMod.Deinit();
       VehiclePrefabs.Deinit();
