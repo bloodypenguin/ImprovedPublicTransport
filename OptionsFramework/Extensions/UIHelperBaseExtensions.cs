@@ -103,7 +103,7 @@ namespace ImprovedPublicTransport2.OptionsFramework.Extensions
             var descriptionAttribute = OptionsWrapper<T>.Options.GetAttribute<T, DescriptionAttribute>(propertyName);
             if (component != null && descriptionAttribute != null)
             {
-                component.tooltip = translator != null ? translator.Invoke(descriptionAttribute.Description) : descriptionAttribute.Description;
+                component.tooltip = (translator == null || descriptionAttribute is DontTranslateDescriptionAttribute) ? descriptionAttribute.Description : translator.Invoke(descriptionAttribute.Description);
             }
             return component;
         }

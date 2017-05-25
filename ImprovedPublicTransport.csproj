@@ -88,6 +88,7 @@
     <Compile Include="OptionsFramework\Attibutes\AbstractOptionsAttribute.cs" />
     <Compile Include="OptionsFramework\Attibutes\ButtonAttribute.cs" />
     <Compile Include="OptionsFramework\Attibutes\CheckboxAttribute.cs" />
+    <Compile Include="OptionsFramework\Attibutes\DontTranslateDescriptionAttribute.cs" />
     <Compile Include="OptionsFramework\Attibutes\DropDownAttribute.cs" />
     <Compile Include="OptionsFramework\Attibutes\HideConditionAttribute.cs" />
     <Compile Include="OptionsFramework\Attibutes\LabelAttribute.cs" />
