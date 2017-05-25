@@ -9,42 +9,25 @@ using UnityEngine;
 
 namespace ImprovedPublicTransport2
 {
-  public class SimHelper : MonoBehaviour
-  {
-    public static SimHelper instance;
-    private float _simulationTime;
-
-    public static bool IsSimPaused
+    public class SimHelper : MonoBehaviour
     {
-      get
-      {
-        if (!Singleton<SimulationManager>.instance.SimulationPaused)
-          return Singleton<SimulationManager>.instance.ForcedSimulationPaused;
-        return true;
-      }
-    }
+        private static float _simulationTime;
+        
+        public static void Awake()
+        {
+            _simulationTime = 0;
+        }
 
-    public float SimulationTime
-    {
-      get
-      {
-        return this._simulationTime;
-      }
-    }
+        public static float SimulationTime => _simulationTime;
 
-    private void Awake()
-    {
-      SimHelper.instance = this;
-    }
+        private void Update()
+        {
+            _simulationTime = _simulationTime + Singleton<SimulationManager>.instance.m_simulationTimeDelta;
+        }
 
-    private void Update()
-    {
-      this._simulationTime = this._simulationTime + Singleton<SimulationManager>.instance.m_simulationTimeDelta;
+        private void OnDestroy()
+        {
+            _simulationTime = 0;
+        }
     }
-
-    private void OnDestroy()
-    {
-      SimHelper.instance = (SimHelper) null;
-    }
-  }
 }
