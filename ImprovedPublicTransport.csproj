@@ -90,6 +90,7 @@
     <Compile Include="OptionsFramework\Attibutes\CheckboxAttribute.cs" />
     <Compile Include="OptionsFramework\Attibutes\DropDownAttribute.cs" />
     <Compile Include="OptionsFramework\Attibutes\HideConditionAttribute.cs" />
+    <Compile Include="OptionsFramework\Attibutes\LabelAttribute.cs" />
     <Compile Include="OptionsFramework\Attibutes\OptionsAttribute.cs" />
     <Compile Include="OptionsFramework\Attibutes\SliderAttribute.cs" />
     <Compile Include="OptionsFramework\Attibutes\TextFieldAttribute.cs" />

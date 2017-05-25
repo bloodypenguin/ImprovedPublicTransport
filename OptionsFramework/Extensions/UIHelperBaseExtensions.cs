@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using ColossalFramework.Plugins;
 using ColossalFramework.UI;
 using ImprovedPublicTransport2.OptionsFramework.Attibutes;
 using ICities;
@@ -90,7 +91,12 @@ namespace ImprovedPublicTransport2.OptionsFramework.Extensions
             var buttonAttribute = OptionsWrapper<T>.Options.GetAttribute<T, ButtonAttribute>(propertyName);
             if (buttonAttribute != null)
             {
-                component = group.AddButton<T>(description, propertyName, buttonAttribute);
+                component = group.AddButton<T>(description, buttonAttribute);
+            }
+            var labelAttribute = OptionsWrapper<T>.Options.GetAttribute<T, LabelAttribute>(propertyName);
+            if (labelAttribute != null)
+            {
+                component = group.AddLabel<T>(description);
             }
             //TODO: more control types
 
@@ -138,12 +144,23 @@ namespace ImprovedPublicTransport2.OptionsFramework.Extensions
                 });
         }
 
-        private static UIButton AddButton<T>(this UIHelperBase group, string text, string propertyName, ButtonAttribute attr)
+        private static UIButton AddButton<T>(this UIHelperBase group, string text, ButtonAttribute attr)
         {
             return (UIButton)group.AddButton(text, ()=> 
                 {
                     attr.Action().Invoke();
                 });
+        }
+
+        private static UILabel AddLabel<T>(this UIHelperBase group, string text)
+        {
+            var space = (UIPanel)group.AddSpace(20);
+            var valueLabel = space.AddUIComponent<UILabel>();
+            valueLabel.AlignTo(space, UIAlignAnchor.TopLeft);
+            valueLabel.relativePosition = new Vector3(0, 0, 0);
+            valueLabel.text = text;
+            valueLabel.Show();
+            return valueLabel;
         }
 
         private static UITextField AddTextfield<T>(this UIHelperBase group, string text, string propertyName, TextfieldAttribute attr)
