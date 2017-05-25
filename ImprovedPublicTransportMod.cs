@@ -46,7 +46,7 @@ namespace ImprovedPublicTransport2
           this._iptGameObject.AddComponent<LineWatcher>();
           this._worldInfoPanel = new GameObject("PublicTransportStopWorldInfoPanel");
           this._worldInfoPanel.transform.parent = objectOfType.transform;
-          this._worldInfoPanel.AddComponent<PublicTransportStopWorldInfoPanel>().Show();
+          this._worldInfoPanel.AddComponent<PublicTransportStopWorldInfoPanel>();
           NetManagerMod.Init();
           VehicleManagerMod.Init();
           Redirector<BusAIDetour>.Deploy();
