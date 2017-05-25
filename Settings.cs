@@ -97,7 +97,7 @@ namespace ImprovedPublicTransport2
         public bool DeletePlaneLines { get; set; }
 
         [AttributeUsage(AttributeTargets.All)]
-        public class BudgetDescriptionAttribute : DescriptionAttribute
+        public class BudgetDescriptionAttribute : DontTranslateDescriptionAttribute
         {
             public BudgetDescriptionAttribute() : 
                 base(Localization.Get("SETTINGS_BUDGET_CONTROL_TOOLTIP") + Environment.NewLine + Localization.Get("EXPLANATION_BUDGET_CONTROL"))
@@ -107,7 +107,7 @@ namespace ImprovedPublicTransport2
         }
 
         [AttributeUsage(AttributeTargets.All)]
-        public class AggressionDescriptionAttribute : DescriptionAttribute
+        public class AggressionDescriptionAttribute : DontTranslateDescriptionAttribute
         {
             public AggressionDescriptionAttribute() :
                 base(Localization.Get("SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP") + Environment.NewLine + Localization.Get("EXPLANATION_UNBUNCHING"))
