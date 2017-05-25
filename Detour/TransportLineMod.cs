@@ -98,7 +98,7 @@ namespace ImprovedPublicTransport2.Detour
                     float num = Mathf.Min(BitConverter.ToSingle(data1, index1),
                         (float) OptionsWrapper<Settings>.Options.SpawnTimeInterval);
                     if ((double) num > 0.0)
-                        data[(int) lineID].NextSpawnTime = SimHelper.instance.SimulationTime + num;
+                        data[(int) lineID].NextSpawnTime = SimHelper.SimulationTime + num;
                     index1 += 4;
                     bool boolean = BitConverter.ToBoolean(data1, index1);
                     data[(int) lineID].BudgetControl = boolean;
@@ -185,7 +185,7 @@ namespace ImprovedPublicTransport2.Detour
                         BitConverter.GetBytes(TransportLineMod.GetTargetVehicleCount(lineID)), data);
                     SerializableDataExtension.AddToData(
                         BitConverter.GetBytes(Mathf.Max(
-                            TransportLineMod.GetNextSpawnTime(lineID) - SimHelper.instance.SimulationTime, 0.0f)),
+                            TransportLineMod.GetNextSpawnTime(lineID) - SimHelper.SimulationTime, 0.0f)),
                         data);
                     SerializableDataExtension.AddToData(
                         BitConverter.GetBytes(TransportLineMod.GetBudgetControlState(lineID)), data);
@@ -411,7 +411,7 @@ namespace ImprovedPublicTransport2.Detour
             int activeVehicleCount, TransferManager.TransferOffer offer)
         {
             var itemClass = info.m_class;
-            if ((double) SimHelper.instance.SimulationTime >=
+            if ((double) SimHelper.SimulationTime >=
                 (double) TransportLineMod._lineData[(int) lineID].NextSpawnTime ||
                 itemClass.m_service == ItemClass.Service.Disaster)
             {
@@ -454,7 +454,7 @@ namespace ImprovedPublicTransport2.Detour
                                 prefabName);
                         }
                         TransportLineMod._lineData[(int) lineID].NextSpawnTime =
-                            SimHelper.instance.SimulationTime +
+                            SimHelper.SimulationTime +
                             (float) OptionsWrapper<Settings>.Options.SpawnTimeInterval;
                     }
                     else
@@ -831,7 +831,7 @@ namespace ImprovedPublicTransport2.Detour
             ItemClass itemClass = Singleton<TransportManager>.instance.m_lines
                 .m_buffer[(int) lineID]
                 .Info.m_class;
-            ushort[] depots = BuildingExtension.instance.GetDepots(itemClass.m_service, itemClass.m_subService, itemClass.m_level);
+            ushort[] depots = BuildingExtension.GetDepots(itemClass.m_service, itemClass.m_subService, itemClass.m_level);
             for (int index = 0; index < depots.Length; ++index)
             {
                 float num3 = Vector3.Distance(stopPosition,

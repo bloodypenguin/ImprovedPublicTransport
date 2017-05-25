@@ -184,8 +184,8 @@ namespace ImprovedPublicTransport2
 
               this.CreateVehiclesOnLinePanel();
               this.CreateVehiclesInQueuePanel();
-              BuildingExtension.instance.OnDepotAdded += this.OnDepotChanged;
-              BuildingExtension.instance.OnDepotRemoved += this.OnDepotChanged;
+              BuildingExtension.OnDepotAdded += this.OnDepotChanged;
+              BuildingExtension.OnDepotRemoved += this.OnDepotChanged;
               this._initialized = true;
             }
           }
@@ -235,7 +235,7 @@ namespace ImprovedPublicTransport2
           flag2 = TransportLineMod.CanAddVehicle(depot, ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[(int) depot], info);
         if (flag2)
         {
-          int num2 = Mathf.CeilToInt(TransportLineMod.GetNextSpawnTime(lineId) - SimHelper.instance.SimulationTime);
+          int num2 = Mathf.CeilToInt(TransportLineMod.GetNextSpawnTime(lineId) - SimHelper.SimulationTime);
           this._spawnTimer.text = string.Format(Localization.Get("LINE_PANEL_SPAWNTIMER"), num2 < 0 ? (object) "∞" : (object) num2.ToString());
         }
         else
@@ -337,6 +337,8 @@ namespace ImprovedPublicTransport2
     private void OnDestroy()
     {
       this._initialized = false;
+      BuildingExtension.OnDepotAdded -= this.OnDepotChanged;
+      BuildingExtension.OnDepotRemoved -= this.OnDepotChanged;
       if (this._updateDepots != null)
         this._updateDepots.Clear();
       if ((UnityEngine.Object) this._colorTextField != (UnityEngine.Object) null)
@@ -853,7 +855,7 @@ namespace ImprovedPublicTransport2
     private void PopulateDepotDropDown(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
     {
       this._depotDropDown.ClearItems();
-      this._depotDropDown.AddItems(BuildingExtension.instance.GetDepots(service, subService, level), this.IDToName);
+      this._depotDropDown.AddItems(BuildingExtension.GetDepots(service, subService, level), this.IDToName);
     }
 
     private string IDToName(ushort buildingID)
