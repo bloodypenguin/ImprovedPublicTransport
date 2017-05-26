@@ -29,7 +29,7 @@ namespace ImprovedPublicTransport2.Detour
                      .m_buffer[(int)vehicleData.m_transportLine].m_vehicles == vehicleID))
             {
                 VehicleManagerMod.m_cachedVehicleData[vehicleID].IsUnbunchingInProgress = false;
-                return false;
+                return true;
             }
             //end mod
             if ((int) vehicleData.m_leadingVehicle == 0 && (int) vehicleData.m_transportLine != 0)
