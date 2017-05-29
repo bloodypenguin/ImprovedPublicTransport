@@ -48,23 +48,22 @@ namespace ImprovedPublicTransport2
                 {
                     continue;
                 }
-                TransportInfo transportInfo = null;
-                DepotUtil.IsValidDepot(ref BuildingManager.instance.m_buildings.m_buffer[id], ref transportInfo,
-                    out ItemClass.Service service, out ItemClass.SubService subService, out ItemClass.Level level);
-                OnDepotRemoved?.Invoke(service, subService, level);
+                var itemClass = DepotUtil.GetStats(ref BuildingManager.instance.m_buildings.m_buffer[id], out _, out _);
+                if (itemClass.IsValid())
+                {
+                    OnDepotRemoved?.Invoke(itemClass.Service, itemClass.SubService, itemClass.Level);
+                }
             }
         }
 
         private static void ObserveBuilding(ushort buildingId)
         {
-            TransportInfo transportInfo = null;
-            if (!DepotUtil.IsValidDepot(ref BuildingManager.instance.m_buildings.m_buffer[buildingId],
-                ref transportInfo,
-                out ItemClass.Service service, out ItemClass.SubService subService, out ItemClass.Level level))
+            if (!DepotUtil.IsValidDepot(ref BuildingManager.instance.m_buildings.m_buffer[buildingId], null))
             {
                 return;
             }
-            var itemClassTriplet = new ItemClassTriplet(service, subService, level);
+            var itemClassTriplet = DepotUtil.GetStats(ref BuildingManager.instance.m_buildings.m_buffer[buildingId],
+                out _, out _);
             if (!_depotMap.TryGetValue(itemClassTriplet, out HashSet<ushort> depots))
             {
                 depots = new HashSet<ushort>();
@@ -75,20 +74,31 @@ namespace ImprovedPublicTransport2
                 return;
             }
             depots.Add(buildingId);
-            OnDepotAdded?.Invoke(service, subService, level);
+            OnDepotAdded?.Invoke(itemClassTriplet.Service, itemClassTriplet.SubService, itemClassTriplet.Level);
         }
 
-        public static ushort[] GetDepots(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
+        public static ushort[] GetDepots(TransportInfo transportInfo)
         {
-            HashSet<ushort> source;
-            TransportInfo info = null;
-            return _depotMap.TryGetValue(new ItemClassTriplet(service, subService, level), out source) ? 
-                source.Where(d => DepotUtil.IsValidDepot(ref BuildingManager.instance.m_buildings.m_buffer[d], ref info, out _, out _ ,out _)).ToArray() : 
-                new ushort[]{}; //we validate here to be compatible with MOM (if MOM sets max vehicle count later than this mod loads)
+            if (transportInfo == null)
+            {
+                return new ushort[0];
+            }
+
+            return _depotMap.TryGetValue(
+                new ItemClassTriplet(transportInfo.GetService(), transportInfo.GetSubService(),
+                    transportInfo.GetClassLevel()),
+                out HashSet<ushort> source)
+                ? source.Where(d => DepotUtil.IsValidDepot(ref BuildingManager.instance.m_buildings.m_buffer[d],
+                        transportInfo))
+                    .ToArray()
+                : new ushort [0];
+            //we validate here to be compatible with MOM (if MOM sets max vehicle count later than this mod loads)
         }
 
-        public delegate void DepotAdded(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level);
+        public delegate void DepotAdded(ItemClass.Service service, ItemClass.SubService subService,
+            ItemClass.Level level);
 
-        public delegate void DepotRemoved(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level);
+        public delegate void DepotRemoved(ItemClass.Service service, ItemClass.SubService subService,
+            ItemClass.Level level);
     }
 }
