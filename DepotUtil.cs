@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace ImprovedPublicTransport2
+﻿namespace ImprovedPublicTransport2
 {
     public static class DepotUtil
     {
@@ -14,12 +11,13 @@ namespace ImprovedPublicTransport2
             service = ItemClass.Service.None;
             subService = ItemClass.SubService.None;
             level = ItemClass.Level.None;
-            if (building.Info == null || (building.m_flags & Building.Flags.Created) == Building.Flags.None)
+            if (building.Info?.m_class == null || (building.m_flags & Building.Flags.Created) == Building.Flags.None)
                 return false;
-            if (building.Info.m_buildingAI is DepotAI)
+            var depotAi = building.Info.m_buildingAI as DepotAI;
+            if (depotAi != null)
             {
-                DepotAI buildingAi = building.Info.m_buildingAI as DepotAI;
-                if (transportInfo != null && buildingAi.m_transportInfo.m_vehicleType != transportInfo.m_vehicleType)  //TODO(earalov): allow to serve as depot for secondary vehicle type
+                DepotAI buildingAi = depotAi;
+                if (transportInfo != null && buildingAi.m_transportInfo?.m_vehicleType != transportInfo.m_vehicleType)  //TODO(earalov): allow to serve as depot for secondary vehicle type
                 {
                     return false;
                 }
