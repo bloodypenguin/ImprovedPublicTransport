@@ -9,10 +9,11 @@ namespace ImprovedPublicTransport2
         public static event BuildingExtension.DepotAdded OnDepotAdded;
         public static event BuildingExtension.DepotRemoved OnDepotRemoved;
 
-        private static Dictionary<ItemClassTriplet, HashSet<ushort>> _depotMap = new Dictionary<ItemClassTriplet, HashSet<ushort>>();
+        private static Dictionary<ItemClassTriplet, HashSet<ushort>> _depotMap;
 
         public static void Init()
         {
+            _depotMap = new Dictionary<ItemClassTriplet, HashSet<ushort>>();
             for (ushort index = 0; index < BuildingManager.instance.m_buildings.m_buffer.Length; ++index)
             {
                 ObserveBuilding(index);
@@ -41,15 +42,16 @@ namespace ImprovedPublicTransport2
             {
                 return;
             }
-            foreach (KeyValuePair<ItemClassTriplet, HashSet<ushort>> depots in _depotMap)
+            foreach (var depots in _depotMap)
             {
-                if (depots.Value.Remove(id))
+                if (!depots.Value.Remove(id))
                 {
-                    TransportInfo transportInfo = null;
-                    DepotUtil.IsValidDepot(ref BuildingManager.instance.m_buildings.m_buffer[id], ref transportInfo,
-                        out ItemClass.Service service, out ItemClass.SubService subService, out ItemClass.Level level);
-                    OnDepotRemoved?.Invoke(service, subService, level);
+                    continue;
                 }
+                TransportInfo transportInfo = null;
+                DepotUtil.IsValidDepot(ref BuildingManager.instance.m_buildings.m_buffer[id], ref transportInfo,
+                    out ItemClass.Service service, out ItemClass.SubService subService, out ItemClass.Level level);
+                OnDepotRemoved?.Invoke(service, subService, level);
             }
         }
 
