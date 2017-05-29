@@ -48,22 +48,39 @@ namespace ImprovedPublicTransport2
                 {
                     continue;
                 }
-                var itemClass = DepotUtil.GetStats(ref BuildingManager.instance.m_buildings.m_buffer[id], out _, out _);
-                if (itemClass.IsValid())
-                {
-                    OnDepotRemoved?.Invoke(itemClass.Service, itemClass.SubService, itemClass.Level);
-                }
+                DepotUtil.GetStats(ref BuildingManager.instance.m_buildings.m_buffer[id],
+                    out TransportInfo primaryInfo, out TransportInfo secondaryInfo);
+                OnReleasedForInfo(id, primaryInfo);
+                OnReleasedForInfo(id, secondaryInfo);
             }
+        }
+
+        private void OnReleasedForInfo(ushort id, TransportInfo transportInfo)
+        {
+            if (transportInfo == null)
+            {
+                return;
+            }
+            OnDepotRemoved?.Invoke(transportInfo.GetService(), transportInfo.GetSubService(), transportInfo.GetClassLevel());
         }
 
         private static void ObserveBuilding(ushort buildingId)
         {
-            if (!DepotUtil.IsValidDepot(ref BuildingManager.instance.m_buildings.m_buffer[buildingId], null))
+            DepotUtil.GetStats(ref BuildingManager.instance.m_buildings.m_buffer[buildingId],
+                out TransportInfo primaryInfo, out TransportInfo secondaryInfo);
+
+            ObserveForInfo(buildingId, primaryInfo);
+            ObserveForInfo(buildingId, secondaryInfo);
+        }
+
+        private static void ObserveForInfo(ushort buildingId, TransportInfo transportInfo)
+        {
+            if (!DepotUtil.IsValidDepot(ref BuildingManager.instance.m_buildings.m_buffer[buildingId], transportInfo))
             {
                 return;
             }
-            var itemClassTriplet = DepotUtil.GetStats(ref BuildingManager.instance.m_buildings.m_buffer[buildingId],
-                out _, out _);
+            var itemClassTriplet = new ItemClassTriplet(transportInfo.GetService(), transportInfo.GetSubService(),
+                transportInfo.GetClassLevel());
             if (!_depotMap.TryGetValue(itemClassTriplet, out HashSet<ushort> depots))
             {
                 depots = new HashSet<ushort>();
