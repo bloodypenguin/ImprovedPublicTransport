@@ -506,7 +506,8 @@ namespace ImprovedPublicTransport2.Detour
             if (depot.Info.m_buildingAI is DepotAI)
             {
                 DepotAI buildingAi = depot.Info.m_buildingAI as DepotAI;
-                if (transportInfo.m_vehicleType == buildingAi.m_transportInfo.m_vehicleType) //TODO(earalov): allow to serve as depot for secondary vehicle type
+                if (transportInfo.m_vehicleType == buildingAi.m_transportInfo?.m_vehicleType ||
+                    transportInfo.m_vehicleType == buildingAi.m_secondaryTransportInfo?.m_vehicleType)
                 {
                     int num = (PlayerBuildingAI.GetProductionRate(100,
                                    Singleton<EconomyManager>.instance.GetBudget(buildingAi.m_info.m_class)) * 

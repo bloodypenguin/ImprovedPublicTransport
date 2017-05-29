@@ -45,7 +45,7 @@ namespace ImprovedPublicTransport2
         ItemClass.Service service = instance1.m_buildings.m_buffer[(int) building].Info.GetService();
         ItemClass.Level level = instance1.m_buildings.m_buffer[(int) building].Info.GetClassLevel();
 
-        switch (subService)       //TODO(earalov): properly handle evacuation buses
+        switch (subService)
         {
           case ItemClass.SubService.PublicTransportBus:
           case ItemClass.SubService.PublicTransportMetro:
