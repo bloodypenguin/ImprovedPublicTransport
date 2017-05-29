@@ -2,46 +2,68 @@
 {
     public static class DepotUtil
     {
-        public static ItemClassTriplet GetStats(ref Building building,
+        public static void GetStats(ref Building building,
             out TransportInfo primatyInfo, out TransportInfo secondaryInfo)
         {
             var depotAi = building.Info.m_buildingAI as DepotAI;
-            if (depotAi == null || (depotAi.m_transportInfo==null && depotAi.m_secondaryTransportInfo == null))
+            if (depotAi == null || (depotAi.m_transportInfo == null && depotAi.m_secondaryTransportInfo == null))
             {
-                primatyInfo = null;
-                secondaryInfo = null;
                 var shelterAi = building.Info.m_buildingAI as ShelterAI;
-                return shelterAi == null ? new ItemClassTriplet(ItemClass.Service.None, ItemClass.SubService.None, ItemClass.Level.None) :
-                    new ItemClassTriplet(building.Info.GetService(), building.Info.GetSubService(), building.Info.GetClassLevel());
+                if (shelterAi == null || shelterAi.m_transportInfo == null)
+                {
+                    primatyInfo = null;
+                    secondaryInfo = null;
+                }
+                else
+                {
+                    primatyInfo = shelterAi.m_transportInfo;
+                    secondaryInfo = null;
+                }
             }
-            primatyInfo = depotAi.m_transportInfo;
-            secondaryInfo = depotAi.m_secondaryTransportInfo;
-            return new ItemClassTriplet(building.Info.GetService(), building.Info.GetSubService(), building.Info.GetClassLevel());
+            else
+            {
+                primatyInfo = depotAi.m_transportInfo;
+                secondaryInfo = depotAi.m_secondaryTransportInfo;
+            }
         }
 
 
         public static bool IsValidDepot(ref Building building, TransportInfo transportInfo)
         {
-            var itemClass = GetStats(ref building, out _, out _);
-            if (!itemClass.IsValid())
+            if (transportInfo == null)
             {
                 return false;
             }
-            var service = itemClass.Service;
-            var subService = itemClass.SubService;
-            var level = itemClass.Level;
             if (building.Info?.m_class == null || (building.m_flags & Building.Flags.Created) == Building.Flags.None)
                 return false;
+            GetStats(ref building, out TransportInfo primaryInfo, out TransportInfo secondaryInfo);
+            if (primaryInfo == null && secondaryInfo == null)
+            {
+                return false;
+            }
+            ItemClass.Service service;
+            ItemClass.SubService subService;
+            ItemClass.Level level;
+            if (transportInfo.m_vehicleType == primaryInfo?.m_vehicleType)
+            {
+                service = primaryInfo.GetService();
+                subService = primaryInfo.GetSubService();
+                level = primaryInfo.GetClassLevel();
+            }
+            else if (transportInfo.m_vehicleType == secondaryInfo?.m_vehicleType)
+            {
+                service = secondaryInfo.GetService();
+                subService = secondaryInfo.GetSubService();
+                level = secondaryInfo.GetClassLevel();
+            }
+            else
+            {
+                return false;
+            }
             var depotAi = building.Info.m_buildingAI as DepotAI;
             if (depotAi != null)
             {
                 var buildingAi = depotAi;
-                if (transportInfo != null &&
-                    (buildingAi.m_transportInfo?.m_vehicleType != transportInfo.m_vehicleType &&
-                     buildingAi.m_secondaryTransportInfo?.m_vehicleType != transportInfo.m_vehicleType))
-                {
-                    return false;
-                }
                 if (buildingAi.m_maxVehicleCount == 0)
                 {
                     return false;
@@ -74,14 +96,9 @@
                         }
                     }
                 }
-
             }
             else if (building.Info.m_buildingAI is ShelterAI)
             {
-                if (transportInfo != null && (transportInfo.m_vehicleType != ((ShelterAI)building.Info.m_buildingAI).m_transportInfo?.m_vehicleType))
-                {
-                    return false;
-                }
                 if (service == ItemClass.Service.Disaster && subService == ItemClass.SubService.None &&
                     level == ItemClass.Level.Level4)
                 {
@@ -89,7 +106,6 @@
                 }
             }
             return false;
-
         }
     }
 }
