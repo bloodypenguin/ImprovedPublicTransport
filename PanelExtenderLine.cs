@@ -225,8 +225,8 @@ namespace ImprovedPublicTransport2
         }
         bool flag1 = false;
         ushort depot = TransportLineMod.GetDepot(lineId);
-          TransportInfo info = null;
-          if (!TransportLineMod.ValidateDepot(lineId, ref depot, ref info))
+          TransportInfo info = TransportManager.instance.m_lines.m_buffer[lineId].Info;
+          if (!TransportLineMod.ValidateDepot(lineId, ref depot, info))
           {
               flag1 = true;
           }
@@ -242,15 +242,15 @@ namespace ImprovedPublicTransport2
           this._spawnTimer.text = Localization.Get("LINE_PANEL_DEPOT_WARNING");
         this._selectTypes.isEnabled = !flag1;
         this._addVehicle.isEnabled = !flag1 & flag2;
-        var itemClass = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineId].Info.m_class;
-        ItemClass.SubService subService = itemClass.m_subService;
-        ItemClass.Service service = itemClass.m_service;
-        ItemClass.Level level = itemClass.m_level;
+
+        ItemClass.SubService subService = info.GetSubService();
+        ItemClass.Service service = info.GetService();
+        ItemClass.Level level = info.GetClassLevel();
                 ItemClassTriplet triplet = new ItemClassTriplet(service, subService,  level);
 
         if (subService != this._cachedSubService | flag1 || this._updateDepots[triplet])
         {
-          this.PopulateDepotDropDown(service, subService, level);
+          this.PopulateDepotDropDown(info);
           this.PopulatePrefabListBox(service, subService, level);
           this._updateDepots[triplet] = false;
         }
@@ -852,10 +852,14 @@ namespace ImprovedPublicTransport2
         this._updateDepots[new ItemClassTriplet(service, subService, level)] = true;
     }
 
-    private void PopulateDepotDropDown(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
+    private void PopulateDepotDropDown(TransportInfo info)
     {
       this._depotDropDown.ClearItems();
-      this._depotDropDown.AddItems(BuildingExtension.GetDepots(service, subService, level), this.IDToName);
+        if (info == null)
+        {
+            return;
+        }
+      this._depotDropDown.AddItems(BuildingExtension.GetDepots(info), this.IDToName);
     }
 
     private string IDToName(ushort buildingID)

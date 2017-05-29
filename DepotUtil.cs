@@ -2,36 +2,50 @@
 {
     public static class DepotUtil
     {
-        public static bool IsValidDepot(ref Building building,
-            ref TransportInfo transportInfo,
-            out ItemClass.Service service,
-            out ItemClass.SubService subService,
-            out ItemClass.Level level)
+        public static ItemClassTriplet GetStats(ref Building building,
+            out TransportInfo primatyInfo, out TransportInfo secondaryInfo)
         {
-            service = ItemClass.Service.None;
-            subService = ItemClass.SubService.None;
-            level = ItemClass.Level.None;
+            var depotAi = building.Info.m_buildingAI as DepotAI;
+            if (depotAi == null || (depotAi.m_transportInfo==null && depotAi.m_secondaryTransportInfo == null))
+            {
+                primatyInfo = null;
+                secondaryInfo = null;
+                var shelterAi = building.Info.m_buildingAI as ShelterAI;
+                return shelterAi == null ? new ItemClassTriplet(ItemClass.Service.None, ItemClass.SubService.None, ItemClass.Level.None) :
+                    new ItemClassTriplet(building.Info.GetService(), building.Info.GetSubService(), building.Info.GetClassLevel());
+            }
+            primatyInfo = depotAi.m_transportInfo;
+            secondaryInfo = depotAi.m_secondaryTransportInfo;
+            return new ItemClassTriplet(building.Info.GetService(), building.Info.GetSubService(), building.Info.GetClassLevel());
+        }
+
+
+        public static bool IsValidDepot(ref Building building, TransportInfo transportInfo)
+        {
+            var itemClass = GetStats(ref building, out _, out _);
+            if (!itemClass.IsValid())
+            {
+                return false;
+            }
+            var service = itemClass.Service;
+            var subService = itemClass.SubService;
+            var level = itemClass.Level;
             if (building.Info?.m_class == null || (building.m_flags & Building.Flags.Created) == Building.Flags.None)
                 return false;
             var depotAi = building.Info.m_buildingAI as DepotAI;
             if (depotAi != null)
             {
-                DepotAI buildingAi = depotAi;
-                if (transportInfo != null && buildingAi.m_transportInfo?.m_vehicleType != transportInfo.m_vehicleType)  //TODO(earalov): allow to serve as depot for secondary vehicle type
+                var buildingAi = depotAi;
+                if (transportInfo != null &&
+                    (buildingAi.m_transportInfo?.m_vehicleType != transportInfo.m_vehicleType &&
+                     buildingAi.m_secondaryTransportInfo?.m_vehicleType != transportInfo.m_vehicleType))
                 {
                     return false;
-                }
-                if (transportInfo == null)
-                {
-                    transportInfo = buildingAi.m_transportInfo;
                 }
                 if (buildingAi.m_maxVehicleCount == 0)
                 {
                     return false;
                 }
-                service = building.Info.m_class.m_service;
-                subService = building.Info.m_class.m_subService;
-                level = building.Info.m_class.m_level;
                 if (service == ItemClass.Service.PublicTransport)
                 {
                     if (level == ItemClass.Level.Level1)
@@ -64,9 +78,10 @@
             }
             else if (building.Info.m_buildingAI is ShelterAI)
             {
-                service = building.Info.m_class.m_service;
-                subService = building.Info.m_class.m_subService;
-                level = building.Info.m_class.m_level;
+                if (transportInfo != null && (transportInfo.m_vehicleType != ((ShelterAI)building.Info.m_buildingAI).m_transportInfo?.m_vehicleType))
+                {
+                    return false;
+                }
                 if (service == ItemClass.Service.Disaster && subService == ItemClass.SubService.None &&
                     level == ItemClass.Level.Level4)
                 {

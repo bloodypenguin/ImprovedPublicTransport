@@ -416,7 +416,7 @@ namespace ImprovedPublicTransport2.Detour
                 itemClass.m_service == ItemClass.Service.Disaster)
             {
                 ushort depot = TransportLineMod._lineData[(int) lineID].Depot;
-                if (TransportLineMod.ValidateDepot(lineID, ref depot, ref info))
+                if (TransportLineMod.ValidateDepot(lineID, ref depot, info))
                 {
                     BuildingManager instance2 = Singleton<BuildingManager>.instance;
                     if (TransportLineMod.CanAddVehicle(depot,
@@ -478,11 +478,14 @@ namespace ImprovedPublicTransport2.Detour
             TransportLineMod._lineData[(int) lineID].Unbunching = OptionsWrapper<Settings>.Options.Unbunching;
         }
 
-        public static bool ValidateDepot(ushort lineID, ref ushort depotID, ref TransportInfo transportInfo)
+        public static bool ValidateDepot(ushort lineID, ref ushort depotID, TransportInfo transportInfo)
         {
+            if (transportInfo == null)
+            {
+                return false;
+            }
             if (depotID != 0 &&
-                DepotUtil.IsValidDepot(ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[depotID], ref transportInfo,
-                    out _, out _, out _))
+                DepotUtil.IsValidDepot(ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[depotID], transportInfo))
             {
                 return true;
             }
@@ -828,10 +831,10 @@ namespace ImprovedPublicTransport2.Detour
             ushort num1 = 0;
             float num2 = float.MaxValue;
             BuildingManager instance = Singleton<BuildingManager>.instance;
-            ItemClass itemClass = Singleton<TransportManager>.instance.m_lines
+            TransportInfo info = Singleton<TransportManager>.instance.m_lines
                 .m_buffer[(int) lineID]
-                .Info.m_class;
-            ushort[] depots = BuildingExtension.GetDepots(itemClass.m_service, itemClass.m_subService, itemClass.m_level);
+                .Info;
+            ushort[] depots = BuildingExtension.GetDepots(info);
             for (int index = 0; index < depots.Length; ++index)
             {
                 float num3 = Vector3.Distance(stopPosition,

@@ -15,6 +15,9 @@
         public ItemClass.SubService SubService { get; }
         public ItemClass.Level Level { get; }
 
-
+        public bool IsValid()
+        {
+            return Service != ItemClass.Service.None;
+        }
     }
 }
