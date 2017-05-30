@@ -50,7 +50,7 @@
                 subService = primaryInfo.GetSubService();
                 level = primaryInfo.GetClassLevel();
             }
-            else if (transportInfo.m_vehicleType == secondaryInfo?.m_vehicleType)
+            else if (transportInfo.m_vehicleType == secondaryInfo?.m_vehicleType && transportInfo.m_vehicleType != VehicleInfo.VehicleType.Car)
             {
                 service = secondaryInfo.GetService();
                 subService = secondaryInfo.GetSubService();
