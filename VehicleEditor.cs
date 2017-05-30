@@ -89,10 +89,8 @@ namespace ImprovedPublicTransport2
     {
       this._firstShow = false;
       TransportManager instance = Singleton<TransportManager>.instance;
-      int num1 = 5;
-      bool flag1 = instance.TransportTypeLoaded((TransportInfo.TransportType) num1);
-      int num2 = 6;
-      bool flag2 = instance.TransportTypeLoaded((TransportInfo.TransportType) num2);
+      bool flag1 = instance.TransportTypeLoaded(TransportInfo.TransportType.Taxi);
+      bool flag2 = instance.TransportTypeLoaded(TransportInfo.TransportType.Tram);
       if (OptionsWrapper<Settings>.Options.VehicleEditorPosition == 0)
       {
         float x = this._publicTransportInfoViewPanel.component.absolutePosition.x;
@@ -630,18 +628,14 @@ namespace ImprovedPublicTransport2
       UITextField uiTextField = this._rightSidePanel.Find<UITextField>("MaintenanceCost");
       if (!uiTextField.parent.enabled)
         return;
-      float num2 = (float) num1 / (float) carCount / (float) GameDefault.GetCapacity(this._selectedService, this._selectedSubService, SelectedLevel);
-      uiTextField.text = Mathf.RoundToInt((float) (PrefabData.GetMaintenanceCost(this._selectedService, this._selectedSubService, SelectedLevel, prefab.Info.m_vehicleAI) * 16) * num2).ToString();
+      float num2 = (float) num1 / (float) carCount / (float) GameDefault.GetCapacity(prefab.Info.GetService(), prefab.Info.GetSubService(), prefab.Info.GetClassLevel());
+      uiTextField.text = Mathf.RoundToInt((float) (PrefabData.GetMaintenanceCost(prefab.Info.GetService(), prefab.Info.GetSubService(), prefab.Info.GetClassLevel(), prefab.Info.m_vehicleAI) * 16) * num2).ToString();
     }
-
-      private ItemClass.Level SelectedLevel => (this._selectedSubService == ItemClass.SubService.PublicTransportPlane ||
-                                                this._selectedSubService == ItemClass.SubService.PublicTransportShip)
-          ? ItemClass.Level.Level2
-          : ItemClass.Level.Level1; //TODO(earalov): handle regional trains and planes
 
       private PrefabData[] GetPrefabs()
       {
-          return VehiclePrefabs.instance.GetPrefabs(this._selectedService, this._selectedSubService, SelectedLevel);
+          return VehiclePrefabs.instance.GetPrefabs(this._selectedService, this._selectedSubService, ItemClass.Level.Level1).
+                Concat(VehiclePrefabs.instance.GetPrefabs(this._selectedService, this._selectedSubService, ItemClass.Level.Level2)).ToArray();
       }
 
       private void OnApplyButtonClick(UIComponent component, UIMouseEventParameter eventParam)
@@ -673,7 +667,7 @@ namespace ImprovedPublicTransport2
     private void SetTransportType(TransportInfo.TransportType transportType, VehicleInfo selectedPrefab = null)
     {
       Color transportColor = Singleton<TransportManager>.instance.m_properties.m_transportColors[(int) transportType];
-      ItemClassTriplet classTriplet = VehicleEditor.GetItemClass(transportType);
+      ItemClassTriplet classTriplet = VehicleEditor.GetItemClasses(transportType)[0];
       this._selectedService = classTriplet.Service;
       this._selectedSubService = classTriplet.SubService;
       this._rightSidePanel.color = (Color32) transportColor;
@@ -726,32 +720,40 @@ namespace ImprovedPublicTransport2
         this.SetTransportType(transportType, prefab);
     }
 
-    private static ItemClassTriplet GetItemClass(TransportInfo.TransportType transportType)
+    private static ItemClassTriplet[] GetItemClasses(TransportInfo.TransportType transportType)
         {
       switch (transportType)
       {
         case TransportInfo.TransportType.Bus:
-          return new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportBus, ItemClass.Level.Level1);
+          return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportBus, ItemClass.Level.Level1)};
         case TransportInfo.TransportType.EvacuationBus:
-              return new ItemClassTriplet(ItemClass.Service.Disaster, ItemClass.SubService.None, ItemClass.Level.Level4);
+              return new[] { new ItemClassTriplet(ItemClass.Service.Disaster, ItemClass.SubService.None, ItemClass.Level.Level4) };
         case TransportInfo.TransportType.Metro:
-          return new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportMetro, ItemClass.Level.Level1);
+          return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportMetro, ItemClass.Level.Level1) };
         case TransportInfo.TransportType.Train:
-            return new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTrain, ItemClass.Level.Level1);
-        case TransportInfo.TransportType.Ship: //TODO(earalov): handle regional ships
-            return new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportShip, ItemClass.Level.Level2);
-        case TransportInfo.TransportType.Airplane: //TODO(earalov): handle regional planes
-            return new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportPlane, ItemClass.Level.Level2);
+            return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTrain, ItemClass.Level.Level1) };
+        case TransportInfo.TransportType.Ship:
+            return new[]
+            {
+                new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportShip, ItemClass.Level.Level1),
+                new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportShip, ItemClass.Level.Level2)
+            };
+        case TransportInfo.TransportType.Airplane:
+            return new[]
+            {
+                new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportPlane, ItemClass.Level.Level1),
+                new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportPlane, ItemClass.Level.Level2)
+            };
         case TransportInfo.TransportType.Taxi:
-            return new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTaxi, ItemClass.Level.Level1);
+            return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTaxi, ItemClass.Level.Level1) };
         case TransportInfo.TransportType.Tram:
-            return new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTram, ItemClass.Level.Level1);
+            return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTram, ItemClass.Level.Level1) };
         case TransportInfo.TransportType.Monorail:
-            return new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportMonorail, ItemClass.Level.Level1);
+            return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportMonorail, ItemClass.Level.Level1) };
         case TransportInfo.TransportType.CableCar:
-           return new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportCableCar, ItemClass.Level.Level1);
+           return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportCableCar, ItemClass.Level.Level1) };
         default:
-          return new ItemClassTriplet(ItemClass.Service.None, ItemClass.SubService.None, ItemClass.Level.None);
+          return new[] { new ItemClassTriplet(ItemClass.Service.None, ItemClass.SubService.None, ItemClass.Level.None)};
       }
     }
 
