@@ -75,7 +75,7 @@ namespace ImprovedPublicTransport2
 
         private static void ObserveForInfo(ushort buildingId, TransportInfo transportInfo)
         {
-            if (!DepotUtil.IsValidDepot(ref BuildingManager.instance.m_buildings.m_buffer[buildingId], transportInfo))
+            if (transportInfo == null || !DepotUtil.IsValidDepot(ref BuildingManager.instance.m_buildings.m_buffer[buildingId], transportInfo))
             {
                 return;
             }
