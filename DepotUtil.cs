@@ -5,10 +5,10 @@
         public static void GetStats(ref Building building,
             out TransportInfo primatyInfo, out TransportInfo secondaryInfo)
         {
-            var depotAi = building.Info.m_buildingAI as DepotAI;
+            var depotAi = building.Info?.m_buildingAI as DepotAI;
             if (depotAi == null || (depotAi.m_transportInfo == null && depotAi.m_secondaryTransportInfo == null))
             {
-                var shelterAi = building.Info.m_buildingAI as ShelterAI;
+                var shelterAi = building.Info?.m_buildingAI as ShelterAI;
                 if (shelterAi == null || shelterAi.m_transportInfo == null)
                 {
                     primatyInfo = null;
