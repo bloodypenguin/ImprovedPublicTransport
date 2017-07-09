@@ -135,15 +135,17 @@ namespace ImprovedPublicTransport2.Detour
     }
 
     [RedirectMethod]
-    public void ReleaseVehicle(ushort vehicleID)
+    public static void ReleaseVehicle(VehicleManager instance, ushort vehicleID)
     {
-      if (!VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].IsEmpty)
-        VehicleManagerMod.m_cachedVehicleData[(int) vehicleID] = new VehicleData();
-      ReleaseVehicleImplementation(vehicleID, ref Singleton<VehicleManager>.instance.m_vehicles.m_buffer[(int) vehicleID]);
+        if (!VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].IsEmpty)
+        {
+            VehicleManagerMod.m_cachedVehicleData[(int) vehicleID] = new VehicleData();
+        }
+        ReleaseVehicleImplementation(instance, vehicleID, ref instance.m_vehicles.m_buffer[(int) vehicleID]);
     }
 
     [RedirectReverse]
-    private void ReleaseVehicleImplementation(ushort vehicle, ref Vehicle data)
+    private static void ReleaseVehicleImplementation(VehicleManager instance, ushort vehicle, ref Vehicle data)
     {
         UnityEngine.Debug.Log("ReleaseVehicleImplementation");
     }
