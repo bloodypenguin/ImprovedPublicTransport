@@ -1,0 +1,3 @@
+[submodule "OptionsFramework"]
+	path = OptionsFramework
+	url = git@github.com:earalov/OptionsFramework.git
