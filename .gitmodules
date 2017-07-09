@@ -1,3 +1,6 @@
 [submodule "OptionsFramework"]
 	path = OptionsFramework
 	url = git@github.com:earalov/OptionsFramework.git
+[submodule "RedirectionFramework"]
+	path = RedirectionFramework
+	url = git@github.com:earalov/RedirectionFramework.git
