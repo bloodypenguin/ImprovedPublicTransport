@@ -12,10 +12,12 @@ EXPLANATION_BUDGET_CONTROL Regulacja budżetowa: Ilość pojazdów jest regulowa
 EXPLANATION_UNBUNCHING Unbunching pojazdów: Gra spróbuje stworzyć odstęp między pojazdami.
 LINE_PANEL_STOPS Przystanki: {0}
 LINE_PANEL_SPAWNTIMER Następny pojazd za {0} s.
+LINE_PANEL_DEPOT_WARNING <color #FF0000>Wybrana zajezdnia nie ma już pojazdów.</color>
 LINE_PANEL_BUDGET_CONTROL Regulacja budżetowa
 LINE_PANEL_BUDGET_CONTROL_TOOLTIP Włącza lub wyłącza regulację budżetową dla tej linii.
 LINE_PANEL_UNBUNCHING_TOOLTIP Włącza lub wyłącza unbunching pojazdów dla tej linii.\nUnbunching pojazdów jest wyłączony, jeśli agresja unbunchingu jest ustawiona na 0.
 LINE_PANEL_DEPOT Zajezdnia:
+LINE_PANEL_NO_DEPOT_FOUND Nie znaleziono zajezdni.
 LINE_PANEL_DEPOT_MARKER_TOOLTIP Przechodzi do wybranej zajezdni. \nPrzytrzymanie klawisza Shift podczas klikania dodatkowo przybliży widok.
 LINE_PANEL_SELECT_TYPES Wybierz typ
 LINE_PANEL_SELECT_TYPES_TOOLTIP Przełącza panel 'Wybierz typ'.\nJeśli ten przycisk jest wyłączony musisz najpierw wybrać zajezdnię.
@@ -24,6 +26,7 @@ LINE_PANEL_LINE_VEHICLES Pojazdy na tej linii
 LINE_PANEL_ENQUEUED Pojazdy w kolejce
 LINE_PANEL_TOTAL_WAITING_PEOPLE_TOOLTIP {0} osób oczekujących na tej linii.
 LINE_PANEL_ADD_VEHICLE Dodaj pojazd
+LINE_PANEL_ADD_VEHICLE_TOOLTIP Dodaje nowy pojazd do tej linii.\nJeśli ten przycisk jest wyłączony to wybrana zajezdnia nie ma już pojazdów.
 LINE_PANEL_REMOVE_VEHICLE Usuń pojazd
 SETTINGS Ustawienia
 SETTINGS_UI Ustawienia interfejsu
@@ -46,7 +49,7 @@ SETTINGS_UNBUNCHING_AGGRESSION Agresja unbunchingu:
 SETTINGS_UNBUNCHING_AGGRESSION_TOOLTIP Jak silnie powinien działać unbunching pojazdów?\nMożliwe wartości: 0-52, gdzie 0 wyłączy unbunching pojazdów.\nWiększe wartości będą miały duży wpływ na ruch drogowy i prawdopodobnie spowodują znikanie pojazdów.
 SETTINGS_VEHICLE_COUNT Pojazdy na nowych liniach:
 SETTINGS_VEHICLE_COUNT_TOOLTIP Ilość pojazdów, które będą automatycznie dodawane do nowych linii, gdy regulacja budżetowa jest wyłączona.
-SETTINGS_AUTOSHOW_LINE_INFO Auto pokazywanie panelu
+SETTINGS_AUTOSHOW_LINE_INFO Automatyczne pokazywanie panelu
 SETTINGS_AUTOSHOW_LINE_INFO_TOOLTIP Automatycznie pokazuje panel linii zaraz po jej stworzeniu.
 SETTINGS_SPEED Jednostka prędkości:
 SETTINGS_LINE_DELETION_TOOL Narzędzie Usuwania Linii
@@ -92,6 +95,8 @@ VEHICLE_LIST_BOX_ROW_TOOLTIP1 Kliknij prawym przyciskiem myszy, aby śledzić te
 VEHICLE_LIST_BOX_ROW_TOOLTIP2 Shift + kliknięcie dodaje wybrany pojazd do kolejki.
 VEHICLE_PANEL_EDIT_TYPE Zmodyfikuj typ pojazdów
 VEHICLE_PANEL_EDIT_TYPE_TOOLTIP Otwiera wybrany typ pojazdów w Edytorze Pojazdów.
+VEHICLE_PANEL_STATUS_NEXT_STOP Następny przystanek:
+VEHICLE_PANEL_STATUS_UNBUNCHING Unbunching w toku
 VEHICLE_PANEL_LAST_STOP_EXCHANGE Ostatni przystanek: <color #FF0000>-{0}</color> | <color #00FF00>+{1}</color>
 VEHICLE_PANEL_PASSENGERS Pasażerowie:
 VEHICLE_PANEL_EARNINGS Zarobki:
