@@ -1,6 +1,8 @@
 [submodule "OptionsFramework"]
 	path = OptionsFramework
 	url = git@github.com:earalov/OptionsFramework.git
+	branch = customization/ImprovedPublicTransport2
 [submodule "RedirectionFramework"]
 	path = RedirectionFramework
 	url = git@github.com:earalov/RedirectionFramework.git
+	branch = customization/ImprovedPublicTransport2	
