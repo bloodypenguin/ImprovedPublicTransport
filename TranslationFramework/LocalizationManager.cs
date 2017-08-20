@@ -16,13 +16,15 @@ namespace ImprovedPublicTransport2.TranslationFramework
         protected bool _loadLanguageAutomatically = true;
         private string fallbackLanguage;
         private ILanguageDeserializer languageDeserializer;
+        private Type modType;
 
-        public LocalizationManager(ILanguageDeserializer languageDeserializer = null, bool loadLanguageAutomatically = true, 
+        public LocalizationManager(Type modType, ILanguageDeserializer languageDeserializer = null, bool loadLanguageAutomatically = true, 
             string fallbackLanguage = "en")
         {
             this.languageDeserializer = languageDeserializer ?? new DefaultLanguageDeserializer();
             this._loadLanguageAutomatically = loadLanguageAutomatically;
             this.fallbackLanguage = fallbackLanguage;
+            this.modType = modType;
             LocaleManager.eventLocaleChanged += SetCurrentLanguage;
         }
 
@@ -57,7 +59,7 @@ namespace ImprovedPublicTransport2.TranslationFramework
         {
             _languages.Clear();
 
-            string basePath = Util.AssemblyPath;
+            string basePath = Util.AssemblyPath(modType);
 
             if (basePath != "")
             {

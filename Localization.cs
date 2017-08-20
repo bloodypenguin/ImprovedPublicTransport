@@ -6,7 +6,7 @@ namespace ImprovedPublicTransport2
     public static class Localization
     {
         private static readonly LocalizationManager LocalizationManager = 
-            new LocalizationManager(new PlainTextLanguageDeserializer());
+            new LocalizationManager(typeof(ImprovedPublicTransportMod), new PlainTextLanguageDeserializer());
 
         public static string Get(string translationId)
         {
