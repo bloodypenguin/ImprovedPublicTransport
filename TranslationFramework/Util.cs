@@ -7,21 +7,23 @@ namespace ImprovedPublicTransport2.TranslationFramework
 {
     public static class Util
     {
-        public static string AssemblyPath => PluginInfo.modPath;
-
-        private static PluginManager.PluginInfo PluginInfo
+        public static string AssemblyPath(Type modType)
         {
-            get
-            {
-                var pluginManager = PluginManager.instance;
-                var plugins = pluginManager.GetPluginsInfo();
+            return PluginInfo(modType).modPath;
+        }
 
+        private static PluginManager.PluginInfo PluginInfo(Type modType)
+        {
+            var pluginManager = PluginManager.instance;
+            var plugins = pluginManager.GetPluginsInfo();
+            try
+            {
                 foreach (var item in plugins)
                 {
                     try
                     {
                         var instances = item.GetInstances<IUserMod>();
-                        if (!(instances.FirstOrDefault() is ImprovedPublicTransportMod))
+                        if (modType != instances.FirstOrDefault()?.GetType())
                         {
                             continue;
                         }
@@ -29,12 +31,15 @@ namespace ImprovedPublicTransport2.TranslationFramework
                     }
                     catch
                     {
-
+                        //do nothing
                     }
                 }
-                throw new Exception("Failed to find DaylightClassic assembly!");
-
             }
+            catch (Exception e)
+            {
+                throw new Exception("Failed to find assembly of type" + modType, e);
+            }
+            throw new Exception("Failed to find assembly of type" + modType);
         }
     }
 }
