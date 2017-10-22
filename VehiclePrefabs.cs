@@ -74,6 +74,8 @@ namespace ImprovedPublicTransport2
                 {
                     switch (subService)
                     {
+                        case ItemClass.SubService.PublicTransportBus:
+                            return this._busPrefabData;
                         case ItemClass.SubService.PublicTransportShip:
                             return this._ferryPrefabData;
                         case ItemClass.SubService.PublicTransportPlane:
@@ -159,6 +161,9 @@ namespace ImprovedPublicTransport2
                         {
                             switch (subService)
                             {
+                                case ItemClass.SubService.PublicTransportBus:
+                                    busList.Add(new PrefabData(prefab));
+                                    continue;
                                 case ItemClass.SubService.PublicTransportShip:
                                     ferryList.Add(new PrefabData(prefab));
                                     continue;
