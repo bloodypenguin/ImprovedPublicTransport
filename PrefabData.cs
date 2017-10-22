@@ -323,7 +323,9 @@ namespace ImprovedPublicTransport2
             }
             else if (level == ItemClass.Level.Level2)
             {
-                if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerFerryAI)
+                if (subService == ItemClass.SubService.PublicTransportBus && ai is BusAI)
+                    num = (ai as BusAI).m_passengerCapacity;
+                else if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerFerryAI)
                     num = (ai as PassengerFerryAI).m_passengerCapacity;
                 else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerBlimpAI)
                     num = (ai as PassengerBlimpAI).m_passengerCapacity;
@@ -364,11 +366,13 @@ namespace ImprovedPublicTransport2
                 }
             else if (level == ItemClass.Level.Level2)
             {
-                if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerFerryAI)
+                if (subService == ItemClass.SubService.PublicTransportBus && ai is BusAI)
+                    (ai as BusAI).m_passengerCapacity = capacity;
+                else if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerFerryAI)
                     (ai as PassengerFerryAI).m_passengerCapacity = capacity;
-                    else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerBlimpAI)
+                else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerBlimpAI)
                     (ai as PassengerBlimpAI).m_passengerCapacity = capacity;
-                }
+            }
 
         }
         else if (service == ItemClass.Service.Disaster && subService == ItemClass.SubService.None && level == ItemClass.Level.Level4 && ai is BusAI)
@@ -405,11 +409,13 @@ namespace ImprovedPublicTransport2
                 }
             else if (level == ItemClass.Level.Level2)
             {
-                if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerFerryAI)
+                if (subService == ItemClass.SubService.PublicTransportBus && ai is BusAI)
+                    num = (ai as BusAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+                else if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerFerryAI)
                     num = (ai as PassengerFerryAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
-                    else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerBlimpAI)
+                else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerBlimpAI)
                     num = (ai as PassengerBlimpAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
-                }
+            }
 
         }
         else if (service == ItemClass.Service.Disaster && subService == ItemClass.SubService.None && level == ItemClass.Level.Level4 && ai is BusAI)
@@ -447,11 +453,13 @@ namespace ImprovedPublicTransport2
                 }
             else if (level == ItemClass.Level.Level2)
             {
-                if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerFerryAI)
+                if (subService == ItemClass.SubService.PublicTransportBus && ai is BusAI)
+                    num = (ai as BusAI).m_ticketPrice;
+                else if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerFerryAI)
                     num = (ai as PassengerFerryAI).m_ticketPrice;
-                    else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerBlimpAI)
+                else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerBlimpAI)
                     num = (ai as PassengerBlimpAI).m_ticketPrice;
-                }
+            }
 
         }
         else if (service == ItemClass.Service.Disaster && subService == ItemClass.SubService.None && level == ItemClass.Level.Level4 && ai is BusAI)
@@ -488,11 +496,13 @@ namespace ImprovedPublicTransport2
                 }
             else if (level == ItemClass.Level.Level2)
             {
-                if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerFerryAI)
+                if (subService == ItemClass.SubService.PublicTransportBus && ai is BusAI)
+                    (ai as BusAI).m_ticketPrice = ticketPrice;
+                else if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerFerryAI)
                     (ai as PassengerFerryAI).m_ticketPrice = ticketPrice;
-                    else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerBlimpAI)
+                else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerBlimpAI)
                     (ai as PassengerBlimpAI).m_ticketPrice = ticketPrice;
-                }
+            }
 
         }
         else if (service == ItemClass.Service.Disaster && subService == ItemClass.SubService.None && level == ItemClass.Level.Level4 && ai is BusAI)

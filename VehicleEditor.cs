@@ -632,13 +632,7 @@ namespace ImprovedPublicTransport2
       uiTextField.text = Mathf.RoundToInt((float) (PrefabData.GetMaintenanceCost(prefab.Info.GetService(), prefab.Info.GetSubService(), prefab.Info.GetClassLevel(), prefab.Info.m_vehicleAI) * 16) * num2).ToString();
     }
 
-      private PrefabData[] GetPrefabs()
-      {
-          return VehiclePrefabs.instance.GetPrefabs(this._selectedService, this._selectedSubService, ItemClass.Level.Level1).
-                Concat(VehiclePrefabs.instance.GetPrefabs(this._selectedService, this._selectedSubService, ItemClass.Level.Level2)).ToArray();
-      }
-
-      private void OnApplyButtonClick(UIComponent component, UIMouseEventParameter eventParam)
+    private void OnApplyButtonClick(UIComponent component, UIMouseEventParameter eventParam)
     {
       if (this._selectedIndex <= -1)
         return;
@@ -657,7 +651,12 @@ namespace ImprovedPublicTransport2
       this.UpdateBindings();
     }
 
-    private void OnDefaultButtonClick(UIComponent component, UIMouseEventParameter eventParam)
+      private PrefabData[] GetPrefabs()
+      {
+          return VehiclePrefabs.instance.GetPrefabs(this._selectedService, this._selectedSubService);
+      }
+
+      private void OnDefaultButtonClick(UIComponent component, UIMouseEventParameter eventParam)
     {
       if (this._selectedIndex > -1)
         GetPrefabs()[this._selectedIndex].SetDefaults();
@@ -725,7 +724,11 @@ namespace ImprovedPublicTransport2
       switch (transportType)
       {
         case TransportInfo.TransportType.Bus:
-          return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportBus, ItemClass.Level.Level1)};
+          return new[]
+          {
+              new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportBus, ItemClass.Level.Level1),
+              new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportBus, ItemClass.Level.Level2)
+          };
         case TransportInfo.TransportType.EvacuationBus:
               return new[] { new ItemClassTriplet(ItemClass.Service.Disaster, ItemClass.SubService.None, ItemClass.Level.Level4) };
         case TransportInfo.TransportType.Metro:

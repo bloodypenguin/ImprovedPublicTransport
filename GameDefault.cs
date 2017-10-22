@@ -32,9 +32,15 @@
                             return 35;
                         case ItemClass.SubService.PublicTransportShip:
                             return 50;
+                        case ItemClass.SubService.PublicTransportBus:
+                            return 30;
                     }
                 }
             }
+            UnityEngine.Debug.LogWarning("IPT: Default capacity of item class [serrvice: " + service + ", sub service: " +
+                                         subService +
+                                         ", level: " + level +
+                                         "] were requested. Defaults aren't supported.");
             return 0;
         }
     }

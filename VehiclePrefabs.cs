@@ -5,6 +5,7 @@
 // Assembly location: C:\Games\Steam\steamapps\workshop\content\255710\424106600\ImprovedPublicTransport.dll
 
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ImprovedPublicTransport2
@@ -13,6 +14,7 @@ namespace ImprovedPublicTransport2
     {
         public static VehiclePrefabs instance;
         private PrefabData[] _busPrefabData;
+        private PrefabData[] _biofuelBusPrefabData;
         private PrefabData[] _metroPrefabData;
         private PrefabData[] _trainPrefabData;
         private PrefabData[] _shipPrefabData;
@@ -33,10 +35,47 @@ namespace ImprovedPublicTransport2
 
         public static void Deinit()
         {
-            VehiclePrefabs.instance = (VehiclePrefabs) null;
+            VehiclePrefabs.instance = (VehiclePrefabs)null;
         }
 
         public PrefabData[] GetPrefabs(ItemClass.Service service,
+            ItemClass.SubService subService, ItemClass.Level level)
+        {
+            var prefabs = subService == ItemClass.SubService.PublicTransportBus ?
+                VehiclePrefabs.instance.GetPrefabsNoLogging(service, subService) :
+                VehiclePrefabs.instance.GetPrefabsNoLogging(service, subService, level);
+            if (prefabs.Length == 0)
+            {
+                UnityEngine.Debug.LogWarning("IPT: Vehicles of item class [serrvice: " + service + ", sub service: " +
+                                             subService +
+                                             ", level: " + level +
+                                             "] were requested. None was found.");
+            }
+            return prefabs;
+        }
+
+        public PrefabData[] GetPrefabs(ItemClass.Service service, ItemClass.SubService subService)
+        {
+            var prefabs = VehiclePrefabs.instance.GetPrefabsNoLogging(service, subService);
+            if (prefabs.Length == 0)
+            {
+                UnityEngine.Debug.LogWarning("IPT: Vehicles of item class [serrvice: " + service + ", sub service: " +
+                                             subService +
+                                             "] were requested. None was found.");
+            }
+            return prefabs;
+        }
+
+        private PrefabData[] GetPrefabsNoLogging(ItemClass.Service service,
+            ItemClass.SubService subService)
+        {
+            var prefabs = VehiclePrefabs.instance.GetPrefabsNoLogging(service, subService, ItemClass.Level.Level1).
+                Concat(VehiclePrefabs.instance.GetPrefabsNoLogging(service, subService, ItemClass.Level.Level2)).
+                Concat(VehiclePrefabs.instance.GetPrefabsNoLogging(service, subService, ItemClass.Level.Level4)).ToArray();
+            return prefabs;
+        }
+
+        private PrefabData[] GetPrefabsNoLogging(ItemClass.Service service,
             ItemClass.SubService subService, ItemClass.Level level)
         {
             if (service == ItemClass.Service.Disaster && subService == ItemClass.SubService.None &&
@@ -75,7 +114,7 @@ namespace ImprovedPublicTransport2
                     switch (subService)
                     {
                         case ItemClass.SubService.PublicTransportBus:
-                            return this._busPrefabData;
+                            return this._biofuelBusPrefabData;
                         case ItemClass.SubService.PublicTransportShip:
                             return this._ferryPrefabData;
                         case ItemClass.SubService.PublicTransportPlane:
@@ -83,15 +122,13 @@ namespace ImprovedPublicTransport2
                     }
                 }
             }
-            UnityEngine.Debug.LogWarning("IPT: Vehicles of item class [serrvice: " + service + ", sub service: " +
-                                         subService +
-                                         ", level: " + level + "] were requested. They are currently not supported.");
             return new PrefabData[] { };
         }
 
-        private void FindAllPrefabs() 
+        private void FindAllPrefabs()
         {
             List<PrefabData> busList = new List<PrefabData>();
+            List<PrefabData> biofuelBusList = new List<PrefabData>();
             List<PrefabData> metroList = new List<PrefabData>();
             List<PrefabData> trainList = new List<PrefabData>();
             List<PrefabData> shipList = new List<PrefabData>();
@@ -107,8 +144,8 @@ namespace ImprovedPublicTransport2
 
             for (int index = 0; index < PrefabCollection<VehicleInfo>.PrefabCount(); ++index)
             {
-                VehicleInfo prefab = PrefabCollection<VehicleInfo>.GetPrefab((uint) index);
-                if ((Object) prefab != (Object) null && !VehiclePrefabs.IsTrailer(prefab))
+                VehicleInfo prefab = PrefabCollection<VehicleInfo>.GetPrefab((uint)index);
+                if ((Object)prefab != (Object)null && !VehiclePrefabs.IsTrailer(prefab))
                 {
                     var service = prefab.m_class.m_service;
                     var subService = prefab.m_class.m_subService;
@@ -162,7 +199,7 @@ namespace ImprovedPublicTransport2
                             switch (subService)
                             {
                                 case ItemClass.SubService.PublicTransportBus:
-                                    busList.Add(new PrefabData(prefab));
+                                    biofuelBusList.Add(new PrefabData(prefab));
                                     continue;
                                 case ItemClass.SubService.PublicTransportShip:
                                     ferryList.Add(new PrefabData(prefab));
@@ -178,6 +215,7 @@ namespace ImprovedPublicTransport2
                 }
             }
             this._busPrefabData = busList.ToArray();
+            this._biofuelBusPrefabData = biofuelBusList.ToArray();
             this._metroPrefabData = metroList.ToArray();
             this._trainPrefabData = trainList.ToArray();
             this._shipPrefabData = shipList.ToArray();

@@ -155,6 +155,9 @@ namespace ImprovedPublicTransport2
                     {
                         switch (subService)
                         {
+                            case ItemClass.SubService.PublicTransportBus:
+                                flag = OptionsWrapper<Settings>.Options.DeleteBusLines;
+                                break;
                             case ItemClass.SubService.PublicTransportShip:
                                 flag = OptionsWrapper<Settings>.Options.DeleteShipLines;
                                 break;
