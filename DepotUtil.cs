@@ -90,6 +90,7 @@
                     {
                         switch (subService)
                         {
+                            case ItemClass.SubService.PublicTransportBus:
                             case ItemClass.SubService.PublicTransportShip:
                             case ItemClass.SubService.PublicTransportPlane:
                                 return true;
