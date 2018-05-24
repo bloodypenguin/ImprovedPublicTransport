@@ -64,7 +64,6 @@ namespace ImprovedPublicTransport2
         if (!this._initialized || !this.isVisible)
           return;
         this._rightSidePanel.Find<UILabel>("MaintenanceCostLabel").text = (Utils.ToSingle(this._rightSidePanel.Find<UITextField>("MaintenanceCost").text) * 0.01f).ToString(ColossalFramework.Globalization.Locale.Get("MONEY_FORMAT"), (IFormatProvider) LocaleManager.cultureInfo);
-        this._rightSidePanel.Find<UILabel>("TicketPriceLabel").text = (Utils.ToSingle(this._rightSidePanel.Find<UITextField>("TicketPrice").text) * 0.01f).ToString(ColossalFramework.Globalization.Locale.Get("MONEY_FORMAT"), (IFormatProvider) LocaleManager.cultureInfo);
         this._rightSidePanel.Find<UILabel>("MaxSpeedLabel").text = (Utils.ToInt32(this._rightSidePanel.Find<UITextField>("MaxSpeed").text) * 5).ToString() + " " + OptionsWrapper<Settings>.Options.SpeedString;
       }
     }
@@ -413,57 +412,7 @@ namespace ImprovedPublicTransport2
       uiPanel8.autoLayoutPadding = rectOffset8;
       int num46 = 1;
       uiPanel8.autoLayout = num46 != 0;
-      UILabel uiLabel5 = uiPanel8.AddUIComponent<UILabel>();
-      uiLabel5.name = "TicketPriceLabel2";
-      uiLabel5.text = Localization.Get("VEHICLE_EDITOR_TICKET_PRICE");
-      uiLabel5.font = UIUtils.Font;
-      uiLabel5.textColor = (Color32) Color.white;
-      uiLabel5.textScale = 0.8f;
-      uiLabel5.autoSize = false;
-      uiLabel5.height = 30f;
-      uiLabel5.width = 115f;
-      uiLabel5.wordWrap = true;
-      uiLabel5.verticalAlignment = UIVerticalAlignment.Middle;
-      UITextField uiTextField3 = uiPanel8.AddUIComponent<UITextField>();
-      string str15 = "TicketPrice";
-      uiTextField3.name = str15;
-      string str16 = "0";
-      uiTextField3.text = str16;
-      Color32 black3 = (Color32) Color.black;
-      uiTextField3.textColor = black3;
-      string str17 = "EmptySprite";
-      uiTextField3.selectionSprite = str17;
-      string str18 = "TextFieldPanelHovered";
-      uiTextField3.normalBgSprite = str18;
-      string str19 = "TextFieldPanel";
-      uiTextField3.focusedBgSprite = str19;
-      int num47 = 1;
-      uiTextField3.builtinKeyNavigation = num47 != 0;
-      int num48 = 1;
-      uiTextField3.submitOnFocusLost = num48 != 0;
-      double num49 = 45.0;
-      uiTextField3.width = (float) num49;
-      double num50 = 22.0;
-      uiTextField3.height = (float) num50;
-      int num51 = 4;
-      uiTextField3.maxLength = num51;
-      int num52 = 1;
-      uiTextField3.numericalOnly = num52 != 0;
-      int num53 = 1;
-      uiTextField3.verticalAlignment = (UIVerticalAlignment) num53;
-      RectOffset rectOffset9 = new RectOffset(0, 0, 4, 0);
-      uiTextField3.padding = rectOffset9;
-      UILabel uiLabel6 = uiPanel8.AddUIComponent<UILabel>();
-      uiLabel6.name = "TicketPriceLabel";
-      uiLabel6.text = "0";
-      uiLabel6.font = UIUtils.Font;
-      uiLabel6.textColor = (Color32) Color.white;
-      uiLabel6.textScale = 0.8f;
-      uiLabel6.textAlignment = UIHorizontalAlignment.Right;
-      uiLabel6.autoSize = false;
-      uiLabel6.height = 30f;
-      uiLabel6.width = 60f;
-      uiLabel6.verticalAlignment = UIVerticalAlignment.Middle;
+
       UIPanel uiPanel9 = uiPanel3.AddUIComponent<UIPanel>();
       double num54 = (double) uiPanel9.parent.width - 8.0;
       uiPanel9.width = (float) num54;
@@ -638,16 +587,14 @@ namespace ImprovedPublicTransport2
         return;
       UITextField uiTextField1 = this._rightSidePanel.Find<UITextField>("Capacity");
       UITextField uiTextField2 = this._rightSidePanel.Find<UITextField>("MaintenanceCost");
-      UITextField uiTextField3 = this._rightSidePanel.Find<UITextField>("TicketPrice");
       UITextField uiTextField4 = this._rightSidePanel.Find<UITextField>("MaxSpeed");
       UICheckBox uiCheckBox = this._rightSidePanel.Find<UICheckBox>("EngineOnBothEnds");
       PrefabData prefab = GetPrefabs()[this._selectedIndex];
       int capacity = Utils.ToInt32(uiTextField1.text) / prefab.CarCount;
       int int32_1 = Utils.ToInt32(uiTextField2.text);
-      int int32_2 = Utils.ToInt32(uiTextField3.text);
       int int32_3 = Utils.ToInt32(uiTextField4.text);
       bool isChecked = uiCheckBox.isChecked;
-      prefab.SetValues(capacity, int32_1, int32_2, int32_3, isChecked);
+      prefab.SetValues(capacity, int32_1, int32_3, isChecked);
       this.UpdateBindings();
     }
 
@@ -674,7 +621,6 @@ namespace ImprovedPublicTransport2
       UIPanel uiPanel1 = this._rightSidePanel.Find<UIPanel>("MaintenanceRow");
       UILabel uiLabel1 = this._rightSidePanel.Find<UILabel>("CapacityLabel");
       UITextField uiTextField = this._rightSidePanel.Find<UITextField>("Capacity");
-      UILabel uiLabel2 = this._rightSidePanel.Find<UILabel>("TicketPriceLabel2");
       UIPanel uiPanel2 = this._rightSidePanel.Find<UIPanel>("EngineRow");
       this._rightSidePanel.Find<UIPanel>("ButtonRow");
       Color32 color32 = (Color32) transportColor;
@@ -685,7 +631,6 @@ namespace ImprovedPublicTransport2
         uiPanel2.enabled = false;
         uiLabel1.text = Localization.Get("VEHICLE_EDITOR_CAPACITY_TAXI");
         uiTextField.tooltip = Localization.Get("VEHICLE_EDITOR_CAPACITY_TAXI_TOOLTIP");
-        uiLabel2.text = Localization.Get("VEHICLE_EDITOR_PRICE_PER_KILOMETER");
       }
       else
       {
@@ -696,7 +641,6 @@ namespace ImprovedPublicTransport2
           uiPanel2.enabled = false;
         uiLabel1.text = Localization.Get("VEHICLE_EDITOR_CAPACITY");
         uiTextField.tooltip = "";
-        uiLabel2.text = Localization.Get("VEHICLE_EDITOR_TICKET_PRICE");
       }
       (this._rightSidePanel.Find("CaptionLabel") as UILabel).text = string.Format(Localization.Get("VEHICLE_EDITOR_SUB_TITLE"), (object) ColossalFramework.Globalization.Locale.Get(VehicleEditor.GetLocaleID(transportType)));
       this.PopulateAssetDropDown(selectedPrefab);
@@ -791,7 +735,6 @@ namespace ImprovedPublicTransport2
     {
       UITextField uiTextField1 = this._rightSidePanel.Find<UITextField>("Capacity");
       UITextField uiTextField2 = this._rightSidePanel.Find<UITextField>("MaintenanceCost");
-      UITextField uiTextField3 = this._rightSidePanel.Find<UITextField>("TicketPrice");
       UITextField uiTextField4 = this._rightSidePanel.Find<UITextField>("MaxSpeed");
       UICheckBox uiCheckBox = this._rightSidePanel.Find<UICheckBox>("EngineOnBothEnds");
       if (this._selectedIndex > -1)
@@ -802,10 +745,6 @@ namespace ImprovedPublicTransport2
         int num = prefab.MaintenanceCost;
         string str1 = num.ToString();
         uiTextField5.text = str1;
-        UITextField uiTextField6 = uiTextField3;
-        num = prefab.TicketPrice;
-        string str2 = num.ToString();
-        uiTextField6.text = str2;
         UITextField uiTextField7 = uiTextField4;
         num = prefab.MaxSpeed;
         string str3 = num.ToString();
@@ -816,7 +755,6 @@ namespace ImprovedPublicTransport2
       {
         uiTextField1.text = "0";
         uiTextField2.text = "0";
-        uiTextField3.text = "0";
         uiTextField4.text = "0";
         uiCheckBox.isChecked = false;
       }
