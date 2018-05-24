@@ -65,9 +65,11 @@ namespace ImprovedPublicTransport2
             ItemClass.Level.Level2), true);
         dictionary.Add(new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTram,
             ItemClass.Level.Level1), true);
-            dictionary.Add(new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportMonorail,
+        dictionary.Add(new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportMonorail,
             ItemClass.Level.Level1), true);
-      this._updateDepots = dictionary;
+        dictionary.Add(new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTours,
+            ItemClass.Level.Level3), true);
+        this._updateDepots = dictionary;
     }
 
     private void Update()

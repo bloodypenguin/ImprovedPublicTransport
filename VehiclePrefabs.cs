@@ -26,6 +26,7 @@ namespace ImprovedPublicTransport2
         private PrefabData[] _cablecarPrefabData;
         private PrefabData[] _blimpPrefabData;
         private PrefabData[] _ferryPrefabData;
+        private PrefabData[] _sightseeingBusPrefabData;
 
         public static void Init()
         {
@@ -71,6 +72,7 @@ namespace ImprovedPublicTransport2
         {
             var prefabs = VehiclePrefabs.instance.GetPrefabsNoLogging(service, subService, ItemClass.Level.Level1).
                 Concat(VehiclePrefabs.instance.GetPrefabsNoLogging(service, subService, ItemClass.Level.Level2)).
+                Concat(VehiclePrefabs.instance.GetPrefabsNoLogging(service, subService, ItemClass.Level.Level3)).
                 Concat(VehiclePrefabs.instance.GetPrefabsNoLogging(service, subService, ItemClass.Level.Level4)).ToArray();
             return prefabs;
         }
@@ -121,6 +123,14 @@ namespace ImprovedPublicTransport2
                             return this._blimpPrefabData;
                     }
                 }
+                else if (level == ItemClass.Level.Level3)
+                {
+                    switch (subService)
+                    {
+                        case ItemClass.SubService.PublicTransportTours:
+                            return this._sightseeingBusPrefabData;
+                    }
+                }
             }
             return new PrefabData[] { };
         }
@@ -140,7 +150,7 @@ namespace ImprovedPublicTransport2
             List<PrefabData> evacuationBusList = new List<PrefabData>();
             List<PrefabData> cableCarList = new List<PrefabData>();
             List<PrefabData> ferryList = new List<PrefabData>();
-
+            List<PrefabData> sightseeingBusList = new List<PrefabData>();
 
             for (int index = 0; index < PrefabCollection<VehicleInfo>.PrefabCount(); ++index)
             {
@@ -211,6 +221,17 @@ namespace ImprovedPublicTransport2
                                     continue;
                             }
                         }
+                        if (level == ItemClass.Level.Level3)
+                        {
+                            switch (subService)
+                            {
+                                case ItemClass.SubService.PublicTransportTours:
+                                    sightseeingBusList.Add(new PrefabData(prefab));
+                                    continue;
+                                default:
+                                    continue;
+                            }
+                        }
                     }
                 }
             }
@@ -227,6 +248,7 @@ namespace ImprovedPublicTransport2
             this._monorailPrefabData = monorailList.ToArray();
             this._ferryPrefabData = ferryList.ToArray();
             this._cablecarPrefabData = cableCarList.ToArray();
+            this._sightseeingBusPrefabData = sightseeingBusList.ToArray();
         }
 
         private static bool IsTrailer(VehicleInfo info)
