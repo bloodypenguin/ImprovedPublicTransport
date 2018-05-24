@@ -166,6 +166,15 @@ namespace ImprovedPublicTransport2
                                 break;
                         }
                     }
+                    else if (level == ItemClass.Level.Level3)
+                    {
+                        switch (subService)
+                        {
+                            case ItemClass.SubService.PublicTransportTours:
+                                flag = OptionsWrapper<Settings>.Options.DeleteBusLines;
+                                break;
+                        }
+                    }
                     if (flag)
                     {
                         instance.ReleaseLine((ushort) index); //TODO(earalov): make sure that outside connection lines don't get deleted

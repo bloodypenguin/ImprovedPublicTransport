@@ -36,6 +36,14 @@
                             return 30;
                     }
                 }
+                else if (level == ItemClass.Level.Level3)
+                {
+                    switch (subService)
+                    {
+                        case ItemClass.SubService.PublicTransportTours: //verify
+                            return 30;
+                    }
+                }
             }
             UnityEngine.Debug.LogWarning("IPT: Default capacity of item class [serrvice: " + service + ", sub service: " +
                                          subService +

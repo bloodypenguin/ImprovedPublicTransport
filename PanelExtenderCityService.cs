@@ -48,6 +48,7 @@ namespace ImprovedPublicTransport2
         switch (subService)
         {
           case ItemClass.SubService.PublicTransportBus:
+          case ItemClass.SubService.PublicTransportTours:
           case ItemClass.SubService.PublicTransportMetro:
           case ItemClass.SubService.PublicTransportTrain:
           case ItemClass.SubService.PublicTransportShip:

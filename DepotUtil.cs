@@ -96,6 +96,14 @@
                                 return true;
                         }
                     }
+                    else if (level == ItemClass.Level.Level3)
+                    {
+                        switch (subService)
+                        {
+                            case ItemClass.SubService.PublicTransportTours:
+                                return true;
+                        }
+                    }
                 }
             }
             else if (building.Info.m_buildingAI is ShelterAI)
