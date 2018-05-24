@@ -158,21 +158,6 @@ namespace ImprovedPublicTransport2
       }
     }
 
-    public int TicketPrice
-    {
-      get
-      {
-        return PrefabData.GetTicketPrice(this._info.m_class.m_service, this._info.m_class.m_subService, this._info.m_class.m_level, this._info.m_vehicleAI);
-      }
-      set
-      {
-        if (this.TicketPrice == value)
-          return;
-        PrefabData.SetTicketPrice(this._info.m_class.m_service, this._info.m_class.m_subService, this._info.m_class.m_level, this._info.m_vehicleAI, value);
-        this._changeFlag = true;
-      }
-    }
-
     public bool EngineOnBothEnds
     {
       get
@@ -264,11 +249,10 @@ namespace ImprovedPublicTransport2
     {
     }
 
-    public void SetValues(int capacity, int maintenanceCost, int ticketPrice, int maxSpeed, bool engineOnBothEnds)
+    public void SetValues(int capacity, int maintenanceCost, int maxSpeed, bool engineOnBothEnds)
     {
       this.Capacity = capacity;
       this.MaintenanceCost = maintenanceCost;
-      this.TicketPrice = ticketPrice;
       this.MaxSpeed = maxSpeed;
       this.EngineOnBothEnds = engineOnBothEnds;
       if (!this._changeFlag)
@@ -281,7 +265,6 @@ namespace ImprovedPublicTransport2
     {
       this.Capacity = this.Defaults.Capacity;
       this.MaintenanceCost = this.Defaults.MaintenanceCost;
-      this.TicketPrice = this.Defaults.TicketPrice;
       this.MaxSpeed = this.Defaults.MaxSpeed;
       this.EngineOnBothEnds = this.Defaults.EngineOnBothEnds;
       if (this._trailerData != null)
@@ -425,92 +408,6 @@ namespace ImprovedPublicTransport2
         return num;
         }
 
-    private static int GetTicketPrice(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level, VehicleAI ai)
-    {
-        int num = 0;
-        if (service == ItemClass.Service.PublicTransport)
-        {
-            if (level == ItemClass.Level.Level1)
-            {
-                if (subService == ItemClass.SubService.PublicTransportBus && ai is BusAI)
-                    num = (ai as BusAI).m_ticketPrice;
-                else if (subService == ItemClass.SubService.PublicTransportMetro && ai is PassengerTrainAI)
-                    num = (ai as PassengerTrainAI).m_ticketPrice;
-                    else if (subService == ItemClass.SubService.PublicTransportTrain && ai is PassengerTrainAI)
-                    num = (ai as PassengerTrainAI).m_ticketPrice;
-                    else if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerShipAI)
-                    num = (ai as PassengerShipAI).m_ticketPrice;
-                    else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerPlaneAI)
-                    num = (ai as PassengerPlaneAI).m_ticketPrice;
-                    else if (subService == ItemClass.SubService.PublicTransportTaxi && ai is TaxiAI)
-                    num = (ai as TaxiAI).m_pricePerKilometer;
-                    else if (subService == ItemClass.SubService.PublicTransportTram && ai is TramAI)
-                    num = (ai as TramAI).m_ticketPrice;
-                    else if (subService == ItemClass.SubService.PublicTransportMonorail && ai is PassengerTrainAI)
-                    num = (ai as PassengerTrainAI).m_ticketPrice;
-                    else if (subService == ItemClass.SubService.PublicTransportCableCar && ai is CableCarAI)
-                    num = (ai as CableCarAI).m_ticketPrice;
-                }
-            else if (level == ItemClass.Level.Level2)
-            {
-                if (subService == ItemClass.SubService.PublicTransportBus && ai is BusAI)
-                    num = (ai as BusAI).m_ticketPrice;
-                else if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerFerryAI)
-                    num = (ai as PassengerFerryAI).m_ticketPrice;
-                else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerBlimpAI)
-                    num = (ai as PassengerBlimpAI).m_ticketPrice;
-            }
-
-        }
-        else if (service == ItemClass.Service.Disaster && subService == ItemClass.SubService.None && level == ItemClass.Level.Level4 && ai is BusAI)
-        {
-            num = (ai as BusAI).m_ticketPrice;
-            }
-        return num;
-        }
-
-    private static void SetTicketPrice(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level, VehicleAI ai, int ticketPrice)
-    {
-        if (service == ItemClass.Service.PublicTransport)
-        {
-            if (level == ItemClass.Level.Level1)
-            {
-                if (subService == ItemClass.SubService.PublicTransportBus && ai is BusAI)
-                    (ai as BusAI).m_ticketPrice = ticketPrice;
-                else if (subService == ItemClass.SubService.PublicTransportMetro && ai is PassengerTrainAI)
-                    (ai as PassengerTrainAI).m_ticketPrice = ticketPrice;
-                    else if (subService == ItemClass.SubService.PublicTransportTrain && ai is PassengerTrainAI)
-                    (ai as PassengerTrainAI).m_ticketPrice = ticketPrice;
-                    else if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerShipAI)
-                    (ai as PassengerShipAI).m_ticketPrice = ticketPrice;
-                    else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerPlaneAI)
-                    (ai as PassengerPlaneAI).m_ticketPrice = ticketPrice;
-                    else if (subService == ItemClass.SubService.PublicTransportTaxi && ai is TaxiAI)
-                    (ai as TaxiAI).m_pricePerKilometer = ticketPrice;
-                    else if (subService == ItemClass.SubService.PublicTransportTram && ai is TramAI)
-                    (ai as TramAI).m_ticketPrice = ticketPrice;
-                    else if (subService == ItemClass.SubService.PublicTransportMonorail && ai is PassengerTrainAI)
-                    (ai as PassengerTrainAI).m_ticketPrice = ticketPrice;
-                    else if (subService == ItemClass.SubService.PublicTransportCableCar && ai is CableCarAI)
-                    (ai as CableCarAI).m_ticketPrice = ticketPrice;
-                }
-            else if (level == ItemClass.Level.Level2)
-            {
-                if (subService == ItemClass.SubService.PublicTransportBus && ai is BusAI)
-                    (ai as BusAI).m_ticketPrice = ticketPrice;
-                else if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerFerryAI)
-                    (ai as PassengerFerryAI).m_ticketPrice = ticketPrice;
-                else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerBlimpAI)
-                    (ai as PassengerBlimpAI).m_ticketPrice = ticketPrice;
-            }
-
-        }
-        else if (service == ItemClass.Service.Disaster && subService == ItemClass.SubService.None && level == ItemClass.Level.Level4 && ai is BusAI)
-        {
-            (ai as BusAI).m_ticketPrice = ticketPrice;
-            }
-        }
-
     private void LoadPrefabData()
     {
       try
@@ -532,7 +429,6 @@ namespace ImprovedPublicTransport2
             PrefabData.DefaultPrefabData defaultPrefabData = (PrefabData.DefaultPrefabData) new XmlSerializer(typeof (PrefabData.DefaultPrefabData)).Deserialize((TextReader) streamReader);
             this.Capacity = defaultPrefabData.Capacity;
             this.MaintenanceCost = defaultPrefabData.MaintenanceCost;
-            this.TicketPrice = defaultPrefabData.TicketPrice;
             this.MaxSpeed = defaultPrefabData.MaxSpeed;
             this.EngineOnBothEnds = defaultPrefabData.EngineOnBothEnds;
             this._changeFlag = false;
@@ -559,7 +455,6 @@ namespace ImprovedPublicTransport2
         PrefabData.DefaultPrefabData defaultPrefabData = new PrefabData.DefaultPrefabData();
         defaultPrefabData.Capacity = this.Capacity;
         defaultPrefabData.MaintenanceCost = this.MaintenanceCost;
-        defaultPrefabData.TicketPrice = this.TicketPrice;
         defaultPrefabData.MaxSpeed = this.MaxSpeed;
         defaultPrefabData.EngineOnBothEnds = this.EngineOnBothEnds;
         using (StreamWriter streamWriter = new StreamWriter(path))
@@ -577,7 +472,6 @@ namespace ImprovedPublicTransport2
       this.Defaults.Capacity = this.Capacity;
       this.Defaults.MaxSpeed = this.MaxSpeed;
       this.Defaults.MaintenanceCost = 800;
-      this.Defaults.TicketPrice = this.TicketPrice;
       this.Defaults.EngineOnBothEnds = this.EngineOnBothEnds;
     }
 
@@ -657,7 +551,6 @@ namespace ImprovedPublicTransport2
       public int Capacity;
       public int MaxSpeed;
       public int MaintenanceCost;
-      public int TicketPrice;
       public bool EngineOnBothEnds;
     }
   }

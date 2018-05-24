@@ -66,12 +66,6 @@ namespace ImprovedPublicTransport2
       string str1 = num.ToString(ColossalFramework.Globalization.Locale.Get("MONEY_FORMAT"), (IFormatProvider) LocaleManager.cultureInfo);
       if (this._prefab.MaintenanceCost > 0)
         stringBuilder.AppendLine(Localization.Get("VEHICLE_EDITOR_MAINTENANCE") + ": " + (object) this._prefab.MaintenanceCost + " (" + str1 + ")");
-      num = (float) this._prefab.TicketPrice * 0.01f;
-      string str2 = num.ToString(ColossalFramework.Globalization.Locale.Get("MONEY_FORMAT"), (IFormatProvider) LocaleManager.cultureInfo);
-      if (subService == ItemClass.SubService.PublicTransportTaxi)
-        stringBuilder.AppendLine(Localization.Get("VEHICLE_EDITOR_PRICE_PER_KILOMETER") + ": " + (object) this._prefab.TicketPrice + " (" + str2 + ")");
-      else
-        stringBuilder.AppendLine(Localization.Get("VEHICLE_EDITOR_TICKET_PRICE") + ": " + (object) this._prefab.TicketPrice + " (" + str2 + ")");
       stringBuilder.AppendLine(Localization.Get("VEHICLE_EDITOR_MAX_SPEED") + ": " + (object) this._prefab.MaxSpeed + " (" + (object) (this._prefab.MaxSpeed * 5) + " " + OptionsWrapper<Settings>.Options.SpeedString + ")");
       stringBuilder.AppendLine();
       if ((int) this.VehicleID != 0)
