@@ -200,7 +200,7 @@ namespace ImprovedPublicTransport2
       ushort lineId = this.GetLineID();
       if ((int) lineId != 0)
       {
-        int lineVehicleCount = TransportLineMod.CountLineActiveVehicles(lineId);
+        int lineVehicleCount = TransportLineMod.CountLineActiveVehicles(lineId, out int _);
         int targetVehicleCount = TransportLineMod.GetTargetVehicleCount(lineId);
         int num1 = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineId].CountStops(lineId);
         this._vehicleAmount.text = LocaleFormatter.FormatGeneric("TRANSPORT_LINE_VEHICLECOUNT", (object) (lineVehicleCount.ToString() + " / " + (object) targetVehicleCount));
@@ -774,7 +774,7 @@ namespace ImprovedPublicTransport2
             }
             else
             {
-                var activeVehicles = TransportLineMod.CountLineActiveVehicles(lineId);
+                var activeVehicles = TransportLineMod.CountLineActiveVehicles(lineId, out int _);
                 if (activeVehicles > 0)
                 {
                     TransportLineMod.RemoveActiveVehicle(lineId, true, activeVehicles);
@@ -885,7 +885,7 @@ namespace ImprovedPublicTransport2
     {
       this._lineVehicleListBox.ClearItems();
       TransportLine transportLine = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID];
-      int num = TransportLineMod.CountLineActiveVehicles(lineID);
+      int num = TransportLineMod.CountLineActiveVehicles(lineID, out int _);
       PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(service, subService, level);
             int length = prefabs.Length;
       for (int index1 = 0; index1 < num; ++index1)
