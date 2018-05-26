@@ -135,20 +135,18 @@ namespace ImprovedPublicTransport2.Detour
     }
 
     [RedirectMethod]
-    public static void ReleaseVehicle(VehicleManager instance, ushort vehicleID)
+    private void ReleaseWaterSource(ushort vehicle, ref Vehicle data)
     {
-        if (!VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].IsEmpty)
+        //begin mod
+        if (!VehicleManagerMod.m_cachedVehicleData[vehicle].IsEmpty)
         {
-            VehicleManagerMod.m_cachedVehicleData[(int) vehicleID] = new VehicleData();
+            VehicleManagerMod.m_cachedVehicleData[vehicle] = new VehicleData();
         }
-        ReleaseVehicleImplementation(instance, vehicleID, ref instance.m_vehicles.m_buffer[(int) vehicleID]);
+        //end mod
+        if ((int)data.m_waterSource == 0)
+           return;
+        Singleton<TerrainManager>.instance.WaterSimulation.ReleaseWaterSource(data.m_waterSource);
+        data.m_waterSource = (ushort)0;
     }
-
-    [RedirectReverse]
-    private static void ReleaseVehicleImplementation(VehicleManager instance, ushort vehicle, ref Vehicle data)
-    {
-        UnityEngine.Debug.Log("ReleaseVehicleImplementation");
-    }
-  
   }
 }
