@@ -20,7 +20,7 @@ using UnityEngine;
 namespace ImprovedPublicTransport2.Detour
 {
     [TargetType(typeof(TransportLine))]
-    public class TransportLineMod
+    public struct TransportLineMod
     {
         private static readonly string _dataID = "ImprovedPublicTransport";
         private static readonly string _dataVersion = "v004";
@@ -40,7 +40,7 @@ namespace ImprovedPublicTransport2.Detour
                 {
                     if (instance2.m_lines.m_buffer[index].Complete)
                     {
-                        TransportLineMod._lineData[index].TargetVehicleCount = TransportLineMod.CountLineActiveVehicles(index);
+                        TransportLineMod._lineData[index].TargetVehicleCount = TransportLineMod.CountLineActiveVehicles(index, out int _);
                     }
                     else
                         TransportLineMod._lineData[index].TargetVehicleCount =
@@ -242,29 +242,43 @@ namespace ImprovedPublicTransport2.Detour
             //end mod
 
             TransportInfo info = thisLine.Info;
+            NetManager instance1 = Singleton<NetManager>.instance;
+            SimulationManager instance2 = Singleton<SimulationManager>.instance;
+            Notification.Problem problems1 = Notification.Problem.None;
+            Notification.Problem problem1 = Notification.Problem.None;
+            Notification.Problem problem2 = Notification.Problem.None;
+            Notification.Problem problems2 = Notification.Problem.TooLong | Notification.Problem.MajorProblem;
+            if ((int) thisLine.m_stops != 0)
+            {
+                problem1 = instance1.m_nodes.m_buffer[(int) thisLine.m_stops].m_problems;
+                problems1 = problem1;
+            }
+            bool flag1 = (instance2.m_currentFrameIndex & 4095U) >= 3840U;
+            float num1 = 0.0f;
+            bool flag2 = false;
             if (thisLine.Complete)
             {
                 //begin mod(*): moved this section to a separate method
-                int num2 = CountLineActiveVehicles(lineID);
+                int num3 = CountLineActiveVehicles(lineID, out int num2);
                 //end mod
-                bool flag1 = !Singleton<SimulationManager>.instance.m_isNightTime
+                bool flag3 = !instance2.m_isNightTime
                     ? (thisLine.m_flags & TransportLine.Flags.DisabledDay) == TransportLine.Flags.None
                     : (thisLine.m_flags & TransportLine.Flags.DisabledNight) == TransportLine.Flags.None;
                 uint range = 0;
-                float num5 = 0.0f;
                 int num6 = 0;
-                bool flag2 = false;
-                if ((int)thisLine.m_stops != 0)
+                int num7 = 0;
+                int num8 = 0;
+                if ((int) thisLine.m_stops != 0)
                 {
-                    NetManager instance = Singleton<NetManager>.instance;
+                    CitizenManager instance3 = Singleton<CitizenManager>.instance;
                     ushort stops = thisLine.m_stops;
-                    ushort num3 = stops;
-                    int num4 = 0;
-                    while ((int)num3 != 0)
+                    ushort num4 = stops;
+                    int num5 = 0;
+                    while ((int) num4 != 0)
                     {
-                        ushort num7 = 0;
-                        if (flag1)
-                            instance.m_nodes.m_buffer[(int)num3].m_flags &=
+                        ushort num9 = 0;
+                        if (flag3)
+                            instance1.m_nodes.m_buffer[(int) num4].m_flags &=
                                 NetNode.Flags.OneWayOutTrafficLights | NetNode.Flags.UndergroundTransition |
                                 NetNode.Flags.Created | NetNode.Flags.Deleted | NetNode.Flags.Original |
                                 NetNode.Flags.End | NetNode.Flags.Middle | NetNode.Flags.Bend | NetNode.Flags.Junction |
@@ -277,19 +291,21 @@ namespace ImprovedPublicTransport2.Detour
                                 NetNode.Flags.AsymForward | NetNode.Flags.AsymBackward |
                                 NetNode.Flags.CustomTrafficLights;
                         else
-                            instance.m_nodes.m_buffer[(int)num3].m_flags |= NetNode.Flags.Disabled;
+                            instance1.m_nodes.m_buffer[(int) num4].m_flags |= NetNode.Flags.Disabled;
+                        problem2 |= (instance1.m_nodes.m_buffer[(int) num4].m_problems ^ problem1) & problems2;
                         for (int index = 0; index < 8; ++index)
                         {
-                            ushort segment = instance.m_nodes.m_buffer[(int)num3].GetSegment(index);
-                            if ((int)segment != 0 && (int)instance.m_segments.m_buffer[(int)segment].m_startNode ==
-                                (int)num3)
+                            ushort segment = instance1.m_nodes.m_buffer[(int) num4].GetSegment(index);
+                            if ((int) segment != 0 && (int) instance1.m_segments.m_buffer[(int) segment].m_startNode ==
+                                (int) num4)
                             {
                                 num6 +=
-                                    Mathf.Max((int)instance.m_segments.m_buffer[(int)segment].m_trafficLightState0,
-                                        (int)instance.m_segments.m_buffer[(int)segment].m_trafficLightState1);
-                                num5 += instance.m_segments.m_buffer[(int)segment].m_averageLength;
-                                num7 = instance.m_segments.m_buffer[(int)segment].m_endNode;
-                                if ((instance.m_segments.m_buffer[(int)segment].m_flags &
+                                    Mathf.Max((int) instance1.m_segments.m_buffer[(int) segment].m_trafficLightState0,
+                                        (int) instance1.m_segments.m_buffer[(int) segment].m_trafficLightState1);
+                                num1 += instance1.m_segments.m_buffer[(int) segment].m_averageLength;
+                                num7 += (int) instance1.m_segments.m_buffer[(int) segment].m_trafficBuffer;
+                                num9 = instance1.m_segments.m_buffer[(int) segment].m_endNode;
+                                if ((instance1.m_segments.m_buffer[(int) segment].m_flags &
                                      NetSegment.Flags.PathLength) == NetSegment.Flags.None)
                                 {
                                     flag2 = true;
@@ -298,11 +314,24 @@ namespace ImprovedPublicTransport2.Detour
                                 break;
                             }
                         }
-                        ++range;
-                        num3 = num7;
-                        if ((int)num3 != (int)stops)
+                        ushort num10 = instance1.m_nodes.m_buffer[(int) num4].m_targetCitizens;
+                        int num11 = 0;
+                        while ((int) num10 != 0)
                         {
-                            if (++num4 >= 32768)
+                            ++num8;
+                            num10 = instance3.m_instances.m_buffer[(int) num10].m_nextTargetInstance;
+                            if (++num11 >= 32768)
+                            {
+                                CODebugBase<LogChannel>.Error(LogChannel.Core,
+                                    "Invalid list detected!\n" + System.Environment.StackTrace);
+                                break;
+                            }
+                        }
+                        ++range;
+                        num4 = num9;
+                        if ((int) num4 != (int) stops)
+                        {
+                            if (++num5 >= 32768)
                             {
                                 CODebugBase<LogChannel>.Error(LogChannel.Core,
                                     "Invalid list detected!\n" + System.Environment.StackTrace);
@@ -314,71 +343,296 @@ namespace ImprovedPublicTransport2.Detour
                     }
                 }
                 if (!flag2)
-                    thisLine.m_totalLength = num5;
-                if ((int)range != 0)
+                    thisLine.m_totalLength = num1;
+                if ((int) range != 0)
                     thisLine.m_averageInterval = (byte) Mathf.Min((float) byte.MaxValue,
                         (float) (((long) num6 + (long) (range >> 1)) / (long) range));
                 //begin mod(-): let's count maintenance once a week
                 //end mod
-
                 TransferManager.TransferReason vehicleReason = info.m_vehicleReason;
                 if (vehicleReason != TransferManager.TransferReason.None)
                 {
                     //begin mod: calculate target vehicle count or read saved value
-                    int num3 = 0;
-                    if (TransportLineMod._lineData[(int) lineID].BudgetControl || info.m_class.m_service == ItemClass.Service.Disaster)
+                    int num4 = 0;
+                    if (TransportLineMod._lineData[(int)lineID].BudgetControl || info.m_class.m_service == ItemClass.Service.Disaster)
                     {
-                        num3 = !flag1 ? 0 : (!flag2 ? thisLine.CalculateTargetVehicleCount() : num2);
-                        TransportLineMod._lineData[(int) lineID].TargetVehicleCount = num3;
+                        num4 = !flag3 ? 0 : (!flag2 ? thisLine.CalculateTargetVehicleCount() : num3);
+                        TransportLineMod._lineData[(int)lineID].TargetVehicleCount = num4;
                     }
-                    else if (flag1)
-                        num3 = TransportLineMod._lineData[(int) lineID].TargetVehicleCount;
+                    else if (flag3)
+                        num4 = TransportLineMod._lineData[(int)lineID].TargetVehicleCount;
                     //end mod
-                    if (range != 0 && num2 < num3)
+                    if ((int) range != 0 && num2 < num4)
                     {
-                            ushort stop = thisLine.GetStop(Singleton<SimulationManager>.instance.m_randomizer
-                                .Int32((uint) thisLine.CountStops(lineID)));
-                            if (info.m_vehicleReason != TransferManager.TransferReason.None && (int) stop != 0)
+                        ushort stop = thisLine.GetStop(instance2.m_randomizer.Int32(range));
+                        if ((int) stop != 0)
+                        //begin mod(+): save offer as variable and directly invoke spawn if it's not evac line
+                        {
+                            TransferManager.TransferOffer offer =
+                                new TransferManager.TransferOffer
+                                {
+                                    Priority = num4 - num2 + 1,
+                                    TransportLine = lineID,
+                                    Position = Singleton<NetManager>.instance.m_nodes.m_buffer[(int) stop]
+                                        .m_position,
+                                    Amount = 1,
+                                    Active = false
+                                };
+                            if (info.m_class.m_service == ItemClass.Service.Disaster)
                             {
-                                //begin mod(+): save offer as variable and directly invoke spawn if it's not evac line
-                                TransferManager.TransferOffer offer =
-                                    new TransferManager.TransferOffer
-                                    {
-                                        Priority = num3 - num2 + 1,
-                                        TransportLine = lineID,
-                                        Position = Singleton<NetManager>.instance.m_nodes.m_buffer[(int) stop]
-                                            .m_position,
-                                        Amount = 1,
-                                        Active = false
-                                    };
-                                if (info.m_class.m_service == ItemClass.Service.Disaster)
-                                {
-                                    Singleton<TransferManager>.instance.AddIncomingOffer(vehicleReason, offer);
-                                }
-                                else
-                                {
-                                    HandleVehicleSpawn(lineID, info, num3, num2, offer);
-                                }
-                                //end mod
+                                Singleton<TransferManager>.instance.AddIncomingOffer(vehicleReason, offer);
+                            }
+                            else
+                            {
+                                HandleVehicleSpawn(lineID, info, num4, num2, offer);
+                            }
                         }
+                        //end mod
                     }
-                    else if (num2 > num3)
+                    else if (num3 > num4)
                     {
                         //begin mod(*): encapsulate into method
-                        TransportLineMod.RemoveActiveVehicle(lineID, false, num2);
+                        TransportLineMod.RemoveActiveVehicle(lineID, false, num3);
                         //end mod
                     }
                 }
+                TransferManager.TransferReason material = info.m_citizenReason;
+                switch (material)
+                {
+                    case TransferManager.TransferReason.None:
+                        goto label_99;
+                    case TransferManager.TransferReason.Entertainment:
+                        switch (instance2.m_randomizer.Int32(4U))
+                        {
+                            case 0:
+                                material = TransferManager.TransferReason.Entertainment;
+                                break;
+                            case 1:
+                                material = TransferManager.TransferReason.EntertainmentB;
+                                break;
+                            case 2:
+                                material = TransferManager.TransferReason.EntertainmentC;
+                                break;
+                            case 3:
+                                material = TransferManager.TransferReason.EntertainmentD;
+                                break;
+                        }
+                        //begin mod: to shut up compiler
+                        break;
+                    //end mod
+                    case TransferManager.TransferReason.TouristA:
+                        switch (instance2.m_randomizer.Int32(20U))
+                        {
+                            case 0:
+                            case 1:
+                            case 2:
+                            case 3:
+                                material = TransferManager.TransferReason.TouristA;
+                                break;
+                            case 4:
+                            case 5:
+                            case 6:
+                            case 7:
+                                material = TransferManager.TransferReason.TouristB;
+                                break;
+                            case 8:
+                            case 9:
+                            case 10:
+                            case 11:
+                                material = TransferManager.TransferReason.TouristC;
+                                break;
+                            case 12:
+                            case 13:
+                            case 14:
+                            case 15:
+                                material = TransferManager.TransferReason.TouristD;
+                                break;
+                            case 16:
+                                material = TransferManager.TransferReason.Entertainment;
+                                break;
+                            case 17:
+                                material = TransferManager.TransferReason.EntertainmentB;
+                                break;
+                            case 18:
+                                material = TransferManager.TransferReason.EntertainmentC;
+                                break;
+                            case 19:
+                                material = TransferManager.TransferReason.EntertainmentD;
+                                break;
+                        }
+                        //begin mod: to shut up compiler
+                        break;
+                    //end mod
+                }
+                if (vehicleReason == TransferManager.TransferReason.None)
+                {
+                    if ((double) thisLine.m_totalLength <= 1920.0)
+                    {
+                        if (!flag2)
+                            problems1 = Notification.RemoveProblems(problems1, Notification.Problem.TooLong);
+                    }
+                    else if ((double) thisLine.m_totalLength <= 3840.0)
+                    {
+                        if (!flag2)
+                            problems1 = Notification.RemoveProblems(problems1, Notification.Problem.TooLong);
+                        num7 = (num7 * 17 + 10) / 20;
+                    }
+                    else if ((double) thisLine.m_totalLength <= 5760.0)
+                    {
+                        if (!flag2)
+                            problems1 =
+                                Notification.AddProblems(
+                                    Notification.RemoveProblems(problems1, Notification.Problem.TooLong),
+                                    Notification.Problem.TooLong);
+                        num7 = (num7 * 14 + 10) / 20;
+                    }
+                    else
+                    {
+                        if (!flag2)
+                            problems1 = Notification.AddProblems(problems1,
+                                Notification.Problem.TooLong | Notification.Problem.MajorProblem);
+                        num7 = (num7 * 8 + 10) / 20;
+                    }
+                    if (flag1)
+                        Singleton<StatisticsManager>.instance.Acquire<StatisticInt32>(StatisticType.WalkingTourLength)
+                            .Add(Mathf.RoundToInt(thisLine.m_totalLength));
+                }
+                else
+                    num7 = Mathf.Max(0,
+                        num7 + 50 - (int) thisLine.m_ticketPrice * 50 / Mathf.Max(1, info.m_ticketPrice));
+                int num12;
+                if (flag3)
+                {
+                    if (flag2)
+                    {
+                        num12 = num8;
+                    }
+                    else
+                    {
+                        int num4 = Mathf.Max(1, info.m_citizenPullRequirement);
+                        num12 = (num7 + num4 - 1) / num4;
+                    }
+                }
+                else
+                    num12 = 0;
+                if ((int) range != 0 && num8 < num12)
+                {
+                    ushort stop = thisLine.GetStop(instance2.m_randomizer.Int32(range));
+                    if ((int) stop != 0)
+                        Singleton<TransferManager>.instance.AddOutgoingOffer(material,
+                            new TransferManager.TransferOffer()
+                            {
+                                Priority = Mathf.Max(1, (num12 - num8) * 8 / num12),
+                                TransportLine = lineID,
+                                Position = Singleton<NetManager>.instance.m_nodes.m_buffer[(int) stop].m_position,
+                                Amount = 1,
+                                Active = false
+                            });
+                }
             }
-            if ((Singleton<SimulationManager>.instance.m_currentFrameIndex & 4095U) < 3840U)
-                    return;
-                thisLine.m_passengers.Update();
-                Singleton<TransportManager>.instance.m_passengers[(int)info.m_transportType].Add(ref thisLine.m_passengers);
-                thisLine.m_passengers.Reset();
+            else
+            {
+                if ((int) thisLine.m_stops != 0)
+                {
+                    ushort stops = thisLine.m_stops;
+                    ushort num2 = stops;
+                    int num3 = 0;
+                    while ((int) num2 != 0)
+                    {
+                        ushort num4 = 0;
+                        problem2 |= (instance1.m_nodes.m_buffer[(int) num2].m_problems ^ problem1) & problems2;
+                        for (int index = 0; index < 8; ++index)
+                        {
+                            ushort segment = instance1.m_nodes.m_buffer[(int) num2].GetSegment(index);
+                            if ((int) segment != 0 && (int) instance1.m_segments.m_buffer[(int) segment].m_startNode ==
+                                (int) num2)
+                            {
+                                num1 += instance1.m_segments.m_buffer[(int) segment].m_averageLength;
+                                num4 = instance1.m_segments.m_buffer[(int) segment].m_endNode;
+                                if ((instance1.m_segments.m_buffer[(int) segment].m_flags &
+                                     NetSegment.Flags.PathLength) == NetSegment.Flags.None)
+                                {
+                                    flag2 = true;
+                                    break;
+                                }
+                                break;
+                            }
+                        }
+                        num2 = num4;
+                        if ((int) num2 != (int) stops)
+                        {
+                            if (++num3 >= 32768)
+                            {
+                                CODebugBase<LogChannel>.Error(LogChannel.Core,
+                                    "Invalid list detected!\n" + System.Environment.StackTrace);
+                                break;
+                            }
+                        }
+                        else
+                            break;
+                    }
+                }
+                if (!flag2)
+                {
+                    thisLine.m_totalLength = num1;
+                    if (info.m_citizenReason != TransferManager.TransferReason.None &&
+                        info.m_vehicleReason == TransferManager.TransferReason.None)
+                        problems1 = (double) thisLine.m_totalLength > 1920.0
+                            ? ((double) thisLine.m_totalLength > 3840.0
+                                ? ((double) thisLine.m_totalLength > 5760.0
+                                    ? Notification.AddProblems(problems1,
+                                        Notification.Problem.TooLong | Notification.Problem.MajorProblem)
+                                    : Notification.AddProblems(
+                                        Notification.RemoveProblems(problems1, Notification.Problem.TooLong),
+                                        Notification.Problem.TooLong))
+                                : Notification.RemoveProblems(problems1, Notification.Problem.TooLong))
+                            : Notification.RemoveProblems(problems1, Notification.Problem.TooLong);
+                }
+            }
+            label_99:
+            if ((int) thisLine.m_stops != 0 && (problem2 | problems1 ^ problem1) != Notification.Problem.None)
+            {
+                ushort stops = thisLine.m_stops;
+                ushort num2 = stops;
+                int num3 = 0;
+                while ((int) num2 != 0)
+                {
+                    Notification.Problem problems = instance1.m_nodes.m_buffer[(int) num2].m_problems;
+                    Notification.Problem problem3 = Notification.RemoveProblems(problems, problems2);
+                    if ((problems1 & problems2 &
+                         ~(Notification.Problem.MajorProblem | Notification.Problem.FatalProblem)) !=
+                        Notification.Problem.None)
+                        problem3 = Notification.AddProblems(problem3, problems1 & problems2);
+                    if (problems != problem3)
+                    {
+                        instance1.m_nodes.m_buffer[(int) num2].m_problems = problem3;
+                        instance1.UpdateNodeNotifications(num2, problems, problem3);
+                    }
+                    num2 = TransportLine.GetNextStop(num2);
+                    if ((int) num2 != (int) stops)
+                    {
+                        if (++num3 >= 32768)
+                        {
+                            CODebugBase<LogChannel>.Error(LogChannel.Core,
+                                "Invalid list detected!\n" + System.Environment.StackTrace);
+                            break;
+                        }
+                    }
+                    else
+                        break;
+                }
+            }
+            if (!flag1)
+                return;
+            thisLine.m_passengers.Update();
+            Singleton<TransportManager>.instance.m_passengers[(int) info.m_transportType]
+                .Add(ref thisLine.m_passengers);
+            thisLine.m_passengers.Reset();
 
 
             //begin mod(+): update statistics + fetch maintenance costs
-            if (thisLine.Complete) { 
+            if (thisLine.Complete)
+            {
                 ushort stops1 = thisLine.m_stops;
                 ushort stop1 = stops1;
                 do
@@ -388,9 +642,10 @@ namespace ImprovedPublicTransport2.Detour
                 } while ((int) stops1 != (int) stop1 && (int) stop1 != 0);
 
                 var itemClass = info.m_class;
-                PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(itemClass.m_service, itemClass.m_subService, itemClass.m_level);
+                PrefabData[] prefabs =
+                    VehiclePrefabs.instance.GetPrefabs(itemClass.m_service, itemClass.m_subService, itemClass.m_level);
                 int amount = 0;
-                CountLineActiveVehicles(lineID, (num3) =>
+                CountLineActiveVehicles(lineID, out int _, (num3) =>
                 {
                     Vehicle vehicle = VehicleManager.instance.m_vehicles.m_buffer[num3];
                     PrefabData prefabData = Array.Find(prefabs,
@@ -402,7 +657,8 @@ namespace ImprovedPublicTransport2.Detour
                     }
                 });
                 if (amount != 0)
-                    Singleton<EconomyManager>.instance.FetchResource(EconomyManager.Resource.Maintenance, amount, info.m_class);
+                    Singleton<EconomyManager>.instance.FetchResource(EconomyManager.Resource.Maintenance, amount,
+                        info.m_class);
                 //end mod
             }
         }
@@ -555,25 +811,27 @@ namespace ImprovedPublicTransport2.Detour
         }
 
         //based off code in the SimulationStep
-        public static int CountLineActiveVehicles(ushort lineID, Action<Int32> callback = null)
+        public static int CountLineActiveVehicles(ushort lineID, out int allVehicles, Action<Int32> callback = null)
         {
             TransportLine thisLine = TransportManager.instance.m_lines.m_buffer[lineID];
             int activeVehicles = 0;
+            allVehicles = 0;
             //this part is directly taken from beginning of vanilla SimulationStep method (except for marked part)
+
             if (thisLine.Complete)
             {
-                int num1 = 0;
                 int num2 = 0;
-                if ((int) thisLine.m_vehicles != 0)
+                int num3 = 0;
+                if ((int)thisLine.m_vehicles != 0)
                 {
-                    VehicleManager instance = Singleton<VehicleManager>.instance;
-                    ushort num3 = thisLine.m_vehicles;
-                    int num4 = 0;
-                    while ((int)num3 != 0)
+                    VehicleManager instance3 = Singleton<VehicleManager>.instance;
+                    ushort num4 = thisLine.m_vehicles;
+                    int num5 = 0;
+                    while ((int)num4 != 0)
                     {
-                        ushort nextLineVehicle = instance.m_vehicles.m_buffer[(int)num3].m_nextLineVehicle;
-                        ++num1;
-                        if ((instance.m_vehicles.m_buffer[(int)num3].m_flags & Vehicle.Flags.GoingBack) ==
+                        ushort nextLineVehicle = instance3.m_vehicles.m_buffer[(int)num4].m_nextLineVehicle;
+                        ++num2;
+                        if ((instance3.m_vehicles.m_buffer[(int) num4].m_flags & Vehicle.Flags.GoingBack) ==
                             ~(Vehicle.Flags.Created | Vehicle.Flags.Deleted | Vehicle.Flags.Spawned |
                               Vehicle.Flags.Inverted | Vehicle.Flags.TransferToTarget | Vehicle.Flags.TransferToSource |
                               Vehicle.Flags.Emergency1 | Vehicle.Flags.Emergency2 | Vehicle.Flags.WaitingPath |
@@ -587,21 +845,21 @@ namespace ImprovedPublicTransport2.Detour
                               Vehicle.Flags.InsideBuilding | Vehicle.Flags.LeftHandDrive))
                         {
                             //begin mod(+): callback
-                            callback?.Invoke(num3);
+                            callback?.Invoke(num4);
                             //end mod
-                            ++num2;
+                            ++num3;
                         }
-                        num3 = nextLineVehicle;
-                        if (++num4 > 16384)
+                        num4 = nextLineVehicle;
+                        if (++num5 > 16384)
                         {
-                            CODebugBase<LogChannel>.Error(LogChannel.Core,
-                                "Invalid list detected!\n" + System.Environment.StackTrace);
+                            CODebugBase<LogChannel>.Error(LogChannel.Core, "Invalid list detected!\n" + System.Environment.StackTrace);
                             break;
                         }
                     }
                 }
                 //end of vanilla part
-                activeVehicles = num2;
+                activeVehicles = num3;
+                allVehicles = num2;
             }
             return activeVehicles;
         }
