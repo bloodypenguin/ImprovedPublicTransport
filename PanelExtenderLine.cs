@@ -83,6 +83,11 @@ namespace ImprovedPublicTransport2
         if (!this._initialized || !this._publicTransportWorldInfoPanel.component.isVisible)
           return;
         this.UpdateBindings();
+        var lineModelSelector = this._publicTransportWorldInfoPanel.Find<UIPanel>("LineModelSelectorContainer");
+        if (lineModelSelector != null)
+        {
+          lineModelSelector.isVisible = false;
+        }
       }
     }
 
