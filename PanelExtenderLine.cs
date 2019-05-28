@@ -17,6 +17,9 @@ namespace ImprovedPublicTransport2
 {
   public class PanelExtenderLine : MonoBehaviour
   {
+    
+    private const float PARENT_HEIGHT = 285f;
+    
     private bool _initialized;
     private int _cachedLineID;
     private ItemClass.SubService _cachedSubService;
@@ -320,24 +323,24 @@ namespace ImprovedPublicTransport2
       if (this._lineVehiclePanel.isVisible)
       {
         this._vehiclesInQueuePanel.relativePosition = new Vector3((float) ((double) num + (double) this._vehiclesInQueuePanel.parent.width + 1.0), this._lineVehiclePanel.height + 1f);
-        this._vehiclesInQueuePanel.height = (float) (((double) this._vehiclesInQueuePanel.parent.height - 16.0) * 0.5);
+        this._vehiclesInQueuePanel.height = (float) (((double) PARENT_HEIGHT - 16.0) * 0.5);
         this._vehiclesInQueueListBox.height = 162f;
       }
       else
       {
         this._vehiclesInQueuePanel.relativePosition = new Vector3((float) ((double) num + (double) this._vehiclesInQueuePanel.parent.width + 1.0), 0.0f);
-        this._vehiclesInQueuePanel.height = this._vehiclesInQueuePanel.parent.height - 16f;
-        this._vehiclesInQueueListBox.height = this._vehiclesInQueuePanel.parent.height - 61f;
+        this._vehiclesInQueuePanel.height = PARENT_HEIGHT - 16f;
+        this._vehiclesInQueueListBox.height = PARENT_HEIGHT - 61f;
       }
       if (this._vehiclesInQueuePanel.isVisible)
       {
-        this._lineVehiclePanel.height = (float) (((double) this._lineVehiclePanel.parent.height - 16.0) * 0.5);
+        this._lineVehiclePanel.height = (float) (((double) PARENT_HEIGHT - 16.0) * 0.5);
         this._lineVehicleListBox.height = 162f;
       }
       else
       {
-        this._lineVehiclePanel.height = this._lineVehiclePanel.parent.height - 16f;
-        this._lineVehicleListBox.height = this._lineVehiclePanel.parent.height - 61f;
+        this._lineVehiclePanel.height = PARENT_HEIGHT - 16f;
+        this._lineVehicleListBox.height = PARENT_HEIGHT - 61f;
       }
     }
 
@@ -604,7 +607,7 @@ namespace ImprovedPublicTransport2
       uiPanel.AlignTo(uiPanel.parent, UIAlignAnchor.TopRight);
       uiPanel.relativePosition = new Vector3(uiPanel.parent.width + 1f, 0.0f);
       uiPanel.width = 180f;
-      uiPanel.height = uiPanel.parent.height - 16f;
+      uiPanel.height = PARENT_HEIGHT - 16f;
       uiPanel.backgroundSprite = "UnlockingPanel2";
       uiPanel.opacity = 0.95f;
       this._prefabPanel = uiPanel;
@@ -627,7 +630,7 @@ namespace ImprovedPublicTransport2
       this._prefabListBox.AlignTo((UIComponent) uiPanel, UIAlignAnchor.TopLeft);
       this._prefabListBox.relativePosition = new Vector3(3f, 40f);
       this._prefabListBox.width = uiPanel.width - 6f;
-      this._prefabListBox.height = uiPanel.parent.height - 61f;
+      this._prefabListBox.height = PARENT_HEIGHT - 61f;
       this._prefabListBox.Font = this._vehicleAmount.font;
       this._prefabListBox.eventSelectedItemsChanged += new PropertyChangedEventHandler<HashSet<string>>(this.OnSelectedPrefabsChanged);
       this._prefabListBox.eventRowShiftClick += new MouseEventHandler(this.OnAddVehicleClick);
@@ -640,7 +643,7 @@ namespace ImprovedPublicTransport2
       uiPanel.AlignTo(uiPanel.parent, UIAlignAnchor.TopRight);
       uiPanel.relativePosition = new Vector3((float) ((double) uiPanel.parent.width + (double) this._prefabPanel.width + (double)180f + 3.0), 0.0f);
       uiPanel.width = 180f;
-      uiPanel.height = (float) (((double) uiPanel.parent.height - 16.0) / 2.0);
+      uiPanel.height = (float) (((double) PARENT_HEIGHT - 16.0) / 2.0);
       uiPanel.backgroundSprite = "UnlockingPanel2";
       uiPanel.opacity = 0.95f;
       this._lineVehiclePanel = uiPanel;
@@ -666,7 +669,7 @@ namespace ImprovedPublicTransport2
       uiPanel.AlignTo(uiPanel.parent, UIAlignAnchor.TopRight);
       uiPanel.relativePosition = new Vector3(uiPanel.parent.width + 1f, this._lineVehiclePanel.height + 1f);
       uiPanel.width = 180f;
-      uiPanel.height = (float) (((double) uiPanel.parent.height - 16.0) / 2.0);
+      uiPanel.height = (float) (((double) PARENT_HEIGHT - 16.0) / 2.0);
       uiPanel.backgroundSprite = "UnlockingPanel2";
       uiPanel.opacity = 0.95f;
       this._vehiclesInQueuePanel = uiPanel;

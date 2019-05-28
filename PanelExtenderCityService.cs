@@ -140,12 +140,15 @@ namespace ImprovedPublicTransport2
 
     private void CreateStopsPanel()
     {
+      
+      var parentHeight = 285f; //uiPanel.parent.height; broken due to autoformat
+      
       UIPanel uiPanel = this._cityServiceWorldInfoPanel.component.AddUIComponent<UIPanel>();
       uiPanel.name = "ListBoxPanel";
       uiPanel.AlignTo(uiPanel.parent, UIAlignAnchor.TopRight);
       uiPanel.relativePosition = new Vector3(uiPanel.parent.width + 1f, 0.0f);
       uiPanel.width = 180f;
-      uiPanel.height = uiPanel.parent.height - 16f;
+      uiPanel.height = parentHeight - 16f;
       uiPanel.backgroundSprite = "UnlockingPanel2";
       uiPanel.opacity = 0.95f;
       this._listBoxPanel = uiPanel;
@@ -161,7 +164,7 @@ namespace ImprovedPublicTransport2
       stopListBox.AlignTo((UIComponent) uiPanel, UIAlignAnchor.TopLeft);
       stopListBox.relativePosition = new Vector3(3f, 40f);
       stopListBox.width = uiPanel.width - 6f;
-      stopListBox.height = uiPanel.parent.height - 61f;
+      stopListBox.height = parentHeight - 61f;
       stopListBox.Font = UIUtils.Font;
       this._stopsListBox = stopListBox;
       VehicleListBox vehicleListBox = VehicleListBox.Create((UIComponent) uiPanel);
@@ -169,7 +172,7 @@ namespace ImprovedPublicTransport2
       vehicleListBox.AlignTo((UIComponent) uiPanel, UIAlignAnchor.TopLeft);
       vehicleListBox.relativePosition = new Vector3(3f, 40f);
       vehicleListBox.width = uiPanel.width - 6f;
-      vehicleListBox.height = uiPanel.parent.height - 61f;
+      vehicleListBox.height = parentHeight - 61f;
       vehicleListBox.Font = UIUtils.Font;
       this._vehicleListBox = vehicleListBox;
     }
