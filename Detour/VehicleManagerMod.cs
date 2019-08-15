@@ -15,6 +15,7 @@ namespace ImprovedPublicTransport2.Detour
   [TargetType(typeof(VehicleManager))]
   public class VehicleManagerMod
   {
+    public static int MaxVehicleCount;
     private static readonly string _dataID = "IPT_VehicleData";
     private static readonly string _dataVersion = "v003";
     private static bool _isDeployed = false;
@@ -23,6 +24,17 @@ namespace ImprovedPublicTransport2.Detour
 
     public static void Init()
     {
+      if (Utils.IsModActive(1764208250))
+      {
+        UnityEngine.Debug.LogWarning("More Vehicles is enabled, applying compatibility workaround");
+        MaxVehicleCount = ushort.MaxValue + 1;
+      }
+      else
+      {
+        UnityEngine.Debug.Log("More Vehicles is not enabled");
+        MaxVehicleCount = VehicleManager.MAX_VEHICLE_COUNT;
+      }
+      
       if (VehicleManagerMod._isDeployed)
         return;
       if (!VehicleManagerMod.TryLoadData(out VehicleManagerMod.m_cachedVehicleData))
@@ -44,7 +56,7 @@ namespace ImprovedPublicTransport2.Detour
 
     public static bool TryLoadData(out VehicleData[] data)
     {
-      data = new VehicleData[16384];
+      data = new VehicleData[VehicleManagerMod.MaxVehicleCount];
       byte[] data1 = SerializableDataExtension.instance.SerializableData.LoadData(VehicleManagerMod._dataID);
       if (data1 == null)
         return false;
@@ -60,7 +72,7 @@ namespace ImprovedPublicTransport2.Detour
           return false;
         }
         Utils.Log((object) ("Found vehicle data version: " + str));
-        while (index1 < data1.Length)
+        while (index1 < Math.Min(data1.Length, VehicleManagerMod.MaxVehicleCount))
         {
           int index2 = SerializableDataExtension.ReadInt32(data1, ref index1);
           if (str == "v001")
@@ -83,7 +95,7 @@ namespace ImprovedPublicTransport2.Detour
       catch (Exception ex)
       {
         Utils.LogWarning((object) ("Could not load vehicle data. " + ex.Message));
-        data = new VehicleData[16384];
+        data = new VehicleData[VehicleManagerMod.MaxVehicleCount];
         return false;
       }
     }
@@ -94,7 +106,7 @@ namespace ImprovedPublicTransport2.Detour
       try
       {
         SerializableDataExtension.WriteString(VehicleManagerMod._dataVersion, data);
-        for (int index = 0; index < 16384; ++index)
+        for (int index = 0; index < VehicleManagerMod.MaxVehicleCount; ++index)
         {
           if (!VehicleManagerMod.m_cachedVehicleData[index].IsEmpty)
           {

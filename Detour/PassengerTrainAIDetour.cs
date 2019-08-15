@@ -146,7 +146,7 @@ namespace ImprovedPublicTransport2.Detour
         else
           BusAI.TransportArriveAtTarget(vehicleID, ref instance1.m_vehicles.m_buffer[(int) vehicleID], position, targetPos, ref serviceCounter, ref instance3.m_passengers[(int) this.m_transportInfo.m_transportType], (int) nextStop == 0);
         vehicleID = instance1.m_vehicles.m_buffer[(int) vehicleID].m_trailingVehicle;
-        if (++num1 > 16384)
+        if (++num1 > VehicleManagerMod.MaxVehicleCount)
         {
           CODebugBase<LogChannel>.Error(LogChannel.Core, "Invalid list detected!\n" + System.Environment.StackTrace);
           break;
@@ -178,7 +178,7 @@ namespace ImprovedPublicTransport2.Detour
             transferSize += bufferStatus;
           }
           trailingVehicle = instance.m_vehicles.m_buffer[(int) trailingVehicle].m_trailingVehicle;
-          if (++num > 16384)
+          if (++num > VehicleManagerMod.MaxVehicleCount)
           {
             CODebugBase<LogChannel>.Error(LogChannel.Core, "Invalid list detected!\n" + System.Environment.StackTrace);
             break;

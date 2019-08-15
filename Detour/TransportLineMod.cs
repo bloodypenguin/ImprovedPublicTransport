@@ -850,7 +850,7 @@ namespace ImprovedPublicTransport2.Detour
                             ++num3;
                         }
                         num4 = nextLineVehicle;
-                        if (++num5 > 16384)
+                        if (++num5 > VehicleManagerMod.MaxVehicleCount)
                         {
                             CODebugBase<LogChannel>.Error(LogChannel.Core, "Invalid list detected!\n" + System.Environment.StackTrace);
                             break;
