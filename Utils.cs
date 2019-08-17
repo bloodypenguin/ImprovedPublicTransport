@@ -222,5 +222,20 @@ namespace ImprovedPublicTransport2
         return false;
       }
     }
-  }
+
+        public static bool IsModActive(string modPath)
+        {
+            try
+            {
+                var plugins = PluginManager.instance.GetPluginsInfo();
+                return plugins.Any(p => p != null && p.isEnabled && p.name.Contains(modPath));
+            }
+            catch (Exception e)
+            {
+                UnityEngine.Debug.LogError($"Failed to detect if mod {modPath} is active");
+                UnityEngine.Debug.LogException(e);
+                return false;
+            }
+        }
+    }
 }

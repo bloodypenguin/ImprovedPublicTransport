@@ -14,7 +14,7 @@ namespace ImprovedPublicTransport2
     public static bool inGame = false;
     private GameObject _iptGameObject;
     private GameObject _worldInfoPanel;
-    private readonly string version = "4.4.0";
+    private readonly string version = "4.4.1";
 
     public string Name => $"Improved Public Transport 2 [r{version}]";
 

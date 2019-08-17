@@ -24,7 +24,7 @@ namespace ImprovedPublicTransport2.Detour
 
     public static void Init()
     {
-      if (Utils.IsModActive(1764208250))
+      if (Utils.IsModActive(1764208250) || Utils.IsModActive("MoreVehicles"))
       {
         UnityEngine.Debug.LogWarning("More Vehicles is enabled, applying compatibility workaround");
         MaxVehicleCount = ushort.MaxValue + 1;
