@@ -89,6 +89,7 @@ namespace ImprovedPublicTransport2.Util
                             case ItemClass.SubService.PublicTransportMonorail:
                             case ItemClass.SubService.PublicTransportTaxi:
                             case ItemClass.SubService.PublicTransportCableCar:
+                            case ItemClass.SubService.PublicTransportTrolleybus:    
                                 return true;
                         }
                     }
@@ -107,6 +108,7 @@ namespace ImprovedPublicTransport2.Util
                         switch (subService)
                         {
                             case ItemClass.SubService.PublicTransportTours:
+                            case ItemClass.SubService.PublicTransportPlane:
                                 return true;
                         }
                     }

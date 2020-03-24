@@ -149,6 +149,9 @@ namespace ImprovedPublicTransport2
                             case ItemClass.SubService.PublicTransportMonorail:
                                 flag = OptionsWrapper<Settings>.Options.DeleteMonorailLines;
                                 break;
+                            case ItemClass.SubService.PublicTransportTrolleybus:
+                                flag = OptionsWrapper<Settings>.Options.DeleteBusLines;
+                                break;
                         }
                     }
                     else if (level == ItemClass.Level.Level2)
@@ -172,6 +175,9 @@ namespace ImprovedPublicTransport2
                         {
                             case ItemClass.SubService.PublicTransportTours:
                                 flag = OptionsWrapper<Settings>.Options.DeleteBusLines;
+                                break;
+                            case ItemClass.SubService.PublicTransportPlane:
+                                flag = OptionsWrapper<Settings>.Options.DeletePlaneLines;
                                 break;
                         }
                     }

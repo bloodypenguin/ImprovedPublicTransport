@@ -17,6 +17,7 @@
                         case ItemClass.SubService.PublicTransportBus:
                         case ItemClass.SubService.PublicTransportMetro:
                         case ItemClass.SubService.PublicTransportTrain:
+                        case ItemClass.SubService.PublicTransportTrolleybus: //TODO: check
                             return 30;
                         case ItemClass.SubService.PublicTransportShip:
                             return 100;
@@ -40,8 +41,10 @@
                 {
                     switch (subService)
                     {
-                        case ItemClass.SubService.PublicTransportTours: //verify
+                        case ItemClass.SubService.PublicTransportTours: //TODO verify
                             return 30;
+                        case ItemClass.SubService.PublicTransportPlane:
+                            return 30; //TODO fixme
                     }
                 }
             }

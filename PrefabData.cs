@@ -304,6 +304,8 @@ namespace ImprovedPublicTransport2
                     num = (ai as PassengerTrainAI).m_passengerCapacity;
                 else if (subService == ItemClass.SubService.PublicTransportCableCar && ai is CableCarAI)
                     num = (ai as CableCarAI).m_passengerCapacity;
+                else if (subService == ItemClass.SubService.PublicTransportTrolleybus && ai is TrolleybusAI)
+                  num = (ai as TrolleybusAI).m_passengerCapacity;
             }
             else if (level == ItemClass.Level.Level2)
             {
@@ -318,7 +320,9 @@ namespace ImprovedPublicTransport2
             {
                 if (subService == ItemClass.SubService.PublicTransportTours && ai is BusAI)
                     num = (ai as BusAI).m_passengerCapacity;
-                }
+                else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerHelicopterAI)
+                  num = (ai as PassengerHelicopterAI).m_passengerCapacity;
+            }
 
         }
         else if (service == ItemClass.Service.Disaster && subService == ItemClass.SubService.None && level == ItemClass.Level.Level4 && ai is BusAI)
@@ -352,6 +356,8 @@ namespace ImprovedPublicTransport2
                     (ai as PassengerTrainAI).m_passengerCapacity = capacity;
                     else if (subService == ItemClass.SubService.PublicTransportCableCar && ai is CableCarAI)
                     (ai as CableCarAI).m_passengerCapacity = capacity;
+                    else if (subService == ItemClass.SubService.PublicTransportTrolleybus && ai is TrolleybusAI)
+                      (ai as TrolleybusAI).m_passengerCapacity = capacity;
                 }
             else if (level == ItemClass.Level.Level2)
             {
@@ -366,7 +372,9 @@ namespace ImprovedPublicTransport2
             {
                 if (subService == ItemClass.SubService.PublicTransportTours && ai is BusAI)
                     (ai as BusAI).m_passengerCapacity = capacity;
-                }
+                if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerHelicopterAI)
+                  (ai as PassengerHelicopterAI).m_passengerCapacity = capacity;
+            }
 
         }
         else if (service == ItemClass.Service.Disaster && subService == ItemClass.SubService.None && level == ItemClass.Level.Level4 && ai is BusAI)
@@ -400,7 +408,9 @@ namespace ImprovedPublicTransport2
                     num = (ai as PassengerTrainAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
                     else if (subService == ItemClass.SubService.PublicTransportCableCar && ai is CableCarAI)
                     num = (ai as CableCarAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
-                }
+                    else if (subService == ItemClass.SubService.PublicTransportTrolleybus && ai is TrolleybusAI)
+                      num = (ai as TrolleybusAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+            }
             else if (level == ItemClass.Level.Level2)
             {
                 if (subService == ItemClass.SubService.PublicTransportBus && ai is BusAI)
@@ -414,6 +424,8 @@ namespace ImprovedPublicTransport2
             {
                 if (subService == ItemClass.SubService.PublicTransportTours && ai is BusAI)
                     num = (ai as BusAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+                if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerHelicopterAI)
+                  num = (ai as PassengerHelicopterAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
             }
 
         }

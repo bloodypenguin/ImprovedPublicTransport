@@ -702,6 +702,10 @@ namespace ImprovedPublicTransport2
             return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportMonorail, ItemClass.Level.Level1) };
         case TransportInfo.TransportType.CableCar:
            return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportCableCar, ItemClass.Level.Level1) };
+        case TransportInfo.TransportType.Helicopter:
+          return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportPlane, ItemClass.Level.Level3) };
+        case TransportInfo.TransportType.Trolleybus:
+          return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTrolleybus, ItemClass.Level.Level1) };
         default:
           return new[] { new ItemClassTriplet(ItemClass.Service.None, ItemClass.SubService.None, ItemClass.Level.None)};
       }
