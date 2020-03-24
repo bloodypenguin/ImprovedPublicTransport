@@ -11,7 +11,9 @@ using System.Collections.Generic;
 using System.Linq;
 using ImprovedPublicTransport2.Detour;
 using ImprovedPublicTransport2.OptionsFramework;
+using ImprovedPublicTransport2.Util;
 using UnityEngine;
+using UIUtils = ImprovedPublicTransport2.Util.UIUtils;
 
 namespace ImprovedPublicTransport2
 {
@@ -566,7 +568,7 @@ namespace ImprovedPublicTransport2
                 ushort transportLine = instance.m_nodes.m_buffer[(int) this.m_InstanceID.NetNode].m_transportLine;
                 this.m_VehicleType.spriteName = PublicTransportWorldInfoPanel.GetVehicleTypeIcon(
                     Singleton<TransportManager>.instance.m_lines.m_buffer[(int) transportLine].Info.m_transportType);
-                this.m_StopIndex = TransportLineMod.GetStopIndex(transportLine, this.m_InstanceID.NetNode);
+                this.m_StopIndex = TransportLineUtil.GetStopIndex(transportLine, this.m_InstanceID.NetNode);
                 this.m_StopName.text = Singleton<InstanceManager>.instance.GetName(this.m_InstanceID) ??
                                        string.Format(Localization.Get("STOP_LIST_BOX_ROW_STOP"),
                                            (object) (this.m_StopIndex + 1));

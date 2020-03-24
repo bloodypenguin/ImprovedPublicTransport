@@ -11,7 +11,10 @@ using System;
 using System.Reflection;
 using ImprovedPublicTransport2.Detour;
 using ImprovedPublicTransport2.OptionsFramework;
+using ImprovedPublicTransport2.Util;
 using UnityEngine;
+using UIUtils = ImprovedPublicTransport2.Util.UIUtils;
+using Utils = ImprovedPublicTransport2.Util.Utils;
 
 namespace ImprovedPublicTransport2
 {
@@ -167,7 +170,7 @@ namespace ImprovedPublicTransport2
             id.NetNode = targetBuilding;
             string name = Singleton<InstanceManager>.instance.GetName(id);
             this._target.objectUserData = (object) id;
-            this._target.text = name == null ? string.Format(Localization.Get("STOP_LIST_BOX_ROW_STOP"), (object) (TransportLineMod.GetStopIndex(lineId, targetBuilding) + 1)) : name;
+            this._target.text = name == null ? string.Format(Localization.Get("STOP_LIST_BOX_ROW_STOP"), (object) (TransportLineUtil.GetStopIndex(lineId, targetBuilding) + 1)) : name;
             this._target.Enable();
             this._target.Show();
           }
@@ -349,7 +352,7 @@ namespace ImprovedPublicTransport2
       ushort lineId = this.GetLineID(out firstVehicle);
       if ((int) lineId == 0)
         return;
-      ushort num = !(component.name == "PreviousVehicle") ? TransportLineMod.GetNextVehicle(lineId, firstVehicle) : TransportLineMod.GetPreviousVehicle(lineId, firstVehicle);
+      ushort num = !(component.name == "PreviousVehicle") ? TransportLineUtil.GetNextVehicle(lineId, firstVehicle) : TransportLineUtil.GetPreviousVehicle(lineId, firstVehicle);
       if ((int) firstVehicle == (int) num)
         return;
       InstanceID instanceId = new InstanceID();
@@ -366,8 +369,8 @@ namespace ImprovedPublicTransport2
             ushort lineId = this.GetLineID(out firstVehicle);
             if ((int) lineId == 0 || (int) firstVehicle == 0)
                 return;
-            TransportLineMod.SetBudgetControlState(lineId, false);
-            TransportLineMod.RemoveVehicle(lineId, firstVehicle, true);
+            CachedTransportLineData.SetBudgetControlState(lineId, false);
+            TransportLineDetour.RemoveVehicle(lineId, firstVehicle, true);
         });
     }
 

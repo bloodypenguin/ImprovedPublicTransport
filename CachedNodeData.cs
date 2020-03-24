@@ -5,6 +5,7 @@
 // Assembly location: C:\Games\Steam\steamapps\workshop\content\255710\424106600\ImprovedPublicTransport.dll
 
 using System;
+using ImprovedPublicTransport2.Util;
 
 namespace ImprovedPublicTransport2
 {

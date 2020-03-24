@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.Xml.Serialization;
 using UnityEngine;
+using Utils = ImprovedPublicTransport2.Util.Utils;
 
 namespace ImprovedPublicTransport2
 {

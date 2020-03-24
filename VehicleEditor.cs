@@ -12,6 +12,8 @@ using System.Linq;
 using System.Reflection;
 using ImprovedPublicTransport2.OptionsFramework;
 using UnityEngine;
+using UIUtils = ImprovedPublicTransport2.Util.UIUtils;
+using Utils = ImprovedPublicTransport2.Util.Utils;
 
 namespace ImprovedPublicTransport2
 {
