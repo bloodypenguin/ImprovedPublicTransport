@@ -84,7 +84,9 @@
     <Compile Include="Detour\Vehicles\TrolleybusAIDetour.cs" />
     <Compile Include="GameDefault.cs" />
     <Compile Include="HarmonyPatches\LoadPassengersPatch.cs" />
+    <Compile Include="HarmonyPatches\NetManagerPatch.cs" />
     <Compile Include="HarmonyPatches\UnloadPassengersPatch.cs" />
+    <Compile Include="HarmonyPatches\VehicleManagerPatch.cs" />
     <Compile Include="ItemClassTriplet.cs" />
     <Compile Include="LanguageFormat\LanguageDictionaryWrapper.cs" />
     <Compile Include="LanguageFormat\PlainTextLanguageDeserializer.cs" />
@@ -92,7 +94,7 @@
     <Compile Include="LocaleModifier.cs" />
     <Compile Include="Localization.cs" />
     <Compile Include="MovingAverage.cs" />
-    <Compile Include="Detour\NetManagerMod.cs" />
+    <Compile Include="CachedNodeData.cs" />
     <Compile Include="NodeData.cs" />
     <Compile Include="OptionsFramework\Attibutes\AbstractOptionsAttribute.cs" />
     <Compile Include="OptionsFramework\Attibutes\ButtonAttribute.cs" />
@@ -150,7 +152,7 @@
     <Compile Include="PanelExtenderLine.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="VehicleData.cs" />
-    <Compile Include="Detour\VehicleManagerMod.cs" />
+    <Compile Include="CachedVehicleData.cs" />
     <Compile Include="VehiclePrefabs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

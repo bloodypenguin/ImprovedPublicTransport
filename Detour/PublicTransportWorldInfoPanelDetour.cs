@@ -27,7 +27,7 @@ namespace ImprovedPublicTransport2.Detour
                 this.m_vehicleButtons.items[index].tooltip = Singleton<VehicleManager>.instance.GetVehicleName(num);
                 //end mod
                 num = instance.m_vehicles.m_buffer[(int)num].m_nextLineVehicle;
-                if (++index >= VehicleManagerMod.MaxVehicleCount)
+                if (++index >= CachedVehicleData.MaxVehicleCount)
                 {
                     CODebugBase<LogChannel>.Error(LogChannel.Core, "Invalid list detected!\n" + System.Environment.StackTrace);
                     break;

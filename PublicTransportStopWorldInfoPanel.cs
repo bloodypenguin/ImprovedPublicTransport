@@ -472,7 +472,7 @@ namespace ImprovedPublicTransport2
 
         private void OnUnbunchingClick(UIComponent component, UIMouseEventParameter p)
         {
-            NetManagerMod.m_cachedNodeData[(int) this.m_InstanceID.NetNode].Unbunching = !NetManagerMod
+            CachedNodeData.m_cachedNodeData[(int) this.m_InstanceID.NetNode].Unbunching = !CachedNodeData
                 .m_cachedNodeData[(int) this.m_InstanceID.NetNode]
                 .Unbunching;
         }
@@ -480,8 +480,8 @@ namespace ImprovedPublicTransport2
         private void OnUpdateCloseStopsClick(UIComponent component, UIMouseEventParameter eventParam)
         {
             this.ProcessNodes(
-                (System.Action<ushort>) (nodeID => NetManagerMod.m_cachedNodeData[(int) nodeID].Unbunching =
-                    NetManagerMod.m_cachedNodeData[(int) this.m_InstanceID.NetNode].Unbunching));
+                (System.Action<ushort>) (nodeID => CachedNodeData.m_cachedNodeData[(int) nodeID].Unbunching =
+                    CachedNodeData.m_cachedNodeData[(int) this.m_InstanceID.NetNode].Unbunching));
         }
 
         private void OnModifyLineClick(UIComponent component, UIMouseEventParameter eventParam)
@@ -668,21 +668,21 @@ namespace ImprovedPublicTransport2
             this.m_PassengerCount.text = string.Format(Localization.Get("STOP_PANEL_WAITING_PEOPLE"), (object) num1);
             this.m_BoredCountdown.text = string.Format(Localization.Get("STOP_PANEL_BORED_TIMER"),
                 (object) ColorUtility.ToHtmlStringRGB(this.GetColor(num2)), (object) num2);
-            this.m_passengersInCurrent.text = NetManagerMod.m_cachedNodeData[(int) netNode].PassengersIn.ToString();
-            this.m_passengersInLast.text = NetManagerMod.m_cachedNodeData[(int) netNode]
+            this.m_passengersInCurrent.text = CachedNodeData.m_cachedNodeData[(int) netNode].PassengersIn.ToString();
+            this.m_passengersInLast.text = CachedNodeData.m_cachedNodeData[(int) netNode]
                 .LastWeekPassengersIn.ToString();
-            this.m_passengersInAverage.text = NetManagerMod.m_cachedNodeData[(int) netNode]
+            this.m_passengersInAverage.text = CachedNodeData.m_cachedNodeData[(int) netNode]
                 .AveragePassengersIn.ToString();
-            this.m_passengersOutCurrent.text = NetManagerMod.m_cachedNodeData[(int) netNode].PassengersOut.ToString();
-            this.m_passengersOutLast.text = NetManagerMod.m_cachedNodeData[(int) netNode]
+            this.m_passengersOutCurrent.text = CachedNodeData.m_cachedNodeData[(int) netNode].PassengersOut.ToString();
+            this.m_passengersOutLast.text = CachedNodeData.m_cachedNodeData[(int) netNode]
                 .LastWeekPassengersOut.ToString();
-            this.m_passengersOutAverage.text = NetManagerMod.m_cachedNodeData[(int) netNode]
+            this.m_passengersOutAverage.text = CachedNodeData.m_cachedNodeData[(int) netNode]
                 .AveragePassengersOut.ToString();
-            this.m_passengersTotalCurrent.text = NetManagerMod.m_cachedNodeData[(int) netNode]
+            this.m_passengersTotalCurrent.text = CachedNodeData.m_cachedNodeData[(int) netNode]
                 .PassengersTotal.ToString();
-            this.m_passengersTotalLast.text = NetManagerMod.m_cachedNodeData[(int) netNode]
+            this.m_passengersTotalLast.text = CachedNodeData.m_cachedNodeData[(int) netNode]
                 .LastWeekPassengersTotal.ToString();
-            this.m_passengersTotalAverage.text = NetManagerMod.m_cachedNodeData[(int) netNode]
+            this.m_passengersTotalAverage.text = CachedNodeData.m_cachedNodeData[(int) netNode]
                 .AveragePassengersTotal.ToString();
             if ((int) OptionsWrapper<Settings>.Options.IntervalAggressionFactor == 0)
             {
@@ -695,7 +695,7 @@ namespace ImprovedPublicTransport2
             else
             {
                 this.m_unbunching.Enable();
-                this.m_unbunching.isChecked = NetManagerMod.m_cachedNodeData[(int) netNode].Unbunching;
+                this.m_unbunching.isChecked = CachedNodeData.m_cachedNodeData[(int) netNode].Unbunching;
                 this.m_unbunching.label.text = Localization.Get("UNBUNCHING_ENABLED");
                 this.m_unbunching.size = new Vector2(this.m_unbunching.label.width + 22f, 16f);
                 this.m_closeStopsUnbunching.Show();
