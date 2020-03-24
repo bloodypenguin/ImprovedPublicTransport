@@ -7,6 +7,7 @@
 using System;
 using ColossalFramework;
 using ColossalFramework.Math;
+using Utils = ImprovedPublicTransport2.Util.Utils;
 
 namespace ImprovedPublicTransport2
 {

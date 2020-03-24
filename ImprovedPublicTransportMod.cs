@@ -10,6 +10,7 @@ using ImprovedPublicTransport2.HarmonyPatches;
 using ImprovedPublicTransport2.OptionsFramework.Extensions;
 using ImprovedPublicTransport2.RedirectionFramework;
 using UnityEngine;
+using Utils = ImprovedPublicTransport2.Util.Utils;
 
 namespace ImprovedPublicTransport2
 {
@@ -102,7 +103,7 @@ namespace ImprovedPublicTransport2
           LineWatcher.instance.Init();
           
           CachedTransportLineData.Init();
-          Redirector<TransportLineMod>.Deploy();
+          Redirector<TransportLineDetour>.Deploy();
           
           VehiclePrefabs.Init();
           SerializableDataExtension.instance.Loaded = true;
@@ -202,7 +203,7 @@ namespace ImprovedPublicTransport2
       Redirector<TrolleybusAIDetour>.Revert();
       Redirector<PassengerHelicopterAIDetour>.Revert();
 
-      Redirector<TransportLineMod>.Revert();
+      Redirector<TransportLineDetour>.Revert();
       CachedTransportLineData.Deinit();
       
       BuildingExtension.Deinit();

@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UIUtils = ImprovedPublicTransport2.Util.UIUtils;
+using Utils = ImprovedPublicTransport2.Util.Utils;
 
 namespace ImprovedPublicTransport2
 {

@@ -8,6 +8,7 @@ using ColossalFramework;
 using System.Collections.Generic;
 using ImprovedPublicTransport2.Detour;
 using ImprovedPublicTransport2.OptionsFramework;
+using ImprovedPublicTransport2.Util;
 using UnityEngine;
 
 namespace ImprovedPublicTransport2
@@ -50,11 +51,11 @@ namespace ImprovedPublicTransport2
         {
           if (LineWatcher.IsValid(ref lines.m_buffer[(int) lineID]) && this._knownLines.Add(lineID))
           {
-            TransportLineMod.SetLineDefaults(lineID);
+            CachedTransportLineData.SetLineDefaults(lineID);
             Vector3 position = Singleton<NetManager>.instance.m_nodes.m_buffer[(int) lines.m_buffer[(int) lineID].GetStop(0)].m_position;
-            ushort closestDepot = TransportLineMod.GetClosestDepot(lineID, position);
+            ushort closestDepot = DepotUtil.GetClosestDepot(lineID, position);
             if ((int) closestDepot != 0)
-              TransportLineMod.SetDepot(lineID, closestDepot);
+              CachedTransportLineData.SetDepot(lineID, closestDepot);
             if (OptionsWrapper<Settings>.Options.ShowLineInfo && lines.m_buffer[(int)lineID].Info?.m_class?.m_service != ItemClass.Service.Disaster)
               WorldInfoPanel.Show<PublicTransportWorldInfoPanel>(position, new InstanceID()
               {

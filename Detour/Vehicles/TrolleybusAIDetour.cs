@@ -30,7 +30,7 @@ namespace ImprovedPublicTransport2.Detour.Vehicles
                 //begin mod(+): Check if unbunching enabled for this line & stop. track if unbunching happens. Don't divide m_waitCounter by 2^4
                 ushort currentStop = CachedVehicleData.m_cachedVehicleData[vehicleID].CurrentStop;
                 if (currentStop != 0 && CachedNodeData.m_cachedNodeData[currentStop].Unbunching &&
-                    TransportLineMod.GetUnbunchingState(vehicleData.m_transportLine))
+                    CachedTransportLineData.GetUnbunchingState(vehicleData.m_transportLine))
                 {
                     var canLeaveStop = Singleton<TransportManager>.instance.m_lines
                         .m_buffer[(int) vehicleData.m_transportLine]

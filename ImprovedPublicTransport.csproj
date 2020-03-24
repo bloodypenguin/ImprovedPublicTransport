@@ -68,8 +68,6 @@
   <ItemGroup>
     <Compile Include="BuildingExtension.cs" />
     <Compile Include="CachedTransportLineData.cs" />
-    <Compile Include="DepotUtil.cs" />
-    <Compile Include="Detour\DepotAIMod.cs" />
     <Compile Include="Detour\PublicTransportStopButtonDetour.cs" />
     <Compile Include="Detour\PublicTransportVehicleButtonDetour.cs" />
     <Compile Include="Detour\PublicTransportWorldInfoPanelDetour.cs" />
@@ -137,7 +135,10 @@
     <Compile Include="TranslationFramework\LocalizationManager.cs" />
     <Compile Include="TranslationFramework\TranslatableAttribute.cs" />
     <Compile Include="TranslationFramework\Util.cs" />
-    <Compile Include="UIUtils.cs" />
+    <Compile Include="Util\DepotUtil.cs" />
+    <Compile Include="Util\TransportLineUtil.cs" />
+    <Compile Include="Util\UIUtils.cs" />
+    <Compile Include="Util\Utils.cs" />
     <Compile Include="VehicleEditorPositions.cs" />
     <Compile Include="VehicleListBoxRow.cs" />
     <Compile Include="LineWatcher.cs" />
@@ -147,11 +148,10 @@
     <Compile Include="SerializableDataExtension.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SimHelper.cs" />
-    <Compile Include="Detour\TransportLineMod.cs" />
+    <Compile Include="Detour\TransportLineDetour.cs" />
     <Compile Include="ImprovedPublicTransportMod.cs" />
     <Compile Include="PanelExtenderVehicle.cs" />
     <Compile Include="PanelExtenderLine.cs" />
-    <Compile Include="Utils.cs" />
     <Compile Include="VehicleData.cs" />
     <Compile Include="CachedVehicleData.cs" />
     <Compile Include="VehiclePrefabs.cs" />

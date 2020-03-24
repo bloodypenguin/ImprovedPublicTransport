@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using ColossalFramework;
 using ImprovedPublicTransport2.Detour;
 using ImprovedPublicTransport2.OptionsFramework;
+using ImprovedPublicTransport2.Util;
 using UnityEngine;
+using Utils = ImprovedPublicTransport2.Util.Utils;
 
 namespace ImprovedPublicTransport2
 {
@@ -27,13 +30,13 @@ namespace ImprovedPublicTransport2
                 {
                     if (instance2.m_lines.m_buffer[index].Complete)
                     {
-                        _lineData[index].TargetVehicleCount = TransportLineMod.CountLineActiveVehicles(index, out int _);
+                        _lineData[index].TargetVehicleCount = TransportLineDetour.CountLineActiveVehicles(index, out int _);
                     }
                     else
                         _lineData[index].TargetVehicleCount =
                             OptionsWrapper<Settings>.Options.DefaultVehicleCount;
                     _lineData[index].BudgetControl = OptionsWrapper<Settings>.Options.BudgetControl;
-                    _lineData[index].Depot = TransportLineMod.GetClosestDepot((ushort) index,
+                    _lineData[index].Depot = DepotUtil.GetClosestDepot((ushort) index,
                         instance1.m_nodes.m_buffer[(int) instance2.m_lines.m_buffer[index].GetStop(0)].m_position);
                     _lineData[index].Unbunching = OptionsWrapper<Settings>.Options.Unbunching;
                 }
@@ -92,7 +95,7 @@ namespace ImprovedPublicTransport2
                     ushort uint16 = BitConverter.ToUInt16(data1, index1);
                     data[(int) lineID].Depot = (int) uint16 != 0
                         ? uint16
-                        : TransportLineMod.GetClosestDepot(lineID,
+                        : DepotUtil.GetClosestDepot(lineID,
                             instance1.m_nodes.m_buffer[(int) instance2.m_lines.m_buffer[(int) lineID].GetStop(0)]
                                 .m_position);
                     index1 += 2;
@@ -168,16 +171,16 @@ namespace ImprovedPublicTransport2
                 for (ushort lineID = 0; (int) lineID < 256; ++lineID)
                 {
                     SerializableDataExtension.AddToData(
-                        BitConverter.GetBytes(TransportLineMod.GetTargetVehicleCount(lineID)), data);
+                        BitConverter.GetBytes(GetTargetVehicleCount(lineID)), data);
                     SerializableDataExtension.AddToData(
                         BitConverter.GetBytes(Mathf.Max(
-                            TransportLineMod.GetNextSpawnTime(lineID) - SimHelper.SimulationTime, 0.0f)),
+                            GetNextSpawnTime(lineID) - SimHelper.SimulationTime, 0.0f)),
                         data);
                     SerializableDataExtension.AddToData(
-                        BitConverter.GetBytes(TransportLineMod.GetBudgetControlState(lineID)), data);
-                    SerializableDataExtension.AddToData(BitConverter.GetBytes(TransportLineMod.GetDepot(lineID)), data);
+                        BitConverter.GetBytes(GetBudgetControlState(lineID)), data);
+                    SerializableDataExtension.AddToData(BitConverter.GetBytes(GetDepot(lineID)), data);
                     int num = 0;
-                    HashSet<string> prefabs = TransportLineMod.GetPrefabs(lineID);
+                    HashSet<string> prefabs = GetPrefabs(lineID);
                     if (prefabs != null)
                         num = prefabs.Count;
                     SerializableDataExtension.AddToData(BitConverter.GetBytes(num), data);
@@ -186,14 +189,14 @@ namespace ImprovedPublicTransport2
                         foreach (string s in prefabs)
                             SerializableDataExtension.WriteString(s, data);
                     }
-                    string[] enqueuedVehicles = TransportLineMod.GetEnqueuedVehicles(lineID);
+                    string[] enqueuedVehicles = GetEnqueuedVehicles(lineID);
                     SerializableDataExtension.AddToData(BitConverter.GetBytes(enqueuedVehicles.Length), data);
                     if (enqueuedVehicles.Length != 0)
                     {
                         foreach (string s in enqueuedVehicles)
                             SerializableDataExtension.WriteString(s, data);
                     }
-                    SerializableDataExtension.WriteBool(TransportLineMod.GetUnbunchingState(lineID), data);
+                    SerializableDataExtension.WriteBool(GetUnbunchingState(lineID), data);
                 }
                 SerializableDataExtension.instance.SerializableData.SaveData(_dataID, data.ToArray());
             }
@@ -204,5 +207,170 @@ namespace ImprovedPublicTransport2
                 CODebugBase<LogChannel>.Log(LogChannel.Modding, msg, ErrorLevel.Error);
             }
         }
+        
+                public static int GetTargetVehicleCount(ushort lineID)
+        {
+            return CachedTransportLineData._lineData[(int) lineID].TargetVehicleCount;
+        }
+                
+        public static void SetLineDefaults(ushort lineID)
+        {
+            CachedTransportLineData._lineData[(int) lineID] = new LineData();
+            CachedTransportLineData._lineData[(int) lineID].TargetVehicleCount =
+                OptionsWrapper<Settings>.Options.DefaultVehicleCount;
+            CachedTransportLineData._lineData[(int) lineID].BudgetControl = OptionsWrapper<Settings>.Options.BudgetControl;
+            CachedTransportLineData._lineData[(int) lineID].Unbunching = OptionsWrapper<Settings>.Options.Unbunching;
+        }
+
+        public static void SetTargetVehicleCount(ushort lineID, int count)
+        {
+            CachedTransportLineData._lineData[(int) lineID].TargetVehicleCount = count;
+        }
+
+        public static void IncreaseTargetVehicleCount(ushort lineID)
+        {
+            ++CachedTransportLineData._lineData[(int) lineID].TargetVehicleCount;
+        }
+
+        public static void DecreaseTargetVehicleCount(ushort lineID)
+        {
+            if (CachedTransportLineData._lineData[(int) lineID].TargetVehicleCount == 0)
+                return;
+            --CachedTransportLineData._lineData[(int) lineID].TargetVehicleCount;
+        }
+
+        public static float GetNextSpawnTime(ushort lineID)
+        {
+            return CachedTransportLineData._lineData[(int) lineID].NextSpawnTime;
+        }
+
+        public static void SetNextSpawnTime(ushort lineID, float time)
+        {
+            CachedTransportLineData._lineData[(int) lineID].NextSpawnTime = time;
+        }
+
+        public static bool GetBudgetControlState(ushort lineID)
+        {
+            return CachedTransportLineData._lineData[(int) lineID].BudgetControl;
+        }
+
+        public static void SetBudgetControlState(ushort lineID, bool state)
+        {
+            CachedTransportLineData._lineData[(int) lineID].BudgetControl = state;
+        }
+
+        public static bool GetUnbunchingState(ushort lineID)
+        {
+            return CachedTransportLineData._lineData[(int) lineID].Unbunching;
+        }
+
+        public static void SetUnbunchingState(ushort lineID, bool state)
+        {
+            CachedTransportLineData._lineData[(int) lineID].Unbunching = state;
+        }
+
+        public static ushort GetDepot(ushort lineID)
+        {
+            return CachedTransportLineData._lineData[(int) lineID].Depot;
+        }
+
+        public static void SetDepot(ushort lineID, ushort depotID)
+        {
+            CachedTransportLineData._lineData[(int) lineID].Depot = depotID;
+        }
+
+        public static HashSet<string> GetPrefabs(ushort lineID)
+        {
+            return CachedTransportLineData._lineData[(int) lineID].Prefabs;
+        }
+
+        public static void SetPrefabs(ushort lineID, HashSet<string> prefabs)
+        {
+            CachedTransportLineData._lineData[(int) lineID].Prefabs = prefabs;
+        }
+
+        public static string GetRandomPrefab(ushort lineID)
+        {
+            if (CachedTransportLineData._lineData[(int) lineID].Prefabs != null)
+            {
+                string[] array = CachedTransportLineData._lineData[(int) lineID].Prefabs.ToArray<string>();
+                if (array.Length != 0)
+                {
+                    int index = Singleton<SimulationManager>.instance.m_randomizer.Int32((uint) array.Length);
+                    return array[index];
+                }
+            }
+            var itemClass = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID]
+                .Info.m_class;
+            PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(itemClass.m_service, itemClass.m_subService, itemClass.m_level);
+            int index1 = Singleton<SimulationManager>.instance.m_randomizer.Int32((uint) prefabs.Length);
+            return prefabs[index1].ObjectName;
+        }
+
+        public static void EnqueueVehicle(ushort lineID, string prefabName, bool inscreaseVehicleCount = true)
+        {
+            if (CachedTransportLineData._lineData[(int) lineID].QueuedVehicles == null)
+                CachedTransportLineData._lineData[(int) lineID].QueuedVehicles = new Queue<string>();
+            if (inscreaseVehicleCount)
+                IncreaseTargetVehicleCount(lineID);
+            lock (CachedTransportLineData._lineData[(int) lineID].QueuedVehicles)
+                CachedTransportLineData._lineData[(int) lineID].QueuedVehicles.Enqueue(prefabName);
+        }
+
+        public static string Dequeue(ushort lineID)
+        {
+            lock (CachedTransportLineData._lineData[(int) lineID].QueuedVehicles)
+                return CachedTransportLineData._lineData[(int) lineID].QueuedVehicles.Dequeue();
+        }
+
+        public static void DequeueVehicle(ushort lineID)
+        {
+            if (CachedTransportLineData._lineData[(int) lineID].QueuedVehicles == null)
+                return;
+            DecreaseTargetVehicleCount(lineID);
+            Dequeue(lineID);
+        }
+
+        public static void DequeueVehicles(ushort lineID, int[] indexes, bool descreaseVehicleCount = true)
+        {
+            lock (CachedTransportLineData._lineData[(int) lineID].QueuedVehicles)
+            {
+                List<string> stringList = new List<string>(
+                    (IEnumerable<string>) CachedTransportLineData._lineData[(int) lineID].QueuedVehicles);
+                for (int index = indexes.Length - 1; index >= 0; --index)
+                {
+                    stringList.RemoveAt(indexes[index]);
+                    if (descreaseVehicleCount)
+                        DecreaseTargetVehicleCount(lineID);
+                }
+                CachedTransportLineData._lineData[(int) lineID].QueuedVehicles =
+                    new Queue<string>((IEnumerable<string>) stringList);
+            }
+        }
+
+        public static string[] GetEnqueuedVehicles(ushort lineID)
+        {
+            if (CachedTransportLineData._lineData[(int) lineID].QueuedVehicles == null)
+                return new string[0];
+            lock (CachedTransportLineData._lineData[(int) lineID].QueuedVehicles)
+                return CachedTransportLineData._lineData[(int) lineID].QueuedVehicles.ToArray();
+        }
+
+        public static int EnqueuedVehiclesCount(ushort lineID)
+        {
+            if (CachedTransportLineData._lineData[(int) lineID].QueuedVehicles == null)
+                return 0;
+            return CachedTransportLineData._lineData[(int) lineID].QueuedVehicles.Count;
+        }
+
+        public static void ClearEnqueuedVehicles(ushort lineID)
+        {
+            if (CachedTransportLineData._lineData[(int) lineID].QueuedVehicles == null ||
+                CachedTransportLineData._lineData[(int) lineID].QueuedVehicles.Count <= 0)
+                return;
+            lock (CachedTransportLineData._lineData[(int) lineID].QueuedVehicles)
+                CachedTransportLineData._lineData[(int) lineID].QueuedVehicles.Clear();
+        }
+
     }
 }
