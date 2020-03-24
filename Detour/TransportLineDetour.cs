@@ -160,32 +160,18 @@ namespace ImprovedPublicTransport2.Detour
                     else if (flag3)
                         num4 = CachedTransportLineData._lineData[(int)lineID].TargetVehicleCount;
                     //end mod
-                    if ((int) range != 0 && num2 < num4)
+                    if (range != 0U && num2 < num4)
                     {
                         ushort stop = thisLine.GetStop(instance2.m_randomizer.Int32(range));
-                        if ((int) stop != 0)
-                        //begin mod(+): save offer as variable and directly invoke spawn if it's not evac line
-                        {
-                            TransferManager.TransferOffer offer =
-                                new TransferManager.TransferOffer
-                                {
-                                    Priority = num4 - num2 + 1,
-                                    TransportLine = lineID,
-                                    Position = Singleton<NetManager>.instance.m_nodes.m_buffer[(int) stop]
-                                        .m_position,
-                                    Amount = 1,
-                                    Active = false
-                                };
-                            if (info.m_class.m_service == ItemClass.Service.Disaster)
+                        if (stop != (ushort) 0)
+                            Singleton<TransferManager>.instance.AddIncomingOffer(vehicleReason, new TransferManager.TransferOffer()
                             {
-                                Singleton<TransferManager>.instance.AddIncomingOffer(vehicleReason, offer);
-                            }
-                            else
-                            {
-                                HandleVehicleSpawn(lineID, info, offer);
-                            }
-                        }
-                        //end mod
+                                Priority = num4 - num2 + 1,
+                                TransportLine = lineID,
+                                Position = instance1.m_nodes.m_buffer[(int) stop].m_position,
+                                Amount = 1,
+                                Active = false
+                            });
                     }
                     else if (num3 > num4)
                     {
@@ -461,46 +447,6 @@ namespace ImprovedPublicTransport2.Detour
             }
         }
 
-        private static void HandleVehicleSpawn(ushort lineID, TransportInfo info, TransferManager.TransferOffer offer)
-        {
-            var itemClass = info.m_class;
-            if ((double) SimHelper.SimulationTime >=
-                (double) CachedTransportLineData._lineData[(int) lineID].NextSpawnTime ||
-                itemClass.m_service == ItemClass.Service.Disaster)
-            {
-                ushort depot = CachedTransportLineData._lineData[(int) lineID].Depot;
-                if (DepotUtil.ValidateDepot(lineID, ref depot, info))
-                {
-                    BuildingManager instance2 = Singleton<BuildingManager>.instance;
-                    if (DepotUtil.CanAddVehicle(depot,
-                        ref instance2.m_buildings.m_buffer[(int) depot], info))
-                    {
-                        var buildingAi = Singleton<BuildingManager>.instance.m_buildings.m_buffer[(int)depot].Info?.m_buildingAI;
-                        var depotAi = buildingAi as DepotAI;
-                        if (depotAi == null)
-                        {
-                            throw new Exception("Non-depot building was selected as depot! Actual AI type: " + buildingAi?.GetType()); 
-                        }
-                        instance2.m_buildings.m_buffer[(int) depot]
-                                .Info.m_buildingAI
-                                .StartTransfer(depot,
-                                    ref instance2.m_buildings.m_buffer[(int) depot],
-                                    info.m_vehicleReason, offer);
-                        CachedTransportLineData._lineData[(int) lineID].NextSpawnTime =
-                            SimHelper.SimulationTime +
-                            (float) OptionsWrapper<Settings>.Options.SpawnTimeInterval;
-                    }
-                    else
-                    {
-                        CachedTransportLineData.ClearEnqueuedVehicles(lineID);
-                    }
-                }
-                else
-                {
-                    CachedTransportLineData.ClearEnqueuedVehicles(lineID);
-                }
-            }
-        }
 
         //based off code in the SimulationStep
         public static void RemoveActiveVehicle(ushort lineID, bool descreaseTargetVehicleCount, int activeVehiclesCount)
