@@ -1,5 +1,6 @@
 ﻿using System;
 using ColossalFramework;
+using ImprovedPublicTransport2.Detour;
 using UnityEngine;
 
 namespace ImprovedPublicTransport2.Util
@@ -161,6 +162,39 @@ namespace ImprovedPublicTransport2.Util
                 }
             }
             return num1;
+        }
+
+        public static bool CanAddVehicle(ushort depotID, ref Building depot, TransportInfo transportInfo)
+        {
+            if (depot.Info == null)
+            {
+                return false;
+            }
+            if (depot.Info.m_buildingAI is DepotAI)
+            {
+                DepotAI buildingAi = depot.Info.m_buildingAI as DepotAI;
+                if (transportInfo.m_vehicleType == buildingAi.m_transportInfo?.m_vehicleType ||
+                    transportInfo.m_vehicleType == buildingAi.m_secondaryTransportInfo?.m_vehicleType)
+                {
+                    int num = (PlayerBuildingAI.GetProductionRate(100,
+                            Singleton<EconomyManager>.instance.GetBudget(buildingAi.m_info.m_class)) * 
+                        buildingAi.m_maxVehicleCount + 99) / 100;
+                    return buildingAi.GetVehicleCount(depotID, ref depot) < num;
+                }
+            }
+            if (depot.Info.m_buildingAI is ShelterAI)
+            {
+                ShelterAI buildingAi = depot.Info.m_buildingAI as ShelterAI;
+                int num = (PlayerBuildingAI.GetProductionRate(100, Singleton<EconomyManager>.instance.GetBudget(buildingAi.m_info.m_class)) * buildingAi.m_evacuationBusCount + 99) / 100;
+                int count = 0;
+                int cargo = 0;
+                int capacity = 0;
+                int outside = 0;
+                CommonBuildingAIReverseDetour.CalculateOwnVehicles(buildingAi, depotID, ref depot, buildingAi.m_transportInfo.m_vehicleReason, ref count, ref cargo, ref capacity, ref outside);
+                return count < num;
+            }
+            return false;
+
         }
     }
 }
