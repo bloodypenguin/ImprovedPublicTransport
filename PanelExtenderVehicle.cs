@@ -105,6 +105,7 @@ namespace ImprovedPublicTransport2
           case ItemClass.SubService.PublicTransportPlane:
           case ItemClass.SubService.PublicTransportMonorail:
           case ItemClass.SubService.PublicTransportCableCar:
+          case ItemClass.SubService.PublicTransportTrolleybus:
             this._passengerPanel.Show();
             if ((int) vehicleID != 0)
             {

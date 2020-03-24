@@ -56,6 +56,7 @@ namespace ImprovedPublicTransport2
           case ItemClass.SubService.PublicTransportShip:
           case ItemClass.SubService.PublicTransportPlane:
           case ItemClass.SubService.PublicTransportMonorail:
+          case ItemClass.SubService.PublicTransportTrolleybus:
             this._vehicleListBox.Hide(); //TODO(earalov): display depot's vehicles? Also, maybe it makes sense to display list of lines served by depot?
             this._stopsListBox.Show();
             ushort[] numArray = PanelExtenderCityService.GetStationStops(building);
