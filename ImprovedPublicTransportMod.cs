@@ -61,6 +61,9 @@ namespace ImprovedPublicTransport2
           this._worldInfoPanel.AddComponent<PublicTransportStopWorldInfoPanel>();
           
           CachedNodeData.Init();
+          
+          Patch(typeof(DepotAI), nameof(DepotAI.StartTransfer), DepotAIPatch.GetPrefix(), null);
+          
           Patch(typeof(NetManager), nameof(NetManager.ReleaseNode), null,
             typeof(NetManagerPatch).GetMethod(nameof(NetManagerPatch.ReleaseNode))); //TODO: think, whether it should be pre or post
           

@@ -128,22 +128,5 @@ namespace ImprovedPublicTransport2
         Utils.LogError((object) ("Error while saving vehicle data! " + ex.Message + " " + (object) ex.InnerException));
       }
     }
-
-    public static VehicleInfo GetVehicleInfo(ref Randomizer randomizer, ItemClass m_class, ushort lineID, string prefabName)
-    {
-      PrefabData prefabData = Array.Find(VehiclePrefabs.instance.GetPrefabs(m_class.m_service, m_class.m_subService, m_class.m_level),
-          item => item.ObjectName == prefabName);
-      if (prefabData != null)
-        return PrefabCollection<VehicleInfo>.GetPrefab((uint) prefabData.PrefabDataIndex);
-      Utils.LogWarning((object) ("Unknown prefab: " + prefabName));
-      VehicleManager instance = Singleton<VehicleManager>.instance;
-      instance.RefreshTransferVehicles();
-
-      int service = (int) m_class.m_service;
-      int subService = (int) m_class.m_subService;
-      int level = (int) m_class.m_level;
-      return instance.GetRandomVehicleInfo(ref randomizer, (ItemClass.Service) service, (ItemClass.SubService) subService, (ItemClass.Level) level);
-    }
-
   }
 }
