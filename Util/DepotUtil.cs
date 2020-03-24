@@ -123,7 +123,7 @@ namespace ImprovedPublicTransport2.Util
             return false;
         }
 
-        public static bool ValidateDepot(ushort lineID, ref ushort depotID, TransportInfo transportInfo)
+        public static bool ValidateDepotAndFindNewIfNeeded(ushort lineID, ref ushort depotID, TransportInfo transportInfo)
         {
             if (transportInfo == null)
             {

@@ -239,7 +239,7 @@ namespace ImprovedPublicTransport2
         bool flag1 = false;
         ushort depot = CachedTransportLineData.GetDepot(lineId);
           TransportInfo info = TransportManager.instance.m_lines.m_buffer[lineId].Info;
-          if (!DepotUtil.ValidateDepot(lineId, ref depot, info))
+          if (!DepotUtil.ValidateDepotAndFindNewIfNeeded(lineId, ref depot, info))
           {
               flag1 = true;
           }
