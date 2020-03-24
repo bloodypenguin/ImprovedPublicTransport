@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuildingExtension.cs" />
+    <Compile Include="CachedTransportLineData.cs" />
     <Compile Include="DepotUtil.cs" />
     <Compile Include="Detour\DepotAIMod.cs" />
     <Compile Include="Detour\PublicTransportStopButtonDetour.cs" />

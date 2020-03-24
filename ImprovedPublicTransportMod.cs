@@ -100,7 +100,10 @@ namespace ImprovedPublicTransport2
           Redirector<PublicTransportWorldInfoPanelDetour>.Deploy();
           BuildingExtension.Init();
           LineWatcher.instance.Init();
-          TransportLineMod.Init();
+          
+          CachedTransportLineData.Init();
+          Redirector<TransportLineMod>.Deploy();
+          
           VehiclePrefabs.Init();
           SerializableDataExtension.instance.Loaded = true;
           LocaleModifier.Init();
@@ -198,7 +201,10 @@ namespace ImprovedPublicTransport2
       Redirector<PublicTransportWorldInfoPanelDetour>.Revert();
       Redirector<TrolleybusAIDetour>.Revert();
       Redirector<PassengerHelicopterAIDetour>.Revert();
-      TransportLineMod.Deinit();
+
+      Redirector<TransportLineMod>.Revert();
+      CachedTransportLineData.Deinit();
+      
       BuildingExtension.Deinit();
       CachedNodeData.Deinit();
       CachedVehicleData.Deinit();
