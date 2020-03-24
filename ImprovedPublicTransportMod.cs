@@ -58,8 +58,14 @@ namespace ImprovedPublicTransport2
           this._worldInfoPanel = new GameObject("PublicTransportStopWorldInfoPanel");
           this._worldInfoPanel.transform.parent = objectOfType.transform;
           this._worldInfoPanel.AddComponent<PublicTransportStopWorldInfoPanel>();
-          NetManagerMod.Init();
-          VehicleManagerMod.Init();
+          
+          CachedNodeData.Init();
+          Patch(typeof(NetManager), nameof(NetManager.ReleaseNode), null,
+            typeof(NetManagerPatch).GetMethod(nameof(NetManagerPatch.ReleaseNode))); //TODO: think, whether it should be pre or post
+          
+          CachedVehicleData.Init();
+          Patch(typeof(VehicleManager), "ReleaseWaterSource", null,
+            typeof(VehicleManagerPatch).GetMethod(nameof(VehicleManagerPatch.ReleaseWaterSource))); //TODO: think, whether it should be pre or post
           
           Redirector<BusAIDetour>.Deploy();
           PatchCountPassengers(typeof(BusAI));
@@ -145,8 +151,8 @@ namespace ImprovedPublicTransport2
 
         HarmonyInstance.Patch(type.GetMethod(methodName,
             bindingFlags),
-          prefix: new HarmonyMethod(prePatch),
-          postfix: new HarmonyMethod(postPatch));
+          prefix: prePatch == null ? null : new HarmonyMethod(prePatch),
+          postfix: postPatch == null ? null : new HarmonyMethod(postPatch));
       }
       catch (Exception e)
       {
@@ -194,8 +200,8 @@ namespace ImprovedPublicTransport2
       Redirector<PassengerHelicopterAIDetour>.Revert();
       TransportLineMod.Deinit();
       BuildingExtension.Deinit();
-      NetManagerMod.Deinit();
-      VehicleManagerMod.Deinit();
+      CachedNodeData.Deinit();
+      CachedVehicleData.Deinit();
       VehiclePrefabs.Deinit();
       SerializableDataExtension.instance.Loaded = false;
       LocaleModifier.Deinit();

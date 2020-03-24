@@ -7,13 +7,11 @@
 using System;
 using ColossalFramework;
 using ColossalFramework.Math;
-using ImprovedPublicTransport2.RedirectionFramework;
-using ImprovedPublicTransport2.RedirectionFramework.Attributes;
 
-namespace ImprovedPublicTransport2.Detour
+namespace ImprovedPublicTransport2
 {
-  [TargetType(typeof(VehicleManager))]
-  public class VehicleManagerMod
+
+  public static class CachedVehicleData
   {
     public static int MaxVehicleCount;
     private static readonly string _dataID = "IPT_VehicleData";
@@ -35,29 +33,29 @@ namespace ImprovedPublicTransport2.Detour
         MaxVehicleCount = VehicleManager.MAX_VEHICLE_COUNT;
       }
       
-      if (VehicleManagerMod._isDeployed)
+      if (CachedVehicleData._isDeployed)
         return;
-      if (!VehicleManagerMod.TryLoadData(out VehicleManagerMod.m_cachedVehicleData))
+      if (!CachedVehicleData.TryLoadData(out CachedVehicleData.m_cachedVehicleData))
         Utils.Log((object) "Loading default vehicle data.");
-      Redirector<VehicleManagerMod>.Deploy();
-      SerializableDataExtension.instance.EventSaveData += new SerializableDataExtension.SaveDataEventHandler(VehicleManagerMod.OnSaveData);
-      VehicleManagerMod._isDeployed = true;
+
+      SerializableDataExtension.instance.EventSaveData += new SerializableDataExtension.SaveDataEventHandler(CachedVehicleData.OnSaveData);
+      CachedVehicleData._isDeployed = true;
     }
 
     public static void Deinit()
     {
-      if (!VehicleManagerMod._isDeployed)
+      if (!CachedVehicleData._isDeployed)
         return;
-      VehicleManagerMod.m_cachedVehicleData = (VehicleData[]) null;
-      Redirector<VehicleManagerMod>.Revert();
-      SerializableDataExtension.instance.EventSaveData -= new SerializableDataExtension.SaveDataEventHandler(VehicleManagerMod.OnSaveData);
-      VehicleManagerMod._isDeployed = false;
+      CachedVehicleData.m_cachedVehicleData = (VehicleData[]) null;
+
+      SerializableDataExtension.instance.EventSaveData -= new SerializableDataExtension.SaveDataEventHandler(CachedVehicleData.OnSaveData);
+      CachedVehicleData._isDeployed = false;
     }
 
     public static bool TryLoadData(out VehicleData[] data)
     {
-      data = new VehicleData[VehicleManagerMod.MaxVehicleCount];
-      byte[] data1 = SerializableDataExtension.instance.SerializableData.LoadData(VehicleManagerMod._dataID);
+      data = new VehicleData[CachedVehicleData.MaxVehicleCount];
+      byte[] data1 = SerializableDataExtension.instance.SerializableData.LoadData(CachedVehicleData._dataID);
       if (data1 == null)
         return false;
       int index1 = 0;
@@ -72,7 +70,7 @@ namespace ImprovedPublicTransport2.Detour
           return false;
         }
         Utils.Log((object) ("Found vehicle data version: " + str));
-        while (index1 < Math.Min(data1.Length, VehicleManagerMod.MaxVehicleCount))
+        while (index1 < Math.Min(data1.Length, CachedVehicleData.MaxVehicleCount))
         {
           int index2 = SerializableDataExtension.ReadInt32(data1, ref index1);
           if (str == "v001")
@@ -95,7 +93,7 @@ namespace ImprovedPublicTransport2.Detour
       catch (Exception ex)
       {
         Utils.LogWarning((object) ("Could not load vehicle data. " + ex.Message));
-        data = new VehicleData[VehicleManagerMod.MaxVehicleCount];
+        data = new VehicleData[CachedVehicleData.MaxVehicleCount];
         return false;
       }
     }
@@ -105,24 +103,24 @@ namespace ImprovedPublicTransport2.Detour
       FastList<byte> data = new FastList<byte>();
       try
       {
-        SerializableDataExtension.WriteString(VehicleManagerMod._dataVersion, data);
-        for (int index = 0; index < VehicleManagerMod.MaxVehicleCount; ++index)
+        SerializableDataExtension.WriteString(CachedVehicleData._dataVersion, data);
+        for (int index = 0; index < CachedVehicleData.MaxVehicleCount; ++index)
         {
-          if (!VehicleManagerMod.m_cachedVehicleData[index].IsEmpty)
+          if (!CachedVehicleData.m_cachedVehicleData[index].IsEmpty)
           {
             SerializableDataExtension.WriteInt32(index, data);
-            SerializableDataExtension.WriteInt32(VehicleManagerMod.m_cachedVehicleData[index].LastStopNewPassengers, data);
-            SerializableDataExtension.WriteInt32(VehicleManagerMod.m_cachedVehicleData[index].LastStopGonePassengers, data);
-            SerializableDataExtension.WriteInt32(VehicleManagerMod.m_cachedVehicleData[index].PassengersThisWeek, data);
-            SerializableDataExtension.WriteInt32(VehicleManagerMod.m_cachedVehicleData[index].PassengersLastWeek, data);
-            SerializableDataExtension.WriteInt32(VehicleManagerMod.m_cachedVehicleData[index].IncomeThisWeek, data);
-            SerializableDataExtension.WriteInt32(VehicleManagerMod.m_cachedVehicleData[index].IncomeLastWeek, data);
-            SerializableDataExtension.WriteFloatArray(VehicleManagerMod.m_cachedVehicleData[index].PassengerData, data);
-            SerializableDataExtension.WriteFloatArray(VehicleManagerMod.m_cachedVehicleData[index].IncomeData, data);
-            SerializableDataExtension.WriteUInt16(VehicleManagerMod.m_cachedVehicleData[index].CurrentStop, data);
+            SerializableDataExtension.WriteInt32(CachedVehicleData.m_cachedVehicleData[index].LastStopNewPassengers, data);
+            SerializableDataExtension.WriteInt32(CachedVehicleData.m_cachedVehicleData[index].LastStopGonePassengers, data);
+            SerializableDataExtension.WriteInt32(CachedVehicleData.m_cachedVehicleData[index].PassengersThisWeek, data);
+            SerializableDataExtension.WriteInt32(CachedVehicleData.m_cachedVehicleData[index].PassengersLastWeek, data);
+            SerializableDataExtension.WriteInt32(CachedVehicleData.m_cachedVehicleData[index].IncomeThisWeek, data);
+            SerializableDataExtension.WriteInt32(CachedVehicleData.m_cachedVehicleData[index].IncomeLastWeek, data);
+            SerializableDataExtension.WriteFloatArray(CachedVehicleData.m_cachedVehicleData[index].PassengerData, data);
+            SerializableDataExtension.WriteFloatArray(CachedVehicleData.m_cachedVehicleData[index].IncomeData, data);
+            SerializableDataExtension.WriteUInt16(CachedVehicleData.m_cachedVehicleData[index].CurrentStop, data);
           }
         }
-        SerializableDataExtension.instance.SerializableData.SaveData(VehicleManagerMod._dataID, data.ToArray());
+        SerializableDataExtension.instance.SerializableData.SaveData(CachedVehicleData._dataID, data.ToArray());
       }
       catch (Exception ex)
       {
@@ -146,19 +144,5 @@ namespace ImprovedPublicTransport2.Detour
       return instance.GetRandomVehicleInfo(ref randomizer, (ItemClass.Service) service, (ItemClass.SubService) subService, (ItemClass.Level) level);
     }
 
-    [RedirectMethod]
-    private void ReleaseWaterSource(ushort vehicle, ref Vehicle data)
-    {
-        //begin mod
-        if (!VehicleManagerMod.m_cachedVehicleData[vehicle].IsEmpty)
-        {
-            VehicleManagerMod.m_cachedVehicleData[vehicle] = new VehicleData();
-        }
-        //end mod
-        if ((int)data.m_waterSource == 0)
-           return;
-        Singleton<TerrainManager>.instance.WaterSimulation.ReleaseWaterSource(data.m_waterSource);
-        data.m_waterSource = (ushort)0;
-    }
   }
 }

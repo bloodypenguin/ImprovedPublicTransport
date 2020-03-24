@@ -16,8 +16,8 @@ namespace ImprovedPublicTransport2.HarmonyPatches
         {
             var num2 = (ushort)(data.m_transferSize - (uint)_transferSize1);
             var ticketPrice = data.Info.m_vehicleAI.GetTicketPrice(vehicleID, ref data);
-            VehicleManagerMod.m_cachedVehicleData[vehicleID].Add(num2, ticketPrice);
-            NetManagerMod.m_cachedNodeData[currentStop].PassengersIn += num2;
+            CachedVehicleData.m_cachedVehicleData[vehicleID].Add(num2, ticketPrice);
+            CachedNodeData.m_cachedNodeData[currentStop].PassengersIn += num2;
         }
     }
 }

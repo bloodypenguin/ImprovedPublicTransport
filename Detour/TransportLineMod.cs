@@ -637,7 +637,7 @@ namespace ImprovedPublicTransport2.Detour
                 ushort stop1 = stops1;
                 do
                 {
-                    NetManagerMod.m_cachedNodeData[(int) stop1].StartNewWeek();
+                    CachedNodeData.m_cachedNodeData[(int) stop1].StartNewWeek();
                     stop1 = TransportLine.GetNextStop(stop1);
                 } while ((int) stops1 != (int) stop1 && (int) stop1 != 0);
 
@@ -653,7 +653,7 @@ namespace ImprovedPublicTransport2.Detour
                     if (prefabData != null)
                     {
                         amount += prefabData.MaintenanceCost;
-                        VehicleManagerMod.m_cachedVehicleData[num3].StartNewWeek(prefabData.MaintenanceCost);
+                        CachedVehicleData.m_cachedVehicleData[num3].StartNewWeek(prefabData.MaintenanceCost);
                     }
                 });
                 if (amount != 0)
@@ -850,7 +850,7 @@ namespace ImprovedPublicTransport2.Detour
                             ++num3;
                         }
                         num4 = nextLineVehicle;
-                        if (++num5 > VehicleManagerMod.MaxVehicleCount)
+                        if (++num5 > CachedVehicleData.MaxVehicleCount)
                         {
                             CODebugBase<LogChannel>.Error(LogChannel.Core, "Invalid list detected!\n" + System.Environment.StackTrace);
                             break;

@@ -24,7 +24,7 @@ namespace ImprovedPublicTransport2.Detour
             if (reason == depotAi.m_transportInfo.m_vehicleReason)
             {
                 //begin mod(*): use our custom vehicle manager
-                VehicleInfo randomVehicleInfo = VehicleManagerMod.GetVehicleInfo(ref Singleton<SimulationManager>.instance.m_randomizer, depotAi.m_transportInfo.m_class, offer.TransportLine, prefabName);
+                VehicleInfo randomVehicleInfo = CachedVehicleData.GetVehicleInfo(ref Singleton<SimulationManager>.instance.m_randomizer, depotAi.m_transportInfo.m_class, offer.TransportLine, prefabName);
                 //end mod
                 if (randomVehicleInfo == null)
                     return;
@@ -41,7 +41,7 @@ namespace ImprovedPublicTransport2.Detour
             else if (depotAi.m_secondaryTransportInfo != null && reason == depotAi.m_secondaryTransportInfo.m_vehicleReason)
             {
                 //begin mod(*): use our custom vehicle manager
-                VehicleInfo randomVehicleInfo = VehicleManagerMod.GetVehicleInfo(ref Singleton<SimulationManager>.instance.m_randomizer, depotAi.m_secondaryTransportInfo.m_class, offer.TransportLine, prefabName);
+                VehicleInfo randomVehicleInfo = CachedVehicleData.GetVehicleInfo(ref Singleton<SimulationManager>.instance.m_randomizer, depotAi.m_secondaryTransportInfo.m_class, offer.TransportLine, prefabName);
                 //end mod
                 if (randomVehicleInfo == null)
                     return;
