@@ -61,7 +61,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches
             }
             else
             {
-                Debug.LogWarning("Redirecting from " + buildingID + " to " + depot);
+                Debug.Log("IPT2: Redirecting from " + buildingID + " to " + depot);
                 __instance.StartTransfer(depot, ref BuildingManager.instance.m_buildings.m_buffer[depot], reason,
                     offer);
                 return false;
