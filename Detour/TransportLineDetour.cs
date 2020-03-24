@@ -182,7 +182,7 @@ namespace ImprovedPublicTransport2.Detour
                             }
                             else
                             {
-                                HandleVehicleSpawn(lineID, info, num4, num2, offer);
+                                HandleVehicleSpawn(lineID, info, offer);
                             }
                         }
                         //end mod
@@ -461,8 +461,7 @@ namespace ImprovedPublicTransport2.Detour
             }
         }
 
-        private static void HandleVehicleSpawn(ushort lineID, TransportInfo info, int targetVehicleCount,
-            int activeVehicleCount, TransferManager.TransferOffer offer)
+        private static void HandleVehicleSpawn(ushort lineID, TransportInfo info, TransferManager.TransferOffer offer)
         {
             var itemClass = info.m_class;
             if ((double) SimHelper.SimulationTime >=
@@ -476,37 +475,17 @@ namespace ImprovedPublicTransport2.Detour
                     if (TransportLineDetour.CanAddVehicle(depot,
                         ref instance2.m_buildings.m_buffer[(int) depot], info))
                     {
-                        string prefabName;
-                        if (CachedTransportLineData.EnqueuedVehiclesCount(lineID) > 0)
+                        var buildingAi = Singleton<BuildingManager>.instance.m_buildings.m_buffer[(int)depot].Info?.m_buildingAI;
+                        var depotAi = buildingAi as DepotAI;
+                        if (depotAi == null)
                         {
-                            prefabName = CachedTransportLineData.Dequeue(lineID);
+                            throw new Exception("Non-depot building was selected as depot! Actual AI type: " + buildingAi?.GetType()); 
                         }
-                        else
-                        {
-                            int diffToTarget = targetVehicleCount - activeVehicleCount;
-                            for (int index2 = 0; index2 < diffToTarget; ++index2)
-                            {
-                                CachedTransportLineData.EnqueueVehicle(lineID,
-                                    CachedTransportLineData.GetRandomPrefab(lineID), false);
-                            }
-                            prefabName = CachedTransportLineData.Dequeue(lineID);
-                        }
-                        if (prefabName == "")
-                        {
-                            instance2.m_buildings.m_buffer[(int) depot]
+                        instance2.m_buildings.m_buffer[(int) depot]
                                 .Info.m_buildingAI
                                 .StartTransfer(depot,
                                     ref instance2.m_buildings.m_buffer[(int) depot],
                                     info.m_vehicleReason, offer);
-                        }
-                        else
-                        {
-                            DepotUtil.StartTransfer(depot,
-                                ref instance2.m_buildings.m_buffer[(int) depot],
-                                info.m_vehicleReason,
-                                offer,
-                                prefabName);
-                        }
                         CachedTransportLineData._lineData[(int) lineID].NextSpawnTime =
                             SimHelper.SimulationTime +
                             (float) OptionsWrapper<Settings>.Options.SpawnTimeInterval;
@@ -633,7 +612,7 @@ namespace ImprovedPublicTransport2.Detour
             }
             return activeVehicles;
         }
-
+        
         [RedirectReverse]
         private static ushort GetActiveVehicle(ref TransportLine thisLine, int index)
         {

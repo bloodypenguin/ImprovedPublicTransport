@@ -82,6 +82,7 @@
     <Compile Include="Detour\Vehicles\TramAIDetour.cs" />
     <Compile Include="Detour\Vehicles\TrolleybusAIDetour.cs" />
     <Compile Include="GameDefault.cs" />
+    <Compile Include="HarmonyPatches\DepotAIPatch.cs" />
     <Compile Include="HarmonyPatches\LoadPassengersPatch.cs" />
     <Compile Include="HarmonyPatches\NetManagerPatch.cs" />
     <Compile Include="HarmonyPatches\UnloadPassengersPatch.cs" />
