@@ -241,15 +241,15 @@ namespace ImprovedPublicTransport2
             this._unbunching.label.text = Localization.Get("UNBUNCHING_ENABLED");
         }
         bool flag1 = false;
-        ushort depot = CachedTransportLineData.GetDepot(lineId);
+        ushort depotID = CachedTransportLineData.GetDepot(lineId);
           TransportInfo info = TransportManager.instance.m_lines.m_buffer[lineId].Info;
-          if (!DepotUtil.ValidateDepotAndFindNewIfNeeded(lineId, ref depot, info))
+          if (!DepotUtil.IsValidDepot(depotID, info))
           {
               flag1 = true;
           }
           bool flag2 = true;
-        if ((int) depot != 0)
-          flag2 = DepotUtil.CanAddVehicle(depot, ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[(int) depot], info);
+        if ((int) depotID != 0)
+          flag2 = DepotUtil.CanAddVehicle(depotID, ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[(int) depotID], info);
         if (flag2)
         {
           int num2 = Mathf.CeilToInt(CachedTransportLineData.GetNextSpawnTime(lineId) - SimHelper.SimulationTime);
@@ -274,7 +274,7 @@ namespace ImprovedPublicTransport2
         if (this._depotDropDown.Items.Length == 0)
           this._depotDropDown.Text = Localization.Get("LINE_PANEL_NO_DEPOT_FOUND");
         else
-          this._depotDropDown.SelectedItem = depot;
+          this._depotDropDown.SelectedItem = depotID;
         if ((int) lineId != this._cachedLineID)
         {
           this._colorTextField.text = ColorUtility.ToHtmlStringRGB(this._colorField.selectedColor);

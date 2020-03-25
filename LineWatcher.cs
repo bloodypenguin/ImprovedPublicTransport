@@ -52,11 +52,9 @@ namespace ImprovedPublicTransport2
           if (LineWatcher.IsValid(ref lines.m_buffer[(int) lineID]) && this._knownLines.Add(lineID))
           {
             CachedTransportLineData.SetLineDefaults(lineID);
-            Vector3 position = Singleton<NetManager>.instance.m_nodes.m_buffer[(int) lines.m_buffer[(int) lineID].GetStop(0)].m_position;
-            ushort closestDepot = DepotUtil.GetClosestDepot(lineID, position);
-            if ((int) closestDepot != 0)
-              CachedTransportLineData.SetDepot(lineID, closestDepot);
-            if (OptionsWrapper<Settings>.Options.ShowLineInfo && lines.m_buffer[(int)lineID].Info?.m_class?.m_service != ItemClass.Service.Disaster)
+            DepotUtil.AutoAssignLineDepot( lineID, out var position);
+            if (OptionsWrapper<Settings>.Options.ShowLineInfo &&
+                lines.m_buffer[(int) lineID].Info?.m_class?.m_service != ItemClass.Service.Disaster)
               WorldInfoPanel.Show<PublicTransportWorldInfoPanel>(position, new InstanceID()
               {
                 TransportLine = lineID
@@ -69,10 +67,10 @@ namespace ImprovedPublicTransport2
         if (this.SimulationLineCount >= this.KnownLineCount)
           return;
         Array16<TransportLine> lines = Singleton<TransportManager>.instance.m_lines;
-        for (ushort index = 0; (uint) index < lines.m_size; ++index)
+        for (ushort lineID = 0; (uint) lineID < lines.m_size; ++lineID)
         {
-          if (!LineWatcher.IsValid(ref lines.m_buffer[(int) index]))
-            this._knownLines.Remove(index);
+          if (!LineWatcher.IsValid(ref lines.m_buffer[(int) lineID]))
+            this._knownLines.Remove(lineID);
         }
       }
     }

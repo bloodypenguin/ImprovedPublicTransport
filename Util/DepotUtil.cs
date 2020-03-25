@@ -34,12 +34,14 @@ namespace ImprovedPublicTransport2.Util
         }
 
 
-        public static bool IsValidDepot(ref Building building, TransportInfo transportInfo)
+        public static bool IsValidDepot(ushort depotID, TransportInfo transportInfo)
         {
-            if (transportInfo == null)
+            if (transportInfo == null || depotID == 0)
             {
                 return false;
             }
+
+            var building = BuildingManager.instance.m_buildings.m_buffer[depotID];
             if (building.Info?.m_class == null || (building.m_flags & Building.Flags.Created) == Building.Flags.None)
                 return false;
             GetStats(ref building, out TransportInfo primaryInfo, out TransportInfo secondaryInfo);
@@ -132,16 +134,27 @@ namespace ImprovedPublicTransport2.Util
                 return false;
             }
             if (depotID != 0 &&
-                DepotUtil.IsValidDepot(ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[depotID], transportInfo))
+                DepotUtil.IsValidDepot(depotID, transportInfo))
             {
                 return true;
             }
-            depotID = GetClosestDepot(lineID,
-                Singleton<NetManager>.instance.m_nodes
-                    .m_buffer[Singleton<TransportManager>.instance.m_lines.m_buffer[lineID].GetStop(0)]
-                    .m_position);
-            CachedTransportLineData._lineData[lineID].Depot = depotID;
+
+            depotID = AutoAssignLineDepot(lineID, out _);
             return depotID != 0;
+        }
+        
+        public static ushort AutoAssignLineDepot(ushort lineID, out Vector3 stopPosition)
+        {
+            stopPosition = Singleton<NetManager>.instance.m_nodes.m_buffer[(int) TransportManager.instance.m_lines.m_buffer[(int) lineID].GetStop(0)]
+                .m_position;
+            ushort closestDepot = DepotUtil.GetClosestDepot(lineID, stopPosition);
+            if ((int) closestDepot != 0)
+            {
+                CachedTransportLineData.SetDepot(lineID, closestDepot);
+                UnityEngine.Debug.LogWarning($"IPT2: auto assigned depot {closestDepot} to line {lineID}");
+            }
+
+            return closestDepot;
         }
 
         public static ushort GetClosestDepot(ushort lineID, Vector3 stopPosition) //TODO(earalov): What happens if closest depot is not connected/not reachable?
@@ -168,7 +181,7 @@ namespace ImprovedPublicTransport2.Util
 
         public static bool CanAddVehicle(ushort depotID, ref Building depot, TransportInfo transportInfo)
         {
-            if (depot.Info == null)
+            if (depotID == 0 || depot.Info == null)
             {
                 return false;
             }
