@@ -29,20 +29,20 @@ namespace ImprovedPublicTransport2.HarmonyPatches
             }
 
             var depot = CachedTransportLineData._lineData[lineID].Depot;
-            if (depot == 0)
-            {
-                Debug.LogWarning($"IPT2: No depot was selected for line {lineID}!");
-                CachedTransportLineData.ClearEnqueuedVehicles(lineID);
-                return false;
-            }
-
             if (!DepotUtil.ValidateDepotAndFindNewIfNeeded(lineID, ref depot, info))
             {
-                Debug.LogWarning($"IPT2: Invalid depot was selected for line {lineID}, resetting to : {depot}!");
+                if (depot == 0)
+                {
+                    Debug.LogWarning($"IPT2: No proper depot was found for line {lineID}!");
+                    CachedTransportLineData.ClearEnqueuedVehicles(lineID);
+                    return false;
+                }
+                Debug.LogWarning($"IPT2: Invalid or no depot was selected for line {lineID}, resetting to : {depot}!");
                 CachedTransportLineData.ClearEnqueuedVehicles(lineID);
                 return false;
             }
-
+            
+            
             if (depot == buildingID)
             {
                 if (!(SimHelper.SimulationTime >= CachedTransportLineData._lineData[lineID].NextSpawnTime))
