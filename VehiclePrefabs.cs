@@ -163,7 +163,7 @@ namespace ImprovedPublicTransport2
             for (int index = 0; index < PrefabCollection<VehicleInfo>.PrefabCount(); ++index)
             {
                 VehicleInfo prefab = PrefabCollection<VehicleInfo>.GetPrefab((uint)index);
-                if ((Object)prefab != (Object)null && !VehiclePrefabs.IsTrailer(prefab) && prefab.m_placementStyle != ItemClass.Placement.Procedural)
+                if ((Object)prefab != (Object)null && prefab.m_placementStyle != ItemClass.Placement.Procedural)
                 {
                     var service = prefab.m_class.m_service;
                     var subService = prefab.m_class.m_subService;
@@ -265,14 +265,6 @@ namespace ImprovedPublicTransport2
             this._sightseeingBusPrefabData = sightseeingBusList.ToArray();
             this._trolleybusPrefabData = trolleybusList.ToArray();
             this._helicopterPrefabData = helicopterList.ToArray();
-        }
-
-        private static bool IsTrailer(VehicleInfo info)
-        {
-            string str = ColossalFramework.Globalization.Locale.GetUnchecked("VEHICLE_TITLE", info.name);
-            if (!str.StartsWith("VEHICLE_TITLE"))
-                return str.StartsWith("Trailer");
-            return true;
         }
     }
 }
