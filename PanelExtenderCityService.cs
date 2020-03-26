@@ -17,6 +17,8 @@ namespace ImprovedPublicTransport2
 {
   public class PanelExtenderCityService : MonoBehaviour
   {
+    private  const float VerticalOffset = 40f; //TODO: needed due to the UI issue, revert if CO fixes the panel
+    
     private bool _initialized;
     private ushort _cachedBuildingID;
     private int _cachedStopCount;
@@ -76,7 +78,7 @@ namespace ImprovedPublicTransport2
             if (length > 0)
             {
               this._titleLabel.text = Localization.Get("CITY_SERVICE_PANEL_TITLE_STATION_STOPS");
-              this._listBoxPanel.relativePosition = new Vector3(this._listBoxPanel.parent.width + 1f, 0.0f);
+              this._listBoxPanel.relativePosition = new Vector3(this._listBoxPanel.parent.width + 1f, VerticalOffset);
               this._listBoxPanel.Show();
               if ((int) this._cachedBuildingID != (int) building || this._cachedStopCount != length)
               {
@@ -95,7 +97,7 @@ namespace ImprovedPublicTransport2
             this._stopsListBox.Hide();
             UIPanel uiPanel = this._cityServiceWorldInfoPanel.Find<UIPanel>("SvsVehicleTypes");
             if ((UnityEngine.Object) uiPanel != (UnityEngine.Object) null)
-              this._listBoxPanel.relativePosition = new Vector3((float) ((double) this._listBoxPanel.parent.width + (double) uiPanel.width + 2.0), 0.0f);
+              this._listBoxPanel.relativePosition = new Vector3((float) ((double) this._listBoxPanel.parent.width + (double) uiPanel.width + 2.0), VerticalOffset);
             List<ushort> depotVehicles = PanelExtenderCityService.GetDepotVehicles(building);
             int count = depotVehicles.Count;
             if (count > 0)
@@ -149,7 +151,7 @@ namespace ImprovedPublicTransport2
       UIPanel uiPanel = this._cityServiceWorldInfoPanel.component.AddUIComponent<UIPanel>();
       uiPanel.name = "ListBoxPanel";
       uiPanel.AlignTo(uiPanel.parent, UIAlignAnchor.TopRight);
-      uiPanel.relativePosition = new Vector3(uiPanel.parent.width + 1f, 0.0f);
+      uiPanel.relativePosition = new Vector3(uiPanel.parent.width + 1f, VerticalOffset);
       uiPanel.width = 180f;
       uiPanel.height = parentHeight - 16f;
       uiPanel.backgroundSprite = "UnlockingPanel2";
