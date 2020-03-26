@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ICities;
+using ImprovedPublicTransport2.Util;
 
 namespace ImprovedPublicTransport2
 {
@@ -75,7 +76,7 @@ namespace ImprovedPublicTransport2
 
         private static void ObserveForInfo(ushort buildingId, TransportInfo transportInfo)
         {
-            if (transportInfo == null || !DepotUtil.IsValidDepot(ref BuildingManager.instance.m_buildings.m_buffer[buildingId], transportInfo))
+            if (transportInfo == null || !DepotUtil.IsValidDepot(buildingId, transportInfo))
             {
                 return;
             }
@@ -105,8 +106,7 @@ namespace ImprovedPublicTransport2
                 new ItemClassTriplet(transportInfo.GetService(), transportInfo.GetSubService(),
                     transportInfo.GetClassLevel()),
                 out HashSet<ushort> source)
-                ? source.Where(d => DepotUtil.IsValidDepot(ref BuildingManager.instance.m_buildings.m_buffer[d],
-                        transportInfo))
+                ? source.Where(d => DepotUtil.IsValidDepot(d, transportInfo))
                     .ToArray()
                 : new ushort [0];
             //we validate here to be compatible with MOM (if MOM sets max vehicle count later than this mod loads)

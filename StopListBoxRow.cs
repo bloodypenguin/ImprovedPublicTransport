@@ -7,7 +7,9 @@
 using ColossalFramework;
 using ColossalFramework.UI;
 using ImprovedPublicTransport2.Detour;
+using ImprovedPublicTransport2.Util;
 using UnityEngine;
+using Utils = ImprovedPublicTransport2.Util.Utils;
 
 namespace ImprovedPublicTransport2
 {
@@ -70,7 +72,7 @@ namespace ImprovedPublicTransport2
         if (stopIndex == -1)
         {
           ushort transportLine = Singleton<NetManager>.instance.m_nodes.m_buffer[node].m_transportLine;
-          str = string.Format("{0} #{1}", (object) Singleton<TransportManager>.instance.GetLineName(transportLine), (object) (TransportLineMod.GetStopIndex(transportLine, node) + 1));
+          str = string.Format("{0} #{1}", (object) Singleton<TransportManager>.instance.GetLineName(transportLine), (object) (TransportLineUtil.GetStopIndex(transportLine, node) + 1));
         }
         else
           str = string.Format(Localization.Get("STOP_LIST_BOX_ROW_STOP"), (object)stopIndex);

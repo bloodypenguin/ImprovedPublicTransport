@@ -2,10 +2,15 @@
 using ColossalFramework.UI;
 using ICities;
 using System;
+using System.Reflection;
+using Harmony;
 using ImprovedPublicTransport2.Detour;
+using ImprovedPublicTransport2.Detour.Vehicles;
+using ImprovedPublicTransport2.HarmonyPatches;
 using ImprovedPublicTransport2.OptionsFramework.Extensions;
 using ImprovedPublicTransport2.RedirectionFramework;
 using UnityEngine;
+using Utils = ImprovedPublicTransport2.Util.Utils;
 
 namespace ImprovedPublicTransport2
 {
@@ -14,7 +19,8 @@ namespace ImprovedPublicTransport2
     public static bool inGame = false;
     private GameObject _iptGameObject;
     private GameObject _worldInfoPanel;
-    private readonly string version = "4.4.0";
+    private readonly string version = "5.0.0";
+    private HarmonyInstance HarmonyInstance;
 
     public string Name => $"Improved Public Transport 2 [r{version}]";
 
@@ -23,6 +29,12 @@ namespace ImprovedPublicTransport2
       public void OnSettingsUI(UIHelperBase helper)
       {
           helper.AddOptionsGroup<Settings>(Localization.Get);
+      }
+      
+      public override void OnCreated(ILoading loading)
+      {
+        base.OnCreated(loading);
+        HarmonyInstance = HarmonyInstance.Create("github.com/bloodypenguin/ImprovedPublicTransport");
       }
 
     public override void OnLevelLoaded(LoadMode mode)
@@ -47,22 +59,55 @@ namespace ImprovedPublicTransport2
           this._worldInfoPanel = new GameObject("PublicTransportStopWorldInfoPanel");
           this._worldInfoPanel.transform.parent = objectOfType.transform;
           this._worldInfoPanel.AddComponent<PublicTransportStopWorldInfoPanel>();
-          NetManagerMod.Init();
-          VehicleManagerMod.Init();
+          
+          CachedNodeData.Init();
+          
+          Patch(typeof(DepotAI), nameof(DepotAI.StartTransfer), DepotAIPatch.GetPrefix(), null);
+          
+          Patch(typeof(NetManager), nameof(NetManager.ReleaseNode), null,
+            typeof(NetManagerPatch).GetMethod(nameof(NetManagerPatch.ReleaseNode))); //TODO: think, whether it should be pre or post
+          
+          CachedVehicleData.Init();
+          Patch(typeof(VehicleManager), "ReleaseWaterSource", null,
+            typeof(VehicleManagerPatch).GetMethod(nameof(VehicleManagerPatch.ReleaseWaterSource))); //TODO: think, whether it should be pre or post
+          
           Redirector<BusAIDetour>.Deploy();
+          PatchCountPassengers(typeof(BusAI));
+          
+          Redirector<TrolleybusAIDetour>.Deploy();
+          PatchCountPassengers(typeof(TrolleybusAI));
+          
           Redirector<PassengerTrainAIDetour>.Deploy();
+          PatchCountPassengers(typeof(PassengerTrainAI));
+          
           Redirector<PassengerShipAIDetour>.Deploy(); 
+          PatchCountPassengers(typeof(PassengerShipAI));
+          
           Redirector<PassengerPlaneAIDetour>.Deploy();
+          PatchCountPassengers(typeof(PassengerPlaneAI));
+          
           Redirector<PassengerFerryAIDetour>.Deploy();
+          PatchCountPassengers(typeof(PassengerFerryAI));
+
           Redirector<PassengerBlimpAIDetour>.Deploy();
+          PatchCountPassengers(typeof(PassengerBlimpAI));
+          
+          Redirector<PassengerHelicopterAIDetour>.Deploy();
+          PatchCountPassengers(typeof(PassengerHelicopterAI));
+          
           Redirector<TramAIDetour>.Deploy();
+          PatchCountPassengers(typeof(TramAI));
+          
           Redirector<CommonBuildingAIReverseDetour>.Deploy();
           Redirector<PublicTransportStopButtonDetour>.Deploy();
           Redirector<PublicTransportVehicleButtonDetour>.Deploy();
           Redirector<PublicTransportWorldInfoPanelDetour>.Deploy();
           BuildingExtension.Init();
           LineWatcher.instance.Init();
-          TransportLineMod.Init();
+          
+          CachedTransportLineData.Init();
+          Redirector<TransportLineDetour>.Deploy();
+          
           VehiclePrefabs.Init();
           SerializableDataExtension.instance.Loaded = true;
           LocaleModifier.Init();
@@ -92,6 +137,39 @@ namespace ImprovedPublicTransport2
       Utils.Log((object) ("Unloading done!" + System.Environment.NewLine));
     }
 
+    private void PatchCountPassengers(Type type)
+    {
+      Patch(type, "UnloadPassengers", 
+        typeof(UnloadPassengersPatch).GetMethod(nameof(UnloadPassengersPatch.UnloadPassengersPre), BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static),
+        typeof(UnloadPassengersPatch).GetMethod(nameof(UnloadPassengersPatch.UnloadPassengersPost), BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static)
+      );
+      Patch(type, "LoadPassengers", 
+        typeof(LoadPassengersPatch).GetMethod(nameof(LoadPassengersPatch.LoadPassengersPre), BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static),
+        typeof(LoadPassengersPatch).GetMethod(nameof(LoadPassengersPatch.LoadPassengersPost), BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static)
+      );
+    }
+    
+    private void Patch(Type type, string methodName, MethodInfo prePatch, MethodInfo postPatch)
+    {
+      try
+      {
+        var bindingFlags = BindingFlags.NonPublic | BindingFlags.Public;
+        bindingFlags |= BindingFlags.Instance;
+
+        HarmonyInstance.Patch(type.GetMethod(methodName,
+            bindingFlags),
+          prefix: prePatch == null ? null : new HarmonyMethod(prePatch),
+          postfix: postPatch == null ? null : new HarmonyMethod(postPatch));
+      }
+      catch (Exception e)
+      {
+        UnityEngine.Debug.LogError("Improved Public Tranport 2: Failed to patch method " + methodName);
+        UnityEngine.Debug.LogException(e);
+      }
+    }
+    
+    
+
     private void ReleaseUnusedCitizenUnits()
     {
       Utils.Log((object) "Find and clear unused citizen units.");
@@ -113,6 +191,7 @@ namespace ImprovedPublicTransport2
 
     private void Deinit()
     {
+      HarmonyInstance?.UnpatchAll();
       Redirector<TramAIDetour>.Revert();
       Redirector<PassengerTrainAIDetour>.Revert();
       Redirector<PassengerShipAIDetour>.Revert();
@@ -124,10 +203,15 @@ namespace ImprovedPublicTransport2
       Redirector<PublicTransportStopButtonDetour>.Revert();
       Redirector<PublicTransportVehicleButtonDetour>.Revert();
       Redirector<PublicTransportWorldInfoPanelDetour>.Revert();
-      TransportLineMod.Deinit();
+      Redirector<TrolleybusAIDetour>.Revert();
+      Redirector<PassengerHelicopterAIDetour>.Revert();
+
+      Redirector<TransportLineDetour>.Revert();
+      CachedTransportLineData.Deinit();
+      
       BuildingExtension.Deinit();
-      NetManagerMod.Deinit();
-      VehicleManagerMod.Deinit();
+      CachedNodeData.Deinit();
+      CachedVehicleData.Deinit();
       VehiclePrefabs.Deinit();
       SerializableDataExtension.instance.Loaded = false;
       LocaleModifier.Deinit();
