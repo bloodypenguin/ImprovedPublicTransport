@@ -11,7 +11,10 @@ using System.Collections.Generic;
 using System.Reflection;
 using ImprovedPublicTransport2.Detour;
 using ImprovedPublicTransport2.OptionsFramework;
+using ImprovedPublicTransport2.Util;
 using UnityEngine;
+using UIUtils = ImprovedPublicTransport2.Util.UIUtils;
+using Utils = ImprovedPublicTransport2.Util.Utils;
 
 namespace ImprovedPublicTransport2
 {
@@ -62,6 +65,8 @@ namespace ImprovedPublicTransport2
             ItemClass.Level.Level1), true);
         dictionary.Add(new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportPlane,
             ItemClass.Level.Level2), true);
+        dictionary.Add(new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportPlane,
+          ItemClass.Level.Level3), true);
         dictionary.Add(new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportShip,
             ItemClass.Level.Level1), true);
         dictionary.Add(new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportShip,
@@ -72,6 +77,8 @@ namespace ImprovedPublicTransport2
             ItemClass.Level.Level1), true);
         dictionary.Add(new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTours,
             ItemClass.Level.Level3), true);
+        dictionary.Add(new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTrolleybus,
+          ItemClass.Level.Level1), true);
         this._updateDepots = dictionary;
     }
 
@@ -208,12 +215,12 @@ namespace ImprovedPublicTransport2
       ushort lineId = this.GetLineID();
       if ((int) lineId != 0)
       {
-        int lineVehicleCount = TransportLineMod.CountLineActiveVehicles(lineId, out int _);
-        int targetVehicleCount = TransportLineMod.GetTargetVehicleCount(lineId);
+        int lineVehicleCount = TransportLineDetour.CountLineActiveVehicles(lineId, out int _);
+        int targetVehicleCount = CachedTransportLineData.GetTargetVehicleCount(lineId);
         int num1 = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineId].CountStops(lineId);
         this._vehicleAmount.text = LocaleFormatter.FormatGeneric("TRANSPORT_LINE_VEHICLECOUNT", (object) (lineVehicleCount.ToString() + " / " + (object) targetVehicleCount));
         this._stopCountLabel.text = string.Format(Localization.Get("LINE_PANEL_STOPS"), (object) num1);
-        this._budgetControl.isChecked = TransportLineMod.GetBudgetControlState(lineId);
+        this._budgetControl.isChecked = CachedTransportLineData.GetBudgetControlState(lineId);
 
         if ((int) OptionsWrapper<Settings>.Options.IntervalAggressionFactor == 0)
         {
@@ -224,7 +231,7 @@ namespace ImprovedPublicTransport2
         else
         {
           this._unbunching.Enable();
-          this._unbunching.isChecked = TransportLineMod.GetUnbunchingState(lineId);
+          this._unbunching.isChecked = CachedTransportLineData.GetUnbunchingState(lineId);
 
           if (targetVehicleCount > 1)
           {
@@ -234,18 +241,18 @@ namespace ImprovedPublicTransport2
             this._unbunching.label.text = Localization.Get("UNBUNCHING_ENABLED");
         }
         bool flag1 = false;
-        ushort depot = TransportLineMod.GetDepot(lineId);
+        ushort depotID = CachedTransportLineData.GetDepot(lineId);
           TransportInfo info = TransportManager.instance.m_lines.m_buffer[lineId].Info;
-          if (!TransportLineMod.ValidateDepot(lineId, ref depot, info))
+          if (!DepotUtil.IsValidDepot(depotID, info))
           {
               flag1 = true;
           }
           bool flag2 = true;
-        if ((int) depot != 0)
-          flag2 = TransportLineMod.CanAddVehicle(depot, ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[(int) depot], info);
+        if ((int) depotID != 0)
+          flag2 = DepotUtil.CanAddVehicle(depotID, ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[(int) depotID], info);
         if (flag2)
         {
-          int num2 = Mathf.CeilToInt(TransportLineMod.GetNextSpawnTime(lineId) - SimHelper.SimulationTime);
+          int num2 = Mathf.CeilToInt(CachedTransportLineData.GetNextSpawnTime(lineId) - SimHelper.SimulationTime);
           this._spawnTimer.text = string.Format(Localization.Get("LINE_PANEL_SPAWNTIMER"), num2 < 0 ? (object) "∞" : (object) num2.ToString());
         }
         else
@@ -267,12 +274,12 @@ namespace ImprovedPublicTransport2
         if (this._depotDropDown.Items.Length == 0)
           this._depotDropDown.Text = Localization.Get("LINE_PANEL_NO_DEPOT_FOUND");
         else
-          this._depotDropDown.SelectedItem = depot;
+          this._depotDropDown.SelectedItem = depotID;
         if ((int) lineId != this._cachedLineID)
         {
           this._colorTextField.text = ColorUtility.ToHtmlStringRGB(this._colorField.selectedColor);
           this._prefabListBox.SetSelectionStateToAll(false, false);
-          this._prefabListBox.SelectedItems = TransportLineMod.GetPrefabs(lineId);
+          this._prefabListBox.SelectedItems = CachedTransportLineData.GetPrefabs(lineId);
           this._prefabPanel.Hide();
           this.UpdatePanelPositionAndSize();
         }
@@ -288,7 +295,7 @@ namespace ImprovedPublicTransport2
           this._lineVehiclePanel.Hide();
           this._lineVehicleListBox.ClearItems();
         }
-        int num3 = TransportLineMod.EnqueuedVehiclesCount(lineId);
+        int num3 = CachedTransportLineData.EnqueuedVehiclesCount(lineId);
         if ((uint) num3 > 0U & flag2)
         {
           if ((int) lineId != this._cachedLineID || num3 != this._cachedQueuedCount)
@@ -713,11 +720,11 @@ namespace ImprovedPublicTransport2
             ushort lineId = this.GetLineID();
             if ((int) lineId == 0)
                 return;
-            bool budgetControlState = TransportLineMod.GetBudgetControlState(lineId);
-            TransportLineMod.SetBudgetControlState(lineId, !budgetControlState);
+            bool budgetControlState = CachedTransportLineData.GetBudgetControlState(lineId);
+            CachedTransportLineData.SetBudgetControlState(lineId, !budgetControlState);
             if (budgetControlState)
                 return;
-            TransportLineMod.ClearEnqueuedVehicles(lineId);
+            CachedTransportLineData.ClearEnqueuedVehicles(lineId);
         });
     }
 
@@ -726,8 +733,8 @@ namespace ImprovedPublicTransport2
       ushort lineId = this.GetLineID();
       if ((int) lineId == 0)
         return;
-      bool unbunchingState = TransportLineMod.GetUnbunchingState(lineId);
-      TransportLineMod.SetUnbunchingState(lineId, !unbunchingState);
+      bool unbunchingState = CachedTransportLineData.GetUnbunchingState(lineId);
+      CachedTransportLineData.SetUnbunchingState(lineId, !unbunchingState);
     }
 
     private void OnAddVehicleClick(UIComponent component, UIMouseEventParameter eventParam)
@@ -737,23 +744,23 @@ namespace ImprovedPublicTransport2
             ushort lineId = this.GetLineID();
             if ((int) lineId == 0)
                 return;
-            ushort depot = TransportLineMod.GetDepot(lineId);
+            ushort depot = CachedTransportLineData.GetDepot(lineId);
             TransportInfo info = TransportManager.instance.m_lines.m_buffer[lineId].Info;
-            if (!TransportLineMod.CanAddVehicle(depot,
+            if (!DepotUtil.CanAddVehicle(depot,
                 ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[(int) depot], info))
                 return;
-            TransportLineMod.SetBudgetControlState(lineId, false);
+            CachedTransportLineData.SetBudgetControlState(lineId, false);
             if ((int) depot == 0)
             {
-                TransportLineMod.IncreaseTargetVehicleCount(lineId);
+                CachedTransportLineData.IncreaseTargetVehicleCount(lineId);
             }
             else
             {
                 string prefabName =
                     !((UnityEngine.Object) (component as VehicleListBoxRow) != (UnityEngine.Object) null)
-                        ? TransportLineMod.GetRandomPrefab(lineId)
+                        ? CachedTransportLineData.GetRandomPrefab(lineId)
                         : (component as VehicleListBoxRow).Prefab.ObjectName;
-                TransportLineMod.EnqueueVehicle(lineId, prefabName, true);
+                CachedTransportLineData.EnqueueVehicle(lineId, prefabName, true);
             }
         });
     }
@@ -766,32 +773,32 @@ namespace ImprovedPublicTransport2
             ushort lineId = this.GetLineID();
             if ((int) lineId == 0)
                 return;
-            TransportLineMod.SetBudgetControlState(lineId, false);
+            CachedTransportLineData.SetBudgetControlState(lineId, false);
             int[] selectedIndexes = this._vehiclesInQueueListBox.SelectedIndexes;
             HashSet<ushort> selectedVehicles = this._lineVehicleListBox.SelectedVehicles;
             if (selectedIndexes.Length != 0)
-                TransportLineMod.DequeueVehicles(lineId, selectedIndexes, true);
+                CachedTransportLineData.DequeueVehicles(lineId, selectedIndexes, true);
             else if (selectedVehicles.Count > 0)
             {
                 foreach (ushort vehicleID in selectedVehicles)
-                    TransportLineMod.RemoveVehicle(lineId, vehicleID, true);
+                    TransportLineDetour.RemoveVehicle(lineId, vehicleID, true);
             }
-            else if (TransportLineMod.EnqueuedVehiclesCount(lineId) > 0)
+            else if (CachedTransportLineData.EnqueuedVehiclesCount(lineId) > 0)
             {
-                TransportLineMod.DequeueVehicle(lineId);
+                CachedTransportLineData.DequeueVehicle(lineId);
             }
             else
             {
-                var activeVehicles = TransportLineMod.CountLineActiveVehicles(lineId, out int _);
+                var activeVehicles = TransportLineDetour.CountLineActiveVehicles(lineId, out int _);
                 if (activeVehicles > 0)
                 {
-                    TransportLineMod.RemoveActiveVehicle(lineId, true, activeVehicles);
+                  TransportLineDetour.RemoveActiveVehicle(lineId, true, activeVehicles);
                 }
                 else
                 {
-                    if (TransportLineMod.GetTargetVehicleCount(lineId) <= 0)
+                    if (CachedTransportLineData.GetTargetVehicleCount(lineId) <= 0)
                         return;
-                    TransportLineMod.DecreaseTargetVehicleCount(lineId);
+                    CachedTransportLineData.DecreaseTargetVehicleCount(lineId);
                 }
             }
         });
@@ -807,7 +814,7 @@ namespace ImprovedPublicTransport2
         if (ret != 1)
           return;
         Singleton<SimulationManager>.instance.AddAction((System.Action) (() => Singleton<TransportManager>.instance.ReleaseLine(lineID)));
-        TransportLineMod.SetLineDefaults(lineID);
+        CachedTransportLineData.SetLineDefaults(lineID);
         this._publicTransportWorldInfoPanel.OnCloseButton();
       }));
     }
@@ -817,7 +824,7 @@ namespace ImprovedPublicTransport2
       ushort lineId = this.GetLineID();
       if ((int) lineId == 0)
         return;
-      TransportLineMod.SetDepot(lineId, selectedItem);
+      CachedTransportLineData.SetDepot(lineId, selectedItem);
     }
 
     private void OnDepotMarkerClicked(UIComponent component, UIMouseEventParameter eventParam)
@@ -836,7 +843,7 @@ namespace ImprovedPublicTransport2
       ushort lineId = this.GetLineID();
       if ((int) lineId == 0)
         return;
-      TransportLineMod.SetPrefabs(lineId, selectedItems);
+      CachedTransportLineData.SetPrefabs(lineId, selectedItems);
     }
 
     private void OnColorChanged(UIComponent component, Color color)
@@ -893,7 +900,7 @@ namespace ImprovedPublicTransport2
     {
       this._lineVehicleListBox.ClearItems();
       TransportLine transportLine = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID];
-      int num = TransportLineMod.CountLineActiveVehicles(lineID, out int _);
+      int num = TransportLineDetour.CountLineActiveVehicles(lineID, out int _);
       PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(service, subService, level);
             int length = prefabs.Length;
       for (int index1 = 0; index1 < num; ++index1)
@@ -932,7 +939,7 @@ namespace ImprovedPublicTransport2
     private void PopulateQueuedVehicleListBox(ushort lineID, ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
     {
       this._vehiclesInQueueListBox.ClearItems();
-      string[] enqueuedVehicles = TransportLineMod.GetEnqueuedVehicles(lineID);
+      string[] enqueuedVehicles = CachedTransportLineData.GetEnqueuedVehicles(lineID);
       int length1 = enqueuedVehicles.Length;
       PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(service, subService, level);
       int length2 = prefabs.Length;

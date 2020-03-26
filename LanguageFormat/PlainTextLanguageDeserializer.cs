@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using ImprovedPublicTransport2.TranslationFramework;
+using ImprovedPublicTransport2.Util;
 
 namespace ImprovedPublicTransport2.LanguageFormat
 {

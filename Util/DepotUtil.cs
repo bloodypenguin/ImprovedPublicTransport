@@ -1,5 +1,11 @@
-﻿namespace ImprovedPublicTransport2
+﻿using System;
+using ColossalFramework;
+using ImprovedPublicTransport2.Detour;
+using UnityEngine;
+
+namespace ImprovedPublicTransport2.Util
 {
+    
     public static class DepotUtil
     {
         public static void GetStats(ref Building building,
@@ -28,12 +34,14 @@
         }
 
 
-        public static bool IsValidDepot(ref Building building, TransportInfo transportInfo)
+        public static bool IsValidDepot(ushort depotID, TransportInfo transportInfo)
         {
-            if (transportInfo == null)
+            if (transportInfo == null || depotID == 0)
             {
                 return false;
             }
+
+            var building = BuildingManager.instance.m_buildings.m_buffer[depotID];
             if (building.Info?.m_class == null || (building.m_flags & Building.Flags.Created) == Building.Flags.None)
                 return false;
             GetStats(ref building, out TransportInfo primaryInfo, out TransportInfo secondaryInfo);
@@ -83,6 +91,7 @@
                             case ItemClass.SubService.PublicTransportMonorail:
                             case ItemClass.SubService.PublicTransportTaxi:
                             case ItemClass.SubService.PublicTransportCableCar:
+                            case ItemClass.SubService.PublicTransportTrolleybus:    
                                 return true;
                         }
                     }
@@ -101,6 +110,7 @@
                         switch (subService)
                         {
                             case ItemClass.SubService.PublicTransportTours:
+                            case ItemClass.SubService.PublicTransportPlane:
                                 return true;
                         }
                     }
@@ -115,6 +125,91 @@
                 }
             }
             return false;
+        }
+
+        public static bool ValidateDepotAndFindNewIfNeeded(ushort lineID, ref ushort depotID, TransportInfo transportInfo)
+        {
+            if (transportInfo == null)
+            {
+                return false;
+            }
+            if (depotID != 0 &&
+                DepotUtil.IsValidDepot(depotID, transportInfo))
+            {
+                return true;
+            }
+
+            depotID = AutoAssignLineDepot(lineID, out _);
+            return depotID != 0;
+        }
+        
+        public static ushort AutoAssignLineDepot(ushort lineID, out Vector3 stopPosition)
+        {
+            stopPosition = Singleton<NetManager>.instance.m_nodes.m_buffer[(int) TransportManager.instance.m_lines.m_buffer[(int) lineID].GetStop(0)]
+                .m_position;
+            ushort closestDepot = DepotUtil.GetClosestDepot(lineID, stopPosition);
+            if ((int) closestDepot != 0)
+            {
+                CachedTransportLineData.SetDepot(lineID, closestDepot);
+                UnityEngine.Debug.LogWarning($"IPT2: auto assigned depot {closestDepot} to line {lineID}");
+            }
+
+            return closestDepot;
+        }
+
+        public static ushort GetClosestDepot(ushort lineID, Vector3 stopPosition) //TODO(earalov): What happens if closest depot is not connected/not reachable?
+        {
+            ushort num1 = 0;
+            float num2 = Single.MaxValue;
+            BuildingManager instance = Singleton<BuildingManager>.instance;
+            TransportInfo info = Singleton<TransportManager>.instance.m_lines
+                .m_buffer[(int) lineID]
+                .Info;
+            ushort[] depots = BuildingExtension.GetDepots(info);
+            for (int index = 0; index < depots.Length; ++index)
+            {
+                float num3 = Vector3.Distance(stopPosition,
+                    instance.m_buildings.m_buffer[(int) depots[index]].m_position);
+                if ((double) num3 < (double) num2)
+                {
+                    num1 = depots[index];
+                    num2 = num3;
+                }
+            }
+            return num1;
+        }
+
+        public static bool CanAddVehicle(ushort depotID, ref Building depot, TransportInfo transportInfo)
+        {
+            if (depotID == 0 || depot.Info == null)
+            {
+                return false;
+            }
+            if (depot.Info.m_buildingAI is DepotAI)
+            {
+                DepotAI buildingAi = depot.Info.m_buildingAI as DepotAI;
+                if (transportInfo.m_vehicleType == buildingAi.m_transportInfo?.m_vehicleType ||
+                    transportInfo.m_vehicleType == buildingAi.m_secondaryTransportInfo?.m_vehicleType)
+                {
+                    int num = (PlayerBuildingAI.GetProductionRate(100,
+                            Singleton<EconomyManager>.instance.GetBudget(buildingAi.m_info.m_class)) * 
+                        buildingAi.m_maxVehicleCount + 99) / 100;
+                    return buildingAi.GetVehicleCount(depotID, ref depot) < num;
+                }
+            }
+            if (depot.Info.m_buildingAI is ShelterAI)
+            {
+                ShelterAI buildingAi = depot.Info.m_buildingAI as ShelterAI;
+                int num = (PlayerBuildingAI.GetProductionRate(100, Singleton<EconomyManager>.instance.GetBudget(buildingAi.m_info.m_class)) * buildingAi.m_evacuationBusCount + 99) / 100;
+                int count = 0;
+                int cargo = 0;
+                int capacity = 0;
+                int outside = 0;
+                CommonBuildingAIReverseDetour.CalculateOwnVehicles(buildingAi, depotID, ref depot, buildingAi.m_transportInfo.m_vehicleReason, ref count, ref cargo, ref capacity, ref outside);
+                return count < num;
+            }
+            return false;
+
         }
     }
 }

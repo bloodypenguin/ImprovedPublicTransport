@@ -11,6 +11,7 @@ using System;
 using System.Text;
 using ImprovedPublicTransport2.OptionsFramework;
 using UnityEngine;
+using Utils = ImprovedPublicTransport2.Util.Utils;
 
 namespace ImprovedPublicTransport2
 {

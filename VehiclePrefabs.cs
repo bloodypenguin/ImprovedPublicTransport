@@ -27,6 +27,8 @@ namespace ImprovedPublicTransport2
         private PrefabData[] _blimpPrefabData;
         private PrefabData[] _ferryPrefabData;
         private PrefabData[] _sightseeingBusPrefabData;
+        private PrefabData[] _trolleybusPrefabData;
+        private PrefabData[] _helicopterPrefabData;
 
         public static void Init()
         {
@@ -109,6 +111,8 @@ namespace ImprovedPublicTransport2
                             return this._monorailPrefabData;
                         case ItemClass.SubService.PublicTransportCableCar:
                             return this._cablecarPrefabData;
+                        case ItemClass.SubService.PublicTransportTrolleybus:
+                            return this._trolleybusPrefabData;
                     }
                 }
                 else if (level == ItemClass.Level.Level2)
@@ -129,6 +133,8 @@ namespace ImprovedPublicTransport2
                     {
                         case ItemClass.SubService.PublicTransportTours:
                             return this._sightseeingBusPrefabData;
+                        case ItemClass.SubService.PublicTransportPlane:
+                            return this._helicopterPrefabData;
                     }
                 }
             }
@@ -151,11 +157,13 @@ namespace ImprovedPublicTransport2
             List<PrefabData> cableCarList = new List<PrefabData>();
             List<PrefabData> ferryList = new List<PrefabData>();
             List<PrefabData> sightseeingBusList = new List<PrefabData>();
+            List<PrefabData> trolleybusList = new List<PrefabData>();
+            List<PrefabData> helicopterList = new List<PrefabData>();
 
             for (int index = 0; index < PrefabCollection<VehicleInfo>.PrefabCount(); ++index)
             {
                 VehicleInfo prefab = PrefabCollection<VehicleInfo>.GetPrefab((uint)index);
-                if ((Object)prefab != (Object)null && !VehiclePrefabs.IsTrailer(prefab))
+                if ((Object)prefab != (Object)null && prefab.m_placementStyle != ItemClass.Placement.Procedural)
                 {
                     var service = prefab.m_class.m_service;
                     var subService = prefab.m_class.m_subService;
@@ -200,6 +208,9 @@ namespace ImprovedPublicTransport2
                                 case ItemClass.SubService.PublicTransportCableCar:
                                     cableCarList.Add(new PrefabData(prefab));
                                     continue;
+                                case ItemClass.SubService.PublicTransportTrolleybus:
+                                    trolleybusList.Add(new PrefabData(prefab));
+                                    continue;
                                 default:
                                     continue;
                             }
@@ -228,6 +239,9 @@ namespace ImprovedPublicTransport2
                                 case ItemClass.SubService.PublicTransportTours:
                                     sightseeingBusList.Add(new PrefabData(prefab));
                                     continue;
+                                case ItemClass.SubService.PublicTransportPlane:
+                                    helicopterList.Add(new PrefabData(prefab));
+                                    continue;
                                 default:
                                     continue;
                             }
@@ -249,14 +263,8 @@ namespace ImprovedPublicTransport2
             this._ferryPrefabData = ferryList.ToArray();
             this._cablecarPrefabData = cableCarList.ToArray();
             this._sightseeingBusPrefabData = sightseeingBusList.ToArray();
-        }
-
-        private static bool IsTrailer(VehicleInfo info)
-        {
-            string str = ColossalFramework.Globalization.Locale.GetUnchecked("VEHICLE_TITLE", info.name);
-            if (!str.StartsWith("VEHICLE_TITLE"))
-                return str.StartsWith("Trailer");
-            return true;
+            this._trolleybusPrefabData = trolleybusList.ToArray();
+            this._helicopterPrefabData = helicopterList.ToArray();
         }
     }
 }

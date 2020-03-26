@@ -8,6 +8,7 @@ using ColossalFramework;
 using ColossalFramework.Globalization;
 using System;
 using System.Collections.Generic;
+using Utils = ImprovedPublicTransport2.Util.Utils;
 
 namespace ImprovedPublicTransport2
 {

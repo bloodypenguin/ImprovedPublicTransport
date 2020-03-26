@@ -20,7 +20,7 @@ namespace ImprovedPublicTransport2
                 for (int index = 0; index < length; ++index)
                 {
                     if (!instance.m_lines.m_buffer[index].Complete)
-                        TransportLineMod.SetBudgetControlState((ushort) index, isChecked);
+                        CachedTransportLineData.SetBudgetControlState((ushort) index, isChecked);
                 }
             });
         }
@@ -37,9 +37,9 @@ namespace ImprovedPublicTransport2
                 var budgetControl = OptionsWrapper<Settings>.Options.BudgetControl;
                 for (int index = 0; index < length; ++index)
                 {
-                    TransportLineMod.SetBudgetControlState((ushort) index, budgetControl);
+                    CachedTransportLineData.SetBudgetControlState((ushort) index, budgetControl);
                     if (budgetControl)
-                        TransportLineMod.ClearEnqueuedVehicles((ushort) index);
+                        CachedTransportLineData.ClearEnqueuedVehicles((ushort) index);
                 }
             });
         }
@@ -57,7 +57,7 @@ namespace ImprovedPublicTransport2
                 for (int index = 0; index < length; ++index)
                 {
                     if (!instance.m_lines.m_buffer[index].Complete)
-                        TransportLineMod.SetTargetVehicleCount((ushort) index, count);
+                        CachedTransportLineData.SetTargetVehicleCount((ushort) index, count);
                 }
             });
         }
@@ -73,7 +73,7 @@ namespace ImprovedPublicTransport2
             {
                 int length = Singleton<TransportManager>.instance.m_lines.m_buffer.Length;
                 for (int index = 0; index < length; ++index)
-                    TransportLineMod.SetNextSpawnTime((ushort) index, 0.0f);
+                    CachedTransportLineData.SetNextSpawnTime((ushort) index, 0.0f);
             });
         }
 
@@ -149,6 +149,9 @@ namespace ImprovedPublicTransport2
                             case ItemClass.SubService.PublicTransportMonorail:
                                 flag = OptionsWrapper<Settings>.Options.DeleteMonorailLines;
                                 break;
+                            case ItemClass.SubService.PublicTransportTrolleybus:
+                                flag = OptionsWrapper<Settings>.Options.DeleteBusLines;
+                                break;
                         }
                     }
                     else if (level == ItemClass.Level.Level2)
@@ -172,6 +175,9 @@ namespace ImprovedPublicTransport2
                         {
                             case ItemClass.SubService.PublicTransportTours:
                                 flag = OptionsWrapper<Settings>.Options.DeleteBusLines;
+                                break;
+                            case ItemClass.SubService.PublicTransportPlane:
+                                flag = OptionsWrapper<Settings>.Options.DeletePlaneLines;
                                 break;
                         }
                     }

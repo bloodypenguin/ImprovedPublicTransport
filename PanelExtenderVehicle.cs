@@ -11,7 +11,10 @@ using System;
 using System.Reflection;
 using ImprovedPublicTransport2.Detour;
 using ImprovedPublicTransport2.OptionsFramework;
+using ImprovedPublicTransport2.Util;
 using UnityEngine;
+using UIUtils = ImprovedPublicTransport2.Util.UIUtils;
+using Utils = ImprovedPublicTransport2.Util.Utils;
 
 namespace ImprovedPublicTransport2
 {
@@ -102,12 +105,13 @@ namespace ImprovedPublicTransport2
           case ItemClass.SubService.PublicTransportPlane:
           case ItemClass.SubService.PublicTransportMonorail:
           case ItemClass.SubService.PublicTransportCableCar:
+          case ItemClass.SubService.PublicTransportTrolleybus:
             this._passengerPanel.Show();
             if ((int) vehicleID != 0)
             {
               this._lastStopExchange.text = string.Format(Localization.Get("VEHICLE_PANEL_LAST_STOP_EXCHANGE"),
-                  (object) VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].LastStopGonePassengers, 
-                  (object) VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].LastStopNewPassengers);
+                  (object) CachedVehicleData.m_cachedVehicleData[(int) vehicleID].LastStopGonePassengers, 
+                  (object) CachedVehicleData.m_cachedVehicleData[(int) vehicleID].LastStopNewPassengers);
             }
             break;
          case ItemClass.SubService.None:
@@ -117,8 +121,8 @@ namespace ImprovedPublicTransport2
                  if ((int) vehicleID != 0)
                  {
                      this._lastStopExchange.text = string.Format(Localization.Get("VEHICLE_PANEL_LAST_STOP_EXCHANGE"),
-                         (object) VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].LastStopGonePassengers,
-                         (object) VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].LastStopNewPassengers);
+                         (object) CachedVehicleData.m_cachedVehicleData[(int) vehicleID].LastStopGonePassengers,
+                         (object) CachedVehicleData.m_cachedVehicleData[(int) vehicleID].LastStopNewPassengers);
                  }
              }
              else
@@ -135,7 +139,7 @@ namespace ImprovedPublicTransport2
         VehicleManager vm = Singleton<VehicleManager>.instance;
         if ((vm.m_vehicles.m_buffer[(int) vehicleID].m_flags & Vehicle.Flags.Stopped) != ~(Vehicle.Flags.Created | Vehicle.Flags.Deleted | Vehicle.Flags.Spawned | Vehicle.Flags.Inverted | Vehicle.Flags.TransferToTarget | Vehicle.Flags.TransferToSource | Vehicle.Flags.Emergency1 | Vehicle.Flags.Emergency2 | Vehicle.Flags.WaitingPath | Vehicle.Flags.Stopped | Vehicle.Flags.Leaving | Vehicle.Flags.Arriving | Vehicle.Flags.Reversed | Vehicle.Flags.TakingOff | Vehicle.Flags.Flying | Vehicle.Flags.Landing | Vehicle.Flags.WaitingSpace | Vehicle.Flags.WaitingCargo | Vehicle.Flags.GoingBack | Vehicle.Flags.WaitingTarget | Vehicle.Flags.Importing | Vehicle.Flags.Exporting | Vehicle.Flags.Parking | Vehicle.Flags.CustomName | Vehicle.Flags.OnGravel | Vehicle.Flags.WaitingLoading | Vehicle.Flags.Congestion | Vehicle.Flags.DummyTraffic | Vehicle.Flags.Underground | Vehicle.Flags.Transition | Vehicle.Flags.InsideBuilding | Vehicle.Flags.LeftHandDrive))
         {
-          if (VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].IsUnbunchingInProgress)
+          if (CachedVehicleData.m_cachedVehicleData[(int) vehicleID].IsUnbunchingInProgress)
             this._status.text = Localization.Get("VEHICLE_PANEL_STATUS_UNBUNCHING");
           this._distance.text = this._status.text;
           float num = (float) vm.m_vehicles.m_buffer[(int) vehicleID].m_waitCounter / 12f;
@@ -167,7 +171,7 @@ namespace ImprovedPublicTransport2
             id.NetNode = targetBuilding;
             string name = Singleton<InstanceManager>.instance.GetName(id);
             this._target.objectUserData = (object) id;
-            this._target.text = name == null ? string.Format(Localization.Get("STOP_LIST_BOX_ROW_STOP"), (object) (TransportLineMod.GetStopIndex(lineId, targetBuilding) + 1)) : name;
+            this._target.text = name == null ? string.Format(Localization.Get("STOP_LIST_BOX_ROW_STOP"), (object) (TransportLineUtil.GetStopIndex(lineId, targetBuilding) + 1)) : name;
             this._target.Enable();
             this._target.Show();
           }
@@ -175,23 +179,23 @@ namespace ImprovedPublicTransport2
           this._distanceTraveled.progressColor = new Color32(byte.MaxValue, byte.MaxValue, byte.MaxValue, byte.MaxValue);
         }
         this._statsPanel.Show();
-        this._passengersCurrentWeek.text = VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].PassengersThisWeek.ToString();
-        this._passengersLastWeek.text = VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].PassengersLastWeek.ToString();
-        this._passengersAverage.text = VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].PassengersAverage.ToString();
+        this._passengersCurrentWeek.text = CachedVehicleData.m_cachedVehicleData[(int) vehicleID].PassengersThisWeek.ToString();
+        this._passengersLastWeek.text = CachedVehicleData.m_cachedVehicleData[(int) vehicleID].PassengersLastWeek.ToString();
+        this._passengersAverage.text = CachedVehicleData.m_cachedVehicleData[(int) vehicleID].PassengersAverage.ToString();
         PrefabData prefabData = Array.Find(VehiclePrefabs.instance.GetPrefabs(service, subService, level), item => item.PrefabDataIndex == vm.m_vehicles.m_buffer[(int) vehicleID].Info.m_prefabDataIndex);
-        int num1 = VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].IncomeThisWeek - prefabData.MaintenanceCost;
+        int num1 = CachedVehicleData.m_cachedVehicleData[(int) vehicleID].IncomeThisWeek - prefabData.MaintenanceCost;
         UILabel earningsCurrentWeek = this._earningsCurrentWeek;
         float num2 = (float) num1 * 0.01f;
         string str1 = num2.ToString(ColossalFramework.Globalization.Locale.Get("MONEY_FORMAT"), (IFormatProvider) LocaleManager.cultureInfo);
         earningsCurrentWeek.text = str1;
         this._earningsCurrentWeek.textColor = (Color32) this.GetColor((float) num1);
-        int incomeLastWeek = VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].IncomeLastWeek;
+        int incomeLastWeek = CachedVehicleData.m_cachedVehicleData[(int) vehicleID].IncomeLastWeek;
         UILabel earningsLastWeek = this._earningsLastWeek;
         num2 = (float) incomeLastWeek * 0.01f;
         string str2 = num2.ToString(ColossalFramework.Globalization.Locale.Get("MONEY_FORMAT"), (IFormatProvider) LocaleManager.cultureInfo);
         earningsLastWeek.text = str2;
         this._earningsLastWeek.textColor = (Color32) this.GetColor((float) incomeLastWeek);
-        int incomeAverage = VehicleManagerMod.m_cachedVehicleData[(int) vehicleID].IncomeAverage;
+        int incomeAverage = CachedVehicleData.m_cachedVehicleData[(int) vehicleID].IncomeAverage;
         UILabel earningsAverage = this._earningsAverage;
         num2 = (float) incomeAverage * 0.01f;
         string str3 = num2.ToString(ColossalFramework.Globalization.Locale.Get("MONEY_FORMAT"), (IFormatProvider) LocaleManager.cultureInfo);
@@ -349,7 +353,7 @@ namespace ImprovedPublicTransport2
       ushort lineId = this.GetLineID(out firstVehicle);
       if ((int) lineId == 0)
         return;
-      ushort num = !(component.name == "PreviousVehicle") ? TransportLineMod.GetNextVehicle(lineId, firstVehicle) : TransportLineMod.GetPreviousVehicle(lineId, firstVehicle);
+      ushort num = !(component.name == "PreviousVehicle") ? TransportLineUtil.GetNextVehicle(lineId, firstVehicle) : TransportLineUtil.GetPreviousVehicle(lineId, firstVehicle);
       if ((int) firstVehicle == (int) num)
         return;
       InstanceID instanceId = new InstanceID();
@@ -366,8 +370,8 @@ namespace ImprovedPublicTransport2
             ushort lineId = this.GetLineID(out firstVehicle);
             if ((int) lineId == 0 || (int) firstVehicle == 0)
                 return;
-            TransportLineMod.SetBudgetControlState(lineId, false);
-            TransportLineMod.RemoveVehicle(lineId, firstVehicle, true);
+            CachedTransportLineData.SetBudgetControlState(lineId, false);
+            TransportLineDetour.RemoveVehicle(lineId, firstVehicle, true);
         });
     }
 
