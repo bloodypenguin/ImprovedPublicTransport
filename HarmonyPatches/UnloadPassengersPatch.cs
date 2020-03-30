@@ -15,9 +15,9 @@ namespace ImprovedPublicTransport2.HarmonyPatches
             return true;
         }
 
-        public static void UnloadPassengersPost(ushort vehicleID, ref Vehicle data, ushort currentStop, ushort nextStop)
+        public static void UnloadPassengersPost(ushort doNotUse, ref Vehicle data, ushort currentStop, ushort nextStop)
         {
-            var curPassangers = VehicleUtil.AccumulatePassangers(vehicleID);
+            var curPassangers = VehicleUtil.AccumulatePassangers(_vehicleID);
             var num1 = _transferSize1 - curPassangers;
             CachedVehicleData.m_cachedVehicleData[_vehicleID].LastStopGonePassengers = num1;
             CachedVehicleData.m_cachedVehicleData[_vehicleID].CurrentStop = currentStop;
