@@ -1,27 +1,36 @@
-using ImprovedPublicTransport2.Detour;
 using ImprovedPublicTransport2.Util;
+using UnityEngine;
 
 namespace ImprovedPublicTransport2.HarmonyPatches
 {
     public class LoadPassengersPatch
     {
-        private static ushort _transferSize1 = 0;
-        private static ushort _vehicleID = 0;
-
-        public static bool LoadPassengersPre(ushort vehicleID)
+        public static bool LoadPassengersPre(ushort vehicleID, out ushort __state)
         {
-            _transferSize1 = VehicleUtil.AccumulatePassangers(vehicleID);
-            _vehicleID = vehicleID;
+            var data = VehicleManager.instance.m_vehicles.m_buffer[vehicleID];
+            if (data.m_leadingVehicle == 0)
+            {
+                __state = 0;
+                return true;
+            }
+
+            __state = VehicleUtil.GetTotalPassengerCount(vehicleID, CachedVehicleData.MaxVehicleCount);
             return true;
         }
-        
-        public static void LoadPassengersPost(ref Vehicle data, ushort currentStop)
+
+        public static void LoadPassengersPost(ushort vehicleID, ushort currentStop, ushort __state)
         {
-            var curPassangers = VehicleUtil.AccumulatePassangers(_vehicleID);
-            var num2 = curPassangers - _transferSize1;
-            var ticketPrice = data.Info.m_vehicleAI.GetTicketPrice(_vehicleID, ref data);
-            CachedVehicleData.m_cachedVehicleData[_vehicleID].Add(num2, ticketPrice);
-            CachedNodeData.m_cachedNodeData[currentStop].PassengersIn += num2;
+            var data = VehicleManager.instance.m_vehicles.m_buffer[vehicleID];
+            if (data.m_leadingVehicle == 0)
+            {
+                return;
+            }
+
+            var currentPassengers = VehicleUtil.GetTotalPassengerCount(vehicleID, CachedVehicleData.MaxVehicleCount);
+            var newPassengers = Mathf.Min(0, currentPassengers - __state);
+            CachedVehicleData.m_cachedVehicleData[vehicleID]
+                .BoardPassengers(newPassengers, VehicleUtil.GetTicketPrice(vehicleID), currentStop);
+            CachedNodeData.m_cachedNodeData[currentStop].PassengersIn += newPassengers;
         }
     }
 }

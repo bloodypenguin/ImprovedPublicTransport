@@ -100,10 +100,16 @@ namespace ImprovedPublicTransport2
       }
     }
 
-    public void Add(int newPassengers, int ticketPrice)
+    public void BoardPassengers(int newPassengers, int ticketPrice, ushort stop)
     {
       this.LastStopNewPassengers = newPassengers;
-      this.IncomeThisWeek = this.IncomeThisWeek + newPassengers * ticketPrice;
+      this.IncomeThisWeek += newPassengers * ticketPrice;
+      this.CurrentStop = stop;
+    }
+    
+    public void DisembarkPassengers(int passengersOut)
+    {
+      this.LastStopGonePassengers = passengersOut;
     }
 
     public void StartNewWeek(int maintenanceCost)
