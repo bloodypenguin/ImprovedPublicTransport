@@ -8,14 +8,14 @@ namespace ImprovedPublicTransport2.HarmonyPatches
         private static ushort _transferSize1 = 0;
         private static ushort _vehicleID = 0;
 
-        public static bool LoadPassengersPre(ushort vehicleID, ref Vehicle data, ushort currentStop, ushort nextStop)
+        public static bool LoadPassengersPre(ushort vehicleID)
         {
             _transferSize1 = VehicleUtil.AccumulatePassangers(vehicleID);
             _vehicleID = vehicleID;
             return true;
         }
         
-        public static void LoadPassengersPost(ushort doNotUse, ref Vehicle data, ushort currentStop, ushort nextStop)
+        public static void LoadPassengersPost(ref Vehicle data, ushort currentStop)
         {
             var curPassangers = VehicleUtil.AccumulatePassangers(_vehicleID);
             var num2 = curPassangers - _transferSize1;
