@@ -8,7 +8,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches
         public static bool LoadPassengersPre(ushort vehicleID, out ushort __state)
         {
             var data = VehicleManager.instance.m_vehicles.m_buffer[vehicleID];
-            if (data.m_leadingVehicle == 0)
+            if (data.m_leadingVehicle != 0)
             {
                 __state = 0;
                 return true;
@@ -21,7 +21,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches
         public static void LoadPassengersPost(ushort vehicleID, ushort currentStop, ushort __state)
         {
             var data = VehicleManager.instance.m_vehicles.m_buffer[vehicleID];
-            if (data.m_leadingVehicle == 0)
+            if (data.m_leadingVehicle != 0)
             {
                 return;
             }
