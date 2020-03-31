@@ -17,9 +17,9 @@ namespace ImprovedPublicTransport2.Detour.Vehicles
                 //end mod
                 return false;
             }
-            //begin mod(+): no unbunching for evac buses or if only 1 vehicle on line!
-            if (vehicleData.Info?.m_class?.m_service == ItemClass.Service.Disaster || (vehicleData.m_nextLineVehicle == 0 && Singleton<TransportManager>.instance.m_lines
-                                                                                           .m_buffer[(int)vehicleData.m_transportLine].m_vehicles == vehicleID))
+            //begin mod(+): no unbunching for only 1 vehicle on line!
+            if ((vehicleData.m_nextLineVehicle == 0 && Singleton<TransportManager>.instance.m_lines
+                     .m_buffer[(int)vehicleData.m_transportLine].m_vehicles == vehicleID))
             {
                 CachedVehicleData.m_cachedVehicleData[vehicleID].IsUnbunchingInProgress = false;
                 return true;
