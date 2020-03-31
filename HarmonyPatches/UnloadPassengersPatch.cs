@@ -7,7 +7,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches
     {
         public static bool UnloadPassengersPre(ushort vehicleID, out ushort __state)
         {
-            if (VehicleManager.instance.m_vehicles.m_buffer[vehicleID].m_leadingVehicle == 0)
+            if (VehicleManager.instance.m_vehicles.m_buffer[vehicleID].m_leadingVehicle != 0)
             {
                 __state = 0;
                 return true;
@@ -19,7 +19,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches
 
         public static void UnloadPassengersPost(ushort vehicleID, ushort currentStop, ushort __state)
         {
-            if (VehicleManager.instance.m_vehicles.m_buffer[vehicleID].m_leadingVehicle == 0)
+            if (VehicleManager.instance.m_vehicles.m_buffer[vehicleID].m_leadingVehicle != 0)
             {
                 return;
             }
