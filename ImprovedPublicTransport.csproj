@@ -140,6 +140,7 @@
     <Compile Include="Util\TransportLineUtil.cs" />
     <Compile Include="Util\UIUtils.cs" />
     <Compile Include="Util\Utils.cs" />
+    <Compile Include="Util\VehicleUtil.cs" />
     <Compile Include="VehicleEditorPositions.cs" />
     <Compile Include="VehicleListBoxRow.cs" />
     <Compile Include="LineWatcher.cs" />
