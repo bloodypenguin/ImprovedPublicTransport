@@ -47,7 +47,7 @@ namespace ImprovedPublicTransport2
         inGame = true;
         try
       {
-        Utils.Log((object) $"Begin init version: {version}");
+        Utils.Log((object) $"IPT2: Begin init version: {version}");
         this.ReleaseUnusedCitizenUnits();
         UIView objectOfType = UnityEngine.Object.FindObjectOfType<UIView>();
         if ((UnityEngine.Object) objectOfType != (UnityEngine.Object) null)
@@ -66,8 +66,20 @@ namespace ImprovedPublicTransport2
           
           Patch(typeof(NetManager), nameof(NetManager.ReleaseNode), null,
             typeof(NetManagerPatch).GetMethod(nameof(NetManagerPatch.ReleaseNode))); //TODO: think, whether it should be pre or post
+
+          int maxVehicleCount;
+          if (Utils.IsModActive(1764208250))
+          {
+            UnityEngine.Debug.LogWarning("IPT2: More Vehicles is enabled, applying compatibility workaround");
+            maxVehicleCount = ushort.MaxValue + 1;
+          }
+          else
+          {
+            UnityEngine.Debug.Log("IPT2: More Vehicles is not enabled");
+            maxVehicleCount = VehicleManager.MAX_VEHICLE_COUNT;
+          }
           
-          CachedVehicleData.Init();
+          CachedVehicleData.Init(maxVehicleCount);
           Patch(typeof(VehicleManager), "ReleaseWaterSource", null,
             typeof(VehicleManagerPatch).GetMethod(nameof(VehicleManagerPatch.ReleaseWaterSource))); //TODO: think, whether it should be pre or post
           
@@ -122,7 +134,7 @@ namespace ImprovedPublicTransport2
       }
       catch (Exception ex)
       {
-        Utils.LogError((object) ("Error during initialization, IPT disables itself." + System.Environment.NewLine + "Please try again without any other mod." + System.Environment.NewLine + "Please upload your log file and post the link here if that didn't help:" + System.Environment.NewLine + "http://steamcommunity.com/workshop/filedetails/discussion/424106600/615086038663282271/" + System.Environment.NewLine + ex.Message + System.Environment.NewLine + (object) ex.InnerException + System.Environment.NewLine + ex.StackTrace));
+        Utils.LogError((object) ("IPT2: Error during initialization, IPT disables itself." + System.Environment.NewLine + "Please try again without any other mod." + System.Environment.NewLine + "Please upload your log file and post the link here if that didn't help:" + System.Environment.NewLine + "http://steamcommunity.com/workshop/filedetails/discussion/424106600/615086038663282271/" + System.Environment.NewLine + ex.Message + System.Environment.NewLine + (object) ex.InnerException + System.Environment.NewLine + ex.StackTrace));
         this.Deinit();
       }
     }

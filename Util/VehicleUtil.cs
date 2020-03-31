@@ -1,22 +1,41 @@
-﻿using ColossalFramework;
-
+﻿using System;
+using ColossalFramework;
 
 namespace ImprovedPublicTransport2.Util
 {
-    class VehicleUtil
+    internal static class VehicleUtil
     {
-        public static ushort AccumulatePassangers(ushort vehicleID)
+        public static ushort GetTotalPassengerCount(ushort vehicleID, int maxVehicleCount)
         {
-            VehicleManager instance = Singleton<VehicleManager>.instance;
-            ushort passangers = 0;
-
-            while (vehicleID != 0)
+            var instance = VehicleManager.instance;
+            var data = instance.m_vehicles.m_buffer[vehicleID];
+            var trailingVehicle = data.m_trailingVehicle;
+            var passengerCount = data.m_transferSize;
+            var num = 0;
+            while (trailingVehicle != 0)
             {
-                var data = instance.m_vehicles.m_buffer[vehicleID];
-                passangers += data.m_transferSize;
-                vehicleID = data.m_trailingVehicle;
+                var trailingData = instance.m_vehicles.m_buffer[trailingVehicle];
+                passengerCount += trailingData.m_transferSize;
+                trailingVehicle = trailingData.m_trailingVehicle;
+                if (++num <= maxVehicleCount)
+                {
+                    continue;
+                }
+
+                CODebugBase<LogChannel>.Error(LogChannel.Core,
+                    "Invalid list detected!\n" + Environment.StackTrace);
+                break;
             }
-            return passangers;
+
+            return passengerCount;
+        }
+
+        //TODO: customize per line
+        public static int GetTicketPrice(ushort vehicleID)
+        {
+            var instance = VehicleManager.instance;
+            var data = instance.m_vehicles.m_buffer[vehicleID];
+            return data.Info.m_vehicleAI.GetTicketPrice(vehicleID, ref data);
         }
     }
 }

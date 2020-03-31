@@ -14,26 +14,16 @@ namespace ImprovedPublicTransport2
 
   public static class CachedVehicleData
   {
-    public static int MaxVehicleCount;
+    public static int MaxVehicleCount { get; private set;  }
     private static readonly string _dataID = "IPT_VehicleData";
     private static readonly string _dataVersion = "v003";
     private static bool _isDeployed = false;
 
     public static VehicleData[] m_cachedVehicleData;
 
-    public static void Init()
+    public static void Init(int maxVehicleCount)
     {
-      if (Utils.IsModActive(1764208250))
-      {
-        UnityEngine.Debug.LogWarning("More Vehicles is enabled, applying compatibility workaround");
-        MaxVehicleCount = ushort.MaxValue + 1;
-      }
-      else
-      {
-        UnityEngine.Debug.Log("More Vehicles is not enabled");
-        MaxVehicleCount = VehicleManager.MAX_VEHICLE_COUNT;
-      }
-      
+      MaxVehicleCount = maxVehicleCount;
       if (CachedVehicleData._isDeployed)
         return;
       if (!CachedVehicleData.TryLoadData(out CachedVehicleData.m_cachedVehicleData))
