@@ -25,7 +25,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches
             }
 
             var currentPassengers = VehicleUtil.GetTotalPassengerCount(vehicleID, CachedVehicleData.MaxVehicleCount);
-            var passengersOut = Mathf.Min(0, __state - currentPassengers);
+            var passengersOut = Mathf.Max(0, __state - currentPassengers);
             CachedVehicleData.m_cachedVehicleData[vehicleID].DisembarkPassengers(passengersOut);
             CachedNodeData.m_cachedNodeData[currentStop].PassengersOut += passengersOut;
         }

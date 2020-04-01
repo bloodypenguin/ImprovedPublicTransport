@@ -27,7 +27,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches
             }
 
             var currentPassengers = VehicleUtil.GetTotalPassengerCount(vehicleID, CachedVehicleData.MaxVehicleCount);
-            var newPassengers = Mathf.Min(0, currentPassengers - __state);
+            var newPassengers = Mathf.Max(0, currentPassengers - __state);
             CachedVehicleData.m_cachedVehicleData[vehicleID]
                 .BoardPassengers(newPassengers, VehicleUtil.GetTicketPrice(vehicleID), currentStop);
             CachedNodeData.m_cachedNodeData[currentStop].PassengersIn += newPassengers;
