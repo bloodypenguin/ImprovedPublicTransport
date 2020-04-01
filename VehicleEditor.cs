@@ -111,7 +111,7 @@ namespace ImprovedPublicTransport2
     {
       this.name = "VehicleEditor";
       this.width = 314f;
-      this.height = 363f;
+      this.height = 394f;
       this.backgroundSprite = "MenuPanel2";
       this.canFocus = true;
       this.isInteractive = true;
@@ -141,18 +141,20 @@ namespace ImprovedPublicTransport2
       uiPanel.height = (float) num4;
       TransportManager instance = Singleton<TransportManager>.instance;
       this.CreateTabButton(TransportInfo.TransportType.Bus);
+      if (instance.TransportTypeLoaded(TransportInfo.TransportType.Trolleybus))
+        this.CreateTabButton(TransportInfo.TransportType.Trolleybus);
+      if (instance.TransportTypeLoaded(TransportInfo.TransportType.Tram))
+        this.CreateTabButton(TransportInfo.TransportType.Tram);
       this.CreateTabButton(TransportInfo.TransportType.Metro);
       this.CreateTabButton(TransportInfo.TransportType.Train);
       this.CreateTabButton(TransportInfo.TransportType.Ship);
       this.CreateTabButton(TransportInfo.TransportType.Airplane);
-      if (instance.TransportTypeLoaded(TransportInfo.TransportType.Taxi))
-        this.CreateTabButton(TransportInfo.TransportType.Taxi);
-      if (instance.TransportTypeLoaded(TransportInfo.TransportType.Tram))
-        this.CreateTabButton(TransportInfo.TransportType.Tram);
       if (instance.TransportTypeLoaded(TransportInfo.TransportType.Monorail))
         this.CreateTabButton(TransportInfo.TransportType.Monorail);
       if (instance.TransportTypeLoaded(TransportInfo.TransportType.CableCar))
         this.CreateTabButton(TransportInfo.TransportType.CableCar);
+      if (instance.TransportTypeLoaded(TransportInfo.TransportType.Taxi))
+        this.CreateTabButton(TransportInfo.TransportType.Taxi);
       this.CreateVehicleOptionsPanel();
     }
 
@@ -176,7 +178,7 @@ namespace ImprovedPublicTransport2
       uiPanel.color = transportColor;
       string str1 = "InfoviewPanel";
       uiPanel.backgroundSprite = str1;
-      string vehicleTypeIcon = PublicTransportWorldInfoPanel.GetVehicleTypeIcon(transportType == TransportInfo.TransportType.CableCar ?  TransportInfo.TransportType.EvacuationBus : transportType);
+      string vehicleTypeIcon = PublicTransportWorldInfoPanel.GetVehicleTypeIcon(transportType);
       UIButton uiButton = uiPanel.AddUIComponent<UIButton>();
       double num6 = 32.0;
       uiButton.width = (float) num6;
@@ -199,7 +201,7 @@ namespace ImprovedPublicTransport2
       uiPanel1.anchor = UIAnchorStyle.Top | UIAnchorStyle.Left | UIAnchorStyle.Right;
       uiPanel1.transform.localPosition = Vector3.zero;
       uiPanel1.width = 246f;
-      uiPanel1.height = 304f;
+      uiPanel1.height = 335f;
       uiPanel1.autoLayout = true;
       uiPanel1.autoLayoutDirection = LayoutDirection.Vertical;
       uiPanel1.autoLayoutPadding = new RectOffset(3, 3, 0, 0);
@@ -692,7 +694,8 @@ namespace ImprovedPublicTransport2
             return new[]
             {
                 new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportPlane, ItemClass.Level.Level1),
-                new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportPlane, ItemClass.Level.Level2)
+                new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportPlane, ItemClass.Level.Level2),
+                new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportPlane, ItemClass.Level.Level3)
             };
         case TransportInfo.TransportType.Taxi:
             return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTaxi, ItemClass.Level.Level1) };
@@ -702,8 +705,6 @@ namespace ImprovedPublicTransport2
             return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportMonorail, ItemClass.Level.Level1) };
         case TransportInfo.TransportType.CableCar:
            return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportCableCar, ItemClass.Level.Level1) };
-        case TransportInfo.TransportType.Helicopter:
-          return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportPlane, ItemClass.Level.Level3) };
         case TransportInfo.TransportType.Trolleybus:
           return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTrolleybus, ItemClass.Level.Level1) };
         default:
@@ -733,6 +734,8 @@ namespace ImprovedPublicTransport2
           return "INFO_PUBLICTRANSPORT_CABLECAR";
         case TransportInfo.TransportType.Monorail:
           return "INFO_PUBLICTRANSPORT_MONORAIL";
+        case TransportInfo.TransportType.Trolleybus:
+          return "INFO_PUBLICTRANSPORT_TROLLEYBUS";
         default:
           return string.Empty;
       }
