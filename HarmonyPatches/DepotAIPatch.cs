@@ -1,4 +1,3 @@
-using System.Reflection;
 using ImprovedPublicTransport2.OptionsFramework;
 using ImprovedPublicTransport2.Util;
 using UnityEngine;
@@ -7,10 +6,20 @@ namespace ImprovedPublicTransport2.HarmonyPatches
 {
     public class DepotAIPatch
     {
-        public static MethodInfo GetPrefix()
+        public static void Apply()
         {
-            return typeof(DepotAIPatch).GetMethod(nameof(StartTransferPre),
-                BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+            PatchUtil.Patch(
+                new PatchUtil.MethodDefinition(typeof(DepotAI), nameof(DepotAI.StartTransfer)),
+                new PatchUtil.MethodDefinition(typeof(DepotAIPatch), nameof(StartTransferPre)),
+                null
+            );
+        }
+
+        public static void Undo()
+        {
+            PatchUtil.Unpatch(
+                new PatchUtil.MethodDefinition(typeof(DepotAI), nameof(DepotAI.StartTransfer))
+            );
         }
 
         private static bool StartTransferPre(
@@ -37,12 +46,13 @@ namespace ImprovedPublicTransport2.HarmonyPatches
                     CachedTransportLineData.ClearEnqueuedVehicles(lineID);
                     return false;
                 }
+
                 Debug.LogWarning($"IPT2: Invalid or no depot was selected for line {lineID}, resetting to : {depot}!");
                 CachedTransportLineData.ClearEnqueuedVehicles(lineID);
                 return false;
             }
-            
-            
+
+
             if (depot == buildingID)
             {
                 if (!(SimHelper.SimulationTime >= CachedTransportLineData._lineData[lineID].NextSpawnTime))
