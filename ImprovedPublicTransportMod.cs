@@ -1,4 +1,4 @@
-﻿using ColossalFramework;
+using ColossalFramework;
 using ColossalFramework.UI;
 using ICities;
 using System;
@@ -16,6 +16,8 @@ namespace ImprovedPublicTransport2
 {
   public class ImprovedPublicTransportMod : LoadingExtensionBase, IUserMod
   {
+    private const string HarmonyId = "github.com/bloodypenguin/ImprovedPublicTransport";
+    
     public static bool inGame = false;
     private GameObject _iptGameObject;
     private GameObject _worldInfoPanel;
@@ -34,7 +36,7 @@ namespace ImprovedPublicTransport2
       public override void OnCreated(ILoading loading)
       {
         base.OnCreated(loading);
-        HarmonyInstance = HarmonyInstance.Create("github.com/bloodypenguin/ImprovedPublicTransport");
+        HarmonyInstance = HarmonyInstance.Create(HarmonyId);
       }
 
     public override void OnLevelLoaded(LoadMode mode)
@@ -203,7 +205,7 @@ namespace ImprovedPublicTransport2
 
     private void Deinit()
     {
-      HarmonyInstance?.UnpatchAll();
+      HarmonyInstance?.UnpatchAll(HarmonyId);
       Redirector<TramAIDetour>.Revert();
       Redirector<PassengerTrainAIDetour>.Revert();
       Redirector<PassengerShipAIDetour>.Revert();

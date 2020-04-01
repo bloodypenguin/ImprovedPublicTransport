@@ -107,9 +107,10 @@ namespace ImprovedPublicTransport2
       this.CurrentStop = stop;
     }
     
-    public void DisembarkPassengers(int passengersOut)
+    public void DisembarkPassengers(int passengersOut, ushort stop)
     {
       this.LastStopGonePassengers = passengersOut;
+      this.CurrentStop = stop;
     }
 
     public void StartNewWeek(int maintenanceCost)
