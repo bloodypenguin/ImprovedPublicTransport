@@ -159,24 +159,24 @@ namespace ImprovedPublicTransport2.Util
 
         public static ushort GetClosestDepot(ushort lineID, Vector3 stopPosition) //TODO(earalov): What happens if closest depot is not connected/not reachable?
         {
-            ushort num1 = 0;
-            float num2 = Single.MaxValue;
-            BuildingManager instance = Singleton<BuildingManager>.instance;
-            TransportInfo info = Singleton<TransportManager>.instance.m_lines
-                .m_buffer[(int) lineID]
+            ushort result = 0;
+            var previousDistance = float.MaxValue;
+            var instance = Singleton<BuildingManager>.instance;
+            var info = Singleton<TransportManager>.instance.m_lines
+                .m_buffer[lineID]
                 .Info;
-            ushort[] depots = BuildingExtension.GetDepots(info);
-            for (int index = 0; index < depots.Length; ++index)
+            var depotIds = BuildingExtension.GetDepots(info);
+            foreach (var depotId in depotIds)
             {
-                float num3 = Vector3.Distance(stopPosition,
-                    instance.m_buildings.m_buffer[(int) depots[index]].m_position);
-                if ((double) num3 < (double) num2)
+                var distance = Vector3.Distance(stopPosition,instance.m_buildings.m_buffer[depotId].m_position);
+                if (!(distance < (double) previousDistance))
                 {
-                    num1 = depots[index];
-                    num2 = num3;
+                    continue;
                 }
+                result = depotId;
+                previousDistance = distance;
             }
-            return num1;
+            return result;
         }
 
         public static bool CanAddVehicle(ushort depotID, ref Building depot, TransportInfo transportInfo)
