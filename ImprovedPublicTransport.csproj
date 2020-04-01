@@ -137,6 +137,7 @@
     <Compile Include="TranslationFramework\TranslatableAttribute.cs" />
     <Compile Include="TranslationFramework\Util.cs" />
     <Compile Include="Util\DepotUtil.cs" />
+    <Compile Include="Util\PatchUtil.cs" />
     <Compile Include="Util\TransportLineUtil.cs" />
     <Compile Include="Util\UIUtils.cs" />
     <Compile Include="Util\Utils.cs" />
