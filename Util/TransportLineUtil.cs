@@ -1,4 +1,6 @@
+using System;
 using ColossalFramework;
+using ImprovedPublicTransport2.Detour;
 
 namespace ImprovedPublicTransport2.Util
 {
@@ -52,6 +54,84 @@ namespace ImprovedPublicTransport2.Util
                 }
             }
             return 0;
+        }
+        
+         //based off code in the SimulationStep of TransportLine
+        public static int CountLineActiveVehicles(ushort lineID, out int allVehicles, Action<Int32> callback = null)
+        {
+            TransportLine thisLine = TransportManager.instance.m_lines.m_buffer[lineID];
+            int activeVehicles = 0;
+            allVehicles = 0;
+            //this part is directly taken from beginning of vanilla SimulationStep method (except for marked part)
+
+            if (thisLine.Complete)
+            {
+                int num2 = 0;
+                int num3 = 0;
+                if ((int)thisLine.m_vehicles != 0)
+                {
+                    VehicleManager instance3 = Singleton<VehicleManager>.instance;
+                    ushort num4 = thisLine.m_vehicles;
+                    int num5 = 0;
+                    while ((int)num4 != 0)
+                    {
+                        ushort nextLineVehicle = instance3.m_vehicles.m_buffer[(int)num4].m_nextLineVehicle;
+                        ++num2;
+                        if ((instance3.m_vehicles.m_buffer[(int) num4].m_flags & Vehicle.Flags.GoingBack) ==
+                            ~(Vehicle.Flags.Created | Vehicle.Flags.Deleted | Vehicle.Flags.Spawned |
+                              Vehicle.Flags.Inverted | Vehicle.Flags.TransferToTarget | Vehicle.Flags.TransferToSource |
+                              Vehicle.Flags.Emergency1 | Vehicle.Flags.Emergency2 | Vehicle.Flags.WaitingPath |
+                              Vehicle.Flags.Stopped | Vehicle.Flags.Leaving | Vehicle.Flags.Arriving |
+                              Vehicle.Flags.Reversed | Vehicle.Flags.TakingOff | Vehicle.Flags.Flying |
+                              Vehicle.Flags.Landing | Vehicle.Flags.WaitingSpace | Vehicle.Flags.WaitingCargo |
+                              Vehicle.Flags.GoingBack | Vehicle.Flags.WaitingTarget | Vehicle.Flags.Importing |
+                              Vehicle.Flags.Exporting | Vehicle.Flags.Parking | Vehicle.Flags.CustomName |
+                              Vehicle.Flags.OnGravel | Vehicle.Flags.WaitingLoading | Vehicle.Flags.Congestion |
+                              Vehicle.Flags.DummyTraffic | Vehicle.Flags.Underground | Vehicle.Flags.Transition |
+                              Vehicle.Flags.InsideBuilding | Vehicle.Flags.LeftHandDrive))
+                        {
+                            //begin mod(+): callback
+                            callback?.Invoke(num4);
+                            //end mod
+                            ++num3;
+                        }
+                        num4 = nextLineVehicle;
+                        if (++num5 > CachedVehicleData.MaxVehicleCount)
+                        {
+                            CODebugBase<LogChannel>.Error(LogChannel.Core, "Invalid list detected!\n" + System.Environment.StackTrace);
+                            break;
+                        }
+                    }
+                }
+                //end of vanilla part
+                activeVehicles = num3;
+                allVehicles = num2;
+            }
+            return activeVehicles;
+        }
+        
+        //based off code in TransportLine.SimulationStep
+        public static void RemoveActiveVehicle(ushort lineID, bool descreaseTargetVehicleCount, int activeVehiclesCount)
+        {
+            ushort activeVehicle = TransportLineDetour.GetActiveVehicle(ref Singleton<TransportManager>.instance.m_lines.m_buffer[(int)lineID], 
+                Singleton<SimulationManager>.instance.m_randomizer.Int32((uint)activeVehiclesCount));
+            if ((int)activeVehicle != 0)
+            {
+                TransportLineUtil.RemoveVehicle(lineID, activeVehicle, descreaseTargetVehicleCount);
+            }
+        }
+
+        //based off code in TransportLine.SimulationStep
+        public static void RemoveVehicle(ushort lineID, ushort vehicleID, bool descreaseTargetVehicleCount)
+        {
+            VehicleManager instance = Singleton<VehicleManager>.instance;
+            if ((instance.m_vehicles.m_buffer[(int)vehicleID].m_flags & Vehicle.Flags.GoingBack) == ~(Vehicle.Flags.Created | Vehicle.Flags.Deleted | Vehicle.Flags.Spawned | Vehicle.Flags.Inverted | Vehicle.Flags.TransferToTarget | Vehicle.Flags.TransferToSource | Vehicle.Flags.Emergency1 | Vehicle.Flags.Emergency2 | Vehicle.Flags.WaitingPath | Vehicle.Flags.Stopped | Vehicle.Flags.Leaving | Vehicle.Flags.Arriving | Vehicle.Flags.Reversed | Vehicle.Flags.TakingOff | Vehicle.Flags.Flying | Vehicle.Flags.Landing | Vehicle.Flags.WaitingSpace | Vehicle.Flags.WaitingCargo | Vehicle.Flags.GoingBack | Vehicle.Flags.WaitingTarget | Vehicle.Flags.Importing | Vehicle.Flags.Exporting | Vehicle.Flags.Parking | Vehicle.Flags.CustomName | Vehicle.Flags.OnGravel | Vehicle.Flags.WaitingLoading | Vehicle.Flags.Congestion | Vehicle.Flags.DummyTraffic | Vehicle.Flags.Underground | Vehicle.Flags.Transition | Vehicle.Flags.InsideBuilding | Vehicle.Flags.LeftHandDrive)) {
+                if (descreaseTargetVehicleCount)
+                {
+                    CachedTransportLineData.DecreaseTargetVehicleCount(lineID);
+                }
+                instance.m_vehicles.m_buffer[(int)vehicleID].Info.m_vehicleAI.SetTransportLine(vehicleID, ref instance.m_vehicles.m_buffer[(int)vehicleID], (ushort)0);
+            }
         }
     }
 }

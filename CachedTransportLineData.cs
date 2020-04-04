@@ -30,7 +30,7 @@ namespace ImprovedPublicTransport2
                 {
                     if (instance2.m_lines.m_buffer[index].Complete)
                     {
-                        _lineData[index].TargetVehicleCount = TransportLineDetour.CountLineActiveVehicles(index, out int _);
+                        _lineData[index].TargetVehicleCount = TransportLineUtil.CountLineActiveVehicles(index, out int _);
                     }
                     else
                         _lineData[index].TargetVehicleCount =

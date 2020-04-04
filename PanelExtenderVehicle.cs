@@ -371,7 +371,7 @@ namespace ImprovedPublicTransport2
             if ((int) lineId == 0 || (int) firstVehicle == 0)
                 return;
             CachedTransportLineData.SetBudgetControlState(lineId, false);
-            TransportLineDetour.RemoveVehicle(lineId, firstVehicle, true);
+            TransportLineUtil.RemoveVehicle(lineId, firstVehicle, true);
         });
     }
 

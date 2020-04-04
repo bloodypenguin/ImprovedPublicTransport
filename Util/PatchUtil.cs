@@ -16,12 +16,13 @@ namespace ImprovedPublicTransport2.Util
         public static void Patch(
             MethodDefinition original,
             MethodDefinition prefix = null,
-            MethodDefinition postfix = null)
+            MethodDefinition postfix = null,
+            MethodDefinition transpiler = null)
         {
-            if (prefix == null && postfix == null)
+            if (prefix == null && postfix == null && transpiler == null)
             {
                 throw new Exception(
-                    $"IP2: both prefix and postfix are null for method {original.Type.FullName}.{original.MethodName}");
+                    $"IPT 2: prefix, postfix and transpiler are null for method {original.Type.FullName}.{original.MethodName}");
             }
 
             try
@@ -30,7 +31,9 @@ namespace ImprovedPublicTransport2.Util
                 var methodInfo = GetOriginal(original);
                 HarmonyInstance.Patch(methodInfo,
                     prefix: prefix == null ? null : new HarmonyMethod(GetPatch(prefix)),
-                    postfix: postfix == null ? null : new HarmonyMethod(GetPatch(postfix)));
+                    postfix: postfix == null ? null : new HarmonyMethod(GetPatch(postfix)),
+                    transpiler == null ? null : new HarmonyMethod(GetPatch(transpiler))
+                );
             }
             catch (Exception e)
             {
