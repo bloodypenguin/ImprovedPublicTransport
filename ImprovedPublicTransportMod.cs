@@ -99,6 +99,7 @@ namespace ImprovedPublicTransport2
           
           CachedTransportLineData.Init();
           Redirector<TransportLineDetour>.Deploy();
+          TransportLineSimulationStepPatch.Apply();
           
           VehiclePrefabs.Init();
           SerializableDataExtension.instance.Loaded = true;
@@ -173,6 +174,7 @@ namespace ImprovedPublicTransport2
       Redirector<PassengerHelicopterAIDetour>.Revert();
 
       Redirector<TransportLineDetour>.Revert();
+      TransportLineSimulationStepPatch.Undo();
       CachedTransportLineData.Deinit();
       
       BuildingExtension.Deinit();

@@ -215,7 +215,7 @@ namespace ImprovedPublicTransport2
       ushort lineId = this.GetLineID();
       if ((int) lineId != 0)
       {
-        int lineVehicleCount = TransportLineDetour.CountLineActiveVehicles(lineId, out int _);
+        int lineVehicleCount = TransportLineUtil.CountLineActiveVehicles(lineId, out int _);
         int targetVehicleCount = CachedTransportLineData.GetTargetVehicleCount(lineId);
         int num1 = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineId].CountStops(lineId);
         this._vehicleAmount.text = LocaleFormatter.FormatGeneric("TRANSPORT_LINE_VEHICLECOUNT", (object) (lineVehicleCount.ToString() + " / " + (object) targetVehicleCount));
@@ -781,7 +781,7 @@ namespace ImprovedPublicTransport2
             else if (selectedVehicles.Count > 0)
             {
                 foreach (ushort vehicleID in selectedVehicles)
-                    TransportLineDetour.RemoveVehicle(lineId, vehicleID, true);
+                    TransportLineUtil.RemoveVehicle(lineId, vehicleID, true);
             }
             else if (CachedTransportLineData.EnqueuedVehiclesCount(lineId) > 0)
             {
@@ -789,10 +789,10 @@ namespace ImprovedPublicTransport2
             }
             else
             {
-                var activeVehicles = TransportLineDetour.CountLineActiveVehicles(lineId, out int _);
+                var activeVehicles = TransportLineUtil.CountLineActiveVehicles(lineId, out int _);
                 if (activeVehicles > 0)
                 {
-                  TransportLineDetour.RemoveActiveVehicle(lineId, true, activeVehicles);
+                  TransportLineUtil.RemoveActiveVehicle(lineId, true, activeVehicles);
                 }
                 else
                 {
@@ -900,7 +900,7 @@ namespace ImprovedPublicTransport2
     {
       this._lineVehicleListBox.ClearItems();
       TransportLine transportLine = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID];
-      int num = TransportLineDetour.CountLineActiveVehicles(lineID, out int _);
+      int num = TransportLineUtil.CountLineActiveVehicles(lineID, out int _);
       PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(service, subService, level);
             int length = prefabs.Length;
       for (int index1 = 0; index1 < num; ++index1)
