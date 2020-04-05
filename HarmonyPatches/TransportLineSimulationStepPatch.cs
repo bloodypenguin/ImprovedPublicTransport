@@ -35,7 +35,6 @@ namespace ImprovedPublicTransport2.HarmonyPatches
         {
             Debug.Log("IPT 2: Transpiling method: " + original.DeclaringType + "." + original);
 
-            var declaringType = original.DeclaringType;
             var codes = new List<CodeInstruction>(instructions);
             var newCodes = new List<CodeInstruction>();
             foreach (var codeInstruction in codes)
@@ -46,8 +45,24 @@ namespace ImprovedPublicTransport2.HarmonyPatches
                     continue;
                 }
 
+                if (codeInstruction.operand.ToString().Contains(nameof(EconomyManager.FetchResource)))
+                {
+                    Debug.Log("IPT 2: Replacing call to FetchResourceStub()");
+                    newCodes.Add(new CodeInstruction(OpCodes.Call,
+                        AccessTools.Method(typeof(TransportLineSimulationStepPatch), nameof(FetchResourceStub))));
+                    continue;
+                }
+
+                Debug.Log("IPT 2: Replacing call to CalculateTargetVehicleCount()");
+                var thisInstruction = newCodes[newCodes.Count() - 1];
+                newCodes.RemoveAt(newCodes.Count() - 1);
+
+                newCodes.Add(new CodeInstruction(OpCodes.Ldarg_1)
+                {
+                    labels = thisInstruction.labels //need to preserve the label
+                }); 
                 newCodes.Add(new CodeInstruction(OpCodes.Call,
-                    AccessTools.Method(typeof(TransportLineSimulationStepPatch), nameof(FetchResourceStub))));
+                    AccessTools.Method(typeof(TransportLineSimulationStepPatch), nameof(CalculateTargetVehicleCount))));
             }
 
             return newCodes.AsEnumerable();
@@ -55,8 +70,11 @@ namespace ImprovedPublicTransport2.HarmonyPatches
 
         private static bool SkipInstruction(CodeInstruction codeInstruction)
         {
-            return codeInstruction.opcode != OpCodes.Callvirt || codeInstruction.operand == null ||
-                   !codeInstruction.operand.ToString().Contains(nameof(EconomyManager.FetchResource));
+            return codeInstruction.operand == null ||
+                   !(codeInstruction.opcode == OpCodes.Callvirt && codeInstruction.operand.ToString()
+                       .Contains(nameof(EconomyManager.FetchResource))) &&
+                   !(codeInstruction.opcode == OpCodes.Call && codeInstruction.operand.ToString()
+                       .Contains(nameof(TransportLine.CalculateTargetVehicleCount)));
         }
 
         public static bool Prefix(ushort lineID, out ushort __state)
@@ -64,7 +82,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches
             __state = lineID;
             return true;
         }
-        
+
         public static void Postfix(ushort __state)
         {
             var lineID = __state;
@@ -89,7 +107,8 @@ namespace ImprovedPublicTransport2.HarmonyPatches
             TransportLineUtil.CountLineActiveVehicles(lineID, out _, (num3) =>
             {
                 var prefabData = Array.Find(prefabs,
-                    item => item.PrefabDataIndex == VehicleManager.instance.m_vehicles.m_buffer[num3].Info.m_prefabDataIndex);
+                    item => item.PrefabDataIndex ==
+                            VehicleManager.instance.m_vehicles.m_buffer[num3].Info.m_prefabDataIndex);
                 if (prefabData == null) return;
                 amount += prefabData.MaintenanceCost;
                 CachedVehicleData.m_cachedVehicleData[num3].StartNewWeek(prefabData.MaintenanceCost);
@@ -97,6 +116,20 @@ namespace ImprovedPublicTransport2.HarmonyPatches
             if (amount != 0)
                 Singleton<EconomyManager>.instance.FetchResource(EconomyManager.Resource.Maintenance, amount,
                     TransportManager.instance.m_lines.m_buffer[lineID].Info.m_class);
+        }
+
+        public static int CalculateTargetVehicleCount(ushort lineID)
+        {
+            var instance = TransportManager.instance;
+            if (!CachedTransportLineData._lineData[lineID].BudgetControl &&
+                instance.m_lines.m_buffer[lineID].Info.m_class.m_service != ItemClass.Service.Disaster)
+            {
+                return CachedTransportLineData._lineData[lineID].TargetVehicleCount;
+            }
+
+            var targetVehicleCount = instance.m_lines.m_buffer[lineID].CalculateTargetVehicleCount();
+            CachedTransportLineData._lineData[lineID].TargetVehicleCount = targetVehicleCount;
+            return targetVehicleCount;
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
