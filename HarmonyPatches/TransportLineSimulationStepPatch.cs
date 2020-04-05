@@ -60,7 +60,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches
                 newCodes.Add(new CodeInstruction(OpCodes.Ldarg_1)
                 {
                     labels = thisInstruction.labels //need to preserve the label
-                }); 
+                });
                 newCodes.Add(new CodeInstruction(OpCodes.Call,
                     AccessTools.Method(typeof(TransportLineSimulationStepPatch), nameof(CalculateTargetVehicleCount))));
             }
@@ -121,14 +121,23 @@ namespace ImprovedPublicTransport2.HarmonyPatches
         public static int CalculateTargetVehicleCount(ushort lineID)
         {
             var instance = TransportManager.instance;
-            if (!CachedTransportLineData._lineData[lineID].BudgetControl &&
-                instance.m_lines.m_buffer[lineID].Info.m_class.m_service != ItemClass.Service.Disaster)
+            int targetVehicleCount;
+            if (CachedTransportLineData._lineData[lineID].BudgetControl ||
+                instance.m_lines.m_buffer[lineID].Info.m_class.m_service == ItemClass.Service.Disaster)
             {
-                return CachedTransportLineData._lineData[lineID].TargetVehicleCount;
+                targetVehicleCount = instance.m_lines.m_buffer[lineID].CalculateTargetVehicleCount();
+                CachedTransportLineData.SetTargetVehicleCount(lineID, targetVehicleCount);
+            }
+            else
+            {
+                targetVehicleCount = CachedTransportLineData.GetTargetVehicleCount(lineID);
             }
 
-            var targetVehicleCount = instance.m_lines.m_buffer[lineID].CalculateTargetVehicleCount();
-            CachedTransportLineData._lineData[lineID].TargetVehicleCount = targetVehicleCount;
+            var activeVehicles = TransportLineUtil.CountLineActiveVehicles(lineID, out _);
+            for (var i = activeVehicles; i < targetVehicleCount - CachedTransportLineData.EnqueuedVehiclesCount(lineID); i++)
+            {
+                CachedTransportLineData.EnqueueVehicle(lineID, CachedTransportLineData.GetRandomPrefab(lineID));
+            }
             return targetVehicleCount;
         }
 

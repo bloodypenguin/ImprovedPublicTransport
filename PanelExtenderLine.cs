@@ -252,8 +252,19 @@ namespace ImprovedPublicTransport2
           flag2 = DepotUtil.CanAddVehicle(depotID, ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[(int) depotID], info);
         if (flag2)
         {
-          int num2 = Mathf.CeilToInt(CachedTransportLineData.GetNextSpawnTime(lineId) - SimHelper.SimulationTime);
-          this._spawnTimer.text = string.Format(Localization.Get("LINE_PANEL_SPAWNTIMER"), num2 < 0 ? (object) "∞" : (object) num2.ToString());
+          var currentlyDisabled = SimulationManager.instance.m_isNightTime
+            ? (Singleton<TransportManager>.instance.m_lines.m_buffer[lineId].m_flags & TransportLine.Flags.DisabledNight) == TransportLine.Flags.None 
+            : (Singleton<TransportManager>.instance.m_lines.m_buffer[lineId].m_flags & TransportLine.Flags.DisabledDay) == TransportLine.Flags.None;
+
+          if (currentlyDisabled || CachedTransportLineData.EnqueuedVehiclesCount(lineId) < 1)
+          {
+            this._spawnTimer.text = string.Format(Localization.Get("LINE_PANEL_SPAWNTIMER"), "∞");
+          }
+          else
+          {
+            var timeToNext = Mathf.Max(0, Mathf.CeilToInt(CachedTransportLineData.GetNextSpawnTime(lineId) - SimHelper.SimulationTime)); 
+            this._spawnTimer.text = string.Format(Localization.Get("LINE_PANEL_SPAWNTIMER"), "~" + timeToNext);
+          } 
         }
         else
           this._spawnTimer.text = Localization.Get("LINE_PANEL_DEPOT_WARNING");
@@ -760,7 +771,8 @@ namespace ImprovedPublicTransport2
                     !((UnityEngine.Object) (component as VehicleListBoxRow) != (UnityEngine.Object) null)
                         ? CachedTransportLineData.GetRandomPrefab(lineId)
                         : (component as VehicleListBoxRow).Prefab.ObjectName;
-                CachedTransportLineData.EnqueueVehicle(lineId, prefabName, true);
+                CachedTransportLineData.EnqueueVehicle(lineId, prefabName); //we need to enqueue vehicle first
+                CachedTransportLineData.IncreaseTargetVehicleCount(lineId);
             }
         });
     }

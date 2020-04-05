@@ -55,7 +55,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches
 
             if (depot == buildingID)
             {
-                if (!(SimHelper.SimulationTime >= CachedTransportLineData._lineData[lineID].NextSpawnTime))
+                if (SimHelper.SimulationTime < CachedTransportLineData.GetNextSpawnTime(lineID))
                 {
                     return false; //if we need to wait before spawn, let's wait
                 }
@@ -66,8 +66,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches
                     return false;
                 }
 
-                CachedTransportLineData._lineData[lineID].NextSpawnTime =
-                    SimHelper.SimulationTime + OptionsWrapper<Settings>.Options.SpawnTimeInterval;
+                CachedTransportLineData.SetNextSpawnTime(lineID, SimHelper.SimulationTime + OptionsWrapper<Settings>.Options.SpawnTimeInterval);
             }
             else
             {
@@ -85,9 +84,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches
             }
             else
             {
-                CachedTransportLineData.EnqueueVehicle(lineID,
-                    CachedTransportLineData.GetRandomPrefab(lineID), false);
-                prefabName = CachedTransportLineData.Dequeue(lineID);
+                prefabName = CachedTransportLineData.GetRandomPrefab(lineID);
             }
 
             //this is the most important line, when the AI calls TransportLine.GetLineVehicle(), then this field will be used
