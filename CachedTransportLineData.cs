@@ -208,7 +208,7 @@ namespace ImprovedPublicTransport2
             }
         }
         
-                public static int GetTargetVehicleCount(ushort lineID)
+        public static int GetTargetVehicleCount(ushort lineID)
         {
             return CachedTransportLineData._lineData[(int) lineID].TargetVehicleCount;
         }
@@ -307,12 +307,10 @@ namespace ImprovedPublicTransport2
             return prefabs[index1].ObjectName;
         }
 
-        public static void EnqueueVehicle(ushort lineID, string prefabName, bool inscreaseVehicleCount = true)
+        public static void EnqueueVehicle(ushort lineID, string prefabName)
         {
             if (CachedTransportLineData._lineData[(int) lineID].QueuedVehicles == null)
                 CachedTransportLineData._lineData[(int) lineID].QueuedVehicles = new Queue<string>();
-            if (inscreaseVehicleCount)
-                IncreaseTargetVehicleCount(lineID);
             lock (CachedTransportLineData._lineData[(int) lineID].QueuedVehicles)
                 CachedTransportLineData._lineData[(int) lineID].QueuedVehicles.Enqueue(prefabName);
         }
