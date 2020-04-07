@@ -76,19 +76,6 @@ namespace ImprovedPublicTransport2.HarmonyPatches
                 return false;
             }
 
-
-            string prefabName;
-            if (CachedTransportLineData.EnqueuedVehiclesCount(lineID) > 0)
-            {
-                prefabName = CachedTransportLineData.Dequeue(lineID);
-            }
-            else
-            {
-                prefabName = CachedTransportLineData.GetRandomPrefab(lineID);
-            }
-
-            //this is the most important line, when the AI calls TransportLine.GetLineVehicle(), then this field will be used
-            TransportManager.instance.m_lines.m_buffer[lineID].m_vehicleInfoUniqueString = prefabName;
             return true;
         }
     }
