@@ -79,6 +79,7 @@ namespace ImprovedPublicTransport2
           DepotAIPatch.Apply();
           NetManagerPatch.Apply();
           VehicleManagerPatch.Apply();
+          PublicTransportLineVehicleModelSelectorRefreshPatch.Apply();
 
           Redirector<BusAIDetour>.Deploy();
           Redirector<TrolleybusAIDetour>.Deploy();
@@ -158,6 +159,7 @@ namespace ImprovedPublicTransport2
       DepotAIPatch.Undo();
       NetManagerPatch.Undo();
       VehicleManagerPatch.Undo();
+      PublicTransportLineVehicleModelSelectorRefreshPatch.Undo();
       
       Redirector<TramAIDetour>.Revert();
       Redirector<PassengerTrainAIDetour>.Revert();
