@@ -101,7 +101,8 @@ namespace ImprovedPublicTransport2
           CachedTransportLineData.Init();
           Redirector<TransportLineDetour>.Deploy();
           TransportLineSimulationStepPatch.Apply();
-          
+          TransportLineGetLineVehiclePatch.Apply();
+
           VehiclePrefabs.Init();
           SerializableDataExtension.instance.Loaded = true;
           LocaleModifier.Init();
@@ -177,6 +178,7 @@ namespace ImprovedPublicTransport2
 
       Redirector<TransportLineDetour>.Revert();
       TransportLineSimulationStepPatch.Undo();
+      TransportLineGetLineVehiclePatch.Undo();
       CachedTransportLineData.Deinit();
       
       BuildingExtension.Deinit();
