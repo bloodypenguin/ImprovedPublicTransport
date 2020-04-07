@@ -85,6 +85,7 @@
     <Compile Include="HarmonyPatches\DepotAIPatch.cs" />
     <Compile Include="HarmonyPatches\LoadPassengersPatch.cs" />
     <Compile Include="HarmonyPatches\NetManagerPatch.cs" />
+    <Compile Include="HarmonyPatches\PublicTransportLineVehicleModelSelectorRefreshPatch.cs" />
     <Compile Include="HarmonyPatches\TransportLineSimulationStepPatch.cs" />
     <Compile Include="HarmonyPatches\UnloadPassengersPatch.cs" />
     <Compile Include="HarmonyPatches\VehicleManagerPatch.cs" />
