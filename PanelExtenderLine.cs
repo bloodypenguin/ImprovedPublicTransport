@@ -650,7 +650,7 @@ namespace ImprovedPublicTransport2
       this._prefabListBox.width = uiPanel.width - 6f;
       this._prefabListBox.height = PARENT_HEIGHT - 61f;
       this._prefabListBox.Font = this._vehicleAmount.font;
-      this._prefabListBox.eventSelectedItemsChanged += new PropertyChangedEventHandler<HashSet<string>>(this.OnSelectedPrefabsChanged);
+      this._prefabListBox.eventSelectedItemsChanged += OnSelectedPrefabsChanged;
       this._prefabListBox.eventRowShiftClick += new MouseEventHandler(this.OnAddVehicleClick);
     }
 
@@ -856,6 +856,7 @@ namespace ImprovedPublicTransport2
       if ((int) lineId == 0)
         return;
       CachedTransportLineData.SetPrefabs(lineId, selectedItems);
+      Singleton<SimulationManager>.instance.AddAction(() => TransportLineUtil.ReplaceVehicles(lineId));
     }
 
     private void OnColorChanged(UIComponent component, Color color)
