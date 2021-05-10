@@ -142,11 +142,21 @@ namespace ImprovedPublicTransport2
           if (CachedVehicleData.m_cachedVehicleData[(int) vehicleID].IsUnbunchingInProgress)
             this._status.text = Localization.Get("VEHICLE_PANEL_STATUS_UNBUNCHING");
           this._distance.text = this._status.text;
-          float num = (float) vm.m_vehicles.m_buffer[(int) vehicleID].m_waitCounter / 12f;
-          int p = Mathf.RoundToInt(num * 100f);
-          this._distanceTraveled.value = num;
-          this._distanceTraveled.progressColor = (Color32) Color.green;
-          this._distanceProgress.text = LocaleFormatter.FormatPercentage(p);
+          var timeSinceBoardingFinished = vm.m_vehicles.m_buffer[vehicleID].m_waitCounter - TransportLineDetour.BoardingTime;
+          float progress;
+          if (timeSinceBoardingFinished <= 0)
+          {
+            progress = (TransportLineDetour.BoardingTime + timeSinceBoardingFinished) / (float)TransportLineDetour.BoardingTime;
+          }
+          else
+          {
+            var maxUnbunchingTime = (float) Mathf.Min(OptionsWrapper<Settings>.Options.IntervalAggressionFactor, TransportLineDetour.MaxUnbunchingTime);
+            progress = timeSinceBoardingFinished / maxUnbunchingTime;
+          }
+          this._distanceTraveled.progressColor = Color.green;
+          this._distanceTraveled.value = progress;
+          this._distanceProgress.text = LocaleFormatter.FormatPercentage( Mathf.RoundToInt(progress * 100f));
+          
         }
         else
         {
