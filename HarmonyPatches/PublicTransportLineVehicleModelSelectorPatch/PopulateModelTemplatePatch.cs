@@ -1,15 +1,15 @@
 using ImprovedPublicTransport2.Util;
 
-namespace ImprovedPublicTransport2.HarmonyPatches
+namespace ImprovedPublicTransport2.HarmonyPatches.PublicTransportLineVehicleModelSelectorPatch
 {
-    public class PublicTransportLineVehicleModelSelectorRefreshPatch
+    public class PopulateModelTemplatePatch
     {
         public static void Apply()
         {
             PatchUtil.Patch(
                 new PatchUtil.MethodDefinition(typeof(PublicTransportLineVehicleModelSelector),
-                    nameof(PublicTransportLineVehicleModelSelector.Refresh)),
-                new PatchUtil.MethodDefinition(typeof(PublicTransportLineVehicleModelSelectorRefreshPatch),
+                    "PopulateModelTemplate"),
+                new PatchUtil.MethodDefinition(typeof(UpdateLineModelButtonPatch),
                     nameof(Prefix))
             );
         }
@@ -18,13 +18,14 @@ namespace ImprovedPublicTransport2.HarmonyPatches
         {
             PatchUtil.Unpatch(
                 new PatchUtil.MethodDefinition(typeof(PublicTransportLineVehicleModelSelector),
-                    nameof(PublicTransportLineVehicleModelSelector.Refresh))
+                    "PopulateModelTemplate")
             );
         }
 
-        public static void Prefix(PublicTransportLineVehicleModelSelector __instance)
+        public static bool Prefix(PublicTransportLineVehicleModelSelector __instance)
         {
             __instance.component.Hide();
+            return false;
         }
     }
 }
