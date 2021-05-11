@@ -253,17 +253,17 @@ namespace ImprovedPublicTransport2
         if (flag2)
         {
           var currentlyDisabled = SimulationManager.instance.m_isNightTime
-            ? (Singleton<TransportManager>.instance.m_lines.m_buffer[lineId].m_flags & TransportLine.Flags.DisabledNight) == TransportLine.Flags.None 
-            : (Singleton<TransportManager>.instance.m_lines.m_buffer[lineId].m_flags & TransportLine.Flags.DisabledDay) == TransportLine.Flags.None;
+            ? (Singleton<TransportManager>.instance.m_lines.m_buffer[lineId].m_flags & TransportLine.Flags.DisabledNight) != TransportLine.Flags.None 
+            : (Singleton<TransportManager>.instance.m_lines.m_buffer[lineId].m_flags & TransportLine.Flags.DisabledDay) != TransportLine.Flags.None;
 
-          if (currentlyDisabled || CachedTransportLineData.EnqueuedVehiclesCount(lineId) < 1)
+          if (currentlyDisabled || lineVehicleCount >= targetVehicleCount)
           {
             this._spawnTimer.text = string.Format(Localization.Get("LINE_PANEL_SPAWNTIMER"), "∞");
           }
           else
           {
             var timeToNext = Mathf.Max(0, Mathf.CeilToInt(CachedTransportLineData.GetNextSpawnTime(lineId) - SimHelper.SimulationTime)); 
-            this._spawnTimer.text = string.Format(Localization.Get("LINE_PANEL_SPAWNTIMER"), "~" + timeToNext);
+            this._spawnTimer.text = string.Format(Localization.Get("LINE_PANEL_SPAWNTIMER"), "≥" + timeToNext);
           } 
         }
         else
