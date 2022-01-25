@@ -5,7 +5,7 @@ using System;
 using ImprovedPublicTransport2.Detour;
 using ImprovedPublicTransport2.Detour.Vehicles;
 using ImprovedPublicTransport2.HarmonyPatches;
-using ImprovedPublicTransport2.HarmonyPatches.PublicTransportLineVehicleModelSelectorPatch;
+using ImprovedPublicTransport2.HarmonyPatches.PublicTransportLineVehicleSelectorPatch;
 using ImprovedPublicTransport2.OptionsFramework.Extensions;
 using ImprovedPublicTransport2.RedirectionFramework;
 using UnityEngine;
@@ -80,8 +80,7 @@ namespace ImprovedPublicTransport2
           DepotAIPatch.Apply();
           NetManagerPatch.Apply();
           VehicleManagerPatch.Apply();
-          UpdateLineModelButtonPatch.Apply();
-          PopulateModelTemplatePatch.Apply();
+          GetVehicleInfoPatch.Apply();
 
           Redirector<BusAIDetour>.Deploy();
           Redirector<TrolleybusAIDetour>.Deploy();
@@ -162,8 +161,7 @@ namespace ImprovedPublicTransport2
       DepotAIPatch.Undo();
       NetManagerPatch.Undo();
       VehicleManagerPatch.Undo();
-      UpdateLineModelButtonPatch.Undo();
-      PopulateModelTemplatePatch.Undo();
+      GetVehicleInfoPatch.Undo();
       
       Redirector<TramAIDetour>.Revert();
       Redirector<PassengerTrainAIDetour>.Revert();
