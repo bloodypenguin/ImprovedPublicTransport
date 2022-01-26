@@ -683,7 +683,10 @@ namespace ImprovedPublicTransport2
         case TransportInfo.TransportType.Metro:
           return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportMetro, ItemClass.Level.Level1) };
         case TransportInfo.TransportType.Train:
-            return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTrain, ItemClass.Level.Level1) };
+          return new[] { 
+            new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTrain, ItemClass.Level.Level1) ,
+            new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTrain, ItemClass.Level.Level2)
+          };
         case TransportInfo.TransportType.Ship:
             return new[]
             {

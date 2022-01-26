@@ -102,6 +102,7 @@ namespace ImprovedPublicTransport2.Util
                             case ItemClass.SubService.PublicTransportBus:
                             case ItemClass.SubService.PublicTransportShip:
                             case ItemClass.SubService.PublicTransportPlane:
+                            case ItemClass.SubService.PublicTransportTrain:
                                 return true;
                         }
                     }

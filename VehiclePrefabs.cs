@@ -6,6 +6,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using ImprovedPublicTransport2.Util;
 using UnityEngine;
 
 namespace ImprovedPublicTransport2
@@ -17,6 +18,7 @@ namespace ImprovedPublicTransport2
         private PrefabData[] _biofuelBusPrefabData;
         private PrefabData[] _metroPrefabData;
         private PrefabData[] _trainPrefabData;
+        private PrefabData[] _airportTrainPrefabData;
         private PrefabData[] _shipPrefabData;
         private PrefabData[] _planePrefabData;
         private PrefabData[] _taxiPrefabData;
@@ -44,7 +46,7 @@ namespace ImprovedPublicTransport2
         public PrefabData[] GetPrefabs(ItemClass.Service service,
             ItemClass.SubService subService, ItemClass.Level level)
         {
-            var prefabs = subService == ItemClass.SubService.PublicTransportBus ?
+            var prefabs = VehicleUtil.AllowAllVehicleLevelsOnLine(subService) ?
                 VehiclePrefabs.instance.GetPrefabsNoLogging(service, subService) :
                 VehiclePrefabs.instance.GetPrefabsNoLogging(service, subService, level);
             if (prefabs.Length == 0)
@@ -125,6 +127,8 @@ namespace ImprovedPublicTransport2
                             return this._ferryPrefabData;
                         case ItemClass.SubService.PublicTransportPlane:
                             return this._blimpPrefabData;
+                        case ItemClass.SubService.PublicTransportTrain:
+                            return this._airportTrainPrefabData;
                     }
                 }
                 else if (level == ItemClass.Level.Level3)
@@ -147,6 +151,7 @@ namespace ImprovedPublicTransport2
             List<PrefabData> biofuelBusList = new List<PrefabData>();
             List<PrefabData> metroList = new List<PrefabData>();
             List<PrefabData> trainList = new List<PrefabData>();
+            List<PrefabData> airportTrainList = new List<PrefabData>();
             List<PrefabData> shipList = new List<PrefabData>();
             List<PrefabData> planeList = new List<PrefabData>();
             List<PrefabData> taxiList = new List<PrefabData>();
@@ -228,6 +233,9 @@ namespace ImprovedPublicTransport2
                                 case ItemClass.SubService.PublicTransportPlane:
                                     blimpList.Add(new PrefabData(prefab));
                                     continue;
+                                case ItemClass.SubService.PublicTransportTrain:
+                                    airportTrainList.Add(new PrefabData(prefab));
+                                    continue;
                                 default:
                                     continue;
                             }
@@ -253,6 +261,7 @@ namespace ImprovedPublicTransport2
             this._biofuelBusPrefabData = biofuelBusList.ToArray();
             this._metroPrefabData = metroList.ToArray();
             this._trainPrefabData = trainList.ToArray();
+            this._airportTrainPrefabData = airportTrainList.ToArray();
             this._shipPrefabData = shipList.ToArray();
             this._planePrefabData = planeList.ToArray();
             this._taxiPrefabData = taxiList.ToArray();
