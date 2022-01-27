@@ -167,6 +167,9 @@ namespace ImprovedPublicTransport2
                             case ItemClass.SubService.PublicTransportPlane:
                                 flag = OptionsWrapper<Settings>.Options.DeletePlaneLines;
                                 break;
+                            case ItemClass.SubService.PublicTransportTrain:
+                                flag = OptionsWrapper<Settings>.Options.DeleteTrainLines;
+                                break;
                         }
                     }
                     else if (level == ItemClass.Level.Level3)

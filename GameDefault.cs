@@ -35,6 +35,8 @@
                             return 50;
                         case ItemClass.SubService.PublicTransportBus:
                             return 30;
+                        case ItemClass.SubService.PublicTransportTrain:
+                            return 30;
                     }
                 }
                 else if (level == ItemClass.Level.Level3)
