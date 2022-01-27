@@ -86,7 +86,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches
         public static void Postfix(ushort __state)
         {
             var lineID = __state;
-            if (!CachedTransportLineData._init || (SimulationManager.instance.m_currentFrameIndex & 4095U) >= 3840U ||
+            if (!CachedTransportLineData._init || !((SimulationManager.instance.m_currentFrameIndex & 4095U) >= 3840U) ||
                 !TransportManager.instance.m_lines.m_buffer[lineID].Complete)
             {
                 return;
