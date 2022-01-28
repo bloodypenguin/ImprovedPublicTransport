@@ -1,17 +1,18 @@
 using System;
 using System.Reflection;
-using Harmony;
+using HarmonyLib;
 using UnityEngine;
 
 namespace ImprovedPublicTransport2.Util
 {
-    public static class PatchUtil
+    internal static class PatchUtil
     {
+        //use a different ID in your mod if you copy this!!!
         private const string HarmonyId = "github.com/bloodypenguin/ImprovedPublicTransport";
-        private static HarmonyInstance _harmonyInstance = null;
+        private static Harmony _harmonyInstance = null;
 
-        private static HarmonyInstance HarmonyInstance =>
-            _harmonyInstance ?? (_harmonyInstance = HarmonyInstance.Create(HarmonyId));
+        private static Harmony HarmonyInstance =>
+            _harmonyInstance ??= new Harmony(HarmonyId);
 
         public static void Patch(
             MethodDefinition original,
@@ -50,12 +51,16 @@ namespace ImprovedPublicTransport2.Util
 
         private static MethodInfo GetOriginal(MethodDefinition original)
         {
-            var methodInfo = original.Type.GetMethod(original.MethodName,
-                BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+            var bindingFlags = original.BindingFlags == BindingFlags.Default
+                ? BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly
+                : original.BindingFlags;
+            var methodInfo = original.ArgumentTypes == null
+                ? original.Type.GetMethod(original.MethodName, bindingFlags)
+                : original.Type.GetMethod(original.MethodName, bindingFlags, null, original.ArgumentTypes, null);
             if (methodInfo == null)
             {
                 throw new Exception(
-                    $"IPT2: Failed to find original method {original.Type.FullName}.{original.MethodName}");
+                    $"IPT 2: Failed to find original method {original.Type.FullName}.{original.MethodName}");
             }
 
             return methodInfo;
@@ -63,11 +68,16 @@ namespace ImprovedPublicTransport2.Util
 
         private static MethodInfo GetPatch(MethodDefinition patch)
         {
-            var methodInfo = patch.Type.GetMethod(patch.MethodName,
-                BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static);
+            var bindingFlags = patch.BindingFlags == BindingFlags.Default
+                ? BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly
+                : patch.BindingFlags;
+            var methodInfo = patch.ArgumentTypes == null
+                ? patch.Type.GetMethod(patch.MethodName, bindingFlags)
+                : patch.Type.GetMethod(patch.MethodName, bindingFlags, null, patch.ArgumentTypes, null);
+            
             if (methodInfo == null)
             {
-                throw new Exception($"IPT2: Failed to find patch method {patch.Type.FullName}.{patch.MethodName}");
+                throw new Exception($"IPT 2: Failed to find patch method {patch.Type.FullName}.{patch.MethodName}");
             }
 
             return methodInfo;
@@ -75,14 +85,22 @@ namespace ImprovedPublicTransport2.Util
 
         public class MethodDefinition
         {
-            public MethodDefinition(Type type, string methodName)
+            public MethodDefinition(Type type, string methodName, 
+                BindingFlags bindingFlags = BindingFlags.Default,
+                Type[] argumentTypes = null)
             {
                 Type = type;
                 MethodName = methodName;
+                BindingFlags = bindingFlags;
+                ArgumentTypes = argumentTypes;
             }
 
             public Type Type { get; }
-            public string MethodName { get; set; }
+            public string MethodName { get; }
+
+            public BindingFlags BindingFlags { get; }
+            
+            public Type[] ArgumentTypes { get; }
         }
     }
 }

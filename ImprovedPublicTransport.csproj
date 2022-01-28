@@ -54,8 +54,13 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, PublicKeyToken=null">
-      <HintPath>packages\Lib.Harmony.1.2.0.1\lib\net35\0Harmony.dll</HintPath>
+    <Reference Include="CitiesHarmony.API">
+      <HintPath>.\packages\CitiesHarmony.API.2.0.0\lib\net35\CitiesHarmony.API.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CitiesHarmony.Harmony">
+      <HintPath>.\packages\CitiesHarmony.Harmony.2.0.4\lib\net35\CitiesHarmony.Harmony.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="ColossalManaged" />
@@ -195,7 +200,7 @@ del "$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)\$
 xcopy /y "$(TargetPath)" "$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(TargetName)" /s /e
 mkdir "$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(TargetName)"\Locale
 xcopy /y "$(ProjectDir)\Locale" "$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(TargetName)\Locale" /s /e
-xcopy /y "$(ProjectDir)\packages\Lib.Harmony.1.2.0.1\lib\net35\0Harmony.dll" "$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(TargetName)" /s /e
+xcopy /y "$(SolutionDir)\packages\CitiesHarmony.API.2.0.0\lib\net35\CitiesHarmony.API.dll" "$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(TargetName)" /s /e
 </PostBuildEvent>
   </PropertyGroup>
 </Project>
