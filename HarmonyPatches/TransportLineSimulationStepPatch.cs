@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using ColossalFramework;
-using Harmony;
+using HarmonyLib;
 using ImprovedPublicTransport2.Util;
 using UnityEngine;
 
