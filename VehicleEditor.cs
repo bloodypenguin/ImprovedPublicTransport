@@ -8,6 +8,8 @@ using ColossalFramework;
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using ImprovedPublicTransport2.OptionsFramework;
@@ -604,7 +606,15 @@ namespace ImprovedPublicTransport2
 
       private PrefabData[] GetPrefabs()
       {
-          return VehiclePrefabs.instance.GetPrefabs(this._selectedService, this._selectedSubService);
+
+        var prefabs = new List<PrefabData>();
+        if (_selectedService == ItemClass.Service.PublicTransport &&
+            _selectedSubService == ItemClass.SubService.PublicTransportBus)
+        {
+          prefabs.AddRange(VehiclePrefabs.instance.GetPrefabs(this._selectedService, ItemClass.SubService.PublicTransportTours));
+        } //we also want to display sightseeing buses in the bus dropdown
+        prefabs.AddRange(VehiclePrefabs.instance.GetPrefabs(this._selectedService, this._selectedSubService));
+        return prefabs.ToArray();
       }
 
       private void OnDefaultButtonClick(UIComponent component, UIMouseEventParameter eventParam)
@@ -661,10 +671,13 @@ namespace ImprovedPublicTransport2
       if (field == null)
         return;
       TransportInfo.TransportType transportType = (field.GetValue((object) ai) as TransportInfo).m_transportType;
+      var finalTransportType = transportType == TransportInfo.TransportType.TouristBus
+        ? TransportInfo.TransportType.Bus
+        : transportType; //that's because tourist buses are displayed alongside regular buses
       if (this._firstShow)
-        this.FirstShowInit(transportType, prefab);
+        this.FirstShowInit(finalTransportType, prefab);
       else
-        this.SetTransportType(transportType, prefab);
+        this.SetTransportType(finalTransportType, prefab);
     }
 
     private static ItemClassTriplet[] GetItemClasses(TransportInfo.TransportType transportType)
