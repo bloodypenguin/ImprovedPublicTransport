@@ -2,6 +2,7 @@ using ColossalFramework;
 using ColossalFramework.UI;
 using ICities;
 using System;
+using CitiesHarmony.API;
 using ImprovedPublicTransport2.Detour;
 using ImprovedPublicTransport2.Detour.Vehicles;
 using ImprovedPublicTransport2.HarmonyPatches;
@@ -19,7 +20,7 @@ namespace ImprovedPublicTransport2
     public static bool inGame = false;
     private GameObject _iptGameObject;
     private GameObject _worldInfoPanel;
-    private readonly string version = "6.0.0-preview3";
+    private readonly string version = "6.0.0-preview3.1";
 
 
     public string Name => $"Improved Public Transport 2 [r{version}]";
@@ -39,6 +40,10 @@ namespace ImprovedPublicTransport2
     public override void OnLevelLoaded(LoadMode mode)
     {
         base.OnLevelLoaded(mode);
+        if (!HarmonyHelper.IsHarmonyInstalled)
+        {
+          return;
+        }
         if (mode != LoadMode.LoadGame && mode != LoadMode.NewGame && mode != LoadMode.NewGameFromScenario)
         {
             return;
@@ -125,7 +130,11 @@ namespace ImprovedPublicTransport2
 
     public override void OnLevelUnloading()
     {
-            base.OnLevelUnloading();
+      base.OnLevelUnloading();
+      if (!HarmonyHelper.IsHarmonyInstalled)
+      {
+        return;
+      }
       if (!inGame)
         return;
         inGame = false;
@@ -194,6 +203,10 @@ namespace ImprovedPublicTransport2
       if (!((UnityEngine.Object) this._worldInfoPanel != (UnityEngine.Object) null))
         return;
       UnityEngine.Object.Destroy((UnityEngine.Object) this._worldInfoPanel);
+    }
+    
+    public void OnEnabled() {
+      HarmonyHelper.EnsureHarmonyInstalled();
     }
   }
 }
