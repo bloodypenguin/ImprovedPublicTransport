@@ -121,7 +121,7 @@ namespace ImprovedPublicTransport2
       this._averagePassengers = Mathf.RoundToInt(this._passengerData.Average);
       this.PassengersLastWeek = this.PassengersThisWeek;
       this.PassengersThisWeek = 0;
-      this.IncomeThisWeek = this.IncomeThisWeek - maintenanceCost;
+      this.IncomeThisWeek -= maintenanceCost;
       if (this._incomeData == null)
         this._incomeData = new MovingAverage(OptionsWrapper<Settings>.Options.StatisticWeeks);
       this._incomeData.Push((float) this.IncomeThisWeek);
