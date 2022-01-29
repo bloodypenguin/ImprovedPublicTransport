@@ -11,8 +11,7 @@ namespace ImprovedPublicTransport2.Util
         public static void ReplaceVehicles(ushort lineID)
         {
             var instance = Singleton<VehicleManager>.instance;
-            var vehicles = Singleton<VehicleManager>.instance.m_vehicles;
-            for (ushort i = 0; i < vehicles.m_size; i++)
+            for (var i = 0; i < instance.m_vehicles.m_buffer.Length; ++i)
             {
                 if (instance.m_vehicles.m_buffer[i].m_flags == 0 || instance.m_vehicles.m_buffer[i].Info == null ||
                     instance.m_vehicles.m_buffer[i].m_transportLine != lineID)
@@ -24,7 +23,7 @@ namespace ImprovedPublicTransport2.Util
                 {
                     continue;
                 }
-                RemoveVehicle(lineID, i, false);
+                RemoveVehicle(lineID, (ushort)i, false);
             }
         }
 
