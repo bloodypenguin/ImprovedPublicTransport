@@ -20,7 +20,7 @@ namespace ImprovedPublicTransport2
     public static bool inGame = false;
     private GameObject _iptGameObject;
     private GameObject _worldInfoPanel;
-    private readonly string version = "6.0.0-preview3.2";
+    private readonly string version = "6.0.0-preview4";
 
 
     public string Name => $"Improved Public Transport 2 [r{version}]";
@@ -67,7 +67,7 @@ namespace ImprovedPublicTransport2
           CachedNodeData.Init();
 
           int maxVehicleCount;
-          if (Utils.IsModActive(1764208250))
+          if (Utils.IsModActive(1764208250)) // More Vehicles
           {
             UnityEngine.Debug.LogWarning("IPT2: More Vehicles is enabled, applying compatibility workaround");
             maxVehicleCount = ushort.MaxValue + 1;
