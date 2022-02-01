@@ -142,11 +142,15 @@ namespace ImprovedPublicTransport2
           if (CachedVehicleData.m_cachedVehicleData[(int) vehicleID].IsUnbunchingInProgress)
             this._status.text = Localization.Get("VEHICLE_PANEL_STATUS_UNBUNCHING");
           this._distance.text = this._status.text;
-          var timeSinceBoardingFinished = vm.m_vehicles.m_buffer[vehicleID].m_waitCounter - TransportLineDetour.BoardingTime;
+          var boardingTime = vm.m_vehicles.m_buffer[(int)vehicleID].Info?.m_vehicleType == VehicleInfo.VehicleType.Plane
+            ? TransportLineDetour.AirplaneBoardingTime
+            : TransportLineDetour.BoardingTime;
+          
+          var timeSinceBoardingFinished = vm.m_vehicles.m_buffer[vehicleID].m_waitCounter - boardingTime;
           float progress;
           if (timeSinceBoardingFinished <= 0)
           {
-            progress = (TransportLineDetour.BoardingTime + timeSinceBoardingFinished) / (float)TransportLineDetour.BoardingTime;
+            progress = (boardingTime + timeSinceBoardingFinished) / (float)boardingTime;
           }
           else
           {

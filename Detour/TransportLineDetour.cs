@@ -19,6 +19,7 @@ namespace ImprovedPublicTransport2.Detour
     {
 
         public const byte BoardingTime = 12; //from the original TransportLine time
+        public const byte AirplaneBoardingTime = 200;
         public const byte MaxUnbunchingTime = byte.MaxValue - BoardingTime;
         
         [RedirectMethod]
