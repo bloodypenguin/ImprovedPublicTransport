@@ -577,7 +577,7 @@ namespace ImprovedPublicTransport2
       int num1 = 0;
       if (int32 > 0)
       {
-        num1 = Utils.RoundToNearest((float) (int32 / carCount), 5) * carCount;
+        num1 = Utils.RoundToNearest( int32 / (float)carCount, 1) * carCount;
         (component as UITextField).text = num1.ToString();
       }
       UITextField uiTextField = this._rightSidePanel.Find<UITextField>("MaintenanceCost");
