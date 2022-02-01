@@ -583,7 +583,7 @@ namespace ImprovedPublicTransport2
       UITextField uiTextField = this._rightSidePanel.Find<UITextField>("MaintenanceCost");
       if (!uiTextField.parent.enabled)
         return;
-      float num2 = (float) num1 / (float) carCount / (float) GameDefault.GetCapacity(prefab.Info.GetService(), prefab.Info.GetSubService(), prefab.Info.GetClassLevel());
+      float num2 = (float) num1 / (float) carCount / (float) GameDefault.GetCapacity(prefab.Info.GetService(), prefab.Info.GetSubService(), prefab.Info.GetClassLevel(), prefab.Info.m_vehicleType);
       uiTextField.text = Mathf.RoundToInt((float) (PrefabData.GetMaintenanceCost(prefab.Info.GetService(), prefab.Info.GetSubService(), prefab.Info.GetClassLevel(), prefab.Info.m_vehicleAI) * 16) * num2).ToString();
     }
 
