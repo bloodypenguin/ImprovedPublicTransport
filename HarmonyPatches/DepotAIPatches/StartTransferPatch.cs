@@ -2,15 +2,15 @@ using ImprovedPublicTransport2.OptionsFramework;
 using ImprovedPublicTransport2.Util;
 using UnityEngine;
 
-namespace ImprovedPublicTransport2.HarmonyPatches
+namespace ImprovedPublicTransport2.HarmonyPatches.DepotAIPatches
 {
-    public class DepotAIPatch
+    public class StartTransferPatch
     {
         public static void Apply()
         {
             PatchUtil.Patch(
                 new PatchUtil.MethodDefinition(typeof(DepotAI), nameof(DepotAI.StartTransfer)),
-                new PatchUtil.MethodDefinition(typeof(DepotAIPatch), nameof(StartTransferPre)),
+                new PatchUtil.MethodDefinition(typeof(StartTransferPatch), nameof(StartTransferPre)),
                 null
             );
         }

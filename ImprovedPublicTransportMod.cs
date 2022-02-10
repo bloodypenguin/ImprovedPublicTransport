@@ -6,7 +6,12 @@ using CitiesHarmony.API;
 using ImprovedPublicTransport2.Detour;
 using ImprovedPublicTransport2.Detour.Vehicles;
 using ImprovedPublicTransport2.HarmonyPatches;
-using ImprovedPublicTransport2.HarmonyPatches.PublicTransportLineVehicleSelectorPatch;
+using ImprovedPublicTransport2.HarmonyPatches.DepotAIPatches;
+using ImprovedPublicTransport2.HarmonyPatches.NetManagerPatches;
+using ImprovedPublicTransport2.HarmonyPatches.PublicTransportLineVehicleSelectorPatches;
+using ImprovedPublicTransport2.HarmonyPatches.TransportLinePatches;
+using ImprovedPublicTransport2.HarmonyPatches.VehicleManagerPatches;
+using ImprovedPublicTransport2.HarmonyPatches.XYZVehicleAIPatches;
 using ImprovedPublicTransport2.OptionsFramework.Extensions;
 using ImprovedPublicTransport2.RedirectionFramework;
 using UnityEngine;
@@ -82,9 +87,9 @@ namespace ImprovedPublicTransport2
           
           LoadPassengersPatch.Apply();
           UnloadPassengersPatch.Apply();
-          DepotAIPatch.Apply();
-          NetManagerPatch.Apply();
-          VehicleManagerPatch.Apply();
+          StartTransferPatch.Apply();
+          ReleaseNodePatch.Apply();
+          ReleaseWaterSourcePatch.Apply();
           GetVehicleInfoPatch.Apply();
 
           Redirector<BusAIDetour>.Deploy();
@@ -106,8 +111,8 @@ namespace ImprovedPublicTransport2
           
           CachedTransportLineData.Init();
           Redirector<TransportLineDetour>.Deploy();
-          TransportLineSimulationStepPatch.Apply();
-          TransportLineGetLineVehiclePatch.Apply();
+          SimulationStepPatch.Apply();
+          GetLineVehiclePatch.Apply();
 
           VehiclePrefabs.Init();
           SerializableDataExtension.instance.Loaded = true;
@@ -167,9 +172,9 @@ namespace ImprovedPublicTransport2
     {
       LoadPassengersPatch.Undo();
       UnloadPassengersPatch.Undo();
-      DepotAIPatch.Undo();
-      NetManagerPatch.Undo();
-      VehicleManagerPatch.Undo();
+      StartTransferPatch.Undo();
+      ReleaseNodePatch.Undo();
+      ReleaseWaterSourcePatch.Undo();
       GetVehicleInfoPatch.Undo();
       
       Redirector<TramAIDetour>.Revert();
@@ -187,8 +192,8 @@ namespace ImprovedPublicTransport2
       Redirector<PassengerHelicopterAIDetour>.Revert();
 
       Redirector<TransportLineDetour>.Revert();
-      TransportLineSimulationStepPatch.Undo();
-      TransportLineGetLineVehiclePatch.Undo();
+      SimulationStepPatch.Undo();
+      GetLineVehiclePatch.Undo();
       CachedTransportLineData.Deinit();
       
       BuildingExtension.Deinit();

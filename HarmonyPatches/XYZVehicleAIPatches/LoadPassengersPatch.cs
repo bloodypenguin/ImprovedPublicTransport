@@ -2,7 +2,7 @@ using System;
 using ImprovedPublicTransport2.Util;
 using UnityEngine;
 
-namespace ImprovedPublicTransport2.HarmonyPatches
+namespace ImprovedPublicTransport2.HarmonyPatches.XYZVehicleAIPatches
 {
     public class LoadPassengersPatch
     {

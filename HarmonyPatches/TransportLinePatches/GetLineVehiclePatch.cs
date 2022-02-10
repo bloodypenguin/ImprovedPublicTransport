@@ -1,15 +1,15 @@
 using ImprovedPublicTransport2.Util;
 
-namespace ImprovedPublicTransport2.HarmonyPatches
+namespace ImprovedPublicTransport2.HarmonyPatches.TransportLinePatches
 {
-    public class TransportLineGetLineVehiclePatch
+    public class GetLineVehiclePatch
     {
         public static void Apply()
         {
             PatchUtil.Patch(
                 new PatchUtil.MethodDefinition(typeof(TransportLine),
                     nameof(TransportLine.GetLineVehicle)),
-                new PatchUtil.MethodDefinition(typeof(TransportLineGetLineVehiclePatch),
+                new PatchUtil.MethodDefinition(typeof(GetLineVehiclePatch),
                     nameof(Prefix))
             );
         }

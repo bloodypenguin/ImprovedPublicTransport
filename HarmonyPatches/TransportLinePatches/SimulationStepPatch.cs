@@ -9,17 +9,17 @@ using HarmonyLib;
 using ImprovedPublicTransport2.Util;
 using UnityEngine;
 
-namespace ImprovedPublicTransport2.HarmonyPatches
+namespace ImprovedPublicTransport2.HarmonyPatches.TransportLinePatches
 {
-    public class TransportLineSimulationStepPatch
+    public class SimulationStepPatch
     {
         public static void Apply()
         {
             PatchUtil.Patch(
                 new PatchUtil.MethodDefinition(typeof(TransportLine), nameof(TransportLine.SimulationStep)),
-                new PatchUtil.MethodDefinition(typeof(TransportLineSimulationStepPatch), nameof(Prefix)),
-                new PatchUtil.MethodDefinition(typeof(TransportLineSimulationStepPatch), nameof(Postfix)),
-                new PatchUtil.MethodDefinition(typeof(TransportLineSimulationStepPatch), nameof(Transpile))
+                new PatchUtil.MethodDefinition(typeof(SimulationStepPatch), nameof(Prefix)),
+                new PatchUtil.MethodDefinition(typeof(SimulationStepPatch), nameof(Postfix)),
+                new PatchUtil.MethodDefinition(typeof(SimulationStepPatch), nameof(Transpile))
             );
         }
 
@@ -49,7 +49,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches
                 {
                     Debug.Log("IPT 2: Replacing call to FetchResourceStub()");
                     newCodes.Add(new CodeInstruction(OpCodes.Call,
-                        AccessTools.Method(typeof(TransportLineSimulationStepPatch), nameof(FetchResourceStub))));
+                        AccessTools.Method(typeof(SimulationStepPatch), nameof(FetchResourceStub))));
                     continue;
                 }
 
@@ -62,7 +62,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches
                     labels = thisInstruction.labels //need to preserve the label
                 });
                 newCodes.Add(new CodeInstruction(OpCodes.Call,
-                    AccessTools.Method(typeof(TransportLineSimulationStepPatch), nameof(CalculateTargetVehicleCount))));
+                    AccessTools.Method(typeof(SimulationStepPatch), nameof(CalculateTargetVehicleCount))));
             }
 
             return newCodes.AsEnumerable();
