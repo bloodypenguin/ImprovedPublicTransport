@@ -1,15 +1,15 @@
 using ImprovedPublicTransport2.Util;
 
-namespace ImprovedPublicTransport2.HarmonyPatches
+namespace ImprovedPublicTransport2.HarmonyPatches.NetManagerPatches
 {
-    public class NetManagerPatch
+    public class ReleaseNodePatch
     {
         public static void Apply()
         {
             PatchUtil.Patch(
                 new PatchUtil.MethodDefinition(typeof(NetManager), nameof(NetManager.ReleaseNode)),
                 null,
-                new PatchUtil.MethodDefinition(typeof(NetManagerPatch), nameof(ReleaseNodePost))
+                new PatchUtil.MethodDefinition(typeof(ReleaseNodePatch), nameof(ReleaseNodePost))
             );
         }
 

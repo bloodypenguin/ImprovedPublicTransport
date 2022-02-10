@@ -1,15 +1,15 @@
 using ImprovedPublicTransport2.Util;
 
-namespace ImprovedPublicTransport2.HarmonyPatches
+namespace ImprovedPublicTransport2.HarmonyPatches.VehicleManagerPatches
 {
-    public class VehicleManagerPatch
+    public class ReleaseWaterSourcePatch
     {
         public static void Apply()
         {
             PatchUtil.Patch(
                 new PatchUtil.MethodDefinition(typeof(VehicleManager), "ReleaseWaterSource"),
                 null,
-                new PatchUtil.MethodDefinition(typeof(VehicleManagerPatch), nameof(ReleaseWaterSourcePost))
+                new PatchUtil.MethodDefinition(typeof(ReleaseWaterSourcePatch), nameof(ReleaseWaterSourcePost))
             );
         }
 
