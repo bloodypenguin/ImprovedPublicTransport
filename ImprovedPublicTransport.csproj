@@ -87,11 +87,14 @@
     <Compile Include="Detour\Vehicles\TramAIDetour.cs" />
     <Compile Include="Detour\Vehicles\TrolleybusAIDetour.cs" />
     <Compile Include="GameDefault.cs" />
+    <Compile Include="HarmonyPatches\BuildingManagerPatches\GetDepotLevelsPatch.cs" />
+    <Compile Include="HarmonyPatches\DepotAIPatches\ClassMatchesPatch.cs" />
     <Compile Include="HarmonyPatches\DepotAIPatches\StartTransferPatch.cs" />
     <Compile Include="HarmonyPatches\NetManagerPatches\ReleaseNodePatch.cs" />
     <Compile Include="HarmonyPatches\PublicTransportLineVehicleSelectorPatches\GetVehicleInfoPatch.cs" />
     <Compile Include="HarmonyPatches\TransportLinePatches\GetLineVehiclePatch.cs" />
     <Compile Include="HarmonyPatches\TransportLinePatches\SimulationStepPatch.cs" />
+    <Compile Include="HarmonyPatches\TransportManagerPatches\CheckTransportLineVehiclesPatch.cs" />
     <Compile Include="HarmonyPatches\VehicleManagerPatches\ReleaseWaterSourcePatch.cs" />
     <Compile Include="HarmonyPatches\XYZVehicleAIPatches\LoadPassengersPatch.cs" />
     <Compile Include="HarmonyPatches\XYZVehicleAIPatches\UnloadPassengersPatch.cs" />
