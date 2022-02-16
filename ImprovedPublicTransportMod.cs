@@ -6,10 +6,12 @@ using CitiesHarmony.API;
 using ImprovedPublicTransport2.Detour;
 using ImprovedPublicTransport2.Detour.Vehicles;
 using ImprovedPublicTransport2.HarmonyPatches;
+using ImprovedPublicTransport2.HarmonyPatches.BuildingManagerPatches;
 using ImprovedPublicTransport2.HarmonyPatches.DepotAIPatches;
 using ImprovedPublicTransport2.HarmonyPatches.NetManagerPatches;
 using ImprovedPublicTransport2.HarmonyPatches.PublicTransportLineVehicleSelectorPatches;
 using ImprovedPublicTransport2.HarmonyPatches.TransportLinePatches;
+using ImprovedPublicTransport2.HarmonyPatches.TransportManagerPatches;
 using ImprovedPublicTransport2.HarmonyPatches.VehicleManagerPatches;
 using ImprovedPublicTransport2.HarmonyPatches.XYZVehicleAIPatches;
 using ImprovedPublicTransport2.OptionsFramework.Extensions;
@@ -91,6 +93,9 @@ namespace ImprovedPublicTransport2
           ReleaseNodePatch.Apply();
           ReleaseWaterSourcePatch.Apply();
           GetVehicleInfoPatch.Apply();
+          CheckTransportLineVehiclesPatch.Apply();
+          ClassMatchesPatch.Apply();
+          GetDepotLevelsPatch.Apply();
 
           Redirector<BusAIDetour>.Deploy();
           Redirector<TrolleybusAIDetour>.Deploy();
@@ -176,7 +181,10 @@ namespace ImprovedPublicTransport2
       ReleaseNodePatch.Undo();
       ReleaseWaterSourcePatch.Undo();
       GetVehicleInfoPatch.Undo();
-      
+      ClassMatchesPatch.Undo();
+      CheckTransportLineVehiclesPatch.Undo();
+      GetDepotLevelsPatch.Undo();
+
       Redirector<TramAIDetour>.Revert();
       Redirector<PassengerTrainAIDetour>.Revert();
       Redirector<PassengerShipAIDetour>.Revert();
