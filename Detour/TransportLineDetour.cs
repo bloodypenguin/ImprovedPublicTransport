@@ -21,13 +21,16 @@ namespace ImprovedPublicTransport2.Detour
         public const byte BoardingTime = 12; //from the original TransportLine time
         public const byte AirplaneBoardingTime = 200;
         public const byte MaxUnbunchingTime = byte.MaxValue - BoardingTime;
-        
+
         [RedirectMethod]
         public static bool CanLeaveStop(ref TransportLine thisLine, ushort nextStop, int waitTime)
         {
             if ((int)nextStop == 0)
                 return true;
             ushort prevSegment = TransportLine.GetPrevSegment(nextStop);
+
+            // here has bug, but when you recompile it, it gone! lamo
+            // bug: missing m_trafficLightState0
             if ((int)prevSegment == 0 || ((int)thisLine.m_averageInterval - (int)Singleton<NetManager>.instance.m_segments.m_buffer[(int)prevSegment].m_trafficLightState0 + 2) / 4 <= 0)
                 return true;
             //begin mod(*): compare with interval aggression setup instead of default 64
@@ -35,7 +38,7 @@ namespace ImprovedPublicTransport2.Detour
             return waitTime >= targetWaitTime; //4 * 16 = 64 is max waiting time in vanilla, 12 is min waiting time
             //end mod
         }
-        
+
         [RedirectReverse]
         public static ushort GetActiveVehicle(ref TransportLine thisLine, int index)
         {
