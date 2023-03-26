@@ -6,7 +6,9 @@
 
 using ColossalFramework.UI;
 using System;
+using ImprovedPublicTransport2.Util;
 using UnityEngine;
+using UIUtils = ImprovedPublicTransport2.Util.UIUtils;
 
 namespace ImprovedPublicTransport2
 {

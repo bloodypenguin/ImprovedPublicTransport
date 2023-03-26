@@ -1,20 +1,34 @@
-﻿using ColossalFramework;
+using ColossalFramework;
 using ColossalFramework.UI;
 using ICities;
 using System;
+using CitiesHarmony.API;
 using ImprovedPublicTransport2.Detour;
+using ImprovedPublicTransport2.Detour.Vehicles;
+using ImprovedPublicTransport2.HarmonyPatches;
+using ImprovedPublicTransport2.HarmonyPatches.BuildingManagerPatches;
+using ImprovedPublicTransport2.HarmonyPatches.DepotAIPatches;
+using ImprovedPublicTransport2.HarmonyPatches.NetManagerPatches;
+using ImprovedPublicTransport2.HarmonyPatches.PublicTransportLineVehicleSelectorPatches;
+using ImprovedPublicTransport2.HarmonyPatches.TransportLinePatches;
+using ImprovedPublicTransport2.HarmonyPatches.TransportManagerPatches;
+using ImprovedPublicTransport2.HarmonyPatches.VehicleManagerPatches;
+using ImprovedPublicTransport2.HarmonyPatches.XYZVehicleAIPatches;
 using ImprovedPublicTransport2.OptionsFramework.Extensions;
 using ImprovedPublicTransport2.RedirectionFramework;
 using UnityEngine;
+using Utils = ImprovedPublicTransport2.Util.Utils;
 
 namespace ImprovedPublicTransport2
 {
   public class ImprovedPublicTransportMod : LoadingExtensionBase, IUserMod
   {
+   
     public static bool inGame = false;
     private GameObject _iptGameObject;
     private GameObject _worldInfoPanel;
-    private readonly string version = "4.2.2";
+    private readonly string version = "6.0.0-preview5";
+
 
     public string Name => $"Improved Public Transport 2 [r{version}]";
 
@@ -24,10 +38,19 @@ namespace ImprovedPublicTransport2
       {
           helper.AddOptionsGroup<Settings>(Localization.Get);
       }
+      
+      public override void OnCreated(ILoading loading)
+      {
+        base.OnCreated(loading);
+      }
 
     public override void OnLevelLoaded(LoadMode mode)
     {
-            base.OnLevelLoaded(mode);
+        base.OnLevelLoaded(mode);
+        if (!HarmonyHelper.IsHarmonyInstalled)
+        {
+          return;
+        }
         if (mode != LoadMode.LoadGame && mode != LoadMode.NewGame && mode != LoadMode.NewGameFromScenario)
         {
             return;
@@ -35,7 +58,7 @@ namespace ImprovedPublicTransport2
         inGame = true;
         try
       {
-        Utils.Log((object) $"Begin init version: {version}");
+        Utils.Log((object) $"IPT2: Begin init version: {version}");
         this.ReleaseUnusedCitizenUnits();
         UIView objectOfType = UnityEngine.Object.FindObjectOfType<UIView>();
         if ((UnityEngine.Object) objectOfType != (UnityEngine.Object) null)
@@ -47,22 +70,55 @@ namespace ImprovedPublicTransport2
           this._worldInfoPanel = new GameObject("PublicTransportStopWorldInfoPanel");
           this._worldInfoPanel.transform.parent = objectOfType.transform;
           this._worldInfoPanel.AddComponent<PublicTransportStopWorldInfoPanel>();
-          NetManagerMod.Init();
-          VehicleManagerMod.Init();
+          
+          CachedNodeData.Init();
+
+          int maxVehicleCount;
+          if (Utils.IsModActive(1764208250)) // More Vehicles
+          {
+            UnityEngine.Debug.LogWarning("IPT2: More Vehicles is enabled, applying compatibility workaround");
+            maxVehicleCount = ushort.MaxValue + 1;
+          }
+          else
+          {
+            UnityEngine.Debug.Log("IPT2: More Vehicles is not enabled");
+            maxVehicleCount = VehicleManager.MAX_VEHICLE_COUNT;
+          }
+          
+          CachedVehicleData.Init(maxVehicleCount);
+          
+          LoadPassengersPatch.Apply();
+          UnloadPassengersPatch.Apply();
+          StartTransferPatch.Apply();
+          ReleaseNodePatch.Apply();
+          ReleaseWaterSourcePatch.Apply();
+          GetVehicleInfoPatch.Apply();
+          CheckTransportLineVehiclesPatch.Apply();
+          ClassMatchesPatch.Apply();
+          GetDepotLevelsPatch.Apply();
+
           Redirector<BusAIDetour>.Deploy();
+          Redirector<TrolleybusAIDetour>.Deploy();
           Redirector<PassengerTrainAIDetour>.Deploy();
           Redirector<PassengerShipAIDetour>.Deploy(); 
           Redirector<PassengerPlaneAIDetour>.Deploy();
           Redirector<PassengerFerryAIDetour>.Deploy();
           Redirector<PassengerBlimpAIDetour>.Deploy();
+          Redirector<PassengerHelicopterAIDetour>.Deploy();
           Redirector<TramAIDetour>.Deploy();
+          
           Redirector<CommonBuildingAIReverseDetour>.Deploy();
           Redirector<PublicTransportStopButtonDetour>.Deploy();
           Redirector<PublicTransportVehicleButtonDetour>.Deploy();
           Redirector<PublicTransportWorldInfoPanelDetour>.Deploy();
           BuildingExtension.Init();
           LineWatcher.instance.Init();
-          TransportLineMod.Init();
+          
+          CachedTransportLineData.Init();
+          Redirector<TransportLineDetour>.Deploy();
+          SimulationStepPatch.Apply();
+          GetLineVehiclePatch.Apply();
+
           VehiclePrefabs.Init();
           SerializableDataExtension.instance.Loaded = true;
           LocaleModifier.Init();
@@ -77,20 +133,26 @@ namespace ImprovedPublicTransport2
       }
       catch (Exception ex)
       {
-        Utils.LogError((object) ("Error during initialization, IPT disables itself." + System.Environment.NewLine + "Please try again without any other mod." + System.Environment.NewLine + "Please upload your log file and post the link here if that didn't help:" + System.Environment.NewLine + "http://steamcommunity.com/workshop/filedetails/discussion/424106600/615086038663282271/" + System.Environment.NewLine + ex.Message + System.Environment.NewLine + (object) ex.InnerException + System.Environment.NewLine + ex.StackTrace));
+        Utils.LogError((object) ("IPT2: Error during initialization, IPT disables itself." + System.Environment.NewLine + "Please try again without any other mod." + System.Environment.NewLine + "Please upload your log file and post the link here if that didn't help:" + System.Environment.NewLine + "http://steamcommunity.com/workshop/filedetails/discussion/424106600/615086038663282271/" + System.Environment.NewLine + ex.Message + System.Environment.NewLine + (object) ex.InnerException + System.Environment.NewLine + ex.StackTrace));
         this.Deinit();
       }
     }
 
     public override void OnLevelUnloading()
     {
-            base.OnLevelUnloading();
+      base.OnLevelUnloading();
+      if (!HarmonyHelper.IsHarmonyInstalled)
+      {
+        return;
+      }
       if (!inGame)
         return;
         inGame = false;
       this.Deinit();
       Utils.Log((object) ("Unloading done!" + System.Environment.NewLine));
     }
+
+
 
     private void ReleaseUnusedCitizenUnits()
     {
@@ -113,6 +175,16 @@ namespace ImprovedPublicTransport2
 
     private void Deinit()
     {
+      LoadPassengersPatch.Undo();
+      UnloadPassengersPatch.Undo();
+      StartTransferPatch.Undo();
+      ReleaseNodePatch.Undo();
+      ReleaseWaterSourcePatch.Undo();
+      GetVehicleInfoPatch.Undo();
+      ClassMatchesPatch.Undo();
+      CheckTransportLineVehiclesPatch.Undo();
+      GetDepotLevelsPatch.Undo();
+
       Redirector<TramAIDetour>.Revert();
       Redirector<PassengerTrainAIDetour>.Revert();
       Redirector<PassengerShipAIDetour>.Revert();
@@ -124,10 +196,17 @@ namespace ImprovedPublicTransport2
       Redirector<PublicTransportStopButtonDetour>.Revert();
       Redirector<PublicTransportVehicleButtonDetour>.Revert();
       Redirector<PublicTransportWorldInfoPanelDetour>.Revert();
-      TransportLineMod.Deinit();
+      Redirector<TrolleybusAIDetour>.Revert();
+      Redirector<PassengerHelicopterAIDetour>.Revert();
+
+      Redirector<TransportLineDetour>.Revert();
+      SimulationStepPatch.Undo();
+      GetLineVehiclePatch.Undo();
+      CachedTransportLineData.Deinit();
+      
       BuildingExtension.Deinit();
-      NetManagerMod.Deinit();
-      VehicleManagerMod.Deinit();
+      CachedNodeData.Deinit();
+      CachedVehicleData.Deinit();
       VehiclePrefabs.Deinit();
       SerializableDataExtension.instance.Loaded = false;
       LocaleModifier.Deinit();
@@ -137,6 +216,10 @@ namespace ImprovedPublicTransport2
       if (!((UnityEngine.Object) this._worldInfoPanel != (UnityEngine.Object) null))
         return;
       UnityEngine.Object.Destroy((UnityEngine.Object) this._worldInfoPanel);
+    }
+    
+    public void OnEnabled() {
+      HarmonyHelper.EnsureHarmonyInstalled();
     }
   }
 }

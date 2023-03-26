@@ -8,10 +8,14 @@ using ColossalFramework;
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using ImprovedPublicTransport2.OptionsFramework;
 using UnityEngine;
+using UIUtils = ImprovedPublicTransport2.Util.UIUtils;
+using Utils = ImprovedPublicTransport2.Util.Utils;
 
 namespace ImprovedPublicTransport2
 {
@@ -109,7 +113,7 @@ namespace ImprovedPublicTransport2
     {
       this.name = "VehicleEditor";
       this.width = 314f;
-      this.height = 363f;
+      this.height = 394f;
       this.backgroundSprite = "MenuPanel2";
       this.canFocus = true;
       this.isInteractive = true;
@@ -139,18 +143,20 @@ namespace ImprovedPublicTransport2
       uiPanel.height = (float) num4;
       TransportManager instance = Singleton<TransportManager>.instance;
       this.CreateTabButton(TransportInfo.TransportType.Bus);
+      if (instance.TransportTypeLoaded(TransportInfo.TransportType.Trolleybus))
+        this.CreateTabButton(TransportInfo.TransportType.Trolleybus);
+      if (instance.TransportTypeLoaded(TransportInfo.TransportType.Tram))
+        this.CreateTabButton(TransportInfo.TransportType.Tram);
       this.CreateTabButton(TransportInfo.TransportType.Metro);
       this.CreateTabButton(TransportInfo.TransportType.Train);
       this.CreateTabButton(TransportInfo.TransportType.Ship);
       this.CreateTabButton(TransportInfo.TransportType.Airplane);
-      if (instance.TransportTypeLoaded(TransportInfo.TransportType.Taxi))
-        this.CreateTabButton(TransportInfo.TransportType.Taxi);
-      if (instance.TransportTypeLoaded(TransportInfo.TransportType.Tram))
-        this.CreateTabButton(TransportInfo.TransportType.Tram);
       if (instance.TransportTypeLoaded(TransportInfo.TransportType.Monorail))
         this.CreateTabButton(TransportInfo.TransportType.Monorail);
       if (instance.TransportTypeLoaded(TransportInfo.TransportType.CableCar))
         this.CreateTabButton(TransportInfo.TransportType.CableCar);
+      if (instance.TransportTypeLoaded(TransportInfo.TransportType.Taxi))
+        this.CreateTabButton(TransportInfo.TransportType.Taxi);
       this.CreateVehicleOptionsPanel();
     }
 
@@ -174,7 +180,7 @@ namespace ImprovedPublicTransport2
       uiPanel.color = transportColor;
       string str1 = "InfoviewPanel";
       uiPanel.backgroundSprite = str1;
-      string vehicleTypeIcon = PublicTransportWorldInfoPanel.GetVehicleTypeIcon(transportType == TransportInfo.TransportType.CableCar ?  TransportInfo.TransportType.EvacuationBus : transportType);
+      string vehicleTypeIcon = PublicTransportWorldInfoPanel.GetVehicleTypeIcon(transportType);
       UIButton uiButton = uiPanel.AddUIComponent<UIButton>();
       double num6 = 32.0;
       uiButton.width = (float) num6;
@@ -197,7 +203,7 @@ namespace ImprovedPublicTransport2
       uiPanel1.anchor = UIAnchorStyle.Top | UIAnchorStyle.Left | UIAnchorStyle.Right;
       uiPanel1.transform.localPosition = Vector3.zero;
       uiPanel1.width = 246f;
-      uiPanel1.height = 304f;
+      uiPanel1.height = 335f;
       uiPanel1.autoLayout = true;
       uiPanel1.autoLayoutDirection = LayoutDirection.Vertical;
       uiPanel1.autoLayoutPadding = new RectOffset(3, 3, 0, 0);
@@ -571,13 +577,13 @@ namespace ImprovedPublicTransport2
       int num1 = 0;
       if (int32 > 0)
       {
-        num1 = Utils.RoundToNearest((float) (int32 / carCount), 5) * carCount;
+        num1 = Utils.RoundToNearest( int32 / (float)carCount, 1) * carCount;
         (component as UITextField).text = num1.ToString();
       }
       UITextField uiTextField = this._rightSidePanel.Find<UITextField>("MaintenanceCost");
       if (!uiTextField.parent.enabled)
         return;
-      float num2 = (float) num1 / (float) carCount / (float) GameDefault.GetCapacity(prefab.Info.GetService(), prefab.Info.GetSubService(), prefab.Info.GetClassLevel());
+      float num2 = (float) num1 / (float) carCount / (float) GameDefault.GetCapacity(prefab.Info.GetService(), prefab.Info.GetSubService(), prefab.Info.GetClassLevel(), prefab.Info.m_vehicleType);
       uiTextField.text = Mathf.RoundToInt((float) (PrefabData.GetMaintenanceCost(prefab.Info.GetService(), prefab.Info.GetSubService(), prefab.Info.GetClassLevel(), prefab.Info.m_vehicleAI) * 16) * num2).ToString();
     }
 
@@ -600,7 +606,15 @@ namespace ImprovedPublicTransport2
 
       private PrefabData[] GetPrefabs()
       {
-          return VehiclePrefabs.instance.GetPrefabs(this._selectedService, this._selectedSubService);
+
+        var prefabs = new List<PrefabData>();
+        if (_selectedService == ItemClass.Service.PublicTransport &&
+            _selectedSubService == ItemClass.SubService.PublicTransportBus)
+        {
+          prefabs.AddRange(VehiclePrefabs.instance.GetPrefabs(this._selectedService, ItemClass.SubService.PublicTransportTours));
+        } //we also want to display sightseeing buses in the bus dropdown
+        prefabs.AddRange(VehiclePrefabs.instance.GetPrefabs(this._selectedService, this._selectedSubService));
+        return prefabs.ToArray();
       }
 
       private void OnDefaultButtonClick(UIComponent component, UIMouseEventParameter eventParam)
@@ -657,10 +671,13 @@ namespace ImprovedPublicTransport2
       if (field == null)
         return;
       TransportInfo.TransportType transportType = (field.GetValue((object) ai) as TransportInfo).m_transportType;
+      var finalTransportType = transportType == TransportInfo.TransportType.TouristBus
+        ? TransportInfo.TransportType.Bus
+        : transportType; //that's because tourist buses are displayed alongside regular buses
       if (this._firstShow)
-        this.FirstShowInit(transportType, prefab);
+        this.FirstShowInit(finalTransportType, prefab);
       else
-        this.SetTransportType(transportType, prefab);
+        this.SetTransportType(finalTransportType, prefab);
     }
 
     private static ItemClassTriplet[] GetItemClasses(TransportInfo.TransportType transportType)
@@ -679,7 +696,10 @@ namespace ImprovedPublicTransport2
         case TransportInfo.TransportType.Metro:
           return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportMetro, ItemClass.Level.Level1) };
         case TransportInfo.TransportType.Train:
-            return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTrain, ItemClass.Level.Level1) };
+          return new[] { 
+            new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTrain, ItemClass.Level.Level1) ,
+            new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTrain, ItemClass.Level.Level2)
+          };
         case TransportInfo.TransportType.Ship:
             return new[]
             {
@@ -690,7 +710,8 @@ namespace ImprovedPublicTransport2
             return new[]
             {
                 new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportPlane, ItemClass.Level.Level1),
-                new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportPlane, ItemClass.Level.Level2)
+                new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportPlane, ItemClass.Level.Level2),
+                new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportPlane, ItemClass.Level.Level3)
             };
         case TransportInfo.TransportType.Taxi:
             return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTaxi, ItemClass.Level.Level1) };
@@ -700,6 +721,8 @@ namespace ImprovedPublicTransport2
             return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportMonorail, ItemClass.Level.Level1) };
         case TransportInfo.TransportType.CableCar:
            return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportCableCar, ItemClass.Level.Level1) };
+        case TransportInfo.TransportType.Trolleybus:
+          return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTrolleybus, ItemClass.Level.Level1) };
         default:
           return new[] { new ItemClassTriplet(ItemClass.Service.None, ItemClass.SubService.None, ItemClass.Level.None)};
       }
@@ -727,6 +750,8 @@ namespace ImprovedPublicTransport2
           return "INFO_PUBLICTRANSPORT_CABLECAR";
         case TransportInfo.TransportType.Monorail:
           return "INFO_PUBLICTRANSPORT_MONORAIL";
+        case TransportInfo.TransportType.Trolleybus:
+          return "INFO_PUBLICTRANSPORT_TROLLEYBUS";
         default:
           return string.Empty;
       }

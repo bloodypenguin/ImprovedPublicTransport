@@ -4,19 +4,18 @@
 // MVID: 76F370C5-F40B-41AE-AA9D-1E3F87E934D3
 // Assembly location: C:\Games\Steam\steamapps\workshop\content\255710\424106600\ImprovedPublicTransport.dll
 
-using ColossalFramework;
-using ColossalFramework.Plugins;
-using ColossalFramework.UI;
-using ImprovedPublicTransport2.Detour;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using ColossalFramework;
+using ColossalFramework.Plugins;
+using ColossalFramework.UI;
 using ICities;
 using UnityEngine;
 
-namespace ImprovedPublicTransport2
+namespace ImprovedPublicTransport2.Util
 {
   public static class Utils
   {
@@ -206,6 +205,21 @@ namespace ImprovedPublicTransport2
           return pluginInfo.modPath;
       }
       return (string) null;
+    }
+    
+    public static bool IsModActive(ulong modId)
+    {
+      try
+      {
+        var plugins = PluginManager.instance.GetPluginsInfo();
+        return plugins.Any(p => p != null && p.isEnabled && p.publishedFileID.AsUInt64 == modId);
+      }
+      catch (Exception e)
+      {
+        UnityEngine.Debug.LogError($"Failed to detect if mod {modId} is active");
+        UnityEngine.Debug.LogException(e);
+        return false;
+      }
     }
   }
 }

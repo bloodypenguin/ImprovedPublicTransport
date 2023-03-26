@@ -3,7 +3,7 @@
     public static class GameDefault
     {
         public static ushort GetCapacity(ItemClass.Service service, ItemClass.SubService subService,
-            ItemClass.Level level)
+            ItemClass.Level level, VehicleInfo.VehicleType vehicleType)
         {
             if (service == ItemClass.Service.PublicTransport)
             {
@@ -17,6 +17,7 @@
                         case ItemClass.SubService.PublicTransportBus:
                         case ItemClass.SubService.PublicTransportMetro:
                         case ItemClass.SubService.PublicTransportTrain:
+                        case ItemClass.SubService.PublicTransportTrolleybus:
                             return 30;
                         case ItemClass.SubService.PublicTransportShip:
                             return 100;
@@ -29,10 +30,12 @@
                     switch (subService)
                     {
                         case ItemClass.SubService.PublicTransportPlane:
-                            return 35;
+                            return (ushort)(vehicleType == VehicleInfo.VehicleType.Blimp ? 35 : 350);
                         case ItemClass.SubService.PublicTransportShip:
                             return 50;
                         case ItemClass.SubService.PublicTransportBus:
+                            return 30;
+                        case ItemClass.SubService.PublicTransportTrain:
                             return 30;
                     }
                 }
@@ -40,8 +43,10 @@
                 {
                     switch (subService)
                     {
-                        case ItemClass.SubService.PublicTransportTours: //verify
+                        case ItemClass.SubService.PublicTransportTours:
                             return 30;
+                        case ItemClass.SubService.PublicTransportPlane:
+                            return (ushort)(vehicleType == VehicleInfo.VehicleType.Helicopter ? 20 : 50);
                     }
                 }
             }
