@@ -5,21 +5,21 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using ColossalFramework;
-using Harmony;
+using HarmonyLib;
 using ImprovedPublicTransport2.Util;
 using UnityEngine;
 
-namespace ImprovedPublicTransport2.HarmonyPatches
+namespace ImprovedPublicTransport2.HarmonyPatches.TransportLinePatches
 {
-    public class TransportLineSimulationStepPatch
+    public class SimulationStepPatch
     {
         public static void Apply()
         {
             PatchUtil.Patch(
                 new PatchUtil.MethodDefinition(typeof(TransportLine), nameof(TransportLine.SimulationStep)),
-                new PatchUtil.MethodDefinition(typeof(TransportLineSimulationStepPatch), nameof(Prefix)),
-                new PatchUtil.MethodDefinition(typeof(TransportLineSimulationStepPatch), nameof(Postfix)),
-                new PatchUtil.MethodDefinition(typeof(TransportLineSimulationStepPatch), nameof(Transpile))
+                new PatchUtil.MethodDefinition(typeof(SimulationStepPatch), nameof(Prefix)),
+                new PatchUtil.MethodDefinition(typeof(SimulationStepPatch), nameof(Postfix)),
+                new PatchUtil.MethodDefinition(typeof(SimulationStepPatch), nameof(Transpile))
             );
         }
 
@@ -49,7 +49,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches
                 {
                     Debug.Log("IPT 2: Replacing call to FetchResourceStub()");
                     newCodes.Add(new CodeInstruction(OpCodes.Call,
-                        AccessTools.Method(typeof(TransportLineSimulationStepPatch), nameof(FetchResourceStub))));
+                        AccessTools.Method(typeof(SimulationStepPatch), nameof(FetchResourceStub))));
                     continue;
                 }
 
@@ -62,7 +62,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches
                     labels = thisInstruction.labels //need to preserve the label
                 });
                 newCodes.Add(new CodeInstruction(OpCodes.Call,
-                    AccessTools.Method(typeof(TransportLineSimulationStepPatch), nameof(CalculateTargetVehicleCount))));
+                    AccessTools.Method(typeof(SimulationStepPatch), nameof(CalculateTargetVehicleCount))));
             }
 
             return newCodes.AsEnumerable();
@@ -86,7 +86,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches
         public static void Postfix(ushort __state)
         {
             var lineID = __state;
-            if (!CachedTransportLineData._init || (SimulationManager.instance.m_currentFrameIndex & 4095U) >= 3840U ||
+            if (!CachedTransportLineData._init || !((SimulationManager.instance.m_currentFrameIndex & 4095U) >= 3840U) ||
                 !TransportManager.instance.m_lines.m_buffer[lineID].Complete)
             {
                 return;

@@ -8,6 +8,8 @@ using ColossalFramework;
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using ImprovedPublicTransport2.OptionsFramework;
@@ -575,13 +577,13 @@ namespace ImprovedPublicTransport2
       int num1 = 0;
       if (int32 > 0)
       {
-        num1 = Utils.RoundToNearest((float) (int32 / carCount), 5) * carCount;
+        num1 = Utils.RoundToNearest( int32 / (float)carCount, 1) * carCount;
         (component as UITextField).text = num1.ToString();
       }
       UITextField uiTextField = this._rightSidePanel.Find<UITextField>("MaintenanceCost");
       if (!uiTextField.parent.enabled)
         return;
-      float num2 = (float) num1 / (float) carCount / (float) GameDefault.GetCapacity(prefab.Info.GetService(), prefab.Info.GetSubService(), prefab.Info.GetClassLevel());
+      float num2 = (float) num1 / (float) carCount / (float) GameDefault.GetCapacity(prefab.Info.GetService(), prefab.Info.GetSubService(), prefab.Info.GetClassLevel(), prefab.Info.m_vehicleType);
       uiTextField.text = Mathf.RoundToInt((float) (PrefabData.GetMaintenanceCost(prefab.Info.GetService(), prefab.Info.GetSubService(), prefab.Info.GetClassLevel(), prefab.Info.m_vehicleAI) * 16) * num2).ToString();
     }
 
@@ -604,7 +606,15 @@ namespace ImprovedPublicTransport2
 
       private PrefabData[] GetPrefabs()
       {
-          return VehiclePrefabs.instance.GetPrefabs(this._selectedService, this._selectedSubService);
+
+        var prefabs = new List<PrefabData>();
+        if (_selectedService == ItemClass.Service.PublicTransport &&
+            _selectedSubService == ItemClass.SubService.PublicTransportBus)
+        {
+          prefabs.AddRange(VehiclePrefabs.instance.GetPrefabs(this._selectedService, ItemClass.SubService.PublicTransportTours));
+        } //we also want to display sightseeing buses in the bus dropdown
+        prefabs.AddRange(VehiclePrefabs.instance.GetPrefabs(this._selectedService, this._selectedSubService));
+        return prefabs.ToArray();
       }
 
       private void OnDefaultButtonClick(UIComponent component, UIMouseEventParameter eventParam)
@@ -661,10 +671,13 @@ namespace ImprovedPublicTransport2
       if (field == null)
         return;
       TransportInfo.TransportType transportType = (field.GetValue((object) ai) as TransportInfo).m_transportType;
+      var finalTransportType = transportType == TransportInfo.TransportType.TouristBus
+        ? TransportInfo.TransportType.Bus
+        : transportType; //that's because tourist buses are displayed alongside regular buses
       if (this._firstShow)
-        this.FirstShowInit(transportType, prefab);
+        this.FirstShowInit(finalTransportType, prefab);
       else
-        this.SetTransportType(transportType, prefab);
+        this.SetTransportType(finalTransportType, prefab);
     }
 
     private static ItemClassTriplet[] GetItemClasses(TransportInfo.TransportType transportType)
@@ -683,7 +696,10 @@ namespace ImprovedPublicTransport2
         case TransportInfo.TransportType.Metro:
           return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportMetro, ItemClass.Level.Level1) };
         case TransportInfo.TransportType.Train:
-            return new[] { new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTrain, ItemClass.Level.Level1) };
+          return new[] { 
+            new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTrain, ItemClass.Level.Level1) ,
+            new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTrain, ItemClass.Level.Level2)
+          };
         case TransportInfo.TransportType.Ship:
             return new[]
             {

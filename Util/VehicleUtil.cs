@@ -37,5 +37,10 @@ namespace ImprovedPublicTransport2.Util
             var data = instance.m_vehicles.m_buffer[vehicleID];
             return data.Info.m_vehicleAI.GetTicketPrice(vehicleID, ref data);
         }
+
+        public static bool AllowAllVehicleLevelsOnLine(ItemClass.SubService subService)
+        {
+            return subService is ItemClass.SubService.PublicTransportBus or ItemClass.SubService.PublicTransportTrain;
+        }
     }
 }

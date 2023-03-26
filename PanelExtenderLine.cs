@@ -4,12 +4,11 @@
 // MVID: 76F370C5-F40B-41AE-AA9D-1E3F87E934D3
 // Assembly location: C:\Games\Steam\steamapps\workshop\content\255710\424106600\ImprovedPublicTransport.dll
 
-using ColossalFramework;
-using ColossalFramework.UI;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using ImprovedPublicTransport2.Detour;
+using ColossalFramework;
+using ColossalFramework.UI;
 using ImprovedPublicTransport2.OptionsFramework;
 using ImprovedPublicTransport2.Util;
 using UnityEngine;
@@ -59,6 +58,8 @@ namespace ImprovedPublicTransport2
             ItemClass.Level.Level1), true);
         dictionary.Add(new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTrain,
             ItemClass.Level.Level1), true);
+        dictionary.Add(new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTrain,
+          ItemClass.Level.Level2), true);
         dictionary.Add(new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportMetro,
             ItemClass.Level.Level1), true);
         dictionary.Add(new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportPlane,
@@ -79,21 +80,21 @@ namespace ImprovedPublicTransport2
             ItemClass.Level.Level3), true);
         dictionary.Add(new ItemClassTriplet(ItemClass.Service.PublicTransport, ItemClass.SubService.PublicTransportTrolleybus,
           ItemClass.Level.Level1), true);
-        this._updateDepots = dictionary;
+        _updateDepots = dictionary;
     }
 
     private void Update()
     {
-      if (!this._initialized)
+      if (!_initialized)
       {
-        this.Init();
+        Init();
       }
       else
       {
-        if (!this._initialized || !this._publicTransportWorldInfoPanel.component.isVisible)
+        if (!_initialized || !_publicTransportWorldInfoPanel.component.isVisible)
           return;
-        this.UpdateBindings();
-        var lineModelSelector = this._publicTransportWorldInfoPanel.Find<UIPanel>("LineModelSelectorContainer");
+        UpdateBindings();
+        var lineModelSelector = _publicTransportWorldInfoPanel.Find<UIPanel>("LineModelSelectorContainer");
         if (lineModelSelector != null)
         {
           lineModelSelector.isVisible = false;
@@ -103,43 +104,43 @@ namespace ImprovedPublicTransport2
 
     private void Init()
     {
-      this._publicTransportWorldInfoPanel = GameObject.Find("(Library) PublicTransportWorldInfoPanel").GetComponent<PublicTransportWorldInfoPanel>();
-      if (!((UnityEngine.Object) this._publicTransportWorldInfoPanel != (UnityEngine.Object) null))
+      _publicTransportWorldInfoPanel = GameObject.Find("(Library) PublicTransportWorldInfoPanel").GetComponent<PublicTransportWorldInfoPanel>();
+      if (!(_publicTransportWorldInfoPanel != null))
         return;
-      UIComponent passengers = this._publicTransportWorldInfoPanel.Find("Passengers");
+      UIComponent passengers = _publicTransportWorldInfoPanel.Find("Passengers");
     passengers.parent.relativePosition = new Vector3(passengers.parent.relativePosition.x,
         76.0f, passengers.parent.relativePosition.z);
-        UIComponent agePanel = this._publicTransportWorldInfoPanel.Find("AgePanel");
+        UIComponent agePanel = _publicTransportWorldInfoPanel.Find("AgePanel");
         agePanel.relativePosition = new Vector3(0.0f,
             84.0f, agePanel.relativePosition.z);
-        UIComponent tripSaved = this._publicTransportWorldInfoPanel.Find("TripSaved");
+        UIComponent tripSaved = _publicTransportWorldInfoPanel.Find("TripSaved");
         tripSaved.parent.relativePosition = new Vector3(tripSaved.parent.relativePosition.x,
             200.0f, tripSaved.parent.relativePosition.z);
 
-      UIComponent uiComponent1 = this._publicTransportWorldInfoPanel.Find("DeleteLine");
-      if ((UnityEngine.Object) uiComponent1 == (UnityEngine.Object) null)
+      UIComponent uiComponent1 = _publicTransportWorldInfoPanel.Find("DeleteLine");
+      if (uiComponent1 == null)
       {
-        Utils.LogError((object) "Could not found Delete button!");
+        Utils.LogError("Could not found Delete button!");
       }
       else
       {
         uiComponent1.isVisible = false;
-          UIComponent vehicleAmount = this._publicTransportWorldInfoPanel.Find("VehicleAmount");
+          UIComponent vehicleAmount = _publicTransportWorldInfoPanel.Find("VehicleAmount");
           vehicleAmount.AlignTo(uiComponent1.parent, UIAlignAnchor.TopLeft);
           vehicleAmount.relativePosition = uiComponent1.relativePosition;
 
 
-                UIComponent uiComponent2 = this._publicTransportWorldInfoPanel.Find("LinesOverview");
-        if ((UnityEngine.Object) uiComponent2 != (UnityEngine.Object) null)
+                UIComponent uiComponent2 = _publicTransportWorldInfoPanel.Find("LinesOverview");
+        if (uiComponent2 != null)
           uiComponent2.enabled = false;
-          this._mainSubPanel = agePanel.parent;
-        if ((UnityEngine.Object) this._mainSubPanel == (UnityEngine.Object) null)
+          _mainSubPanel = agePanel.parent;
+        if (_mainSubPanel == null)
         {
-          Utils.LogError((object) "Could not found Panel!");
+          Utils.LogError("Could not found Panel!");
         }
         else
         {
-          UIPanel uiPanel = this._mainSubPanel.AddUIComponent<UIPanel>();
+          UIPanel uiPanel = _mainSubPanel.AddUIComponent<UIPanel>();
           uiPanel.name = "IptContainer";
           uiPanel.width = 301f;
           uiPanel.height = 166f;
@@ -148,62 +149,62 @@ namespace ImprovedPublicTransport2
           uiPanel.autoLayoutPadding = new RectOffset(0, 0, 0, 5);
           uiPanel.autoLayout = true;
           uiPanel.relativePosition = new Vector3(10f, 224.0f);
-          this._iptContainer = uiPanel;
-          this._vehicleAmount = Utils.GetPrivate<UILabel>((object) this._publicTransportWorldInfoPanel, "m_VehicleAmount");
-          if ((UnityEngine.Object) this._vehicleAmount == (UnityEngine.Object) null)
+          _iptContainer = uiPanel;
+          _vehicleAmount = Utils.GetPrivate<UILabel>(_publicTransportWorldInfoPanel, "m_VehicleAmount");
+          if (_vehicleAmount == null)
           {
-            Utils.LogError((object) "Could not found m_VehicleAmount!");
+            Utils.LogError("Could not found m_VehicleAmount!");
           }
           else
           {
-            (this._vehicleAmount.parent as UIPanel).autoLayoutPadding = new RectOffset(0, 10, 0, 0);
-            UILabel uiLabel = this._vehicleAmount.parent.AddUIComponent<UILabel>();
+            (_vehicleAmount.parent as UIPanel).autoLayoutPadding = new RectOffset(0, 10, 0, 0);
+            UILabel uiLabel = _vehicleAmount.parent.AddUIComponent<UILabel>();
             uiLabel.name = "StopCount";
-            uiLabel.font = this._vehicleAmount.font;
-            uiLabel.textColor = this._vehicleAmount.textColor;
-            uiLabel.textScale = this._vehicleAmount.textScale;
-            uiLabel.eventMouseEnter += new MouseEventHandler(this.OnMouseEnter);
-            this._stopCountLabel = uiLabel;
-            this._colorField = Utils.GetPrivate<UIColorField>((object) this._publicTransportWorldInfoPanel, "m_ColorField");
-            if ((UnityEngine.Object) this._colorField == (UnityEngine.Object) null)
+            uiLabel.font = _vehicleAmount.font;
+            uiLabel.textColor = _vehicleAmount.textColor;
+            uiLabel.textScale = _vehicleAmount.textScale;
+            uiLabel.eventMouseEnter += OnMouseEnter;
+            _stopCountLabel = uiLabel;
+            _colorField = Utils.GetPrivate<UIColorField>(_publicTransportWorldInfoPanel, "m_ColorField");
+            if (_colorField == null)
             {
-              Utils.LogError((object) "Could not found m_ColorField!");
+              Utils.LogError("Could not found m_ColorField!");
             }
             else
             {
-              UITextField uiTextField = this._colorField.parent.AddUIComponent<UITextField>();
+              UITextField uiTextField = _colorField.parent.AddUIComponent<UITextField>();
               uiTextField.name = "ColorTextField";
               uiTextField.text = "000000";
-              uiTextField.textColor = (Color32) Color.black;
+              uiTextField.textColor = Color.black;
               uiTextField.textScale = 0.7f;
               uiTextField.selectionSprite = "EmptySprite";
               uiTextField.normalBgSprite = "TextFieldPanelHovered";
               uiTextField.focusedBgSprite = "TextFieldPanel";
               uiTextField.builtinKeyNavigation = true;
               uiTextField.submitOnFocusLost = true;
-              uiTextField.eventTextSubmitted += new PropertyChangedEventHandler<string>(this.OnColorTextSubmitted);
+              uiTextField.eventTextSubmitted += OnColorTextSubmitted;
               uiTextField.width = 50f;
               uiTextField.height = 23f;
               uiTextField.maxLength = 6;
               uiTextField.verticalAlignment = UIVerticalAlignment.Middle;
               uiTextField.padding = new RectOffset(0, 0, 8, 0);
               uiTextField.relativePosition = new Vector3(135f, 0.0f);
-              this._colorTextField = uiTextField;
-              this._colorField.eventSelectedColorReleased += new PropertyChangedEventHandler<Color>(this.OnColorChanged);
-              this.CreateSpawnTimerPanel();
-              this.CreateBudgetControlPanel();
-              this.CreateUnbunchingPanel();
-              this.CreateDropDownPanel();
-              this.CreateButtonPanel1();
-              this.CreateButtonPanel2();
-              this._publicTransportWorldInfoPanel.component.height = 493f;
-              this.CreatePrefabPanel();
+              _colorTextField = uiTextField;
+              _colorField.eventSelectedColorReleased += OnColorChanged;
+              CreateSpawnTimerPanel();
+              CreateBudgetControlPanel();
+              CreateUnbunchingPanel();
+              CreateDropDownPanel();
+              CreateButtonPanel1();
+              CreateButtonPanel2();
+              _publicTransportWorldInfoPanel.component.height = 493f;
+              CreatePrefabPanel();
 
-              this.CreateVehiclesOnLinePanel();
-              this.CreateVehiclesInQueuePanel();
-              BuildingExtension.OnDepotAdded += this.OnDepotChanged;
-              BuildingExtension.OnDepotRemoved += this.OnDepotChanged;
-              this._initialized = true;
+              CreateVehiclesOnLinePanel();
+              CreateVehiclesInQueuePanel();
+              BuildingExtension.OnDepotAdded += OnDepotChanged;
+              BuildingExtension.OnDepotRemoved += OnDepotChanged;
+              _initialized = true;
             }
           }
         }
@@ -212,45 +213,45 @@ namespace ImprovedPublicTransport2
 
     private void UpdateBindings()
     {
-      ushort lineId = this.GetLineID();
-      if ((int) lineId != 0)
+      ushort lineId = GetLineID();
+      if (lineId != 0)
       {
         int lineVehicleCount = TransportLineUtil.CountLineActiveVehicles(lineId, out int _);
         int targetVehicleCount = CachedTransportLineData.GetTargetVehicleCount(lineId);
-        int num1 = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineId].CountStops(lineId);
-        this._vehicleAmount.text = LocaleFormatter.FormatGeneric("TRANSPORT_LINE_VEHICLECOUNT", (object) (lineVehicleCount.ToString() + " / " + (object) targetVehicleCount));
-        this._stopCountLabel.text = string.Format(Localization.Get("LINE_PANEL_STOPS"), (object) num1);
-        this._budgetControl.isChecked = CachedTransportLineData.GetBudgetControlState(lineId);
+        int num1 = Singleton<TransportManager>.instance.m_lines.m_buffer[lineId].CountStops(lineId);
+        _vehicleAmount.text = LocaleFormatter.FormatGeneric("TRANSPORT_LINE_VEHICLECOUNT", lineVehicleCount + " / " + targetVehicleCount);
+        _stopCountLabel.text = string.Format(Localization.Get("LINE_PANEL_STOPS"), num1);
+        _budgetControl.isChecked = CachedTransportLineData.GetBudgetControlState(lineId);
 
-        if ((int) OptionsWrapper<Settings>.Options.IntervalAggressionFactor == 0)
+        if (OptionsWrapper<Settings>.Options.IntervalAggressionFactor == 0)
         {
-          this._unbunching.Disable();
-          this._unbunching.isChecked = false;
-          this._unbunching.label.text = Localization.Get("UNBUNCHING_DISABLED");
+          _unbunching.Disable();
+          _unbunching.isChecked = false;
+          _unbunching.label.text = Localization.Get("UNBUNCHING_DISABLED");
         }
         else
         {
-          this._unbunching.Enable();
-          this._unbunching.isChecked = CachedTransportLineData.GetUnbunchingState(lineId);
+          _unbunching.Enable();
+          _unbunching.isChecked = CachedTransportLineData.GetUnbunchingState(lineId);
 
           if (targetVehicleCount > 1)
           {
-            this._unbunching.label.text = string.Format(Localization.Get("UNBUNCHING_ENABLED") + " - " + Localization.Get("UNBUNCHING_TARGET_GAP"), Singleton<TransportManager>.instance.m_lines.m_buffer[(int)lineId].m_averageInterval) ;
+            _unbunching.label.text = string.Format(Localization.Get("UNBUNCHING_ENABLED") + " - " + Localization.Get("UNBUNCHING_TARGET_GAP"), Singleton<TransportManager>.instance.m_lines.m_buffer[lineId].m_averageInterval) ;
           }
           else
-            this._unbunching.label.text = Localization.Get("UNBUNCHING_ENABLED");
+            _unbunching.label.text = Localization.Get("UNBUNCHING_ENABLED");
         }
-        bool flag1 = false;
+        bool depotNotValid = false;
         ushort depotID = CachedTransportLineData.GetDepot(lineId);
           TransportInfo info = TransportManager.instance.m_lines.m_buffer[lineId].Info;
           if (!DepotUtil.IsValidDepot(depotID, info))
           {
-              flag1 = true;
+              depotNotValid = true;
           }
-          bool flag2 = true;
-        if ((int) depotID != 0)
-          flag2 = DepotUtil.CanAddVehicle(depotID, ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[(int) depotID], info);
-        if (flag2)
+          bool depotCanAddVehicle = true;
+        if (depotID != 0)
+          depotCanAddVehicle = DepotUtil.CanAddVehicle(depotID, ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[depotID], info);
+        if (depotCanAddVehicle)
         {
           var currentlyDisabled = SimulationManager.instance.m_isNightTime
             ? (Singleton<TransportManager>.instance.m_lines.m_buffer[lineId].m_flags & TransportLine.Flags.DisabledNight) != TransportLine.Flags.None 
@@ -258,138 +259,138 @@ namespace ImprovedPublicTransport2
 
           if (currentlyDisabled || lineVehicleCount >= targetVehicleCount)
           {
-            this._spawnTimer.text = string.Format(Localization.Get("LINE_PANEL_SPAWNTIMER"), "∞");
+            _spawnTimer.text = string.Format(Localization.Get("LINE_PANEL_SPAWNTIMER"), "∞");
           }
           else
           {
             var timeToNext = Mathf.Max(0, Mathf.CeilToInt(CachedTransportLineData.GetNextSpawnTime(lineId) - SimHelper.SimulationTime)); 
-            this._spawnTimer.text = string.Format(Localization.Get("LINE_PANEL_SPAWNTIMER"), "≥" + timeToNext);
+            _spawnTimer.text = string.Format(Localization.Get("LINE_PANEL_SPAWNTIMER"), "≥" + timeToNext);
           } 
         }
         else
-          this._spawnTimer.text = Localization.Get("LINE_PANEL_DEPOT_WARNING");
-        this._selectTypes.isEnabled = !flag1;
-        this._addVehicle.isEnabled = !flag1 & flag2;
+          _spawnTimer.text = Localization.Get("LINE_PANEL_DEPOT_WARNING");
+        _selectTypes.isEnabled = !depotNotValid;
+        _addVehicle.isEnabled = !depotNotValid & depotCanAddVehicle;
 
         ItemClass.SubService subService = info.GetSubService();
         ItemClass.Service service = info.GetService();
         ItemClass.Level level = info.GetClassLevel();
                 ItemClassTriplet triplet = new ItemClassTriplet(service, subService,  level);
 
-        if (subService != this._cachedSubService | flag1 || this._updateDepots[triplet])
+        if (subService != _cachedSubService || depotNotValid || _updateDepots[triplet])
         {
-          this.PopulateDepotDropDown(info);
-          this.PopulatePrefabListBox(service, subService, level);
-          this._updateDepots[triplet] = false;
+          PopulateDepotDropDown(info);
+          PopulatePrefabListBox(service, subService, level);
+          _updateDepots[triplet] = false;
         }
-        if (this._depotDropDown.Items.Length == 0)
-          this._depotDropDown.Text = Localization.Get("LINE_PANEL_NO_DEPOT_FOUND");
+        if (_depotDropDown.Items.Length == 0)
+          _depotDropDown.Text = Localization.Get("LINE_PANEL_NO_DEPOT_FOUND");
         else
-          this._depotDropDown.SelectedItem = depotID;
-        if ((int) lineId != this._cachedLineID)
+          _depotDropDown.SelectedItem = depotID;
+        if (lineId != _cachedLineID)
         {
-          this._colorTextField.text = ColorUtility.ToHtmlStringRGB(this._colorField.selectedColor);
-          this._prefabListBox.SetSelectionStateToAll(false, false);
-          this._prefabListBox.SelectedItems = CachedTransportLineData.GetPrefabs(lineId);
-          this._prefabPanel.Hide();
-          this.UpdatePanelPositionAndSize();
+          _colorTextField.text = ColorUtility.ToHtmlStringRGB(_colorField.selectedColor);
+          _prefabListBox.SetSelectionStateToAll(false);
+          _prefabListBox.SelectedItems = CachedTransportLineData.GetPrefabs(lineId);
+          _prefabPanel.Hide();
+          UpdatePanelPositionAndSize();
         }
         if (lineVehicleCount != 0)
         {
-          if ((int) lineId != this._cachedLineID || lineVehicleCount != this._cachedSimCount)
-          this.PopulateLineVehicleListBox(lineId, service, subService, level);
-          this._lineVehiclePanel.Show();
-          this.UpdatePanelPositionAndSize();
+          if (lineId != _cachedLineID || lineVehicleCount != _cachedSimCount)
+          PopulateLineVehicleListBox(lineId, service, subService, level);
+          _lineVehiclePanel.Show();
+          UpdatePanelPositionAndSize();
         }
         else
         {
-          this._lineVehiclePanel.Hide();
-          this._lineVehicleListBox.ClearItems();
+          _lineVehiclePanel.Hide();
+          _lineVehicleListBox.ClearItems();
         }
         int num3 = CachedTransportLineData.EnqueuedVehiclesCount(lineId);
-        if ((uint) num3 > 0U & flag2)
+        if ((uint) num3 > 0U & depotCanAddVehicle)
         {
-          if ((int) lineId != this._cachedLineID || num3 != this._cachedQueuedCount)
-            this.PopulateQueuedVehicleListBox(lineId, service, subService, level);
-          if (this._vehiclesInQueueListBox.Items.Count == 0)
-            this._vehiclesInQueuePanel.Hide();
+          if (lineId != _cachedLineID || num3 != _cachedQueuedCount)
+            PopulateQueuedVehicleListBox(lineId, service, subService, level);
+          if (_vehiclesInQueueListBox.Items.Count == 0)
+            _vehiclesInQueuePanel.Hide();
           else
-            this._vehiclesInQueuePanel.Show();
-          this.UpdatePanelPositionAndSize();
+            _vehiclesInQueuePanel.Show();
+          UpdatePanelPositionAndSize();
         }
         else
         {
-          this._vehiclesInQueuePanel.Hide();
-          this._vehiclesInQueueListBox.ClearItems();
+          _vehiclesInQueuePanel.Hide();
+          _vehiclesInQueueListBox.ClearItems();
         }
-        this._cachedLineID = (int) lineId;
-        this._cachedSubService = subService;
-        this._cachedSimCount = lineVehicleCount;
-        this._cachedQueuedCount = num3;
-        this._cachedStopCount = num1;
+        _cachedLineID = lineId;
+        _cachedSubService = subService;
+        _cachedSimCount = lineVehicleCount;
+        _cachedQueuedCount = num3;
+        _cachedStopCount = num1;
       }
       else
-        this._publicTransportWorldInfoPanel.Hide();
+        _publicTransportWorldInfoPanel.Hide();
     }
 
     private void UpdatePanelPositionAndSize()
     {
       float num = 0.0f;
-      if (this._prefabPanel.isVisible)
-        num = this._prefabPanel.width + 1f;
-      this._lineVehiclePanel.relativePosition = new Vector3((float) ((double) num + (double) this._lineVehiclePanel.parent.width + 1.0), 0.0f);
-      if (this._lineVehiclePanel.isVisible)
+      if (_prefabPanel.isVisible)
+        num = _prefabPanel.width + 1f;
+      _lineVehiclePanel.relativePosition = new Vector3((float) (num + (double) _lineVehiclePanel.parent.width + 1.0), 0.0f);
+      if (_lineVehiclePanel.isVisible)
       {
-        this._vehiclesInQueuePanel.relativePosition = new Vector3((float) ((double) num + (double) this._vehiclesInQueuePanel.parent.width + 1.0), this._lineVehiclePanel.height + 1f);
-        this._vehiclesInQueuePanel.height = (float) (((double) PARENT_HEIGHT - 16.0) * 0.5);
-        this._vehiclesInQueueListBox.height = 162f;
+        _vehiclesInQueuePanel.relativePosition = new Vector3((float) (num + (double) _vehiclesInQueuePanel.parent.width + 1.0), _lineVehiclePanel.height + 1f);
+        _vehiclesInQueuePanel.height = (float) ((PARENT_HEIGHT - 16.0) * 0.5);
+        _vehiclesInQueueListBox.height = 162f;
       }
       else
       {
-        this._vehiclesInQueuePanel.relativePosition = new Vector3((float) ((double) num + (double) this._vehiclesInQueuePanel.parent.width + 1.0), 0.0f);
-        this._vehiclesInQueuePanel.height = PARENT_HEIGHT - 16f;
-        this._vehiclesInQueueListBox.height = PARENT_HEIGHT - 61f;
+        _vehiclesInQueuePanel.relativePosition = new Vector3((float) (num + (double) _vehiclesInQueuePanel.parent.width + 1.0), 0.0f);
+        _vehiclesInQueuePanel.height = PARENT_HEIGHT - 16f;
+        _vehiclesInQueueListBox.height = PARENT_HEIGHT - 61f;
       }
-      if (this._vehiclesInQueuePanel.isVisible)
+      if (_vehiclesInQueuePanel.isVisible)
       {
-        this._lineVehiclePanel.height = (float) (((double) PARENT_HEIGHT - 16.0) * 0.5);
-        this._lineVehicleListBox.height = 162f;
+        _lineVehiclePanel.height = (float) ((PARENT_HEIGHT - 16.0) * 0.5);
+        _lineVehicleListBox.height = 162f;
       }
       else
       {
-        this._lineVehiclePanel.height = PARENT_HEIGHT - 16f;
-        this._lineVehicleListBox.height = PARENT_HEIGHT - 61f;
+        _lineVehiclePanel.height = PARENT_HEIGHT - 16f;
+        _lineVehicleListBox.height = PARENT_HEIGHT - 61f;
       }
     }
 
     private void OnDestroy()
     {
-      this._initialized = false;
-      BuildingExtension.OnDepotAdded -= this.OnDepotChanged;
-      BuildingExtension.OnDepotRemoved -= this.OnDepotChanged;
-      if (this._updateDepots != null)
-        this._updateDepots.Clear();
-      if ((UnityEngine.Object) this._colorTextField != (UnityEngine.Object) null)
+      _initialized = false;
+      BuildingExtension.OnDepotAdded -= OnDepotChanged;
+      BuildingExtension.OnDepotRemoved -= OnDepotChanged;
+      if (_updateDepots != null)
+        _updateDepots.Clear();
+      if (_colorTextField != null)
       {
-        this._colorField.eventSelectedColorReleased -= new PropertyChangedEventHandler<Color>(this.OnColorChanged);
-        UnityEngine.Object.Destroy((UnityEngine.Object) this._colorTextField.gameObject);
+        _colorField.eventSelectedColorReleased -= OnColorChanged;
+        Destroy(_colorTextField.gameObject);
       }
-      if ((UnityEngine.Object) this._stopCountLabel != (UnityEngine.Object) null)
-        UnityEngine.Object.Destroy((UnityEngine.Object) this._stopCountLabel.gameObject);
-      if ((UnityEngine.Object) this._iptContainer != (UnityEngine.Object) null)
-        UnityEngine.Object.Destroy((UnityEngine.Object) this._iptContainer.gameObject);
-      if ((UnityEngine.Object) this._prefabPanel != (UnityEngine.Object) null)
-        UnityEngine.Object.Destroy((UnityEngine.Object) this._prefabPanel.gameObject);
-      if ((UnityEngine.Object) this._lineVehiclePanel != (UnityEngine.Object) null)
-        UnityEngine.Object.Destroy((UnityEngine.Object) this._lineVehiclePanel.gameObject);
-      if ((UnityEngine.Object) this._vehiclesInQueuePanel != (UnityEngine.Object) null)
-        UnityEngine.Object.Destroy((UnityEngine.Object) this._vehiclesInQueuePanel.gameObject);
+      if (_stopCountLabel != null)
+        Destroy(_stopCountLabel.gameObject);
+      if (_iptContainer != null)
+        Destroy(_iptContainer.gameObject);
+      if (_prefabPanel != null)
+        Destroy(_prefabPanel.gameObject);
+      if (_lineVehiclePanel != null)
+        Destroy(_lineVehiclePanel.gameObject);
+      if (_vehiclesInQueuePanel != null)
+        Destroy(_vehiclesInQueuePanel.gameObject);
     }
 
     private void CreateSpawnTimerPanel()
     {
-      UIPanel uiPanel = this._iptContainer.AddUIComponent<UIPanel>();
-      double width = (double) uiPanel.parent.width;
+      UIPanel uiPanel = _iptContainer.AddUIComponent<UIPanel>();
+      double width = uiPanel.parent.width;
       uiPanel.width = (float) width;
       double num1 = 14.0;
       uiPanel.height = (float) num1;
@@ -402,16 +403,16 @@ namespace ImprovedPublicTransport2
       int num4 = 1;
       uiPanel.autoLayout = num4 != 0;
       UILabel uiLabel = uiPanel.AddUIComponent<UILabel>();
-      uiLabel.font = this._vehicleAmount.font;
-      uiLabel.textColor = this._vehicleAmount.textColor;
-      uiLabel.textScale = this._vehicleAmount.textScale;
+      uiLabel.font = _vehicleAmount.font;
+      uiLabel.textColor = _vehicleAmount.textColor;
+      uiLabel.textScale = _vehicleAmount.textScale;
       uiLabel.processMarkup = true;
-      this._spawnTimer = uiLabel;
+      _spawnTimer = uiLabel;
     }
 
     private void CreateBudgetControlPanel()
     {
-      UIPanel uiPanel = this._iptContainer.AddUIComponent<UIPanel>();
+      UIPanel uiPanel = _iptContainer.AddUIComponent<UIPanel>();
       uiPanel.width = uiPanel.parent.width;
       uiPanel.height = 16f;
       uiPanel.autoLayoutDirection = LayoutDirection.Horizontal;
@@ -421,28 +422,28 @@ namespace ImprovedPublicTransport2
       UICheckBox uiCheckBox = uiPanel.AddUIComponent<UICheckBox>();
       uiCheckBox.size = uiPanel.size;
       uiCheckBox.clipChildren = true;
-      uiCheckBox.tooltip = Localization.Get("LINE_PANEL_BUDGET_CONTROL_TOOLTIP") + System.Environment.NewLine + Localization.Get("EXPLANATION_BUDGET_CONTROL");
-      uiCheckBox.eventClicked += new MouseEventHandler(this.OnBudgetControlClick);
+      uiCheckBox.tooltip = Localization.Get("LINE_PANEL_BUDGET_CONTROL_TOOLTIP") + Environment.NewLine + Localization.Get("EXPLANATION_BUDGET_CONTROL");
+      uiCheckBox.eventClicked += OnBudgetControlClick;
       UISprite uiSprite = uiCheckBox.AddUIComponent<UISprite>();
       uiSprite.spriteName = "check-unchecked";
       uiSprite.size = new Vector2(16f, 16f);
       uiSprite.relativePosition = Vector3.zero;
-      uiCheckBox.checkedBoxObject = (UIComponent) uiSprite.AddUIComponent<UISprite>();
+      uiCheckBox.checkedBoxObject = uiSprite.AddUIComponent<UISprite>();
       ((UISprite) uiCheckBox.checkedBoxObject).spriteName = "check-checked";
       uiCheckBox.checkedBoxObject.size = new Vector2(16f, 16f);
       uiCheckBox.checkedBoxObject.relativePosition = Vector3.zero;
       uiCheckBox.label = uiCheckBox.AddUIComponent<UILabel>();
       uiCheckBox.label.text = Localization.Get("LINE_PANEL_BUDGET_CONTROL");
-      uiCheckBox.label.font = this._vehicleAmount.font;
-      uiCheckBox.label.textColor = this._vehicleAmount.textColor;
-      uiCheckBox.label.textScale = this._vehicleAmount.textScale;
+      uiCheckBox.label.font = _vehicleAmount.font;
+      uiCheckBox.label.textColor = _vehicleAmount.textColor;
+      uiCheckBox.label.textScale = _vehicleAmount.textScale;
       uiCheckBox.label.relativePosition = new Vector3(22f, 2f);
-      this._budgetControl = uiCheckBox;
+      _budgetControl = uiCheckBox;
     }
 
     private void CreateUnbunchingPanel()
     {
-      UIPanel uiPanel = this._iptContainer.AddUIComponent<UIPanel>();
+      UIPanel uiPanel = _iptContainer.AddUIComponent<UIPanel>();
       uiPanel.width = uiPanel.parent.width;
       uiPanel.height = 16f;
       uiPanel.autoLayoutDirection = LayoutDirection.Horizontal;
@@ -452,28 +453,28 @@ namespace ImprovedPublicTransport2
       UICheckBox uiCheckBox = uiPanel.AddUIComponent<UICheckBox>();
       uiCheckBox.size = uiPanel.size;
       uiCheckBox.clipChildren = true;
-      uiCheckBox.tooltip = Localization.Get("LINE_PANEL_UNBUNCHING_TOOLTIP") + System.Environment.NewLine + Localization.Get("EXPLANATION_UNBUNCHING");
-      uiCheckBox.eventClicked += new MouseEventHandler(this.OnUnbunchingClick);
+      uiCheckBox.tooltip = Localization.Get("LINE_PANEL_UNBUNCHING_TOOLTIP") + Environment.NewLine + Localization.Get("EXPLANATION_UNBUNCHING");
+      uiCheckBox.eventClicked += OnUnbunchingClick;
       UISprite uiSprite = uiCheckBox.AddUIComponent<UISprite>();
       uiSprite.spriteName = "check-unchecked";
       uiSprite.size = new Vector2(16f, 16f);
       uiSprite.relativePosition = Vector3.zero;
-      uiCheckBox.checkedBoxObject = (UIComponent) uiSprite.AddUIComponent<UISprite>();
+      uiCheckBox.checkedBoxObject = uiSprite.AddUIComponent<UISprite>();
       ((UISprite) uiCheckBox.checkedBoxObject).spriteName = "check-checked";
       uiCheckBox.checkedBoxObject.size = new Vector2(16f, 16f);
       uiCheckBox.checkedBoxObject.relativePosition = Vector3.zero;
       uiCheckBox.label = uiCheckBox.AddUIComponent<UILabel>();
-      uiCheckBox.label.font = this._vehicleAmount.font;
-      uiCheckBox.label.textColor = this._vehicleAmount.textColor;
-      uiCheckBox.label.disabledTextColor = (Color32) Color.black;
-      uiCheckBox.label.textScale = this._vehicleAmount.textScale;
+      uiCheckBox.label.font = _vehicleAmount.font;
+      uiCheckBox.label.textColor = _vehicleAmount.textColor;
+      uiCheckBox.label.disabledTextColor = Color.black;
+      uiCheckBox.label.textScale = _vehicleAmount.textScale;
       uiCheckBox.label.relativePosition = new Vector3(22f, 2f);
-      this._unbunching = uiCheckBox;
+      _unbunching = uiCheckBox;
     }
 
     private void CreateDropDownPanel()
     {
-      UIPanel uiPanel = this._iptContainer.AddUIComponent<UIPanel>();
+      UIPanel uiPanel = _iptContainer.AddUIComponent<UIPanel>();
       uiPanel.width = uiPanel.parent.width;
       uiPanel.height = 27f;
       uiPanel.autoLayoutDirection = LayoutDirection.Horizontal;
@@ -483,11 +484,11 @@ namespace ImprovedPublicTransport2
       UILabel uiLabel = uiPanel.AddUIComponent<UILabel>();
       string str1 = Localization.Get("LINE_PANEL_DEPOT");
       uiLabel.text = str1;
-      UIFont font = this._vehicleAmount.font;
+      UIFont font = _vehicleAmount.font;
       uiLabel.font = font;
-      Color32 textColor = this._vehicleAmount.textColor;
+      Color32 textColor = _vehicleAmount.textColor;
       uiLabel.textColor = textColor;
-      double textScale = (double) this._vehicleAmount.textScale;
+      double textScale = _vehicleAmount.textScale;
       uiLabel.textScale = (float) textScale;
       int num1 = 0;
       uiLabel.autoSize = num1 != 0;
@@ -497,13 +498,13 @@ namespace ImprovedPublicTransport2
       uiLabel.width = (float) num3;
       int num4 = 1;
       uiLabel.verticalAlignment = (UIVerticalAlignment) num4;
-      this._depotDropDown = DropDown.Create((UIComponent) uiPanel);
-      this._depotDropDown.name = "DepotDropDown";
-      this._depotDropDown.Font = this._vehicleAmount.font;
-      this._depotDropDown.height = 27f;
-      this._depotDropDown.width = 167f;
-      this._depotDropDown.DropDownPanelAlignParent = this._publicTransportWorldInfoPanel.component;
-      this._depotDropDown.eventSelectedItemChanged += new PropertyChangedEventHandler<ushort>(this.OnSelectedDepotChanged);
+      _depotDropDown = DropDown.Create(uiPanel);
+      _depotDropDown.name = "DepotDropDown";
+      _depotDropDown.Font = _vehicleAmount.font;
+      _depotDropDown.height = 27f;
+      _depotDropDown.width = 167f;
+      _depotDropDown.DropDownPanelAlignParent = _publicTransportWorldInfoPanel.component;
+      _depotDropDown.eventSelectedItemChanged += OnSelectedDepotChanged;
       UIButton uiButton = uiPanel.AddUIComponent<UIButton>();
       string str2 = "DepotMarker";
       uiButton.name = str2;
@@ -521,14 +522,14 @@ namespace ImprovedPublicTransport2
       uiButton.size = vector2;
       string str8 = Localization.Get("LINE_PANEL_DEPOT_MARKER_TOOLTIP");
       uiButton.tooltip = str8;
-      MouseEventHandler mouseEventHandler = new MouseEventHandler(this.OnDepotMarkerClicked);
+      MouseEventHandler mouseEventHandler = OnDepotMarkerClicked;
       uiButton.eventClick += mouseEventHandler;
     }
 
     private void CreateButtonPanel1()
     {
-      UIPanel uiPanel = this._iptContainer.AddUIComponent<UIPanel>();
-      double width = (double) uiPanel.parent.width;
+      UIPanel uiPanel = _iptContainer.AddUIComponent<UIPanel>();
+      double width = uiPanel.parent.width;
       uiPanel.width = (float) width;
       double num1 = 32.0;
       uiPanel.height = (float) num1;
@@ -540,7 +541,7 @@ namespace ImprovedPublicTransport2
       uiPanel.autoLayoutPadding = rectOffset;
       int num4 = 1;
       uiPanel.autoLayout = num4 != 0;
-      UIButton button1 = UIUtils.CreateButton((UIComponent) uiPanel);
+      UIButton button1 = UIUtils.CreateButton(uiPanel);
       button1.name = "SelectTypes";
       button1.textPadding = new RectOffset(10, 10, 4, 0);
       button1.text = Localization.Get("LINE_PANEL_SELECT_TYPES");
@@ -549,14 +550,14 @@ namespace ImprovedPublicTransport2
       button1.width = 97f;
       button1.height = 32f;
       button1.wordWrap = true;
-      button1.eventClick += (MouseEventHandler) ((c, p) =>
+      button1.eventClick += (c, p) =>
       {
-        if ((int) this._depotDropDown.SelectedItem <= 0)
+        if (_depotDropDown.SelectedItem <= 0)
           return;
-        this._prefabPanel.isVisible = !this._prefabPanel.isVisible;
-      });
-      this._selectTypes = button1;
-      UIButton button2 = UIUtils.CreateButton((UIComponent) uiPanel);
+        _prefabPanel.isVisible = !_prefabPanel.isVisible;
+      };
+      _selectTypes = button1;
+      UIButton button2 = UIUtils.CreateButton(uiPanel);
       button2.name = "AddVehicle";
       button2.textPadding = new RectOffset(10, 10, 4, 0);
       button2.text = Localization.Get("LINE_PANEL_ADD_VEHICLE");
@@ -565,9 +566,9 @@ namespace ImprovedPublicTransport2
       button2.width = 97f;
       button2.height = 32f;
       button2.wordWrap = true;
-      button2.eventClick += new MouseEventHandler(this.OnAddVehicleClick);
-      this._addVehicle = button2;
-      UIButton button3 = UIUtils.CreateButton((UIComponent) uiPanel);
+      button2.eventClick += OnAddVehicleClick;
+      _addVehicle = button2;
+      UIButton button3 = UIUtils.CreateButton(uiPanel);
       button3.name = "RemoveVehicle";
       button3.textPadding = new RectOffset(10, 10, 4, 0);
       button3.text = Localization.Get("LINE_PANEL_REMOVE_VEHICLE");
@@ -575,13 +576,13 @@ namespace ImprovedPublicTransport2
       button3.width = 97f;
       button3.height = 32f;
       button3.wordWrap = true;
-      button3.eventClick += new MouseEventHandler(this.OnRemoveVehicleClick);
+      button3.eventClick += OnRemoveVehicleClick;
     }
 
     private void CreateButtonPanel2()
     {
-      UIPanel uiPanel = this._iptContainer.AddUIComponent<UIPanel>();
-      double width = (double) uiPanel.parent.width;
+      UIPanel uiPanel = _iptContainer.AddUIComponent<UIPanel>();
+      double width = uiPanel.parent.width;
       uiPanel.width = (float) width;
       double num1 = 22.0;
       uiPanel.height = (float) num1;
@@ -593,34 +594,34 @@ namespace ImprovedPublicTransport2
       uiPanel.autoLayoutPadding = rectOffset;
       int num4 = 1;
       uiPanel.autoLayout = num4 != 0;
-      float num5 = (float) (((double) uiPanel.parent.width - 4.0) / 2.0);
-      UIButton button1 = UIUtils.CreateButton((UIComponent) uiPanel);
+      float num5 = (float) ((uiPanel.parent.width - 4.0) / 2.0);
+      UIButton button1 = UIUtils.CreateButton(uiPanel);
       string str1 = "VEHICLE_LINESOVERVIEW";
       button1.localeID = str1;
       double num6 = 0.800000011920929;
       button1.textScale = (float) num6;
-      double num7 = (double) num5;
+      double num7 = num5;
       button1.width = (float) num7;
       double num8 = 22.0;
       button1.height = (float) num8;
-      MouseEventHandler mouseEventHandler1 = (MouseEventHandler) ((c, p) => this._publicTransportWorldInfoPanel.OnLinesOverviewClicked());
+      MouseEventHandler mouseEventHandler1 = (c, p) => _publicTransportWorldInfoPanel.OnLinesOverviewClicked();
       button1.eventClick += mouseEventHandler1;
-      UIButton button2 = UIUtils.CreateButton((UIComponent) uiPanel);
+      UIButton button2 = UIUtils.CreateButton(uiPanel);
       string str2 = "LINE_DELETE";
       button2.localeID = str2;
       double num9 = 0.800000011920929;
       button2.textScale = (float) num9;
-      double num10 = (double) num5;
+      double num10 = num5;
       button2.width = (float) num10;
       double num11 = 22.0;
       button2.height = (float) num11;
-      MouseEventHandler mouseEventHandler2 = new MouseEventHandler(this.OnDeleteLineClick);
+      MouseEventHandler mouseEventHandler2 = OnDeleteLineClick;
       button2.eventClick += mouseEventHandler2;
     }
 
     private void CreatePrefabPanel()
     {
-      UIPanel uiPanel = this._publicTransportWorldInfoPanel.component.AddUIComponent<UIPanel>();
+      UIPanel uiPanel = _publicTransportWorldInfoPanel.component.AddUIComponent<UIPanel>();
       uiPanel.name = "PrefabPanel";
       uiPanel.AlignTo(uiPanel.parent, UIAlignAnchor.TopRight);
       uiPanel.relativePosition = new Vector3(uiPanel.parent.width + 1f, 0.0f);
@@ -628,12 +629,12 @@ namespace ImprovedPublicTransport2
       uiPanel.height = PARENT_HEIGHT - 16f;
       uiPanel.backgroundSprite = "UnlockingPanel2";
       uiPanel.opacity = 0.95f;
-      this._prefabPanel = uiPanel;
+      _prefabPanel = uiPanel;
       UILabel uiLabel = uiPanel.AddUIComponent<UILabel>();
       uiLabel.text = Localization.Get("LINE_PANEL_SELECT_TYPES");
       uiLabel.textAlignment = UIHorizontalAlignment.Center;
-      uiLabel.font = this._vehicleAmount.font;
-      uiLabel.position = new Vector3((float) ((double) uiPanel.width / 2.0 - (double) uiLabel.width / 2.0), (float) ((double) uiLabel.height / 2.0 - 20.0));
+      uiLabel.font = _vehicleAmount.font;
+      uiLabel.position = new Vector3((float) (uiPanel.width / 2.0 - uiLabel.width / 2.0), (float) (uiLabel.height / 2.0 - 20.0));
       UIButton uiButton = uiPanel.AddUIComponent<UIButton>();
       uiButton.name = "CloseButton";
       uiButton.width = 32f;
@@ -641,95 +642,95 @@ namespace ImprovedPublicTransport2
       uiButton.normalBgSprite = "buttonclose";
       uiButton.hoveredBgSprite = "buttonclosehover";
       uiButton.pressedBgSprite = "buttonclosepressed";
-      uiButton.relativePosition = new Vector3((float) ((double) uiPanel.width - (double) uiButton.width - 2.0), 2f);
-      uiButton.eventClick += (MouseEventHandler) ((c, p) => this._prefabPanel.isVisible = !this._prefabPanel.isVisible);
-      this._prefabListBox = VehicleListBox.Create((UIComponent) uiPanel);
-      this._prefabListBox.name = "VehicleListBox";
-      this._prefabListBox.AlignTo((UIComponent) uiPanel, UIAlignAnchor.TopLeft);
-      this._prefabListBox.relativePosition = new Vector3(3f, 40f);
-      this._prefabListBox.width = uiPanel.width - 6f;
-      this._prefabListBox.height = PARENT_HEIGHT - 61f;
-      this._prefabListBox.Font = this._vehicleAmount.font;
-      this._prefabListBox.eventSelectedItemsChanged += OnSelectedPrefabsChanged;
-      this._prefabListBox.eventRowShiftClick += new MouseEventHandler(this.OnAddVehicleClick);
+      uiButton.relativePosition = new Vector3((float) (uiPanel.width - (double) uiButton.width - 2.0), 2f);
+      uiButton.eventClick += (c, p) => _prefabPanel.isVisible = !_prefabPanel.isVisible;
+      _prefabListBox = VehicleListBox.Create(uiPanel);
+      _prefabListBox.name = "VehicleListBox";
+      _prefabListBox.AlignTo(uiPanel, UIAlignAnchor.TopLeft);
+      _prefabListBox.relativePosition = new Vector3(3f, 40f);
+      _prefabListBox.width = uiPanel.width - 6f;
+      _prefabListBox.height = PARENT_HEIGHT - 61f;
+      _prefabListBox.Font = _vehicleAmount.font;
+      _prefabListBox.eventSelectedItemsChanged += OnSelectedPrefabsChanged;
+      _prefabListBox.eventRowShiftClick += OnAddVehicleClick;
     }
 
     private void CreateVehiclesOnLinePanel()
     {
-      UIPanel uiPanel = this._publicTransportWorldInfoPanel.component.AddUIComponent<UIPanel>();
+      UIPanel uiPanel = _publicTransportWorldInfoPanel.component.AddUIComponent<UIPanel>();
       uiPanel.name = "VehiclesOnLine";
       uiPanel.AlignTo(uiPanel.parent, UIAlignAnchor.TopRight);
-      uiPanel.relativePosition = new Vector3((float) ((double) uiPanel.parent.width + (double) this._prefabPanel.width + (double)180f + 3.0), 0.0f);
+      uiPanel.relativePosition = new Vector3((float) (uiPanel.parent.width + (double) _prefabPanel.width + 180f + 3.0), 0.0f);
       uiPanel.width = 180f;
-      uiPanel.height = (float) (((double) PARENT_HEIGHT - 16.0) / 2.0);
+      uiPanel.height = (float) ((PARENT_HEIGHT - 16.0) / 2.0);
       uiPanel.backgroundSprite = "UnlockingPanel2";
       uiPanel.opacity = 0.95f;
-      this._lineVehiclePanel = uiPanel;
+      _lineVehiclePanel = uiPanel;
       UILabel uiLabel = uiPanel.AddUIComponent<UILabel>();
       uiLabel.text = Localization.Get("LINE_PANEL_LINE_VEHICLES");
       uiLabel.textAlignment = UIHorizontalAlignment.Center;
-      uiLabel.font = this._vehicleAmount.font;
-      uiLabel.position = new Vector3((float) ((double) uiPanel.width / 2.0 - (double) uiLabel.width / 2.0), (float) ((double) uiLabel.height / 2.0 - 20.0));
-      VehicleListBox vehicleListBox = VehicleListBox.Create((UIComponent) uiPanel);
+      uiLabel.font = _vehicleAmount.font;
+      uiLabel.position = new Vector3((float) (uiPanel.width / 2.0 - uiLabel.width / 2.0), (float) (uiLabel.height / 2.0 - 20.0));
+      VehicleListBox vehicleListBox = VehicleListBox.Create(uiPanel);
       vehicleListBox.name = "VehicleListBox";
-      vehicleListBox.AlignTo((UIComponent) uiPanel, UIAlignAnchor.TopLeft);
+      vehicleListBox.AlignTo(uiPanel, UIAlignAnchor.TopLeft);
       vehicleListBox.relativePosition = new Vector3(3f, 40f);
       vehicleListBox.width = uiPanel.width - 6f;
       vehicleListBox.height = 162f;
-      vehicleListBox.Font = this._vehicleAmount.font;
-      this._lineVehicleListBox = vehicleListBox;
+      vehicleListBox.Font = _vehicleAmount.font;
+      _lineVehicleListBox = vehicleListBox;
     }
 
     private void CreateVehiclesInQueuePanel()
     {
-      UIPanel uiPanel = this._publicTransportWorldInfoPanel.component.AddUIComponent<UIPanel>();
+      UIPanel uiPanel = _publicTransportWorldInfoPanel.component.AddUIComponent<UIPanel>();
       uiPanel.name = "VehiclesInQueue";
       uiPanel.AlignTo(uiPanel.parent, UIAlignAnchor.TopRight);
-      uiPanel.relativePosition = new Vector3(uiPanel.parent.width + 1f, this._lineVehiclePanel.height + 1f);
+      uiPanel.relativePosition = new Vector3(uiPanel.parent.width + 1f, _lineVehiclePanel.height + 1f);
       uiPanel.width = 180f;
-      uiPanel.height = (float) (((double) PARENT_HEIGHT - 16.0) / 2.0);
+      uiPanel.height = (float) ((PARENT_HEIGHT - 16.0) / 2.0);
       uiPanel.backgroundSprite = "UnlockingPanel2";
       uiPanel.opacity = 0.95f;
-      this._vehiclesInQueuePanel = uiPanel;
+      _vehiclesInQueuePanel = uiPanel;
       UILabel uiLabel = uiPanel.AddUIComponent<UILabel>();
       uiLabel.text = Localization.Get("LINE_PANEL_ENQUEUED");
       uiLabel.textAlignment = UIHorizontalAlignment.Center;
-      uiLabel.font = this._vehicleAmount.font;
-      uiLabel.position = new Vector3((float) ((double) uiPanel.width / 2.0 - (double) uiLabel.width / 2.0), (float) ((double) uiLabel.height / 2.0 - 20.0));
-      VehicleListBox vehicleListBox = VehicleListBox.Create((UIComponent) uiPanel);
+      uiLabel.font = _vehicleAmount.font;
+      uiLabel.position = new Vector3((float) (uiPanel.width / 2.0 - uiLabel.width / 2.0), (float) (uiLabel.height / 2.0 - 20.0));
+      VehicleListBox vehicleListBox = VehicleListBox.Create(uiPanel);
       vehicleListBox.name = "VehicleListBox";
-      vehicleListBox.AlignTo((UIComponent) uiPanel, UIAlignAnchor.TopLeft);
+      vehicleListBox.AlignTo(uiPanel, UIAlignAnchor.TopLeft);
       vehicleListBox.relativePosition = new Vector3(3f, 40f);
       vehicleListBox.width = uiPanel.width - 6f;
       vehicleListBox.height = 162f;
-      vehicleListBox.Font = this._vehicleAmount.font;
-      this._vehiclesInQueueListBox = vehicleListBox;
+      vehicleListBox.Font = _vehicleAmount.font;
+      _vehiclesInQueueListBox = vehicleListBox;
     }
 
     private void OnMouseEnter(UIComponent component, UIMouseEventParameter p)
     {
-      ushort lineId = this.GetLineID();
-      if ((int) lineId == 0)
+      ushort lineId = GetLineID();
+      if (lineId == 0)
         return;
-      TransportLine transportLine = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineId];
+      TransportLine transportLine = Singleton<TransportManager>.instance.m_lines.m_buffer[lineId];
       ushort num1 = transportLine.m_stops;
       int num2 = 0;
       for (int index = 0; index < transportLine.CountStops(lineId); ++index)
       {
         ushort nextStop = TransportLine.GetNextStop(num1);
         byte max;
-        num2 += PanelExtenderLine.CountWaitingPassengers(num1, nextStop, out max);
+        num2 += CountWaitingPassengers(num1, nextStop, out max);
         num1 = nextStop;
       }
-      component.tooltip = string.Format(Localization.Get("LINE_PANEL_TOTAL_WAITING_PEOPLE_TOOLTIP"), (object) num2);
+      component.tooltip = string.Format(Localization.Get("LINE_PANEL_TOTAL_WAITING_PEOPLE_TOOLTIP"), num2);
     }
 
     private void OnBudgetControlClick(UIComponent component, UIMouseEventParameter p)
     {
         SimulationManager.instance.AddAction(() =>
         {
-            ushort lineId = this.GetLineID();
-            if ((int) lineId == 0)
+            ushort lineId = GetLineID();
+            if (lineId == 0)
                 return;
             bool budgetControlState = CachedTransportLineData.GetBudgetControlState(lineId);
             CachedTransportLineData.SetBudgetControlState(lineId, !budgetControlState);
@@ -741,8 +742,8 @@ namespace ImprovedPublicTransport2
 
     private void OnUnbunchingClick(UIComponent component, UIMouseEventParameter p)
     {
-      ushort lineId = this.GetLineID();
-      if ((int) lineId == 0)
+      ushort lineId = GetLineID();
+      if (lineId == 0)
         return;
       bool unbunchingState = CachedTransportLineData.GetUnbunchingState(lineId);
       CachedTransportLineData.SetUnbunchingState(lineId, !unbunchingState);
@@ -752,23 +753,23 @@ namespace ImprovedPublicTransport2
     {
         SimulationManager.instance.AddAction(() =>
         {
-            ushort lineId = this.GetLineID();
-            if ((int) lineId == 0)
+            ushort lineId = GetLineID();
+            if (lineId == 0)
                 return;
             ushort depot = CachedTransportLineData.GetDepot(lineId);
             TransportInfo info = TransportManager.instance.m_lines.m_buffer[lineId].Info;
             if (!DepotUtil.CanAddVehicle(depot,
-                ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[(int) depot], info))
+                ref Singleton<BuildingManager>.instance.m_buildings.m_buffer[depot], info))
                 return;
             CachedTransportLineData.SetBudgetControlState(lineId, false);
-            if ((int) depot == 0)
+            if (depot == 0)
             {
                 CachedTransportLineData.IncreaseTargetVehicleCount(lineId);
             }
             else
             {
                 string prefabName =
-                    !((UnityEngine.Object) (component as VehicleListBoxRow) != (UnityEngine.Object) null)
+                    !(component as VehicleListBoxRow != null)
                         ? CachedTransportLineData.GetRandomPrefab(lineId)
                         : (component as VehicleListBoxRow).Prefab.ObjectName;
                 CachedTransportLineData.EnqueueVehicle(lineId, prefabName); //we need to enqueue vehicle first
@@ -782,14 +783,14 @@ namespace ImprovedPublicTransport2
     {
         SimulationManager.instance.AddAction(() =>
         {
-            ushort lineId = this.GetLineID();
-            if ((int) lineId == 0)
+            ushort lineId = GetLineID();
+            if (lineId == 0)
                 return;
             CachedTransportLineData.SetBudgetControlState(lineId, false);
-            int[] selectedIndexes = this._vehiclesInQueueListBox.SelectedIndexes;
-            HashSet<ushort> selectedVehicles = this._lineVehicleListBox.SelectedVehicles;
+            int[] selectedIndexes = _vehiclesInQueueListBox.SelectedIndexes;
+            HashSet<ushort> selectedVehicles = _lineVehicleListBox.SelectedVehicles;
             if (selectedIndexes.Length != 0)
-                CachedTransportLineData.DequeueVehicles(lineId, selectedIndexes, true);
+                CachedTransportLineData.DequeueVehicles(lineId, selectedIndexes);
             else if (selectedVehicles.Count > 0)
             {
                 foreach (ushort vehicleID in selectedVehicles)
@@ -818,23 +819,23 @@ namespace ImprovedPublicTransport2
 
       private void OnDeleteLineClick(UIComponent component, UIMouseEventParameter eventParam)
     {
-      ushort lineID = this.GetLineID();
-      if ((int) lineID == 0)
+      ushort lineID = GetLineID();
+      if (lineID == 0)
         return;
-      ConfirmPanel.ShowModal("CONFIRM_LINEDELETE", (UIView.ModalPoppedReturnCallback) ((comp, ret) =>
+      ConfirmPanel.ShowModal("CONFIRM_LINEDELETE", (comp, ret) =>
       {
         if (ret != 1)
           return;
-        Singleton<SimulationManager>.instance.AddAction((System.Action) (() => Singleton<TransportManager>.instance.ReleaseLine(lineID)));
+        Singleton<SimulationManager>.instance.AddAction(() => Singleton<TransportManager>.instance.ReleaseLine(lineID));
         CachedTransportLineData.SetLineDefaults(lineID);
-        this._publicTransportWorldInfoPanel.OnCloseButton();
-      }));
+        _publicTransportWorldInfoPanel.OnCloseButton();
+      });
     }
 
     private void OnSelectedDepotChanged(UIComponent component, ushort selectedItem)
     {
-      ushort lineId = this.GetLineID();
-      if ((int) lineId == 0)
+      ushort lineId = GetLineID();
+      if (lineId == 0)
         return;
       CachedTransportLineData.SetDepot(lineId, selectedItem);
     }
@@ -842,18 +843,18 @@ namespace ImprovedPublicTransport2
     private void OnDepotMarkerClicked(UIComponent component, UIMouseEventParameter eventParam)
     {
       component.Unfocus();
-      if ((int) this._depotDropDown.SelectedItem == 0)
+      if (_depotDropDown.SelectedItem == 0)
         return;
       InstanceID id = new InstanceID();
-      id.Building = this._depotDropDown.SelectedItem;
+      id.Building = _depotDropDown.SelectedItem;
       ToolsModifierControl.cameraController.SetTarget(id, ToolsModifierControl.cameraController.transform.position, Input.GetKey(KeyCode.LeftShift) | Input.GetKey(KeyCode.RightShift));
       DefaultTool.OpenWorldInfoPanel(id, ToolsModifierControl.cameraController.transform.position);
     }
 
     private void OnSelectedPrefabsChanged(UIComponent component, HashSet<string> selectedItems)
     {
-      ushort lineId = this.GetLineID();
-      if ((int) lineId == 0)
+      ushort lineId = GetLineID();
+      if (lineId == 0)
         return;
       CachedTransportLineData.SetPrefabs(lineId, selectedItems);
       Singleton<SimulationManager>.instance.AddAction(() => TransportLineUtil.ReplaceVehicles(lineId));
@@ -861,7 +862,7 @@ namespace ImprovedPublicTransport2
 
     private void OnColorChanged(UIComponent component, Color color)
     {
-      this._colorTextField.text = ColorUtility.ToHtmlStringRGB(color);
+      _colorTextField.text = ColorUtility.ToHtmlStringRGB(color);
     }
 
     private void OnColorTextSubmitted(UIComponent component, string text)
@@ -869,57 +870,57 @@ namespace ImprovedPublicTransport2
       Color color;
       if (!ColorUtility.TryParseHtmlString("#" + text, out color))
         return;
-      this._colorField.selectedColor = color;
-      this._publicTransportWorldInfoPanel.GetType().GetMethod("OnColorChanged", BindingFlags.Instance | BindingFlags.NonPublic).Invoke((object) this._publicTransportWorldInfoPanel, new object[2]
+      _colorField.selectedColor = color;
+      _publicTransportWorldInfoPanel.GetType().GetMethod("OnColorChanged", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(_publicTransportWorldInfoPanel, new object[2]
       {
-        (object) component,
-        (object) color
+        component,
+        color
       });
     }
 
     private void OnDepotChanged(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
     {
-        this._updateDepots[new ItemClassTriplet(service, subService, level)] = true;
+        _updateDepots[new ItemClassTriplet(service, subService, level)] = true;
     }
 
     private void PopulateDepotDropDown(TransportInfo info)
     {
-      this._depotDropDown.ClearItems();
+      _depotDropDown.ClearItems();
         if (info == null)
         {
             return;
         }
-      this._depotDropDown.AddItems(BuildingExtension.GetDepots(info), this.IDToName);
+      _depotDropDown.AddItems(BuildingExtension.GetDepots(info), IDToName);
     }
 
     private string IDToName(ushort buildingID)
     {
       BuildingManager instance = Singleton<BuildingManager>.instance;
-      if ((instance.m_buildings.m_buffer[(int) buildingID].m_flags & Building.Flags.Untouchable) != Building.Flags.None)
-        buildingID = instance.FindBuilding(instance.m_buildings.m_buffer[(int) buildingID].m_position, 100f, ItemClass.Service.None, ItemClass.SubService.None, Building.Flags.Active, Building.Flags.Untouchable);
+      if ((instance.m_buildings.m_buffer[buildingID].m_flags & Building.Flags.Untouchable) != Building.Flags.None)
+        buildingID = instance.FindBuilding(instance.m_buildings.m_buffer[buildingID].m_position, 100f, ItemClass.Service.None, ItemClass.SubService.None, Building.Flags.Active, Building.Flags.Untouchable);
       return instance.GetBuildingName(buildingID, InstanceID.Empty) ?? "";
     }
 
     private void PopulatePrefabListBox(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
     {
-      this._prefabListBox.ClearItems();
+      _prefabListBox.ClearItems();
       PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(service, subService, level);
       int length = prefabs.Length;
       for (int index = 0; index < length; ++index)
-        this._prefabListBox.AddItem(prefabs[index], (ushort) 0);
+        _prefabListBox.AddItem(prefabs[index]);
     }
 
     private void PopulateLineVehicleListBox(ushort lineID, ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
     {
-      this._lineVehicleListBox.ClearItems();
-      TransportLine transportLine = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID];
+      _lineVehicleListBox.ClearItems();
+      TransportLine transportLine = Singleton<TransportManager>.instance.m_lines.m_buffer[lineID];
       int num = TransportLineUtil.CountLineActiveVehicles(lineID, out int _);
       PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(service, subService, level);
             int length = prefabs.Length;
       for (int index1 = 0; index1 < num; ++index1)
       {
         ushort vehicle = transportLine.GetVehicle(index1);
-        if ((int) vehicle != 0)
+        if (vehicle != 0)
         {
             if ((VehicleManager.instance.m_vehicles.m_buffer[vehicle].m_flags & Vehicle.Flags.GoingBack) ==
                 ~(Vehicle.Flags.Created | Vehicle.Flags.Deleted | Vehicle.Flags.Spawned |
@@ -934,13 +935,13 @@ namespace ImprovedPublicTransport2
                   Vehicle.Flags.DummyTraffic | Vehicle.Flags.Underground | Vehicle.Flags.Transition |
                   Vehicle.Flags.InsideBuilding | Vehicle.Flags.LeftHandDrive)) //based on beginning of TransportLine.SimulationStep
             {
-                VehicleInfo info = Singleton<VehicleManager>.instance.m_vehicles.m_buffer[(int)vehicle].Info;
+                VehicleInfo info = Singleton<VehicleManager>.instance.m_vehicles.m_buffer[vehicle].Info;
                 for (int index2 = 0; index2 < length; ++index2)
                 {
                     PrefabData data = prefabs[index2];
                     if (info.name == data.ObjectName)
                     {
-                        this._lineVehicleListBox.AddItem(data, vehicle);
+                        _lineVehicleListBox.AddItem(data, vehicle);
                         break;
                     }
                 }
@@ -951,7 +952,7 @@ namespace ImprovedPublicTransport2
 
     private void PopulateQueuedVehicleListBox(ushort lineID, ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
     {
-      this._vehiclesInQueueListBox.ClearItems();
+      _vehiclesInQueueListBox.ClearItems();
       string[] enqueuedVehicles = CachedTransportLineData.GetEnqueuedVehicles(lineID);
       int length1 = enqueuedVehicles.Length;
       PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(service, subService, level);
@@ -964,7 +965,7 @@ namespace ImprovedPublicTransport2
           PrefabData data = prefabs[index2];
           if (data.ObjectName == str)
           {
-            this._vehiclesInQueueListBox.AddItem(data, (ushort) 0);
+            _vehiclesInQueueListBox.AddItem(data);
             break;
           }
         }
@@ -978,26 +979,26 @@ namespace ImprovedPublicTransport2
         return currentInstanceId.TransportLine;
       if (currentInstanceId.Type == InstanceType.Vehicle)
       {
-        ushort firstVehicle = Singleton<VehicleManager>.instance.m_vehicles.m_buffer[(int) currentInstanceId.Vehicle].GetFirstVehicle(currentInstanceId.Vehicle);
-        if ((int) firstVehicle != 0)
-          return Singleton<VehicleManager>.instance.m_vehicles.m_buffer[(int) firstVehicle].m_transportLine;
+        ushort firstVehicle = Singleton<VehicleManager>.instance.m_vehicles.m_buffer[currentInstanceId.Vehicle].GetFirstVehicle(currentInstanceId.Vehicle);
+        if (firstVehicle != 0)
+          return Singleton<VehicleManager>.instance.m_vehicles.m_buffer[firstVehicle].m_transportLine;
       }
       return 0;
     }
 
     public static int CountWaitingPassengers(ushort currentStop, ushort nextStop, out byte max)
     {
-      max = (byte) 0;
-      if ((int) currentStop == 0 || (int) nextStop == 0)
+      max = 0;
+      if (currentStop == 0 || nextStop == 0)
         return 0;
       CitizenManager instance1 = Singleton<CitizenManager>.instance;
       NetManager instance2 = Singleton<NetManager>.instance;
-      Vector3 position1 = instance2.m_nodes.m_buffer[(int) currentStop].m_position;
-      Vector3 position2 = instance2.m_nodes.m_buffer[(int) nextStop].m_position;
-      int num1 = Mathf.Max((int) (((double) position1.x - 64.0) / 8.0 + 1080.0), 0);
-      int num2 = Mathf.Max((int) (((double) position1.z - 64.0) / 8.0 + 1080.0), 0);
-      int num3 = Mathf.Min((int) (((double) position1.x + 64.0) / 8.0 + 1080.0), 2159);
-      int num4 = Mathf.Min((int) (((double) position1.z + 64.0) / 8.0 + 1080.0), 2159);
+      Vector3 position1 = instance2.m_nodes.m_buffer[currentStop].m_position;
+      Vector3 position2 = instance2.m_nodes.m_buffer[nextStop].m_position;
+      int num1 = Mathf.Max((int) ((position1.x - 64.0) / 8.0 + 1080.0), 0);
+      int num2 = Mathf.Max((int) ((position1.z - 64.0) / 8.0 + 1080.0), 0);
+      int num3 = Mathf.Min((int) ((position1.x + 64.0) / 8.0 + 1080.0), 2159);
+      int num4 = Mathf.Min((int) ((position1.z + 64.0) / 8.0 + 1080.0), 2159);
       int num5 = 0;
       int num6 = 0;
       for (int index1 = num2; index1 <= num4; ++index1)
@@ -1006,20 +1007,20 @@ namespace ImprovedPublicTransport2
         {
           ushort instanceID = instance1.m_citizenGrid[index1 * 2160 + index2];
           int num7 = 0;
-          while ((int) instanceID != 0)
+          while (instanceID != 0)
           {
-            int nextGridInstance = (int) instance1.m_instances.m_buffer[(int) instanceID].m_nextGridInstance;
-            if ((instance1.m_instances.m_buffer[(int) instanceID].m_flags & CitizenInstance.Flags.WaitingTransport) != CitizenInstance.Flags.None && (double) Vector3.SqrMagnitude((Vector3) instance1.m_instances.m_buffer[(int) instanceID].m_targetPos - position1) < 4096.0 && instance1.m_instances.m_buffer[(int) instanceID].Info.m_citizenAI.TransportArriveAtSource(instanceID, ref instance1.m_instances.m_buffer[(int) instanceID], position1, position2))
+            int nextGridInstance = instance1.m_instances.m_buffer[instanceID].m_nextGridInstance;
+            if ((instance1.m_instances.m_buffer[instanceID].m_flags & CitizenInstance.Flags.WaitingTransport) != CitizenInstance.Flags.None && Vector3.SqrMagnitude((Vector3) instance1.m_instances.m_buffer[instanceID].m_targetPos - position1) < 4096.0 && instance1.m_instances.m_buffer[instanceID].Info.m_citizenAI.TransportArriveAtSource(instanceID, ref instance1.m_instances.m_buffer[instanceID], position1, position2))
             {
-              byte waitCounter = instance1.m_instances.m_buffer[(int) instanceID].m_waitCounter;
+              byte waitCounter = instance1.m_instances.m_buffer[instanceID].m_waitCounter;
               max = Math.Max(waitCounter, max);
-              num5 += (int) waitCounter;
+              num5 += waitCounter;
               ++num6;
             }
             instanceID = (ushort) nextGridInstance;
             if (++num7 > 65536)
             {
-              CODebugBase<LogChannel>.Error(LogChannel.Core, "Invalid list detected!\n" + System.Environment.StackTrace);
+              CODebugBase<LogChannel>.Error(LogChannel.Core, "Invalid list detected!\n" + Environment.StackTrace);
               break;
             }
           }

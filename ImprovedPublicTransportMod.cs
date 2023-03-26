@@ -2,10 +2,18 @@ using ColossalFramework;
 using ColossalFramework.UI;
 using ICities;
 using System;
+using CitiesHarmony.API;
 using ImprovedPublicTransport2.Detour;
 using ImprovedPublicTransport2.Detour.Vehicles;
 using ImprovedPublicTransport2.HarmonyPatches;
-using ImprovedPublicTransport2.HarmonyPatches.PublicTransportLineVehicleModelSelectorPatch;
+using ImprovedPublicTransport2.HarmonyPatches.BuildingManagerPatches;
+using ImprovedPublicTransport2.HarmonyPatches.DepotAIPatches;
+using ImprovedPublicTransport2.HarmonyPatches.NetManagerPatches;
+using ImprovedPublicTransport2.HarmonyPatches.PublicTransportLineVehicleSelectorPatches;
+using ImprovedPublicTransport2.HarmonyPatches.TransportLinePatches;
+using ImprovedPublicTransport2.HarmonyPatches.TransportManagerPatches;
+using ImprovedPublicTransport2.HarmonyPatches.VehicleManagerPatches;
+using ImprovedPublicTransport2.HarmonyPatches.XYZVehicleAIPatches;
 using ImprovedPublicTransport2.OptionsFramework.Extensions;
 using ImprovedPublicTransport2.RedirectionFramework;
 using UnityEngine;
@@ -19,7 +27,7 @@ namespace ImprovedPublicTransport2
     public static bool inGame = false;
     private GameObject _iptGameObject;
     private GameObject _worldInfoPanel;
-    private readonly string version = "5.0.3";
+    private readonly string version = "6.0.0-preview5";
 
 
     public string Name => $"Improved Public Transport 2 [r{version}]";
@@ -39,6 +47,10 @@ namespace ImprovedPublicTransport2
     public override void OnLevelLoaded(LoadMode mode)
     {
         base.OnLevelLoaded(mode);
+        if (!HarmonyHelper.IsHarmonyInstalled)
+        {
+          return;
+        }
         if (mode != LoadMode.LoadGame && mode != LoadMode.NewGame && mode != LoadMode.NewGameFromScenario)
         {
             return;
@@ -62,7 +74,7 @@ namespace ImprovedPublicTransport2
           CachedNodeData.Init();
 
           int maxVehicleCount;
-          if (Utils.IsModActive(1764208250))
+          if (Utils.IsModActive(1764208250)) // More Vehicles
           {
             UnityEngine.Debug.LogWarning("IPT2: More Vehicles is enabled, applying compatibility workaround");
             maxVehicleCount = ushort.MaxValue + 1;
@@ -77,11 +89,13 @@ namespace ImprovedPublicTransport2
           
           LoadPassengersPatch.Apply();
           UnloadPassengersPatch.Apply();
-          DepotAIPatch.Apply();
-          NetManagerPatch.Apply();
-          VehicleManagerPatch.Apply();
-          UpdateLineModelButtonPatch.Apply();
-          PopulateModelTemplatePatch.Apply();
+          StartTransferPatch.Apply();
+          ReleaseNodePatch.Apply();
+          ReleaseWaterSourcePatch.Apply();
+          GetVehicleInfoPatch.Apply();
+          CheckTransportLineVehiclesPatch.Apply();
+          ClassMatchesPatch.Apply();
+          GetDepotLevelsPatch.Apply();
 
           Redirector<BusAIDetour>.Deploy();
           Redirector<TrolleybusAIDetour>.Deploy();
@@ -102,8 +116,8 @@ namespace ImprovedPublicTransport2
           
           CachedTransportLineData.Init();
           Redirector<TransportLineDetour>.Deploy();
-          TransportLineSimulationStepPatch.Apply();
-          TransportLineGetLineVehiclePatch.Apply();
+          SimulationStepPatch.Apply();
+          GetLineVehiclePatch.Apply();
 
           VehiclePrefabs.Init();
           SerializableDataExtension.instance.Loaded = true;
@@ -126,7 +140,11 @@ namespace ImprovedPublicTransport2
 
     public override void OnLevelUnloading()
     {
-            base.OnLevelUnloading();
+      base.OnLevelUnloading();
+      if (!HarmonyHelper.IsHarmonyInstalled)
+      {
+        return;
+      }
       if (!inGame)
         return;
         inGame = false;
@@ -159,12 +177,14 @@ namespace ImprovedPublicTransport2
     {
       LoadPassengersPatch.Undo();
       UnloadPassengersPatch.Undo();
-      DepotAIPatch.Undo();
-      NetManagerPatch.Undo();
-      VehicleManagerPatch.Undo();
-      UpdateLineModelButtonPatch.Undo();
-      PopulateModelTemplatePatch.Undo();
-      
+      StartTransferPatch.Undo();
+      ReleaseNodePatch.Undo();
+      ReleaseWaterSourcePatch.Undo();
+      GetVehicleInfoPatch.Undo();
+      ClassMatchesPatch.Undo();
+      CheckTransportLineVehiclesPatch.Undo();
+      GetDepotLevelsPatch.Undo();
+
       Redirector<TramAIDetour>.Revert();
       Redirector<PassengerTrainAIDetour>.Revert();
       Redirector<PassengerShipAIDetour>.Revert();
@@ -180,8 +200,8 @@ namespace ImprovedPublicTransport2
       Redirector<PassengerHelicopterAIDetour>.Revert();
 
       Redirector<TransportLineDetour>.Revert();
-      TransportLineSimulationStepPatch.Undo();
-      TransportLineGetLineVehiclePatch.Undo();
+      SimulationStepPatch.Undo();
+      GetLineVehiclePatch.Undo();
       CachedTransportLineData.Deinit();
       
       BuildingExtension.Deinit();
@@ -196,6 +216,10 @@ namespace ImprovedPublicTransport2
       if (!((UnityEngine.Object) this._worldInfoPanel != (UnityEngine.Object) null))
         return;
       UnityEngine.Object.Destroy((UnityEngine.Object) this._worldInfoPanel);
+    }
+    
+    public void OnEnabled() {
+      HarmonyHelper.EnsureHarmonyInstalled();
     }
   }
 }
