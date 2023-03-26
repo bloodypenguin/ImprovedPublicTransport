@@ -8,6 +8,7 @@ using ColossalFramework;
 using System.Collections.Generic;
 using ImprovedPublicTransport2.Detour;
 using ImprovedPublicTransport2.OptionsFramework;
+using ImprovedPublicTransport2.Util;
 using UnityEngine;
 
 namespace ImprovedPublicTransport2
@@ -50,12 +51,10 @@ namespace ImprovedPublicTransport2
         {
           if (LineWatcher.IsValid(ref lines.m_buffer[(int) lineID]) && this._knownLines.Add(lineID))
           {
-            TransportLineMod.SetLineDefaults(lineID);
-            Vector3 position = Singleton<NetManager>.instance.m_nodes.m_buffer[(int) lines.m_buffer[(int) lineID].GetStop(0)].m_position;
-            ushort closestDepot = TransportLineMod.GetClosestDepot(lineID, position);
-            if ((int) closestDepot != 0)
-              TransportLineMod.SetDepot(lineID, closestDepot);
-            if (OptionsWrapper<Settings>.Options.ShowLineInfo && lines.m_buffer[(int)lineID].Info?.m_class?.m_service != ItemClass.Service.Disaster)
+            CachedTransportLineData.SetLineDefaults(lineID);
+            DepotUtil.AutoAssignLineDepot( lineID, out var position);
+            if (OptionsWrapper<Settings>.Options.ShowLineInfo &&
+                lines.m_buffer[(int) lineID].Info?.m_class?.m_service != ItemClass.Service.Disaster)
               WorldInfoPanel.Show<PublicTransportWorldInfoPanel>(position, new InstanceID()
               {
                 TransportLine = lineID
@@ -68,10 +67,10 @@ namespace ImprovedPublicTransport2
         if (this.SimulationLineCount >= this.KnownLineCount)
           return;
         Array16<TransportLine> lines = Singleton<TransportManager>.instance.m_lines;
-        for (ushort index = 0; (uint) index < lines.m_size; ++index)
+        for (ushort lineID = 0; (uint) lineID < lines.m_size; ++lineID)
         {
-          if (!LineWatcher.IsValid(ref lines.m_buffer[(int) index]))
-            this._knownLines.Remove(index);
+          if (!LineWatcher.IsValid(ref lines.m_buffer[(int) lineID]))
+            this._knownLines.Remove(lineID);
         }
       }
     }

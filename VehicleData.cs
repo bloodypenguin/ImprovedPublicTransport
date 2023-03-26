@@ -100,10 +100,17 @@ namespace ImprovedPublicTransport2
       }
     }
 
-    public void Add(int newPassengers, int ticketPrice)
+    public void BoardPassengers(int newPassengers, int ticketPrice, ushort stop)
     {
       this.LastStopNewPassengers = newPassengers;
-      this.IncomeThisWeek = this.IncomeThisWeek + newPassengers * ticketPrice;
+      this.IncomeThisWeek += newPassengers * ticketPrice;
+      this.CurrentStop = stop;
+    }
+    
+    public void DisembarkPassengers(int passengersOut, ushort stop)
+    {
+      this.LastStopGonePassengers = passengersOut;
+      this.CurrentStop = stop;
     }
 
     public void StartNewWeek(int maintenanceCost)
@@ -114,7 +121,7 @@ namespace ImprovedPublicTransport2
       this._averagePassengers = Mathf.RoundToInt(this._passengerData.Average);
       this.PassengersLastWeek = this.PassengersThisWeek;
       this.PassengersThisWeek = 0;
-      this.IncomeThisWeek = this.IncomeThisWeek - maintenanceCost;
+      this.IncomeThisWeek -= maintenanceCost;
       if (this._incomeData == null)
         this._incomeData = new MovingAverage(OptionsWrapper<Settings>.Options.StatisticWeeks);
       this._incomeData.Push((float) this.IncomeThisWeek);

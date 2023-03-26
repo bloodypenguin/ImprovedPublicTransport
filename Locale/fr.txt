@@ -5,16 +5,16 @@ AVERAGE Moyenne
 AVERAGE_TOOLTIP Moyenne des {0} dernières semaines.
 CITY_SERVICE_PANEL_TITLE_STATION_STOPS Arrêts
 CITY_SERVICE_PANEL_TITLE_DEPOT_VEHICLES Dépôt
-UNBUNCHING_ENABLED Distancement des véhicules
-UNBUNCHING_DISABLED Distancement inactif.
+UNBUNCHING_ENABLED Distance des véhicules
+UNBUNCHING_DISABLED Distance inactif.
 UNBUNCHING_TARGET_GAP Distance désirée: {0}
 EXPLANATION_BUDGET_CONTROL Contrôle du budget: La quantité de véhicules dépend du budget.
-EXPLANATION_UNBUNCHING Distancement: Gestion de la distance entre deux véhicules d'une même ligne.
+EXPLANATION_UNBUNCHING Distance : Gestion de la distance entre deux véhicules d'une même ligne.
 LINE_PANEL_STOPS Arrêts: {0}
 LINE_PANEL_SPAWNTIMER Prochain véhicule dans {0} secondes.
 LINE_PANEL_BUDGET_CONTROL Contrôle budgétaire
 LINE_PANEL_BUDGET_CONTROL_TOOLTIP Le budget défini le nombre de véhicules en service.
-LINE_PANEL_UNBUNCHING_TOOLTIP Activer ou désactiver le distancement pour cette ligne.\nLe distancement est inactif quand la valeur est 0.
+LINE_PANEL_UNBUNCHING_TOOLTIP Activer ou désactiver la distance des véhicules pour cette ligne.\nLa distance des véhicules est inactif quand la valeur est 0.
 LINE_PANEL_DEPOT Dépôt:
 LINE_PANEL_DEPOT_MARKER_TOOLTIP Se rendre au dépôt sélectionné.\nCliquer en maintenant Shift pour zoomer.
 LINE_PANEL_SELECT_TYPES Modèles disponibles
@@ -93,7 +93,7 @@ VEHICLE_LIST_BOX_ROW_TOOLTIP2 Shift + clic pour ajouter ce véhicule.
 VEHICLE_PANEL_EDIT_TYPE Ouvrir l'éditeur de véhicule
 VEHICLE_PANEL_EDIT_TYPE_TOOLTIP Modifier les véhicules.
 VEHICLE_PANEL_STATUS_NEXT_STOP Arrêt suivant:
-VEHICLE_PANEL_STATUS_UNBUNCHING Distancement en cours
+VEHICLE_PANEL_STATUS_UNBUNCHING Distance des véhicules en cours
 VEHICLE_PANEL_LAST_STOP_EXCHANGE Mouvements au dernier arrêt: <color #FF0000>-{0}</color> | <color #00FF00>+{1}</color>
 VEHICLE_PANEL_PASSENGERS Passagers/Capacité:
 VEHICLE_PANEL_EARNINGS Rentabilité:

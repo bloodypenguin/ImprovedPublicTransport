@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.Xml.Serialization;
 using UnityEngine;
+using Utils = ImprovedPublicTransport2.Util.Utils;
 
 namespace ImprovedPublicTransport2
 {
@@ -139,9 +140,10 @@ namespace ImprovedPublicTransport2
           case ItemClass.SubService.PublicTransportPlane:
           case ItemClass.SubService.PublicTransportMonorail:
           case ItemClass.SubService.PublicTransportCableCar:
+          case ItemClass.SubService.PublicTransportTrolleybus:
             if (this._maintenanceCost == 0)
             {
-              float num = (float) this.TotalCapacity / (float) this.CarCount / (float) GameDefault.GetCapacity(service, subService, level);
+              float num = (float) this.TotalCapacity / (float) this.CarCount / (float) GameDefault.GetCapacity(service, subService, level, _info.m_vehicleType);
               this.MaintenanceCost = Mathf.RoundToInt((float) (PrefabData.GetMaintenanceCost(service, subService, level, this._info.m_vehicleAI) * 16) * num);
             }
             return this._maintenanceCost;
@@ -303,6 +305,8 @@ namespace ImprovedPublicTransport2
                     num = (ai as PassengerTrainAI).m_passengerCapacity;
                 else if (subService == ItemClass.SubService.PublicTransportCableCar && ai is CableCarAI)
                     num = (ai as CableCarAI).m_passengerCapacity;
+                else if (subService == ItemClass.SubService.PublicTransportTrolleybus && ai is TrolleybusAI)
+                  num = (ai as TrolleybusAI).m_passengerCapacity;
             }
             else if (level == ItemClass.Level.Level2)
             {
@@ -312,12 +316,20 @@ namespace ImprovedPublicTransport2
                     num = (ai as PassengerFerryAI).m_passengerCapacity;
                 else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerBlimpAI)
                     num = (ai as PassengerBlimpAI).m_passengerCapacity;
+                else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerPlaneAI)
+                  num = (ai as PassengerPlaneAI).m_passengerCapacity;
+                else if (subService == ItemClass.SubService.PublicTransportTrain && ai is PassengerTrainAI)
+                  num = (ai as PassengerTrainAI).m_passengerCapacity;
             }
             else if (level == ItemClass.Level.Level3)
             {
                 if (subService == ItemClass.SubService.PublicTransportTours && ai is BusAI)
                     num = (ai as BusAI).m_passengerCapacity;
-                }
+                else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerHelicopterAI)
+                  num = (ai as PassengerHelicopterAI).m_passengerCapacity;
+                else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerPlaneAI)
+                  num = (ai as PassengerPlaneAI).m_passengerCapacity;
+            }
 
         }
         else if (service == ItemClass.Service.Disaster && subService == ItemClass.SubService.None && level == ItemClass.Level.Level4 && ai is BusAI)
@@ -351,6 +363,8 @@ namespace ImprovedPublicTransport2
                     (ai as PassengerTrainAI).m_passengerCapacity = capacity;
                     else if (subService == ItemClass.SubService.PublicTransportCableCar && ai is CableCarAI)
                     (ai as CableCarAI).m_passengerCapacity = capacity;
+                    else if (subService == ItemClass.SubService.PublicTransportTrolleybus && ai is TrolleybusAI)
+                      (ai as TrolleybusAI).m_passengerCapacity = capacity;
                 }
             else if (level == ItemClass.Level.Level2)
             {
@@ -360,12 +374,20 @@ namespace ImprovedPublicTransport2
                     (ai as PassengerFerryAI).m_passengerCapacity = capacity;
                 else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerBlimpAI)
                     (ai as PassengerBlimpAI).m_passengerCapacity = capacity;
+                else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerPlaneAI)
+                  (ai as PassengerPlaneAI).m_passengerCapacity = capacity;
+                else if (subService == ItemClass.SubService.PublicTransportTrain && ai is PassengerTrainAI)
+                  (ai as PassengerTrainAI).m_passengerCapacity = capacity;
             }
             else if (level == ItemClass.Level.Level3)
             {
                 if (subService == ItemClass.SubService.PublicTransportTours && ai is BusAI)
                     (ai as BusAI).m_passengerCapacity = capacity;
-                }
+                if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerHelicopterAI)
+                  (ai as PassengerHelicopterAI).m_passengerCapacity = capacity;
+                else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerPlaneAI)
+                  (ai as PassengerPlaneAI).m_passengerCapacity = capacity;
+            }
 
         }
         else if (service == ItemClass.Service.Disaster && subService == ItemClass.SubService.None && level == ItemClass.Level.Level4 && ai is BusAI)
@@ -381,38 +403,83 @@ namespace ImprovedPublicTransport2
         {
             if (level == ItemClass.Level.Level1)
             {
-                if (subService == ItemClass.SubService.PublicTransportBus && ai is BusAI)
-                    num = (ai as BusAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
-                    else if (subService == ItemClass.SubService.PublicTransportMetro && ai is PassengerTrainAI)
-                    num = (ai as PassengerTrainAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
-                    else if (subService == ItemClass.SubService.PublicTransportTrain && ai is PassengerTrainAI)
-                    num = (ai as PassengerTrainAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
-                    else if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerShipAI)
-                    num = (ai as PassengerShipAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
-                    else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerPlaneAI)
-                    num = (ai as PassengerPlaneAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
-                    else if (subService == ItemClass.SubService.PublicTransportTaxi && ai is TaxiAI)
-                    num = (ai as TaxiAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
-                    else if (subService == ItemClass.SubService.PublicTransportTram && ai is TramAI)
-                    num = (ai as TramAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
-                    else if (subService == ItemClass.SubService.PublicTransportMonorail && ai is PassengerTrainAI)
-                    num = (ai as PassengerTrainAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
-                    else if (subService == ItemClass.SubService.PublicTransportCableCar && ai is CableCarAI)
-                    num = (ai as CableCarAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
-                }
+              if (subService == ItemClass.SubService.PublicTransportBus && ai is BusAI)
+              {
+                num = (ai as BusAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+              }
+              else if (subService == ItemClass.SubService.PublicTransportMetro && ai is PassengerTrainAI)
+              {
+                num = (ai as PassengerTrainAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+              }
+              else if (subService == ItemClass.SubService.PublicTransportTrain && ai is PassengerTrainAI)
+              {
+                num = (ai as PassengerTrainAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+              }
+              else if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerShipAI)
+              {
+                num = (ai as PassengerShipAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+              }
+              else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerPlaneAI)
+              {
+                num = (ai as PassengerPlaneAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+              }
+              else if (subService == ItemClass.SubService.PublicTransportTaxi && ai is TaxiAI)
+              {
+                num = (ai as TaxiAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+              }
+              else if (subService == ItemClass.SubService.PublicTransportTram && ai is TramAI)
+              {
+                num = (ai as TramAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+              }
+              else if (subService == ItemClass.SubService.PublicTransportMonorail && ai is PassengerTrainAI)
+              {
+                num = (ai as PassengerTrainAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+              }
+              else if (subService == ItemClass.SubService.PublicTransportCableCar && ai is CableCarAI)
+              {
+                num = (ai as CableCarAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+              }
+              else if (subService == ItemClass.SubService.PublicTransportTrolleybus && ai is TrolleybusAI)
+              {
+                num = (ai as TrolleybusAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;                
+              }
+            }
             else if (level == ItemClass.Level.Level2)
             {
-                if (subService == ItemClass.SubService.PublicTransportBus && ai is BusAI)
-                    num = (ai as BusAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
-                else if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerFerryAI)
-                    num = (ai as PassengerFerryAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
-                else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerBlimpAI)
-                    num = (ai as PassengerBlimpAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+              if (subService == ItemClass.SubService.PublicTransportBus && ai is BusAI)
+              {
+                num = (ai as BusAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+              }
+              else if (subService == ItemClass.SubService.PublicTransportShip && ai is PassengerFerryAI)
+              {
+                num = (ai as PassengerFerryAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+              }
+              else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerBlimpAI)
+              {
+                num = (ai as PassengerBlimpAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+              }
+              else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerPlaneAI)
+              {
+                num = (ai as PassengerPlaneAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+              }
+              else if (subService == ItemClass.SubService.PublicTransportTrain && ai is PassengerTrainAI)
+              {
+                num = (ai as PassengerTrainAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+              }
             }
             else if (level == ItemClass.Level.Level3)
             {
-                if (subService == ItemClass.SubService.PublicTransportTours && ai is BusAI)
-                    num = (ai as BusAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+              if (subService == ItemClass.SubService.PublicTransportTours && ai is BusAI)
+              {
+                num = (ai as BusAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+              } else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerHelicopterAI)
+              {
+                num = (ai as PassengerHelicopterAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+              }
+              else if (subService == ItemClass.SubService.PublicTransportPlane && ai is PassengerPlaneAI)
+              {
+                num = (ai as PassengerPlaneAI).m_transportInfo?.m_maintenanceCostPerVehicle ?? 0;
+              }
             }
 
         }
