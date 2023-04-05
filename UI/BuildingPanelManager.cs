@@ -210,7 +210,7 @@ namespace ImprovedPublicTransport2.UI
             panelButton.hoveredColor = Color.white;
             panelButton.disabledColor = Color.white;
             panelButton.name = "VehicleSelectorButton";
-            panelButton.tooltip = Translations.Translate("MOD_NAME");
+            panelButton.tooltip = Localization.Get("MOD_NAME");
             panelButton.tooltipBox = UIToolTips.WordWrapToolTip;
 
             UISprite buttonSprite = panelButton.AddUIComponent<UISprite>();
@@ -218,7 +218,7 @@ namespace ImprovedPublicTransport2.UI
             buttonSprite.atlas = UITextures.LoadSingleSpriteAtlas("VS-Icon");
             buttonSprite.relativePosition = new Vector2(1f, 1f);
             buttonSprite.spriteName = "normal";
-            buttonSprite.tooltip = Translations.Translate("MOD_NAME");
+            buttonSprite.tooltip = Localization.Get("MOD_NAME");
 
             // Set position.
             panelButton.relativePosition = new Vector2(relativeX, relativeY);

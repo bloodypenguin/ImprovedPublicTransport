@@ -6,14 +6,13 @@
 using ImprovedPublicTransport2.UI;
 using ImprovedPublicTransport2.UI.AlgernonCommons;
 
-namespace VehicleSelector
+namespace ImprovedPublicTransport2.UI
 {
     using System;
     using System.Text;
     using ColossalFramework;
     using ColossalFramework.UI;
     using UnityEngine;
-    using static Transfers;
 
     /// <summary>
     /// Building info panel.
@@ -45,8 +44,6 @@ namespace VehicleSelector
 
         // Panel components.
         private readonly UILabel _buildingLabel;
-        private readonly UILabel _areaLabel1;
-        private readonly UILabel _areaLabel2;
         private readonly UIButton _copyButton;
         private readonly UIButton _pasteButton;
         private readonly UIButton _copyBuildingButton;
@@ -90,7 +87,7 @@ namespace VehicleSelector
                 relativePosition = new Vector2(Mathf.Floor((GetUIView().fixedWidth - PanelWidth) / 2), (GetUIView().fixedHeight - NoPanelHeight) / 2);
 
                 // Title label.
-                UILabel titleLabel = UILabels.AddLabel(this, 0f, 10f, Translations.Translate("MOD_NAME"), PanelWidth, 1.2f);
+                UILabel titleLabel = UILabels.AddLabel(this, 0f, 10f, Localization.Get("MOD_NAME"), PanelWidth, 1.2f);
                 titleLabel.textAlignment = UIHorizontalAlignment.Center;
 
                 // Building label.
@@ -116,20 +113,14 @@ namespace VehicleSelector
                     BuildingPanelManager.Close();
                 };
 
-                // Area labels.
-                _areaLabel1 = UILabels.AddLabel(this, 0f, AreaLabel1Y, string.Empty, PanelWidth, 0.9f);
-                _areaLabel1.textAlignment = UIHorizontalAlignment.Center;
-                _areaLabel2 = UILabels.AddLabel(this, 0f, AreaLabel2Y, string.Empty, PanelWidth, 0.9f);
-                _areaLabel2.textAlignment = UIHorizontalAlignment.Center;
-
                 // Zoom to building button.
                 UIButton zoomButton = AddZoomButton(this, Margin, Margin, 30f, "ZOOM_BUILDING");
                 zoomButton.eventClicked += (c, p) => ZoomToBuilding(_currentBuilding);
 
                 // Copy/paste buttons.
-                _copyButton = UIButtons.AddIconButton(this, CopyButtonX, IconButtonY, IconButtonSize, UITextures.LoadQuadSpriteAtlas("VS-Copy"), Translations.Translate("COPY_TIP"));
+                _copyButton = UIButtons.AddIconButton(this, CopyButtonX, IconButtonY, IconButtonSize, UITextures.LoadQuadSpriteAtlas("VS-Copy"), Localization.Get("COPY_TIP"));
                 _copyButton.eventClicked += (c, p) => CopyPaste.Instance.Copy(_currentBuilding);
-                _pasteButton = UIButtons.AddIconButton(this, PasteButtonX, IconButtonY, IconButtonSize, UITextures.LoadQuadSpriteAtlas("VS-Paste"), Translations.Translate("PASTE_TIP"));
+                _pasteButton = UIButtons.AddIconButton(this, PasteButtonX, IconButtonY, IconButtonSize, UITextures.LoadQuadSpriteAtlas("VS-Paste"), Localization.Get("PASTE_TIP"));
                 _pasteButton.eventClicked += (c, p) => Paste();
 
                 // Copy to buttons.
@@ -139,7 +130,7 @@ namespace VehicleSelector
                     IconButtonY,
                     IconButtonSize,
                     UITextures.LoadQuadSpriteAtlas("VS-CopyBuilding"),
-                    Translations.Translate("COPY_BUILDING_TIP"));
+                    Localization.Get("COPY_BUILDING_TIP"));
                 _copyBuildingButton.eventClicked += (c, p) => CopyPaste.Instance.CopyToBuildings(_currentBuilding, 0, 0);
                 _copyDistrictButton = UIButtons.AddIconButton(
                     this,
@@ -147,7 +138,7 @@ namespace VehicleSelector
                     IconButtonY,
                     IconButtonSize,
                     UITextures.LoadQuadSpriteAtlas("VS-CopyDistrict"),
-                    Translations.Translate("COPY_DISTRICT_TIP"));
+                    Localization.Get("COPY_DISTRICT_TIP"));
                 _copyDistrictButton.eventClicked += (c, p) => CopyPaste.Instance.CopyToBuildings(_currentBuilding, _currentDistrict, _currentPark);
 
                 // Add vehicle panels.
@@ -257,7 +248,7 @@ namespace VehicleSelector
             newButton.pressedFgSprite = "LineDetailButtonPressed";
 
             // Tooltip.
-            newButton.tooltip = Translations.Translate(tooltipKey);
+            newButton.tooltip = Localization.Get(tooltipKey);
 
             return newButton;
         }
@@ -338,41 +329,6 @@ namespace VehicleSelector
                 }
 
                 districtText.Append(districtManager.GetParkName(_currentPark));
-            }
-
-            // If no current district or park, then display no area message.
-            if (_currentDistrict == 0 && _currentPark == 0)
-            {
-                _areaLabel1.text = Translations.Translate("NO_DISTRICT");
-                _areaLabel2.Hide();
-            }
-            else
-            {
-                // Current district and/or park - display generated text.
-                if (_currentDistrict != 0)
-                {
-                    // District label.
-                    _areaLabel1.text = districtManager.GetDistrictName(_currentDistrict);
-
-                    // Is there also a park area?
-                    if (_currentPark != 0)
-                    {
-                        // Yes - set second label text and show.
-                        _areaLabel2.text = districtManager.GetParkName(_currentPark);
-                        _areaLabel2.Show();
-                    }
-                    else
-                    {
-                        // Just the district - hide second area label.
-                        _areaLabel2.Hide();
-                    }
-                }
-                else if (_currentPark != 0)
-                {
-                    // No district, but a park - set first area label text and hide the second label.
-                    _areaLabel1.text = districtManager.GetParkName(_currentPark);
-                    _areaLabel2.Hide();
-                }
             }
 
             // Make sure we're fully visible on-screen.
