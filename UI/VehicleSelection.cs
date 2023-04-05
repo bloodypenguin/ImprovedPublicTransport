@@ -134,7 +134,7 @@ namespace ImprovedPublicTransport2.UI
 
             // Vehicle selection list labels.
             UILabels.AddLabel(_vehicleSelectionPanel.VehicleList, 0f, -TitleOffsetY, Localization.Get("AVAILABLE_VEHICLES"), ListWidth, 0.8f, UIHorizontalAlignment.Center);
-            UILabels.AddLabel(_selectedVehiclePanel.VehicleList, 0f, -TitleOffsetY, Localization.Get(("SELECTED_VEHICLES"), ListWidth, 0.8f, UIHorizontalAlignment.Center);
+            UILabels.AddLabel(_selectedVehiclePanel.VehicleList, 0f, -TitleOffsetY, Localization.Get("SELECTED_VEHICLES"), ListWidth, 0.8f, UIHorizontalAlignment.Center);
 
             // Preview panel.
             _previewPanel = AddUIComponent<PreviewPanel>();
