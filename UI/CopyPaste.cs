@@ -3,14 +3,13 @@
 // Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
+using System.Collections.Generic;
+using ColossalFramework;
 using ImprovedPublicTransport2.UI.AlgernonCommons;
+using UnityEngine;
 
-namespace VehicleSelector
+namespace ImprovedPublicTransport2.UI
 {
-    using System.Collections.Generic;
-    using ColossalFramework;
-    using UnityEngine;
-
     /// <summary>
     /// Handles copying and pasting of building settings.
     /// </summary>

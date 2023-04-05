@@ -156,7 +156,9 @@
     <Compile Include="UI\AlgernonCommons\UILabels.cs" />
     <Compile Include="UI\AlgernonCommons\UIList.cs" />
     <Compile Include="UI\AlgernonCommons\UIScrollbars.cs" />
+    <Compile Include="UI\AlgernonCommons\UITextFields.cs" />
     <Compile Include="UI\AlgernonCommons\UITextures.cs" />
+    <Compile Include="UI\AlgernonCommons\UIToolTips.cs" />
     <Compile Include="UI\BuildingPanel.cs" />
     <Compile Include="UI\BuildingPanelManager.cs" />
     <Compile Include="UI\AlgernonCommons\UIListRow.cs" />
