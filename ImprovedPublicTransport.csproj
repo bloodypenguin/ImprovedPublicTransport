@@ -121,11 +121,10 @@
     <Compile Include="OptionsFramework\Extensions\UIHelperBaseExtensions.cs" />
     <Compile Include="OptionsFramework\OptionsWrapper.cs" />
     <Compile Include="OptionsFramework\Util.cs" />
-    <Compile Include="Querying\ActiveVehiclesQuery.cs" />
-    <Compile Include="Querying\AvailableVehiclesQuery.cs" />
-    <Compile Include="Querying\QueuedVehicleQuery.cs" />
-    <Compile Include="Querying\VehicleQueryResult.cs" />
-    <Compile Include="Querying\WaitingPassengerCountQuery.cs" />
+    <Compile Include="Query\ActiveVehiclesQuery.cs" />
+    <Compile Include="Query\AvailableVehiclesQuery.cs" />
+    <Compile Include="Query\QueuedVehicleQuery.cs" />
+    <Compile Include="Query\WaitingPassengerCountQuery.cs" />
     <Compile Include="RedirectionFramework\AssemblyRedirector.cs" />
     <Compile Include="RedirectionFramework\Attributes\IgnoreConditions\DisableAttribute.cs" />
     <Compile Include="RedirectionFramework\Attributes\IgnoreConditionAttribute.cs" />
@@ -164,7 +163,7 @@
     <Compile Include="UI\AlgernonCommons\UITextFields.cs" />
     <Compile Include="UI\AlgernonCommons\UITextures.cs" />
     <Compile Include="UI\AlgernonCommons\UIToolTips.cs" />
-    <Compile Include="UI\LineVehicleTypesPanel.cs" />
+    <Compile Include="UI\LineVehiclesPanel.cs" />
     <Compile Include="UI\BuildingPanelManager.cs" />
     <Compile Include="UI\AlgernonCommons\UIListRow.cs" />
     <Compile Include="UI\CopyPaste.cs" />
@@ -173,7 +172,7 @@
     <Compile Include="UI\SelectedVehiclePanel.cs" />
     <Compile Include="UI\VehicleItem.cs" />
     <Compile Include="UI\VehicleSelection.cs" />
-    <Compile Include="UI\VehicleSelectionPanel.cs" />
+    <Compile Include="UI\AvailableVehiclePanel.cs" />
     <Compile Include="UI\VehicleSelectionRow.cs" />
     <Compile Include="Util\DepotUtil.cs" />
     <Compile Include="Util\PatchUtil.cs" />

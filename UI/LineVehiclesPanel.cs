@@ -17,7 +17,7 @@ namespace ImprovedPublicTransport2.UI
     /// <summary>
     /// Building info panel.
     /// </summary>
-    internal class LineVehicleTypesPanel : UIPanel
+    internal class LineVehiclesPanel : UIPanel
     {
 
         
@@ -52,7 +52,7 @@ namespace ImprovedPublicTransport2.UI
         private readonly UIButton _copyDistrictButton;
 
         // Sub-panels.
-        private readonly VehicleSelection _vehicleSelections = new VehicleSelection();
+        private readonly VehicleSelection _vehicleSelection = new VehicleSelection();
 
         // Status flag.
         private readonly bool _panelReady = false;
@@ -68,9 +68,9 @@ namespace ImprovedPublicTransport2.UI
         private bool _pasteProcessing = false;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LineVehicleTypesPanel"/> class.
+        /// Initializes a new instance of the <see cref="LineVehiclesPanel"/> class.
         /// </summary>
-        internal LineVehicleTypesPanel()
+        internal LineVehiclesPanel()
         {
             try
             {
@@ -141,9 +141,9 @@ namespace ImprovedPublicTransport2.UI
                     Localization.Get("COPY_DISTRICT_TIP"));
                 _copyDistrictButton.eventClicked += (c, p) => CopyPaste.Instance.CopyToBuildings(_currentLineID, _currentDistrict, _currentPark);
 
-                _vehicleSelections = AddUIComponent<VehicleSelection>();
-                _vehicleSelections.ParentPanel = this;
-                _vehicleSelections.relativePosition = new Vector3(Margin, ListY);
+                _vehicleSelection = AddUIComponent<VehicleSelection>();
+                _vehicleSelection.ParentPanel = this;
+                _vehicleSelection.relativePosition = new Vector3(Margin, ListY);
 
                 // Enable events.
                 _panelReady = true;
@@ -271,7 +271,7 @@ namespace ImprovedPublicTransport2.UI
         /// Sets/changes the currently selected building.
         /// </summary>
         /// <param name="lineID">New building ID.</param>
-        internal virtual void SetTarget(ushort lineID)
+        internal void SetTarget(ushort lineID)
         {
             // Local references.
             TransportManager transportManager = Singleton<TransportManager>.instance;
@@ -282,8 +282,8 @@ namespace ImprovedPublicTransport2.UI
             _thisLine = transportManager.m_lines.m_buffer[_currentLineID];
 
             // Set up used panels.
-            _vehicleSelections.SetTarget(lineID,"ABC");
-            _vehicleSelections.Show();
+            _vehicleSelection.SetTarget(lineID,"ABC");
+            _vehicleSelection.Show();
 
             // Set panel height.
             height = NoPanelHeight;
@@ -352,7 +352,7 @@ namespace ImprovedPublicTransport2.UI
             // CopyPaste.Instance.Paste(CurrentLineID);
             //
             // // Update lists.
-            // foreach (VehicleSelection vehicleSelection in _vehicleSelections)
+            // foreach (VehicleSelection vehicleSelection in _vehicleSelection)
             // {
             //     vehicleSelection.Refresh();
             // }

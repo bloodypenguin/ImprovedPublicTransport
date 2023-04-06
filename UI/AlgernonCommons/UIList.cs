@@ -12,7 +12,7 @@ namespace ImprovedPublicTransport2.UI.AlgernonCommons
     /// <summary>
     /// Based on SamSamT's original work as implemented in boformer's Building Themes mod and AJD3's Ploppable RICO.
     /// </summary>
-    public class UIList : UIComponent
+    public class UIList<T> : UIComponent
     {
         /// <summary>
         /// Default row height.
@@ -22,7 +22,7 @@ namespace ImprovedPublicTransport2.UI.AlgernonCommons
         // UI components.
         private UIPanel _contentPanel;
         private UIScrollbar _scrollbar;
-        private FastList<UIListRow> _rows;
+        private FastList<UIListRow<T>> _rows;
 
         // List type.
         private Type _rowType;
@@ -37,7 +37,7 @@ namespace ImprovedPublicTransport2.UI.AlgernonCommons
         private int _currentPosition = 0;
 
         // List data.
-        private FastList<object> _data;
+        private FastList<T> _data;
 
         // Event handling.
         private bool _ignoreScrolling = false;
@@ -45,7 +45,7 @@ namespace ImprovedPublicTransport2.UI.AlgernonCommons
         /// <summary>
         /// Selection changed event (returns currently selected object, or null if none).
         /// </summary>
-        public event PropertyChangedEventHandler<object> EventSelectionChanged;
+        public event PropertyChangedEventHandler<T> EventSelectionChanged;
 
         /// <summary>
         /// Gets or sets the height of each row (minimum 1).
@@ -174,14 +174,14 @@ namespace ImprovedPublicTransport2.UI.AlgernonCommons
         /// <summary>
         /// Gets the currently selected object (null if none).
         /// </summary>
-        public object SelectedItem
+        public T SelectedItem
         {
             get
             {
                 // Return null if no valid selection.
                 if (_selectedIndex < 0 | _selectedIndex > _data.m_size)
                 {
-                    return null;
+                    return default;
                 }
 
                 return _data[_selectedIndex];
@@ -197,7 +197,7 @@ namespace ImprovedPublicTransport2.UI.AlgernonCommons
         /// Gets or sets the list of data objects to display.
         /// Retains current list position where possible.
         /// </summary>
-        public FastList<object> Data
+        public FastList<T> Data
         {
             get => _data;
 
@@ -246,8 +246,8 @@ namespace ImprovedPublicTransport2.UI.AlgernonCommons
         /// <param name="height">List height.</param>
         /// <param name="rowHeight">Row height.</param>
         /// <returns>New UIList.</returns>
-        public static UIList AddUIList<TRow>(UIComponent parent, float xPos, float yPos, float width, float height, float rowHeight = DefaultRowHeight)
-            where TRow : UIListRow => AddUIList<UIList, TRow>(parent, xPos, yPos, width, height, rowHeight);
+        public static UIList<T> AddUIList<TRow>(UIComponent parent, float xPos, float yPos, float width, float height, float rowHeight = DefaultRowHeight)
+            where TRow : UIListRow<T> => AddUIList<UIList<T>, TRow>(parent, xPos, yPos, width, height, rowHeight);
 
         /// <summary>
         /// Adds a UIList of the specified type to the specified parent and peforms intial setup.
@@ -264,8 +264,8 @@ namespace ImprovedPublicTransport2.UI.AlgernonCommons
         /// <param name="rowHeight">Row height.</param>
         /// <returns>New UIList of specified type.</returns>
         public static TList AddUIList<TList, TRow>(UIComponent parent, float xPos, float yPos, float width, float height, float rowHeight = DefaultRowHeight)
-            where TList : UIList
-            where TRow : UIListRow
+            where TList : UIList<T>
+            where TRow : UIListRow<T>
         {
             TList uiList = parent.AddUIComponent<TList>();
             uiList._rowType = typeof(TRow);
@@ -565,7 +565,7 @@ namespace ImprovedPublicTransport2.UI.AlgernonCommons
             // Initialize rows fastlist if required.
             if (_rows == null)
             {
-                _rows = new FastList<UIListRow>();
+                _rows = new FastList<UIListRow<T>>();
                 _rows.SetCapacity(requiredRows);
             }
 
@@ -576,7 +576,7 @@ namespace ImprovedPublicTransport2.UI.AlgernonCommons
                 for (int i = _rows.m_size; i < requiredRows; ++i)
                 {
                     // Add new row and event handler.
-                    UIListRow newRow = _contentPanel.AddUIComponent(_rowType) as UIListRow;
+                    UIListRow<T> newRow = _contentPanel.AddUIComponent(_rowType) as UIListRow<T>;
                     newRow.eventClick += OnRowClicked;
                     _rows.Add(newRow);
                 }
@@ -594,7 +594,7 @@ namespace ImprovedPublicTransport2.UI.AlgernonCommons
             }
 
             // Ensure size of all rows.
-            foreach (UIListRow row in _rows)
+            foreach (UIListRow<T> row in _rows)
             {
                 row.height = _rowHeight;
             }

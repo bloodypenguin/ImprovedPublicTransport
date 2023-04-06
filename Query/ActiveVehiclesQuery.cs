@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using ColossalFramework;
 using ImprovedPublicTransport2.Util;
 
-namespace ImprovedPublicTransport2.Querying
+namespace ImprovedPublicTransport2.Query
 {
     public static class ActiveVehiclesQuery
     {
@@ -51,6 +51,12 @@ namespace ImprovedPublicTransport2.Querying
             }
 
             return results;
+        }
+        
+        public class VehicleQueryResult
+        {
+            public ushort VehicleID;
+            public PrefabData PrefabData;
         }
     }
 }
