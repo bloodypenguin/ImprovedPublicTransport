@@ -196,7 +196,7 @@ namespace ImprovedPublicTransport2.UI
         /// <summary>
         /// Gets or sets the parent tab reference.
         /// </summary>
-        internal LinePanel ParentPanel { get; set; }
+        internal LineVehicleTypesPanel ParentPanel { get; set; }
 
         /// <summary>
         /// Gets the current transfer reason.
@@ -214,13 +214,13 @@ namespace ImprovedPublicTransport2.UI
         /// <param name="lineID">New line ID.</param>
         /// <param name="title">Selection list title string.</param>
         /// <param name="reason">Transfer reason for this vehicle selection.</param>
-        internal void SetTarget(ushort lineID, string title, TransferManager.TransferReason reason)
+        internal void SetTarget(ushort lineID, string title)
         {
             // Ensure valid line.
             if (lineID != 0)
             {
                 CurrentLine = lineID;
-                TransferReason = reason;
+                // TransferReason = reason;
                 _titleLabel.text = title;
 
                 // Regenerate lists and set button states..
@@ -260,7 +260,7 @@ namespace ImprovedPublicTransport2.UI
         private void AddVehicle(VehicleInfo vehicle)
         {
             // Add vehicle to line.
-            VehicleControl.AddVehicle(CurrentLine, TransferReason, vehicle);
+            // VehicleControl.AddVehicle(CurrentLine, TransferReason, vehicle);
 
             // Update lists.
             Refresh();
@@ -272,7 +272,7 @@ namespace ImprovedPublicTransport2.UI
         private void RemoveVehicle()
         {
             // Remove selected vehicle from line.
-            VehicleControl.RemoveVehicle(CurrentLine, TransferReason, _selectedLineVehicle);
+            // VehicleControl.RemoveVehicle(CurrentLine, TransferReason, _selectedLineVehicle);
 
             // Update lists.
             Refresh();
@@ -286,7 +286,7 @@ namespace ImprovedPublicTransport2.UI
             // Add all vehicles in target list to line.
             foreach (VehicleItem item in _vehicleSelectionPanel.VehicleList.Data)
             {
-                VehicleControl.AddVehicle(CurrentLine, TransferReason, item.Info);
+                // VehicleControl.AddVehicle(CurrentLine, TransferReason, item.Info);
             }
 
             // Update lists.
@@ -301,7 +301,7 @@ namespace ImprovedPublicTransport2.UI
             // Add all vehicles in target list to line.
             foreach (VehicleItem item in _selectedVehiclePanel.VehicleList.Data)
             {
-                VehicleControl.RemoveVehicle(CurrentLine, TransferReason, item.Info);
+                // VehicleControl.RemoveVehicle(CurrentLine, TransferReason, item.Info);
             }
 
             // Update lists.

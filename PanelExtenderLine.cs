@@ -10,6 +10,8 @@ using System.Reflection;
 using ColossalFramework;
 using ColossalFramework.UI;
 using ImprovedPublicTransport2.OptionsFramework;
+using ImprovedPublicTransport2.Querying;
+using ImprovedPublicTransport2.UI;
 using ImprovedPublicTransport2.Util;
 using UnityEngine;
 using UIUtils = ImprovedPublicTransport2.Util.UIUtils;
@@ -42,6 +44,7 @@ namespace ImprovedPublicTransport2
 
     private VehicleListBox _lineVehicleListBox;
     private VehicleListBox _vehiclesInQueueListBox;
+    private LineVehicleTypesPanel _lineVehicleTypesPanel;
 
     private UIButton _selectTypes;
     private UIButton _addVehicle;
@@ -280,7 +283,7 @@ namespace ImprovedPublicTransport2
         if (subService != _cachedSubService || depotNotValid || _updateDepots[triplet])
         {
           PopulateDepotDropDown(info);
-          PopulatePrefabListBox(service, subService, level);
+          // PopulatePrefabListBox(service, subService, level);
           _updateDepots[triplet] = false;
         }
         if (_depotDropDown.Items.Length == 0)
@@ -290,15 +293,14 @@ namespace ImprovedPublicTransport2
         if (lineId != _cachedLineID)
         {
           _colorTextField.text = ColorUtility.ToHtmlStringRGB(_colorField.selectedColor);
-          _prefabListBox.SetSelectionStateToAll(false);
-          _prefabListBox.SelectedItems = CachedTransportLineData.GetPrefabs(lineId);
+          _lineVehicleTypesPanel.SetTarget(lineId);
           _prefabPanel.Hide();
           UpdatePanelPositionAndSize();
         }
         if (lineVehicleCount != 0)
         {
-          if (lineId != _cachedLineID || lineVehicleCount != _cachedSimCount)
-          PopulateLineVehicleListBox(lineId, service, subService, level);
+          // if (lineId != _cachedLineID || lineVehicleCount != _cachedSimCount)
+          // PopulateLineVehicleListBox(lineId, service, subService, level);
           _lineVehiclePanel.Show();
           UpdatePanelPositionAndSize();
         }
@@ -310,8 +312,8 @@ namespace ImprovedPublicTransport2
         int num3 = CachedTransportLineData.EnqueuedVehiclesCount(lineId);
         if ((uint) num3 > 0U & depotCanAddVehicle)
         {
-          if (lineId != _cachedLineID || num3 != _cachedQueuedCount)
-            PopulateQueuedVehicleListBox(lineId, service, subService, level);
+          // if (lineId != _cachedLineID || num3 != _cachedQueuedCount)
+          //   PopulateQueuedVehicleListBox(lineId, service, subService, level);
           if (_vehiclesInQueueListBox.Items.Count == 0)
             _vehiclesInQueuePanel.Hide();
           else
@@ -644,15 +646,15 @@ namespace ImprovedPublicTransport2
       uiButton.pressedBgSprite = "buttonclosepressed";
       uiButton.relativePosition = new Vector3((float) (uiPanel.width - (double) uiButton.width - 2.0), 2f);
       uiButton.eventClick += (c, p) => _prefabPanel.isVisible = !_prefabPanel.isVisible;
-      _prefabListBox = VehicleListBox.Create(uiPanel);
-      _prefabListBox.name = "VehicleListBox";
-      _prefabListBox.AlignTo(uiPanel, UIAlignAnchor.TopLeft);
-      _prefabListBox.relativePosition = new Vector3(3f, 40f);
-      _prefabListBox.width = uiPanel.width - 6f;
-      _prefabListBox.height = PARENT_HEIGHT - 61f;
-      _prefabListBox.Font = _vehicleAmount.font;
-      _prefabListBox.eventSelectedItemsChanged += OnSelectedPrefabsChanged;
-      _prefabListBox.eventRowShiftClick += OnAddVehicleClick;
+      // _prefabListBox = VehicleListBox.Create(uiPanel);
+      // _prefabListBox.name = "VehicleListBox";
+      // _prefabListBox.AlignTo(uiPanel, UIAlignAnchor.TopLeft);
+      // _prefabListBox.relativePosition = new Vector3(3f, 40f);
+      // _prefabListBox.width = uiPanel.width - 6f;
+      // _prefabListBox.height = PARENT_HEIGHT - 61f;
+      // _prefabListBox.Font = _vehicleAmount.font;
+      // _prefabListBox.eventSelectedItemsChanged += OnSelectedPrefabsChanged;
+      // _prefabListBox.eventRowShiftClick += OnAddVehicleClick;
     }
 
     private void CreateVehiclesOnLinePanel()
@@ -717,9 +719,7 @@ namespace ImprovedPublicTransport2
       int num2 = 0;
       for (int index = 0; index < transportLine.CountStops(lineId); ++index)
       {
-        ushort nextStop = TransportLine.GetNextStop(num1);
-        byte max;
-        num2 += CountWaitingPassengers(num1, nextStop, out max);
+        num2 += WaitingPassengerCountQuery.Query(num1, out var nextStop, out _);
         num1 = nextStop;
       }
       component.tooltip = string.Format(Localization.Get("LINE_PANEL_TOTAL_WAITING_PEOPLE_TOOLTIP"), num2);
@@ -900,78 +900,7 @@ namespace ImprovedPublicTransport2
         buildingID = instance.FindBuilding(instance.m_buildings.m_buffer[buildingID].m_position, 100f, ItemClass.Service.None, ItemClass.SubService.None, Building.Flags.Active, Building.Flags.Untouchable);
       return instance.GetBuildingName(buildingID, InstanceID.Empty) ?? "";
     }
-
-    private void PopulatePrefabListBox(ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
-    {
-      _prefabListBox.ClearItems();
-      PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(service, subService, level);
-      int length = prefabs.Length;
-      for (int index = 0; index < length; ++index)
-        _prefabListBox.AddItem(prefabs[index]);
-    }
-
-    private void PopulateLineVehicleListBox(ushort lineID, ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
-    {
-      _lineVehicleListBox.ClearItems();
-      TransportLine transportLine = Singleton<TransportManager>.instance.m_lines.m_buffer[lineID];
-      int num = TransportLineUtil.CountLineActiveVehicles(lineID, out int _);
-      PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(service, subService, level);
-            int length = prefabs.Length;
-      for (int index1 = 0; index1 < num; ++index1)
-      {
-        ushort vehicle = transportLine.GetVehicle(index1);
-        if (vehicle != 0)
-        {
-            if ((VehicleManager.instance.m_vehicles.m_buffer[vehicle].m_flags & Vehicle.Flags.GoingBack) ==
-                ~(Vehicle.Flags.Created | Vehicle.Flags.Deleted | Vehicle.Flags.Spawned |
-                  Vehicle.Flags.Inverted | Vehicle.Flags.TransferToTarget | Vehicle.Flags.TransferToSource |
-                  Vehicle.Flags.Emergency1 | Vehicle.Flags.Emergency2 | Vehicle.Flags.WaitingPath |
-                  Vehicle.Flags.Stopped | Vehicle.Flags.Leaving | Vehicle.Flags.Arriving |
-                  Vehicle.Flags.Reversed | Vehicle.Flags.TakingOff | Vehicle.Flags.Flying |
-                  Vehicle.Flags.Landing | Vehicle.Flags.WaitingSpace | Vehicle.Flags.WaitingCargo |
-                  Vehicle.Flags.GoingBack | Vehicle.Flags.WaitingTarget | Vehicle.Flags.Importing |
-                  Vehicle.Flags.Exporting | Vehicle.Flags.Parking | Vehicle.Flags.CustomName |
-                  Vehicle.Flags.OnGravel | Vehicle.Flags.WaitingLoading | Vehicle.Flags.Congestion |
-                  Vehicle.Flags.DummyTraffic | Vehicle.Flags.Underground | Vehicle.Flags.Transition |
-                  Vehicle.Flags.InsideBuilding | Vehicle.Flags.LeftHandDrive)) //based on beginning of TransportLine.SimulationStep
-            {
-                VehicleInfo info = Singleton<VehicleManager>.instance.m_vehicles.m_buffer[vehicle].Info;
-                for (int index2 = 0; index2 < length; ++index2)
-                {
-                    PrefabData data = prefabs[index2];
-                    if (info.name == data.ObjectName)
-                    {
-                        _lineVehicleListBox.AddItem(data, vehicle);
-                        break;
-                    }
-                }
-            }
-        }
-      }
-    }
-
-    private void PopulateQueuedVehicleListBox(ushort lineID, ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
-    {
-      _vehiclesInQueueListBox.ClearItems();
-      string[] enqueuedVehicles = CachedTransportLineData.GetEnqueuedVehicles(lineID);
-      int length1 = enqueuedVehicles.Length;
-      PrefabData[] prefabs = VehiclePrefabs.instance.GetPrefabs(service, subService, level);
-      int length2 = prefabs.Length;
-      for (int index1 = 0; index1 < length1; ++index1)
-      {
-        string str = enqueuedVehicles[index1];
-        for (int index2 = 0; index2 < length2; ++index2)
-        {
-          PrefabData data = prefabs[index2];
-          if (data.ObjectName == str)
-          {
-            _vehiclesInQueueListBox.AddItem(data);
-            break;
-          }
-        }
-      }
-    }
-
+    
     public ushort GetLineID()
     {
       InstanceID currentInstanceId = WorldInfoPanel.GetCurrentInstanceID();
@@ -984,49 +913,6 @@ namespace ImprovedPublicTransport2
           return Singleton<VehicleManager>.instance.m_vehicles.m_buffer[firstVehicle].m_transportLine;
       }
       return 0;
-    }
-
-    public static int CountWaitingPassengers(ushort currentStop, ushort nextStop, out byte max)
-    {
-      max = 0;
-      if (currentStop == 0 || nextStop == 0)
-        return 0;
-      CitizenManager instance1 = Singleton<CitizenManager>.instance;
-      NetManager instance2 = Singleton<NetManager>.instance;
-      Vector3 position1 = instance2.m_nodes.m_buffer[currentStop].m_position;
-      Vector3 position2 = instance2.m_nodes.m_buffer[nextStop].m_position;
-      int num1 = Mathf.Max((int) ((position1.x - 64.0) / 8.0 + 1080.0), 0);
-      int num2 = Mathf.Max((int) ((position1.z - 64.0) / 8.0 + 1080.0), 0);
-      int num3 = Mathf.Min((int) ((position1.x + 64.0) / 8.0 + 1080.0), 2159);
-      int num4 = Mathf.Min((int) ((position1.z + 64.0) / 8.0 + 1080.0), 2159);
-      int num5 = 0;
-      int num6 = 0;
-      for (int index1 = num2; index1 <= num4; ++index1)
-      {
-        for (int index2 = num1; index2 <= num3; ++index2)
-        {
-          ushort instanceID = instance1.m_citizenGrid[index1 * 2160 + index2];
-          int num7 = 0;
-          while (instanceID != 0)
-          {
-            int nextGridInstance = instance1.m_instances.m_buffer[instanceID].m_nextGridInstance;
-            if ((instance1.m_instances.m_buffer[instanceID].m_flags & CitizenInstance.Flags.WaitingTransport) != CitizenInstance.Flags.None && Vector3.SqrMagnitude((Vector3) instance1.m_instances.m_buffer[instanceID].m_targetPos - position1) < 4096.0 && instance1.m_instances.m_buffer[instanceID].Info.m_citizenAI.TransportArriveAtSource(instanceID, ref instance1.m_instances.m_buffer[instanceID], position1, position2))
-            {
-              byte waitCounter = instance1.m_instances.m_buffer[instanceID].m_waitCounter;
-              max = Math.Max(waitCounter, max);
-              num5 += waitCounter;
-              ++num6;
-            }
-            instanceID = (ushort) nextGridInstance;
-            if (++num7 > 65536)
-            {
-              CODebugBase<LogChannel>.Error(LogChannel.Core, "Invalid list detected!\n" + Environment.StackTrace);
-              break;
-            }
-          }
-        }
-      }
-      return num6;
     }
   }
 }

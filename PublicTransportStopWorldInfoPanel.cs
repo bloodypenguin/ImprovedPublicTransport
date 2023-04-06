@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ImprovedPublicTransport2.Detour;
 using ImprovedPublicTransport2.OptionsFramework;
+using ImprovedPublicTransport2.Querying;
 using ImprovedPublicTransport2.Util;
 using UnityEngine;
 using UIUtils = ImprovedPublicTransport2.Util.UIUtils;
@@ -664,8 +665,7 @@ namespace ImprovedPublicTransport2
         private void UpdateBindings()
         {
             ushort netNode = this.m_InstanceID.NetNode;
-            byte max;
-            int num1 = PanelExtenderLine.CountWaitingPassengers(netNode, TransportLine.GetNextStop(netNode), out max);
+            int num1 = WaitingPassengerCountQuery.Query(netNode, out _, out var max);
             byte num2 = (byte) ((uint) byte.MaxValue - (uint) max);
             this.m_PassengerCount.text = string.Format(Localization.Get("STOP_PANEL_WAITING_PEOPLE"), (object) num1);
             this.m_BoredCountdown.text = string.Format(Localization.Get("STOP_PANEL_BORED_TIMER"),
