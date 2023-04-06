@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ImprovedPublicTransport2.Querying
+namespace ImprovedPublicTransport2.Query
 {
     public static class AvailableVehiclesQuery
     {

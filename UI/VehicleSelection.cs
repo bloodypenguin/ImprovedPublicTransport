@@ -55,7 +55,7 @@ namespace ImprovedPublicTransport2.UI
         private readonly UIButton _removeButton;
         private readonly UIButton _addAllButton;
         private readonly UIButton _removeAllButton;
-        private readonly VehicleSelectionPanel _vehicleSelectionPanel;
+        private readonly AvailableVehiclePanel _availableVehiclePanel;
         private readonly SelectedVehiclePanel _selectedVehiclePanel;
         private readonly PreviewPanel _previewPanel;
 
@@ -128,12 +128,12 @@ namespace ImprovedPublicTransport2.UI
             _selectedVehiclePanel = this.AddUIComponent<SelectedVehiclePanel>();
             _selectedVehiclePanel.relativePosition = new Vector2(Margin, VehicleListY);
             _selectedVehiclePanel.ParentPanel = this;
-            _vehicleSelectionPanel = this.AddUIComponent<VehicleSelectionPanel>();
-            _vehicleSelectionPanel.ParentPanel = this;
-            _vehicleSelectionPanel.relativePosition = new Vector2(RightColumnX, VehicleListY);
+            _availableVehiclePanel = this.AddUIComponent<AvailableVehiclePanel>();
+            _availableVehiclePanel.ParentPanel = this;
+            _availableVehiclePanel.relativePosition = new Vector2(RightColumnX, VehicleListY);
 
             // Vehicle selection list labels.
-            UILabels.AddLabel(_vehicleSelectionPanel.VehicleList, 0f, -TitleOffsetY, Localization.Get("AVAILABLE_VEHICLES"), ListWidth, 0.8f, UIHorizontalAlignment.Center);
+            UILabels.AddLabel(_availableVehiclePanel.VehicleList, 0f, -TitleOffsetY, Localization.Get("AVAILABLE_VEHICLES"), ListWidth, 0.8f, UIHorizontalAlignment.Center);
             UILabels.AddLabel(_selectedVehiclePanel.VehicleList, 0f, -TitleOffsetY, Localization.Get("SELECTED_VEHICLES"), ListWidth, 0.8f, UIHorizontalAlignment.Center);
 
             // Preview panel.
@@ -153,7 +153,7 @@ namespace ImprovedPublicTransport2.UI
                 if (value != null)
                 {
                     // Clear other vehicle list selection if this is active.
-                    _vehicleSelectionPanel.ClearSelection();
+                    _availableVehiclePanel.ClearSelection();
                     _previewPanel.SetTarget(value);
                 }
                 else
@@ -185,7 +185,7 @@ namespace ImprovedPublicTransport2.UI
                 else
                 {
                     // Null value set; clear list selection.
-                    _vehicleSelectionPanel.ClearSelection();
+                    _availableVehiclePanel.ClearSelection();
                 }
 
                 // Update button states.
@@ -196,7 +196,7 @@ namespace ImprovedPublicTransport2.UI
         /// <summary>
         /// Gets or sets the parent tab reference.
         /// </summary>
-        internal LineVehicleTypesPanel ParentPanel { get; set; }
+        internal LineVehiclesPanel ParentPanel { get; set; }
 
         /// <summary>
         /// Gets the current transfer reason.
@@ -231,13 +231,13 @@ namespace ImprovedPublicTransport2.UI
         /// <summary>
         /// Refreshes list contents, clears the preview display, and updates button states.
         /// </summary>
-        internal void Refresh()
+        private void Refresh()
         {
             // Clear preview.
             _previewPanel.SetTarget(null);
 
             _selectedVehiclePanel.RefreshList();
-            _vehicleSelectionPanel.RefreshList();
+            _availableVehiclePanel.RefreshList();
 
             UpdateButtonStates();
         }
@@ -245,10 +245,10 @@ namespace ImprovedPublicTransport2.UI
         /// <summary>
         /// Updates button states according to the current state.
         /// </summary>
-        internal void UpdateButtonStates()
+        private void UpdateButtonStates()
         {
             _addButton.isEnabled = _selectedListVehicle != null;
-            _addAllButton.isEnabled = _vehicleSelectionPanel.VehicleList.Data.m_size > 0;
+            _addAllButton.isEnabled = _availableVehiclePanel.VehicleList.Data.m_size > 0;
             _removeButton.isEnabled = _selectedLineVehicle != null;
             _removeAllButton.isEnabled = _selectedVehiclePanel.VehicleList.Data.m_size > 0;
         }
@@ -284,7 +284,7 @@ namespace ImprovedPublicTransport2.UI
         private void AddAllVehicles()
         {
             // Add all vehicles in target list to line.
-            foreach (VehicleItem item in _vehicleSelectionPanel.VehicleList.Data)
+            foreach (VehicleItem item in _availableVehiclePanel.VehicleList.Data)
             {
                 // VehicleControl.AddVehicle(CurrentLine, TransferReason, item.Info);
             }

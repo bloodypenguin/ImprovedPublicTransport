@@ -10,7 +10,7 @@ using System.Reflection;
 using ColossalFramework;
 using ColossalFramework.UI;
 using ImprovedPublicTransport2.OptionsFramework;
-using ImprovedPublicTransport2.Querying;
+using ImprovedPublicTransport2.Query;
 using ImprovedPublicTransport2.UI;
 using ImprovedPublicTransport2.Util;
 using UnityEngine;
@@ -44,7 +44,7 @@ namespace ImprovedPublicTransport2
 
     private VehicleListBox _lineVehicleListBox;
     private VehicleListBox _vehiclesInQueueListBox;
-    private LineVehicleTypesPanel _lineVehicleTypesPanel;
+    private LineVehiclesPanel _lineVehiclesPanel;
 
     private UIButton _selectTypes;
     private UIButton _addVehicle;
@@ -293,7 +293,7 @@ namespace ImprovedPublicTransport2
         if (lineId != _cachedLineID)
         {
           _colorTextField.text = ColorUtility.ToHtmlStringRGB(_colorField.selectedColor);
-          _lineVehicleTypesPanel.SetTarget(lineId);
+          _lineVehiclesPanel.SetTarget(lineId);
           _prefabPanel.Hide();
           UpdatePanelPositionAndSize();
         }

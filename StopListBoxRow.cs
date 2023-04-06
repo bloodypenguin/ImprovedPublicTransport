@@ -6,7 +6,7 @@
 
 using ColossalFramework;
 using ColossalFramework.UI;
-using ImprovedPublicTransport2.Querying;
+using ImprovedPublicTransport2.Query;
 using ImprovedPublicTransport2.Util;
 using UnityEngine;
 using Utils = ImprovedPublicTransport2.Util.Utils;

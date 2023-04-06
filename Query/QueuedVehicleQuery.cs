@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ImprovedPublicTransport2.Querying
+namespace ImprovedPublicTransport2.Query
 {
     public static class QueuedVehicleQuery
     {

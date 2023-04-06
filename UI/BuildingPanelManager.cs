@@ -18,7 +18,7 @@ namespace ImprovedPublicTransport2.UI
     {
         // Instance references.
         private static GameObject s_gameObject;
-        private static LineVehicleTypesPanel s_panel;
+        private static LineVehiclesPanel s_panel;
 
         // InfoPanel buttons.
         private static UIButton s_transportLineButton;
@@ -26,7 +26,7 @@ namespace ImprovedPublicTransport2.UI
         /// <summary>
         /// Gets the active panel instance.
         /// </summary>
-        internal static LineVehicleTypesPanel Panel => s_panel;
+        internal static LineVehiclesPanel Panel => s_panel;
 
         /// <summary>
         /// Creates the panel object in-game and displays it.
@@ -43,7 +43,7 @@ namespace ImprovedPublicTransport2.UI
                     s_gameObject.transform.parent = UIView.GetAView().transform;
 
                     // Add panel and set parent transform.
-                    s_panel = s_gameObject.AddComponent<LineVehicleTypesPanel>();
+                    s_panel = s_gameObject.AddComponent<LineVehiclesPanel>();
 
                     // Show panel.
                     Panel.Show();

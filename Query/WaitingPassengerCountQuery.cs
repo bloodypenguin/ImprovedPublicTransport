@@ -2,7 +2,7 @@ using System;
 using ColossalFramework;
 using UnityEngine;
 
-namespace ImprovedPublicTransport2.Querying
+namespace ImprovedPublicTransport2.Query
 {
     public static class WaitingPassengerCountQuery
     {

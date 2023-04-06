@@ -13,7 +13,7 @@ namespace ImprovedPublicTransport2.UI
     /// <summary>
     /// UIList row item for vehicle prefabs.
     /// </summary>
-    public class VehicleSelectionRow : UIListRow
+    public class VehicleSelectionRow : UIListRow<VehicleItem>
     {
         /// <summary>
         /// Row height.

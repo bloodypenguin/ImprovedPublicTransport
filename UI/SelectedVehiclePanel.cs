@@ -16,23 +16,21 @@ namespace ImprovedPublicTransport2.UI
     /// <summary>
     /// Selected vehicle panel.
     /// </summary>
-    internal class SelectedVehiclePanel : VehicleSelectionPanel
+    internal class SelectedVehiclePanel : AvailableVehiclePanel
     {
         // Panel to display when no item is selected.
         private readonly UIPanel _randomPanel;
         private readonly UILabel _randomLabel;
 
-        private readonly Func<ushort, List<VehicleInfo>> _vehicleGetter;
-        private readonly bool _showRandomIfNoVehicles;
+        public Func<ushort, List<VehicleInfo>> _vehicleGetter;
+        public bool _showRandomIfNoVehicles;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectedVehiclePanel"/> class.
         /// </summary>
-        internal SelectedVehiclePanel(Func<ushort, List<VehicleInfo>> vehicleGetter, bool showRandomIfNoVehicles)
+        internal SelectedVehiclePanel()
         {
-            _vehicleGetter = vehicleGetter;
-            _showRandomIfNoVehicles = showRandomIfNoVehicles;
-            
+
             // Panel setup.
             _randomPanel = VehicleList.AddUIComponent<UIPanel>();
             _randomPanel.width = VehicleList.width;
@@ -102,7 +100,7 @@ namespace ImprovedPublicTransport2.UI
             }
 
             // Set display list items, without changing the display.
-            VehicleList.Data = new FastList<object>
+            VehicleList.Data = new FastList<VehicleItem>
             {
                 m_buffer = items.OrderBy(x => x.Name).ToArray(),
                 m_size = items.Count,
