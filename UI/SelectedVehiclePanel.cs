@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ColossalFramework;
 using ColossalFramework.UI;
 using ImprovedPublicTransport2.UI.AlgernonCommons;
 using UnityEngine;
@@ -24,13 +23,15 @@ namespace ImprovedPublicTransport2.UI
         private readonly UILabel _randomLabel;
 
         private readonly Func<ushort, List<VehicleInfo>> _vehicleGetter;
+        private readonly bool _showRandomIfNoVehicles;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectedVehiclePanel"/> class.
         /// </summary>
-        internal SelectedVehiclePanel(Func<ushort, List<VehicleInfo>> vehicleGetter)
+        internal SelectedVehiclePanel(Func<ushort, List<VehicleInfo>> vehicleGetter, bool showRandomIfNoVehicles)
         {
             _vehicleGetter = vehicleGetter;
+            _showRandomIfNoVehicles = showRandomIfNoVehicles;
             
             // Panel setup.
             _randomPanel = VehicleList.AddUIComponent<UIPanel>();
@@ -53,14 +54,9 @@ namespace ImprovedPublicTransport2.UI
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the Transport Lines Manager mod is active.
-        /// </summary>
-        internal static bool TLMActive { get; set; } = false;
-
-        /// <summary>
         /// Sets the currently selected vehicle.
         /// </summary>
-        protected override VehicleInfo SelectedVehicle { set => ParentPanel.SelectedBuildingVehicle = value; }
+        protected override VehicleInfo SelectedVehicle { set => ParentPanel.SelectedLineVehicle = value; }
 
         /// <summary>
         /// Populates the list.
@@ -68,16 +64,16 @@ namespace ImprovedPublicTransport2.UI
         protected override void PopulateList()
         {
             List<VehicleItem> items = new List<VehicleItem>();
-            List<VehicleInfo> buildingVehicles = _vehicleGetter.Invoke(ParentPanel.CurrentBuilding);
+            List<VehicleInfo> lineVehicles = _vehicleGetter.Invoke(ParentPanel.CurrentLine);
 
             // Any selected vehicles?
-            if (buildingVehicles != null && buildingVehicles.Count > 0)
+            if (lineVehicles != null && lineVehicles.Count > 0)
             {
                 // Yes - hide random panel.
                 _randomPanel.Hide();
 
                 // Generate filtered display list.
-                foreach (VehicleInfo vehicle in buildingVehicles)
+                foreach (VehicleInfo vehicle in lineVehicles)
                 {
                     // Generate vehicle record for name filtering.
                     VehicleItem thisItem = new VehicleItem(vehicle);
@@ -92,13 +88,17 @@ namespace ImprovedPublicTransport2.UI
                     items.Add(thisItem);
                 }
             }
-            else
+            else if (_showRandomIfNoVehicles)
             {
                 // No selected vehicles available - show random item panel.
                 _randomPanel.Show();
 
                 // Check for TLM override.
-                _randomLabel.text = Localization.Get(TLMActive && Singleton<BuildingManager>.instance.m_buildings.m_buffer[ParentPanel.ParentPanel.CurrentBuilding].Info.m_buildingAI is TransportStationAI ? "TLM_VEHICLE" : "ANY_VEHICLE");
+                _randomLabel.text = Localization.Get("ANY_VEHICLE");
+            }
+            else
+            {
+                _randomLabel.Hide();
             }
 
             // Set display list items, without changing the display.

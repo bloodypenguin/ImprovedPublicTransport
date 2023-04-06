@@ -39,7 +39,7 @@ namespace ImprovedPublicTransport2
     private UICheckBox _budgetControl;
     private UICheckBox _unbunching;
     private DropDown _depotDropDown;
-    private VehicleListBox _prefabListBox;
+
     private VehicleListBox _lineVehicleListBox;
     private VehicleListBox _vehiclesInQueueListBox;
 

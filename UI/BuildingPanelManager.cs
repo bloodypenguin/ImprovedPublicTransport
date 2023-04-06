@@ -18,16 +18,15 @@ namespace ImprovedPublicTransport2.UI
     {
         // Instance references.
         private static GameObject s_gameObject;
-        private static BuildingPanel s_panel;
+        private static LinePanel s_panel;
 
         // InfoPanel buttons.
-        private static UIButton s_privateBuildingButton;
-        private static UIButton s_playerBuildingButton;
+        private static UIButton s_transportLineButton;
 
         /// <summary>
         /// Gets the active panel instance.
         /// </summary>
-        internal static BuildingPanel Panel => s_panel;
+        internal static LinePanel Panel => s_panel;
 
         /// <summary>
         /// Creates the panel object in-game and displays it.
@@ -44,7 +43,7 @@ namespace ImprovedPublicTransport2.UI
                     s_gameObject.transform.parent = UIView.GetAView().transform;
 
                     // Add panel and set parent transform.
-                    s_panel = s_gameObject.AddComponent<BuildingPanel>();
+                    s_panel = s_gameObject.AddComponent<LinePanel>();
 
                     // Show panel.
                     Panel.Show();
@@ -94,11 +93,7 @@ namespace ImprovedPublicTransport2.UI
         {
             try
             {
-                s_privateBuildingButton = AddInfoPanelButton(UIView.library.Get<ZonedBuildingWorldInfoPanel>(typeof(ZonedBuildingWorldInfoPanel).Name));
-                s_playerBuildingButton = AddInfoPanelButton(UIView.library.Get<CityServiceWorldInfoPanel>(typeof(CityServiceWorldInfoPanel).Name));
-                AddInfoPanelButton(UIView.library.Get<WarehouseWorldInfoPanel>(typeof(WarehouseWorldInfoPanel).Name));
-                AddInfoPanelButton(UIView.library.Get<UniqueFactoryWorldInfoPanel>(typeof(UniqueFactoryWorldInfoPanel).Name));
-                AddInfoPanelButton(UIView.library.Get<ShelterWorldInfoPanel>(typeof(ShelterWorldInfoPanel).Name));
+                s_transportLineButton = AddInfoPanelButton(UIView.library.Get<PublicTransportWorldInfoPanel>(typeof(PublicTransportWorldInfoPanel).Name));
             }
             catch (Exception e)
             {
@@ -111,17 +106,16 @@ namespace ImprovedPublicTransport2.UI
         /// </summary>
         internal static void TargetChanged()
         {
-            ushort buildingID = WorldInfoPanel.GetCurrentInstanceID().Building;
-            bool supportedBuilding = Transfers.BuildingEligibility(buildingID);
-            s_privateBuildingButton.isVisible = supportedBuilding;
-            s_playerBuildingButton.isVisible = supportedBuilding;
+            ushort lineID = WorldInfoPanel.GetCurrentInstanceID().TransportLine;
+            bool supportedBuilding = Transfers.BuildingEligibility(lineID);
+            s_transportLineButton.isVisible = supportedBuilding;
 
             // Don't do anything if panel isn't open.
             if (s_panel != null)
             {
                 if (supportedBuilding)
                 {
-                    SetTarget(buildingID);
+                    SetTarget(lineID);
                 }
                 else
                 {
@@ -135,7 +129,7 @@ namespace ImprovedPublicTransport2.UI
         /// </summary>
         /// <param name="infoPanel">Infopanel to apply the button to.</param>
         /// <returns>New UIButton.</returns>
-        private static UIButton AddInfoPanelButton(BuildingWorldInfoPanel infoPanel)
+        private static UIButton AddInfoPanelButton(WorldInfoPanel infoPanel)
         {
             const float ButtonHeight = 42f;
             const float ButtonWidth = 42f;
