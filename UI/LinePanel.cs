@@ -17,8 +17,12 @@ namespace ImprovedPublicTransport2.UI
     /// <summary>
     /// Building info panel.
     /// </summary>
-    internal class BuildingPanel : UIPanel
+    internal class LinePanel : UIPanel
     {
+
+        private const int Transfers = 1; //TODO: remove
+        private const int MaxTransfers = 1; //TODO: remove
+        
         /// <summary>
         /// Layout margin.
         /// </summary>
@@ -68,9 +72,9 @@ namespace ImprovedPublicTransport2.UI
         private bool _pasteProcessing = false;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BuildingPanel"/> class.
+        /// Initializes a new instance of the <see cref="LinePanel"/> class.
         /// </summary>
-        internal BuildingPanel()
+        internal LinePanel()
         {
             try
             {

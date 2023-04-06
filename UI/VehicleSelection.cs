@@ -60,7 +60,7 @@ namespace ImprovedPublicTransport2.UI
         private readonly PreviewPanel _previewPanel;
 
         // Currently selected vehicles.
-        private VehicleInfo _selectedBuildingVehicle;
+        private VehicleInfo _selectedLineVehicle;
         private VehicleInfo _selectedListVehicle;
 
         /// <summary>
@@ -144,11 +144,11 @@ namespace ImprovedPublicTransport2.UI
         /// <summary>
         /// Sets the currently selected vehicle from the list of currently selected vehicles.
         /// </summary>
-        internal VehicleInfo SelectedBuildingVehicle
+        internal VehicleInfo SelectedLineVehicle
         {
             set
             {
-                _selectedBuildingVehicle = value;
+                _selectedLineVehicle = value;
 
                 if (value != null)
                 {
@@ -196,7 +196,7 @@ namespace ImprovedPublicTransport2.UI
         /// <summary>
         /// Gets or sets the parent tab reference.
         /// </summary>
-        internal BuildingPanel ParentPanel { get; set; }
+        internal LinePanel ParentPanel { get; set; }
 
         /// <summary>
         /// Gets the current transfer reason.
@@ -204,22 +204,22 @@ namespace ImprovedPublicTransport2.UI
         internal TransferManager.TransferReason TransferReason { get; private set; }
 
         /// <summary>
-        /// Gets the currently selected building.
+        /// Gets the currently selected line.
         /// </summary>
-        internal ushort CurrentBuilding { get; private set; }
+        internal ushort CurrentLine { get; private set; }
 
         /// <summary>
-        /// Sets/changes the currently selected building.
+        /// Sets/changes the currently selected line.
         /// </summary>
-        /// <param name="buildingID">New building ID.</param>
+        /// <param name="lineID">New line ID.</param>
         /// <param name="title">Selection list title string.</param>
         /// <param name="reason">Transfer reason for this vehicle selection.</param>
-        internal void SetTarget(ushort buildingID, string title, TransferManager.TransferReason reason)
+        internal void SetTarget(ushort lineID, string title, TransferManager.TransferReason reason)
         {
-            // Ensure valid building.
-            if (buildingID != 0)
+            // Ensure valid line.
+            if (lineID != 0)
             {
-                CurrentBuilding = buildingID;
+                CurrentLine = lineID;
                 TransferReason = reason;
                 _titleLabel.text = title;
 
@@ -249,7 +249,7 @@ namespace ImprovedPublicTransport2.UI
         {
             _addButton.isEnabled = _selectedListVehicle != null;
             _addAllButton.isEnabled = _vehicleSelectionPanel.VehicleList.Data.m_size > 0;
-            _removeButton.isEnabled = _selectedBuildingVehicle != null;
+            _removeButton.isEnabled = _selectedLineVehicle != null;
             _removeAllButton.isEnabled = _selectedVehiclePanel.VehicleList.Data.m_size > 0;
         }
 
@@ -259,34 +259,34 @@ namespace ImprovedPublicTransport2.UI
         /// <param name="vehicle">Vehicle prefab to add.</param>
         private void AddVehicle(VehicleInfo vehicle)
         {
-            // Add vehicle to building.
-            VehicleControl.AddVehicle(CurrentBuilding, TransferReason, vehicle);
+            // Add vehicle to line.
+            VehicleControl.AddVehicle(CurrentLine, TransferReason, vehicle);
 
             // Update lists.
             Refresh();
         }
 
         /// <summary>
-        /// Removes the currently selected vehicle from the list for this building.
+        /// Removes the currently selected vehicle from the list for this line.
         /// </summary>
         private void RemoveVehicle()
         {
-            // Remove selected vehicle from building.
-            VehicleControl.RemoveVehicle(CurrentBuilding, TransferReason, _selectedBuildingVehicle);
+            // Remove selected vehicle from line.
+            VehicleControl.RemoveVehicle(CurrentLine, TransferReason, _selectedLineVehicle);
 
             // Update lists.
             Refresh();
         }
 
         /// <summary>
-        /// Adds all vehicles in the available vehicle list to this building.
+        /// Adds all vehicles in the available vehicle list to this line.
         /// </summary>
         private void AddAllVehicles()
         {
-            // Add all vehicles in target list to bulding.
+            // Add all vehicles in target list to line.
             foreach (VehicleItem item in _vehicleSelectionPanel.VehicleList.Data)
             {
-                VehicleControl.AddVehicle(CurrentBuilding, TransferReason, item.Info);
+                VehicleControl.AddVehicle(CurrentLine, TransferReason, item.Info);
             }
 
             // Update lists.
@@ -294,14 +294,14 @@ namespace ImprovedPublicTransport2.UI
         }
 
         /// <summary>
-        /// Adds all vehicles in the available vehicle list to this building.
+        /// Adds all vehicles in the available vehicle list to this line.
         /// </summary>
         private void RemoveAllVehicles()
         {
-            // Add all vehicles in target list to bulding.
+            // Add all vehicles in target list to line.
             foreach (VehicleItem item in _selectedVehiclePanel.VehicleList.Data)
             {
-                VehicleControl.RemoveVehicle(CurrentBuilding, TransferReason, item.Info);
+                VehicleControl.RemoveVehicle(CurrentLine, TransferReason, item.Info);
             }
 
             // Update lists.

@@ -108,8 +108,8 @@ namespace ImprovedPublicTransport2.UI
         protected virtual void PopulateList()
         {
             // Ensure valid building selection.
-            ushort currentBuilding = ParentPanel.CurrentBuilding;
-            if (currentBuilding == 0)
+            ushort currentLine = ParentPanel.CurrentLine;
+            if (currentLine == 0)
             {
                 return;
             }
@@ -123,10 +123,10 @@ namespace ImprovedPublicTransport2.UI
             List<VehicleInfo> locomotives = new List<VehicleInfo>();
 
             // Determine effective building class for vehicle matching.
-            VehicleControl.GetEffectiveClass(currentBuilding, buildingBuffer, ParentPanel.TransferReason, out ItemClass.Service buildingService, out ItemClass.SubService buildingSubService, out ItemClass.Level buildingLevel);
+            VehicleControl.GetEffectiveClass(currentLine, buildingBuffer, ParentPanel.TransferReason, out ItemClass.Service buildingService, out ItemClass.SubService buildingSubService, out ItemClass.Level buildingLevel);
 
             // Get list of already-selected vehicles.
-            List<VehicleInfo> selectedList = VehicleControl.GetVehicles(currentBuilding, ParentPanel.TransferReason);
+            List<VehicleInfo> selectedList = VehicleControl.GetVehicles(currentLine, ParentPanel.TransferReason);
 
             // Iterate through all loaded vehicles.
             for (uint i = 0; i < PrefabCollection<VehicleInfo>.LoadedCount(); ++i)
@@ -157,7 +157,7 @@ namespace ImprovedPublicTransport2.UI
                         }
 
                         // Check vehicle type, if applicable.
-                        if (buildingBuffer[currentBuilding].Info.m_buildingAI is PlayerBuildingAI playerBuildingAI)
+                        if (buildingBuffer[currentLine].Info.m_buildingAI is PlayerBuildingAI playerBuildingAI)
                         {
                             VehicleInfo.VehicleType vehicleType = playerBuildingAI.GetVehicleType();
 
