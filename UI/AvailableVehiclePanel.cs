@@ -134,7 +134,7 @@ namespace ImprovedPublicTransport2.UI
             // VehicleControl.GetEffectiveClass(currentLine, buildingBuffer, ParentPanel.TransferReason, out ItemClass.Service buildingService, out ItemClass.SubService buildingSubService, out ItemClass.Level buildingLevel);
             //
             // Get list of already-selected vehicles.
-            var selectedList = CachedTransportLineData._lineData[currentLine].VehicleTypes();
+            var selectedList = SelectedVehicleTypesQuery.Query(currentLine);
             var allAvailableVehicles = AvailableVehiclesQuery.Query(triplet);
             allAvailableVehicles.ForEach(data =>
             {

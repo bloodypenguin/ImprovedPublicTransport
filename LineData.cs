@@ -29,11 +29,7 @@ namespace ImprovedPublicTransport2
 
     public Queue<string> QueuedVehicles { get; set; }
 
-    public List<VehicleInfo> VehicleTypes()
-    {
-      return Prefabs.Select(PrefabCollection<VehicleInfo>.FindLoaded).Where(p => p != null)
-        .ToList();
-    }
+
     
     public List<VehicleInfo> QueuedVehiclesList()
     {
