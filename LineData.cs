@@ -5,6 +5,7 @@
 // Assembly location: C:\Games\Steam\steamapps\workshop\content\255710\424106600\ImprovedPublicTransport.dll
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ImprovedPublicTransport2
 {
@@ -27,5 +28,17 @@ namespace ImprovedPublicTransport2
     public HashSet<string> Prefabs { get; set; }
 
     public Queue<string> QueuedVehicles { get; set; }
+
+    public List<VehicleInfo> VehicleTypes()
+    {
+      return Prefabs.Select(PrefabCollection<VehicleInfo>.FindLoaded).Where(p => p != null)
+        .ToList();
+    }
+    
+    public List<VehicleInfo> QueuedVehiclesList()
+    {
+      return QueuedVehicles.Select(PrefabCollection<VehicleInfo>.FindLoaded).Where(p => p != null)
+        .ToList();
+    }
   }
 }

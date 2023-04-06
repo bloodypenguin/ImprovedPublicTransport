@@ -17,11 +17,9 @@ namespace ImprovedPublicTransport2.UI
     /// <summary>
     /// Building info panel.
     /// </summary>
-    internal class LinePanel : UIPanel
+    internal class LineVehicleTypesPanel : UIPanel
     {
 
-        private const int Transfers = 1; //TODO: remove
-        private const int MaxTransfers = 1; //TODO: remove
         
         /// <summary>
         /// Layout margin.
@@ -54,16 +52,14 @@ namespace ImprovedPublicTransport2.UI
         private readonly UIButton _copyDistrictButton;
 
         // Sub-panels.
-        private readonly TransferStruct[] _transfers = new TransferStruct[MaxTransfers];
-        private readonly VehicleSelection[] _vehicleSelections = new VehicleSelection[MaxTransfers];
+        private readonly VehicleSelection _vehicleSelections = new VehicleSelection();
 
         // Status flag.
         private readonly bool _panelReady = false;
 
         // Current selections.
-        private ushort _currentBuilding;
-        private int _numSelections;
-        private BuildingInfo _thisBuildingInfo;
+        private ushort _currentLineID;
+        private TransportLine _thisLine;
         private byte _currentDistrict;
         private byte _currentPark;
 
@@ -72,9 +68,9 @@ namespace ImprovedPublicTransport2.UI
         private bool _pasteProcessing = false;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LinePanel"/> class.
+        /// Initializes a new instance of the <see cref="LineVehicleTypesPanel"/> class.
         /// </summary>
-        internal LinePanel()
+        internal LineVehicleTypesPanel()
         {
             try
             {
@@ -119,11 +115,11 @@ namespace ImprovedPublicTransport2.UI
 
                 // Zoom to building button.
                 UIButton zoomButton = AddZoomButton(this, Margin, Margin, 30f, "ZOOM_BUILDING");
-                zoomButton.eventClicked += (c, p) => ZoomToBuilding(_currentBuilding);
+                zoomButton.eventClicked += (c, p) => ZoomToBuilding(_currentLineID);
 
                 // Copy/paste buttons.
                 _copyButton = UIButtons.AddIconButton(this, CopyButtonX, IconButtonY, IconButtonSize, UITextures.LoadQuadSpriteAtlas("VS-Copy"), Localization.Get("COPY_TIP"));
-                _copyButton.eventClicked += (c, p) => CopyPaste.Instance.Copy(_currentBuilding);
+                _copyButton.eventClicked += (c, p) => CopyPaste.Instance.Copy(_currentLineID);
                 _pasteButton = UIButtons.AddIconButton(this, PasteButtonX, IconButtonY, IconButtonSize, UITextures.LoadQuadSpriteAtlas("VS-Paste"), Localization.Get("PASTE_TIP"));
                 _pasteButton.eventClicked += (c, p) => Paste();
 
@@ -135,7 +131,7 @@ namespace ImprovedPublicTransport2.UI
                     IconButtonSize,
                     UITextures.LoadQuadSpriteAtlas("VS-CopyBuilding"),
                     Localization.Get("COPY_BUILDING_TIP"));
-                _copyBuildingButton.eventClicked += (c, p) => CopyPaste.Instance.CopyToBuildings(_currentBuilding, 0, 0);
+                _copyBuildingButton.eventClicked += (c, p) => CopyPaste.Instance.CopyToBuildings(_currentLineID, 0, 0);
                 _copyDistrictButton = UIButtons.AddIconButton(
                     this,
                     CopyDistrictButtonX,
@@ -143,15 +139,11 @@ namespace ImprovedPublicTransport2.UI
                     IconButtonSize,
                     UITextures.LoadQuadSpriteAtlas("VS-CopyDistrict"),
                     Localization.Get("COPY_DISTRICT_TIP"));
-                _copyDistrictButton.eventClicked += (c, p) => CopyPaste.Instance.CopyToBuildings(_currentBuilding, _currentDistrict, _currentPark);
+                _copyDistrictButton.eventClicked += (c, p) => CopyPaste.Instance.CopyToBuildings(_currentLineID, _currentDistrict, _currentPark);
 
-                // Add vehicle panels.
-                for (int i = 0; i < MaxTransfers; ++i)
-                {
-                    _vehicleSelections[i] = AddUIComponent<VehicleSelection>();
-                    _vehicleSelections[i].ParentPanel = this;
-                    _vehicleSelections[i].relativePosition = new Vector2(Margin, ListY + (i * VehicleSelectionHeight));
-                }
+                _vehicleSelections = AddUIComponent<VehicleSelection>();
+                _vehicleSelections.ParentPanel = this;
+                _vehicleSelections.relativePosition = new Vector3(Margin, ListY);
 
                 // Enable events.
                 _panelReady = true;
@@ -165,7 +157,7 @@ namespace ImprovedPublicTransport2.UI
         /// <summary>
         /// Gets the current building ID.
         /// </summary>
-        internal ushort CurrentBuilding => _currentBuilding;
+        internal ushort CurrentLineID => _currentLineID;
 
         /// <summary>
         /// Gets or sets a value indicating whether this is an incoming (true) or outgoing (false) transfer.
@@ -190,37 +182,37 @@ namespace ImprovedPublicTransport2.UI
             }
 
             // Copy key processing - use event flag to avoid repeated triggering.
-            if (ModSettings.KeyCopy.IsPressed())
-            {
-                if (!_copyProcessing)
-                {
-                    CopyPaste.Instance.Copy(CurrentBuilding);
-                    _copyProcessing = true;
-
-                    // Update paste button state.
-                    _pasteButton.isEnabled = CopyPaste.Instance.IsValidTarget(CurrentBuilding);
-                }
-            }
-            else
-            {
-                // Key no longer down - resume processing of events.
-                _copyProcessing = false;
-            }
+            // if (ModSettings.KeyCopy.IsPressed())
+            // {
+            //     if (!_copyProcessing)
+            //     {
+            //         CopyPaste.Instance.Copy(CurrentLineID);
+            //         _copyProcessing = true;
+            //
+            //         // Update paste button state.
+            //         _pasteButton.isEnabled = CopyPaste.Instance.IsValidTarget(CurrentLineID);
+            //     }
+            // }
+            // else
+            // {
+            //     // Key no longer down - resume processing of events.
+            //     _copyProcessing = false;
+            // }
 
             // Paste key processing - use event flag to avoid repeated triggering.
-            if (ModSettings.KeyPaste.IsPressed())
-            {
-                if (!_pasteProcessing)
-                {
-                    Paste();
-                    _pasteProcessing = true;
-                }
-            }
-            else
-            {
-                // Key no longer down - resume processing of events.
-                _pasteProcessing = false;
-            }
+            // if (ModSettings.KeyPaste.IsPressed())
+            // {
+            //     if (!_pasteProcessing)
+            //     {
+            //         Paste();
+            //         _pasteProcessing = true;
+            //     }
+            // }
+            // else
+            // {
+            //     // Key no longer down - resume processing of events.
+            //     _pasteProcessing = false;
+            // }
 
             base.Update();
         }
@@ -278,62 +270,49 @@ namespace ImprovedPublicTransport2.UI
         /// <summary>
         /// Sets/changes the currently selected building.
         /// </summary>
-        /// <param name="buildingID">New building ID.</param>
-        internal virtual void SetTarget(ushort buildingID)
+        /// <param name="lineID">New building ID.</param>
+        internal virtual void SetTarget(ushort lineID)
         {
             // Local references.
-            BuildingManager buildingManager = Singleton<BuildingManager>.instance;
+            TransportManager transportManager = Singleton<TransportManager>.instance;
             DistrictManager districtManager = Singleton<DistrictManager>.instance;
 
             // Update selected building ID.
-            _currentBuilding = buildingID;
-            _thisBuildingInfo = buildingManager.m_buildings.m_buffer[_currentBuilding].Info;
-
-            // Maximum number of panels.
-            _numSelections = Transfers.BuildingEligibility(buildingID, _thisBuildingInfo, _transfers);
+            _currentLineID = lineID;
+            _thisLine = transportManager.m_lines.m_buffer[_currentLineID];
 
             // Set up used panels.
-            int i;
-            for (i = 0; i < _numSelections; ++i)
-            {
-                _vehicleSelections[i].SetTarget(buildingID, _transfers[i].Title, _transfers[i].Reason);
-                _vehicleSelections[i].Show();
-            }
-
-            // Hide remaining panels.
-            while (i < MaxTransfers)
-            {
-                _vehicleSelections[i++].Hide();
-            }
+            _vehicleSelections.SetTarget(lineID,"ABC");
+            _vehicleSelections.Show();
 
             // Set panel height.
-            height = NoPanelHeight + (_numSelections * VehicleSelectionHeight);
+            height = NoPanelHeight;
 
             // Set name.
-            _buildingLabel.text = buildingManager.GetBuildingName(_currentBuilding, InstanceID.Empty);
+            _buildingLabel.text = transportManager.GetLineName(_currentLineID);
 
             // District text.
             StringBuilder districtText = new StringBuilder();
 
-            // District area.
-            _currentDistrict = districtManager.GetDistrict(buildingManager.m_buildings.m_buffer[_currentBuilding].m_position);
-            if (_currentDistrict != 0)
-            {
-                districtText.Append(districtManager.GetDistrictName(_currentDistrict));
-            }
-
-            // Park area.
-            _currentPark = districtManager.GetPark(buildingManager.m_buildings.m_buffer[_currentBuilding].m_position);
-            if (_currentPark != 0)
-            {
-                // Add comma between district and park names if we have both.
-                if (_currentDistrict != 0)
-                {
-                    districtText.Append(", ");
-                }
-
-                districtText.Append(districtManager.GetParkName(_currentPark));
-            }
+            // // District area.
+            // _currentDistrict = districtManager.GetDistrict(buildingManager.m_buildings.m_buffer[_currentLineID].m_position);
+            // if (_currentDistrict != 0)
+            // {
+            //     districtText.Append(districtManager.GetDistrictName(_currentDistrict));
+            // }
+            //
+            // // Park area.
+            // _currentPark = districtManager.GetPark(buildingManager.m_buildings.m_buffer[_currentLineID].m_position);
+            // if (_currentPark != 0)
+            // {
+            //     // Add comma between district and park names if we have both.
+            //     if (_currentDistrict != 0)
+            //     {
+            //         districtText.Append(", ");
+            //     }
+            //
+            //     districtText.Append(districtManager.GetParkName(_currentPark));
+            // }
 
             // Make sure we're fully visible on-screen.
             if (absolutePosition.y + height > Screen.height - 120)
@@ -357,7 +336,7 @@ namespace ImprovedPublicTransport2.UI
             }
 
             // Update button states.
-            _pasteButton.isEnabled = CopyPaste.Instance.IsValidTarget(CurrentBuilding);
+            _pasteButton.isEnabled = CopyPaste.Instance.IsValidTarget(CurrentLineID);
             _copyDistrictButton.isEnabled = _currentDistrict != 0 | _currentPark != 0;
 
             // Make sure we're visible if we're not already.
@@ -369,14 +348,14 @@ namespace ImprovedPublicTransport2.UI
         /// </summary>
         private void Paste()
         {
-            // Paste data.
-            CopyPaste.Instance.Paste(CurrentBuilding);
-
-            // Update lists.
-            foreach (VehicleSelection vehicleSelection in _vehicleSelections)
-            {
-                vehicleSelection.Refresh();
-            }
+            // // Paste data.
+            // CopyPaste.Instance.Paste(CurrentLineID);
+            //
+            // // Update lists.
+            // foreach (VehicleSelection vehicleSelection in _vehicleSelections)
+            // {
+            //     vehicleSelection.Refresh();
+            // }
         }
     }
 }

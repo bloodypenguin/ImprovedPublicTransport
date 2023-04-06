@@ -6,7 +6,7 @@
 
 using ColossalFramework;
 using ColossalFramework.UI;
-using ImprovedPublicTransport2.Detour;
+using ImprovedPublicTransport2.Querying;
 using ImprovedPublicTransport2.Util;
 using UnityEngine;
 using Utils = ImprovedPublicTransport2.Util.Utils;
@@ -84,8 +84,7 @@ namespace ImprovedPublicTransport2
 
     protected override void OnMouseEnter(UIMouseEventParameter p)
     {
-      byte max;
-      this.tooltip = string.Format(Localization.Get("STOP_LIST_BOX_ROW_TOOLTIP"), (object) GenerateStopName(Singleton<InstanceManager>.instance.GetName(this._instanceID), this._instanceID.NetNode, this.StopIndex), (object) PanelExtenderLine.CountWaitingPassengers(this.StopID, this.NextStopID, out max));
+      this.tooltip = string.Format(Localization.Get("STOP_LIST_BOX_ROW_TOOLTIP"), (object) GenerateStopName(Singleton<InstanceManager>.instance.GetName(this._instanceID), this._instanceID.NetNode, this.StopIndex), (object) WaitingPassengerCountQuery.Query(StopID, out _, out _));
       if (!this.IsSelected)
         this.backgroundSprite = "ListItemHover";
       base.OnMouseEnter(p);
@@ -112,8 +111,7 @@ namespace ImprovedPublicTransport2
       if ((double) this._delta >= 1.0)
       {
         this._delta = 0.0f;
-        byte max;
-        this._stopCount.text = PanelExtenderLine.CountWaitingPassengers(this.StopID, this.NextStopID, out max).ToString();
+        this._stopCount.text = WaitingPassengerCountQuery.Query(this.StopID, out _, out _).ToString();
       }
       this._delta = this._delta + Singleton<SimulationManager>.instance.m_simulationTimeDelta;
     }
