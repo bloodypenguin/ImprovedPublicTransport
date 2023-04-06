@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ColossalFramework.UI;
+using ImprovedPublicTransport2.Query;
 using ImprovedPublicTransport2.UI.AlgernonCommons;
 using UnityEngine;
 using VehicleSelector;
@@ -21,9 +22,6 @@ namespace ImprovedPublicTransport2.UI
         // Panel to display when no item is selected.
         private readonly UIPanel _randomPanel;
         private readonly UILabel _randomLabel;
-
-        public Func<ushort, List<VehicleInfo>> _vehicleGetter;
-        public bool _showRandomIfNoVehicles;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectedVehiclePanel"/> class.
@@ -62,7 +60,7 @@ namespace ImprovedPublicTransport2.UI
         protected override void PopulateList()
         {
             List<VehicleItem> items = new List<VehicleItem>();
-            List<VehicleInfo> lineVehicles = _vehicleGetter.Invoke(ParentPanel.CurrentLine);
+            var lineVehicles = SelectedVehicleTypesQuery.Query(ParentPanel.CurrentLine);
 
             // Any selected vehicles?
             if (lineVehicles != null && lineVehicles.Count > 0)
@@ -86,17 +84,13 @@ namespace ImprovedPublicTransport2.UI
                     items.Add(thisItem);
                 }
             }
-            else if (_showRandomIfNoVehicles)
+            else
             {
                 // No selected vehicles available - show random item panel.
                 _randomPanel.Show();
 
                 // Check for TLM override.
                 _randomLabel.text = Localization.Get("ANY_VEHICLE");
-            }
-            else
-            {
-                _randomLabel.Hide();
             }
 
             // Set display list items, without changing the display.

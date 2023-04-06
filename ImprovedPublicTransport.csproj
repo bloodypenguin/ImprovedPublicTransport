@@ -124,6 +124,7 @@
     <Compile Include="Query\ActiveVehiclesQuery.cs" />
     <Compile Include="Query\AvailableVehiclesQuery.cs" />
     <Compile Include="Query\QueuedVehicleQuery.cs" />
+    <Compile Include="Query\SelectedVehicleTypesQuery.cs" />
     <Compile Include="Query\WaitingPassengerCountQuery.cs" />
     <Compile Include="RedirectionFramework\AssemblyRedirector.cs" />
     <Compile Include="RedirectionFramework\Attributes\IgnoreConditions\DisableAttribute.cs" />
