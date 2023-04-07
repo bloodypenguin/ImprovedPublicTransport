@@ -3,6 +3,8 @@
 // Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
+using System.Collections.Generic;
+using System.Linq;
 using ColossalFramework.UI;
 using ImprovedPublicTransport2.UI.AlgernonCommons;
 using ImprovedPublicTransport2.UI.PreviewRenderer;
@@ -135,11 +137,10 @@ namespace ImprovedPublicTransport2.UI
             _availableVehiclePanel.relativePosition = new Vector2(RightColumnX, VehicleListY);
 
             // Vehicle selection list labels.
-            //TODO
-            // UILabels.AddLabel(_availableVehiclePanel.VehicleList, 0f, -TitleOffsetY,
-            //     Localization.Get("AVAILABLE_VEHICLES"), ListWidth, 0.8f, UIHorizontalAlignment.Center);
-            // UILabels.AddLabel(_selectedVehiclePanel.VehicleList, 0f, -TitleOffsetY,
-            //     Localization.Get("SELECTED_VEHICLES"), ListWidth, 0.8f, UIHorizontalAlignment.Center);
+            UILabels.AddLabel(_availableVehiclePanel.VehicleList, 0f, -TitleOffsetY,
+                Localization.Get("AVAILABLE_VEHICLES"), ListWidth, 0.8f, UIHorizontalAlignment.Center);
+            UILabels.AddLabel(_selectedVehiclePanel.VehicleList, 0f, -TitleOffsetY,
+                Localization.Get("SELECTED_VEHICLES"), ListWidth, 0.8f, UIHorizontalAlignment.Center);
 
             // Preview panel.
             _previewPanel = AddUIComponent<PreviewPanel>();
@@ -265,8 +266,10 @@ namespace ImprovedPublicTransport2.UI
         private void AddVehicle(VehicleInfo vehicle)
         {
             // Add vehicle to line.
-            // VehicleControl.AddVehicle(CurrentLine, TransferReason, vehicle);
-
+            var vehicleInfos = Query.SelectedVehicleTypesQuery.Query(CurrentLine) ?? new List<VehicleInfo>();
+            vehicleInfos.Add(vehicle);
+            var selectedLineVehicles = new HashSet<string>(vehicleInfos.Select(v => v.name).Distinct().ToArray());
+            Command.SelectVehicleTypesCommand.Execute(selectedLineVehicles);
             // Update lists.
             Refresh();
         }
@@ -289,11 +292,13 @@ namespace ImprovedPublicTransport2.UI
         private void AddAllVehicles()
         {
             // Add all vehicles in target list to line.
+            var vehicleInfos = Query.SelectedVehicleTypesQuery.Query(CurrentLine) ?? new List<VehicleInfo>();
             foreach (VehicleItem item in _availableVehiclePanel.VehicleList.Data)
             {
-                // VehicleControl.AddVehicle(CurrentLine, TransferReason, item.Info);
+                vehicleInfos.Add(item.Info);
             }
-
+            var selectedLineVehicles = new HashSet<string>(vehicleInfos.Select(v => v.name).Distinct().ToArray());
+            Command.SelectVehicleTypesCommand.Execute(selectedLineVehicles);
             // Update lists.
             Refresh();
         }
