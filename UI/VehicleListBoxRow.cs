@@ -67,7 +67,7 @@ namespace ImprovedPublicTransport2.UI
       string str1 = num.ToString(ColossalFramework.Globalization.Locale.Get("MONEY_FORMAT"), (IFormatProvider) LocaleManager.cultureInfo);
       if (this._prefab.MaintenanceCost > 0)
         stringBuilder.AppendLine(Localization.Get("VEHICLE_EDITOR_MAINTENANCE") + ": " + (object) this._prefab.MaintenanceCost + " (" + str1 + ")");
-      stringBuilder.AppendLine(Localization.Get("VEHICLE_EDITOR_MAX_SPEED") + ": " + (object) this._prefab.MaxSpeed + " (" + (object) (this._prefab.MaxSpeed * 5) + " " + OptionsWrapper<Settings>.Options.SpeedString + ")");
+      stringBuilder.AppendLine(Localization.Get("VEHICLE_EDITOR_MAX_SPEED") + ": " + (object) this._prefab.MaxSpeed + " (" + (object) (this._prefab.MaxSpeed * 5) + " " + OptionsWrapper<Settings.Settings>.Options.SpeedString + ")");
       stringBuilder.AppendLine();
       if ((int) this.VehicleID != 0)
         stringBuilder.AppendLine(Localization.Get("VEHICLE_LIST_BOX_ROW_TOOLTIP1"));

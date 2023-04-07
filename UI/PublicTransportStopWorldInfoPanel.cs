@@ -4,22 +4,20 @@
 // MVID: 76F370C5-F40B-41AE-AA9D-1E3F87E934D3
 // Assembly location: C:\Games\Steam\steamapps\workshop\content\255710\424106600\ImprovedPublicTransport.dll
 
-using ColossalFramework;
-using ColossalFramework.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ImprovedPublicTransport2.Detour;
+using ColossalFramework;
+using ColossalFramework.UI;
 using ImprovedPublicTransport2.OptionsFramework;
 using ImprovedPublicTransport2.Query;
-using ImprovedPublicTransport2.UI;
 using ImprovedPublicTransport2.UI.DontCryJustDieCommons;
 using ImprovedPublicTransport2.UI.PanelExtenders;
 using ImprovedPublicTransport2.Util;
 using UnityEngine;
 using UIUtils = ImprovedPublicTransport2.Util.UIUtils;
 
-namespace ImprovedPublicTransport2
+namespace ImprovedPublicTransport2.UI
 {
     public class PublicTransportStopWorldInfoPanel : UIPanel
     {
@@ -255,7 +253,7 @@ namespace ImprovedPublicTransport2
             uiLabel5.text = Localization.Get("LAST_WEEK");
             uiLabel6.text = Localization.Get("AVERAGE");
             uiLabel6.tooltip = string.Format(Localization.Get("AVERAGE_TOOLTIP"),
-                (object) OptionsWrapper<Settings>.Options.StatisticWeeks);
+                (object) OptionsWrapper<Settings.Settings>.Options.StatisticWeeks);
 
             int num20 = 0;
             PublicTransportStopWorldInfoPanel.CreateStatisticRow((UIComponent) uiPanel5, out uiLabel3,
@@ -311,7 +309,7 @@ namespace ImprovedPublicTransport2
             uiCheckBox.label.textColor = new Color32((byte) 185, (byte) 221, (byte) 254, byte.MaxValue);
             uiCheckBox.label.disabledTextColor = (Color32) Color.black;
             uiCheckBox.label.textScale = 13f / 16f;
-            uiCheckBox.label.text = (int) OptionsWrapper<Settings>.Options.IntervalAggressionFactor == 0
+            uiCheckBox.label.text = (int) OptionsWrapper<Settings.Settings>.Options.IntervalAggressionFactor == 0
                 ? Localization.Get("UNBUNCHING_DISABLED")
                 : Localization.Get("UNBUNCHING_ENABLED");
             uiCheckBox.label.relativePosition = new Vector3(22f, 2f);
@@ -689,7 +687,7 @@ namespace ImprovedPublicTransport2
                 .LastWeekPassengersTotal.ToString();
             this.m_passengersTotalAverage.text = CachedNodeData.m_cachedNodeData[(int) netNode]
                 .AveragePassengersTotal.ToString();
-            if ((int) OptionsWrapper<Settings>.Options.IntervalAggressionFactor == 0)
+            if ((int) OptionsWrapper<Settings.Settings>.Options.IntervalAggressionFactor == 0)
             {
                 this.m_unbunching.Disable();
                 this.m_unbunching.isChecked = false;

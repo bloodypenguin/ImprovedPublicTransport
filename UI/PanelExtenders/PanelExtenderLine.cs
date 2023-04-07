@@ -226,7 +226,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
         _stopCountLabel.text = string.Format(Localization.Get("LINE_PANEL_STOPS"), num1);
         _budgetControl.isChecked = CachedTransportLineData.GetBudgetControlState(lineId);
 
-        if (OptionsWrapper<Settings>.Options.IntervalAggressionFactor == 0)
+        if (OptionsWrapper<Settings.Settings>.Options.IntervalAggressionFactor == 0)
         {
           _unbunching.Disable();
           _unbunching.isChecked = false;

@@ -3,14 +3,12 @@
 // Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using ColossalFramework.UI;
 using ImprovedPublicTransport2.Query;
 using ImprovedPublicTransport2.UI.AlgernonCommons;
 using UnityEngine;
-using VehicleSelector;
 
 namespace ImprovedPublicTransport2.UI
 {

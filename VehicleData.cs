@@ -37,7 +37,7 @@ namespace ImprovedPublicTransport2
       }
       set
       {
-        this._passengerData = new MovingAverage(value, OptionsWrapper<Settings>.Options.StatisticWeeks);
+        this._passengerData = new MovingAverage(value, OptionsWrapper<Settings.Settings>.Options.StatisticWeeks);
         this._averagePassengers = Mathf.RoundToInt(this._passengerData.Average);
       }
     }
@@ -52,7 +52,7 @@ namespace ImprovedPublicTransport2
       }
       set
       {
-        this._incomeData = new MovingAverage(value, OptionsWrapper<Settings>.Options.StatisticWeeks);
+        this._incomeData = new MovingAverage(value, OptionsWrapper<Settings.Settings>.Options.StatisticWeeks);
         this._averageIncome = Mathf.RoundToInt(this._incomeData.Average);
       }
     }
@@ -116,14 +116,14 @@ namespace ImprovedPublicTransport2
     public void StartNewWeek(int maintenanceCost)
     {
       if (this._passengerData == null)
-        this._passengerData = new MovingAverage(OptionsWrapper<Settings>.Options.StatisticWeeks);
+        this._passengerData = new MovingAverage(OptionsWrapper<Settings.Settings>.Options.StatisticWeeks);
       this._passengerData.Push((float) this.PassengersThisWeek);
       this._averagePassengers = Mathf.RoundToInt(this._passengerData.Average);
       this.PassengersLastWeek = this.PassengersThisWeek;
       this.PassengersThisWeek = 0;
       this.IncomeThisWeek -= maintenanceCost;
       if (this._incomeData == null)
-        this._incomeData = new MovingAverage(OptionsWrapper<Settings>.Options.StatisticWeeks);
+        this._incomeData = new MovingAverage(OptionsWrapper<Settings.Settings>.Options.StatisticWeeks);
       this._incomeData.Push((float) this.IncomeThisWeek);
       this._averageIncome = Mathf.RoundToInt(this._incomeData.Average);
       this.IncomeLastWeek = this.IncomeThisWeek;

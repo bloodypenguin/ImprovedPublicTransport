@@ -33,11 +33,11 @@ namespace ImprovedPublicTransport2
                     }
                     else
                         _lineData[index].TargetVehicleCount =
-                            OptionsWrapper<Settings>.Options.DefaultVehicleCount;
-                    _lineData[index].BudgetControl = OptionsWrapper<Settings>.Options.BudgetControl;
+                            OptionsWrapper<Settings.Settings>.Options.DefaultVehicleCount;
+                    _lineData[index].BudgetControl = OptionsWrapper<Settings.Settings>.Options.BudgetControl;
                     _lineData[index].Depot = DepotUtil.GetClosestDepot(index,
                         instance1.m_nodes.m_buffer[instance2.m_lines.m_buffer[index].GetStop(0)].m_position);
-                    _lineData[index].Unbunching = OptionsWrapper<Settings>.Options.Unbunching;
+                    _lineData[index].Unbunching = OptionsWrapper<Settings.Settings>.Options.Unbunching;
                 }
             }
             SerializableDataExtension.instance.EventSaveData += OnSaveData;
@@ -81,7 +81,7 @@ namespace ImprovedPublicTransport2
                     }
                     index1 += 4;
                     var num = Mathf.Min(BitConverter.ToSingle(data1, index1),
-                        OptionsWrapper<Settings>.Options.SpawnTimeInterval);
+                        OptionsWrapper<Settings.Settings>.Options.SpawnTimeInterval);
                     if (num > 0.0)
                         data[lineID].NextSpawnTime = SimHelper.SimulationTime + num;
                     index1 += 4;
@@ -142,7 +142,7 @@ namespace ImprovedPublicTransport2
                     if (str == "v003")
                         ++index1;
                     data[lineID].Unbunching = str != "v004"
-                        ? OptionsWrapper<Settings>.Options.Unbunching
+                        ? OptionsWrapper<Settings.Settings>.Options.Unbunching
                         : SerializableDataExtension.ReadBool(data1, ref index1);
                     ++lineID;
                 }
@@ -211,9 +211,9 @@ namespace ImprovedPublicTransport2
         {
             _lineData[lineID] = new LineData
             {
-                TargetVehicleCount = OptionsWrapper<Settings>.Options.DefaultVehicleCount,
-                BudgetControl = OptionsWrapper<Settings>.Options.BudgetControl,
-                Unbunching = OptionsWrapper<Settings>.Options.Unbunching
+                TargetVehicleCount = OptionsWrapper<Settings.Settings>.Options.DefaultVehicleCount,
+                BudgetControl = OptionsWrapper<Settings.Settings>.Options.BudgetControl,
+                Unbunching = OptionsWrapper<Settings.Settings>.Options.Unbunching
             };
         }
 

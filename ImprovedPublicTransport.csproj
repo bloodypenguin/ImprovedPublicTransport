@@ -140,8 +140,9 @@
     <Compile Include="RedirectionFramework\RedirectionUtil.cs" />
     <Compile Include="RedirectionFramework\Redirector.cs" />
     <Compile Include="RedirectionFramework\Tuple.cs" />
-    <Compile Include="SettingsActions.cs" />
-    <Compile Include="PublicTransportStopWorldInfoPanel.cs" />
+    <Compile Include="Settings\Settings.cs" />
+    <Compile Include="Settings\SettingsActions.cs" />
+    <Compile Include="Settings\VehicleEditorPositions.cs" />
     <Compile Include="TranslationFramework\DefaultLanguageDeserializer.cs" />
     <Compile Include="TranslationFramework\Language.cs" />
     <Compile Include="TranslationFramework\DefaultLanguage.cs" />
@@ -172,6 +173,7 @@
     <Compile Include="UI\CopyPaste.cs" />
     <Compile Include="UI\PreviewRenderer\PreviewPanel.cs" />
     <Compile Include="UI\PreviewRenderer\PreviewRenderer.cs" />
+    <Compile Include="UI\PublicTransportStopWorldInfoPanel.cs" />
     <Compile Include="UI\SelectedVehiclePanel.cs" />
     <Compile Include="UI\StopListBox.cs" />
     <Compile Include="UI\StopListBoxRow.cs" />
@@ -188,11 +190,9 @@
     <Compile Include="Util\UIUtils.cs" />
     <Compile Include="Util\Utils.cs" />
     <Compile Include="Util\VehicleUtil.cs" />
-    <Compile Include="VehicleEditorPositions.cs" />
     <Compile Include="LineWatcher.cs" />
     <Compile Include="PrefabData.cs" />
     <Compile Include="SerializableDataExtension.cs" />
-    <Compile Include="Settings.cs" />
     <Compile Include="SimHelper.cs" />
     <Compile Include="Detour\TransportLineDetour.cs" />
     <Compile Include="ImprovedPublicTransportMod.cs" />

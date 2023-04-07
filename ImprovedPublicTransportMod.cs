@@ -38,7 +38,7 @@ namespace ImprovedPublicTransport2
 
       public void OnSettingsUI(UIHelperBase helper)
       {
-          helper.AddOptionsGroup<Settings>(Localization.Get);
+          helper.AddOptionsGroup<Settings.Settings>(Localization.Get);
       }
       
       public override void OnCreated(ILoading loading)
