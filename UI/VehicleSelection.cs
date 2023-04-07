@@ -62,7 +62,7 @@ namespace ImprovedPublicTransport2.UI
 
         // Currently selected vehicles.
         private VehicleInfo _selectedLineVehicle;
-        private VehicleInfo _selectedListVehicle;
+        private VehicleInfo _selectedAvailableVehicle;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VehicleSelection"/> class.
@@ -92,7 +92,7 @@ namespace ImprovedPublicTransport2.UI
                 UITextures.LoadQuadSpriteAtlas("IPT2-Add"),
                 Localization.Get("LINE_PANEL_ADD_VEHICLE"));
             _addButton.isEnabled = false;
-            _addButton.eventClicked += (c, p) => AddVehicle(_selectedListVehicle);
+            _addButton.eventClicked += (c, p) => AddVehicle(_selectedAvailableVehicle);
 
             // 'Add all vehicles' button.
             _addAllButton = UIButtons.AddIconButton(
@@ -179,7 +179,7 @@ namespace ImprovedPublicTransport2.UI
         {
             set
             {
-                _selectedListVehicle = value;
+                _selectedAvailableVehicle = value;
 
                 if (value != null)
                 {
@@ -204,11 +204,6 @@ namespace ImprovedPublicTransport2.UI
         internal PrefabPanel ParentPanel { get; set; }
 
         /// <summary>
-        /// Gets the current transfer reason.
-        /// </summary>
-        internal TransferManager.TransferReason TransferReason { get; private set; }
-
-        /// <summary>
         /// Gets the currently selected line.
         /// </summary>
         internal ushort CurrentLine { get; private set; }
@@ -218,14 +213,12 @@ namespace ImprovedPublicTransport2.UI
         /// </summary>
         /// <param name="lineID">New line ID.</param>
         /// <param name="title">Selection list title string.</param>
-        /// <param name="reason">Transfer reason for this vehicle selection.</param>
         internal void SetTarget(ushort lineID, string title)
         {
             // Ensure valid line.
             if (lineID != 0)
             {
                 CurrentLine = lineID;
-                // TransferReason = reason;
                 _titleLabel.text = title;
 
                 // Regenerate lists and set button states..
@@ -252,7 +245,7 @@ namespace ImprovedPublicTransport2.UI
         /// </summary>
         private void UpdateButtonStates()
         {
-            _addButton.isEnabled = _selectedListVehicle != null;
+            _addButton.isEnabled = _selectedAvailableVehicle != null;
             _addAllButton.isEnabled = _availableVehiclePanel.VehicleList.Data.m_size > 0;
             _removeButton.isEnabled = _selectedLineVehicle != null;
             _removeAllButton.isEnabled = _selectedVehiclePanel.VehicleList.Data.m_size > 0;
