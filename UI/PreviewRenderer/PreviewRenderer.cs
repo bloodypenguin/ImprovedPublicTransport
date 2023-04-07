@@ -3,11 +3,11 @@
 // Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
-namespace VehicleSelector
-{
-    using ColossalFramework;
-    using UnityEngine;
+using ColossalFramework;
+using UnityEngine;
 
+namespace ImprovedPublicTransport2.UI.PreviewRenderer
+{
     /// <summary>
     /// Prop and tree preview renderer.
     /// </summary>
@@ -28,7 +28,7 @@ namespace VehicleSelector
         internal PreviewRenderer()
         {
             // Set up camera.
-            _renderCamera = new GameObject("Camera").AddComponent<Camera>();
+            _renderCamera = new GameObject("IPTCamera").AddComponent<Camera>();
             _renderCamera.transform.SetParent(transform);
             _renderCamera.targetTexture = new RenderTexture(512, 512, 24, RenderTextureFormat.ARGB32);
             _renderCamera.allowHDR = true;

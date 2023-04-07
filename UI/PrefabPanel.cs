@@ -117,9 +117,11 @@ namespace ImprovedPublicTransport2.UI
                 // Copy/paste buttons.
                 _copyButton = UIButtons.AddIconButton(this, CopyButtonX, IconButtonY, IconButtonSize,
                     UITextures.LoadQuadSpriteAtlas("IPT2-Copy"), Localization.Get("COPY_TIP"));
+                _copyButton.Hide(); //TODO: restore
                 _copyButton.eventClicked += (c, p) => CopyPaste.Instance.Copy(_currentLineID);
                 _pasteButton = UIButtons.AddIconButton(this, PasteButtonX, IconButtonY, IconButtonSize,
                     UITextures.LoadQuadSpriteAtlas("IPT2-Paste"), Localization.Get("PASTE_TIP"));
+                _pasteButton.Hide(); //TODO: restore
                 _pasteButton.eventClicked += (c, p) => Paste();
 
                 // Copy to buttons.
@@ -131,6 +133,7 @@ namespace ImprovedPublicTransport2.UI
                     UITextures.LoadQuadSpriteAtlas("IPT2-CopyBuilding"),
                     Localization.Get("COPY_BUILDING_TIP"));
                 _copyBuildingButton.eventClicked += (c, p) => CopyPaste.Instance.CopyToBuildings(_currentLineID, 0, 0);
+                _copyBuildingButton.Hide(); //TODO: restore
                 _copyDistrictButton = UIButtons.AddIconButton(
                     this,
                     CopyDistrictButtonX,
@@ -140,6 +143,7 @@ namespace ImprovedPublicTransport2.UI
                     Localization.Get("COPY_DISTRICT_TIP"));
                 _copyDistrictButton.eventClicked += (c, p) =>
                     CopyPaste.Instance.CopyToBuildings(_currentLineID, _currentDistrict, _currentPark);
+                _copyDistrictButton.Hide(); //TODO: restore
 
                 _vehicleSelection = AddUIComponent<VehicleSelection>();
                 _vehicleSelection.ParentPanel = this;
@@ -181,6 +185,7 @@ namespace ImprovedPublicTransport2.UI
                 return;
             }
 
+            //TODO: restore
             // Copy key processing - use event flag to avoid repeated triggering.
             // if (ModSettings.KeyCopy.IsPressed())
             // {
@@ -283,7 +288,7 @@ namespace ImprovedPublicTransport2.UI
             _thisLine = transportManager.m_lines.m_buffer[_currentLineID];
 
             // Set up used panels.
-            _vehicleSelection.SetTarget(lineID, "ABC");
+            _vehicleSelection.SetTarget(lineID, Localization.Get("LINE_PANEL_SELECT_TYPES"));
             _vehicleSelection.Show();
 
             // Set panel height.
@@ -326,6 +331,7 @@ namespace ImprovedPublicTransport2.UI
         /// </summary>
         private void Paste()
         {
+            //TODO: restore
             // // Paste data.
             // CopyPaste.Instance.Paste(CurrentLineID);
             //

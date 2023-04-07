@@ -18,7 +18,7 @@ namespace ImprovedPublicTransport2.UI.PreviewRenderer
         private readonly UITextureSprite _previewSprite;
         private readonly UISprite _noPreviewSprite;
         private readonly UISprite _thumbnailSprite;
-        private readonly VehicleSelector.PreviewRenderer _renderer;
+        private readonly PreviewRenderer _renderer;
 
         // Currently selected prefab.
         private PrefabInfo _renderPrefab;
@@ -49,7 +49,7 @@ namespace ImprovedPublicTransport2.UI.PreviewRenderer
             _thumbnailSprite.relativePosition = Vector2.zero;
 
             // Initialise renderer; use double size for anti-aliasing.
-            _renderer = gameObject.AddComponent<VehicleSelector.PreviewRenderer>();
+            _renderer = gameObject.AddComponent<PreviewRenderer>();
             _renderer.Size = _previewSprite.size * 2;
 
             // Click-and-drag rotation.
