@@ -665,7 +665,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
       UIPanel uiPanel = _publicTransportWorldInfoPanel.component.AddUIComponent<UIPanel>();
       uiPanel.name = "VehiclesInQueue";
       uiPanel.AlignTo(uiPanel.parent, UIAlignAnchor.TopRight);
-      uiPanel.relativePosition = new Vector3(uiPanel.parent.width + 1f, _lineVehiclePanel.height + 1f);
+      uiPanel.relativePosition = new Vector3(uiPanel.parent.width + 180f + 180f + 1f,  + 0f);
       uiPanel.width = 180f;
       uiPanel.height = (float) ((PARENT_HEIGHT - 16.0) / 2.0);
       uiPanel.backgroundSprite = "UnlockingPanel2";

@@ -112,7 +112,7 @@ namespace ImprovedPublicTransport2.UI
 
                 // Zoom to building button.
                 UIButton zoomButton = AddZoomButton(this, Margin, Margin, 30f, "ZOOM_BUILDING");
-                zoomButton.eventClicked += (c, p) => ZoomToBuilding(_currentLineID);
+                zoomButton.eventClicked += (c, p) => ZoomToLine(_currentLineID);
 
                 // Copy/paste buttons.
                 _copyButton = UIButtons.AddIconButton(this, CopyButtonX, IconButtonY, IconButtonSize,
@@ -258,19 +258,20 @@ namespace ImprovedPublicTransport2.UI
         /// <summary>
         /// Zooms to the specified building.
         /// </summary>
-        /// <param name="buildingID">Target building ID.</param>
-        internal static void ZoomToBuilding(ushort buildingID)
+        /// <param name="lineID">Target line ID.</param>
+        internal static void ZoomToLine(ushort lineID)
         {
-            // Go to target building if available.
-            if (buildingID != 0)
+            // Go to target line if available.
+            if (lineID != 0)
             {
                 // Clear existing target fist to force a re-zoom-in if required.
                 ToolsModifierControl.cameraController.ClearTarget();
 
                 InstanceID instance = default;
-                instance.Building = buildingID;
+                instance.TransportLine = lineID;
+                var vehicles = Singleton<TransportManager>.instance.m_lines.m_buffer[lineID].m_vehicles;
                 ToolsModifierControl.cameraController.SetTarget(instance,
-                    Singleton<BuildingManager>.instance.m_buildings.m_buffer[buildingID].m_position, zoomIn: true);
+                    VehicleManager.instance.m_vehicles.m_buffer[vehicles].GetLastFramePosition(), zoomIn: true);
             }
         }
 
