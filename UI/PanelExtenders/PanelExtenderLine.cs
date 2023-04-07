@@ -26,11 +26,9 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
     
     private bool _initialized;
     private ushort _cachedLineID;
-    private ItemClass.SubService _cachedSubService;
+    private ItemClass.Level _cachedLevel = ItemClass.Level.None;
+    private ItemClass.SubService _cachedSubService = ItemClass.SubService.None;
     private Dictionary<ItemClassTriplet, bool> _updateDepots;
-    private int _cachedSimCount;
-    private int _cachedQueuedCount;
-    private int _cachedStopCount;
     private PublicTransportWorldInfoPanel _publicTransportWorldInfoPanel;
     private UIComponent _mainSubPanel;
     private UIPanel _iptContainer;
@@ -213,6 +211,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
 
     private void UpdateBindings()
     {
+      
       ushort lineId = WorldInfoCurrentLineIDQuery.Query(out _);
       if (lineId != 0)
       {
@@ -277,7 +276,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
         ItemClass.Level level = info.GetClassLevel();
                 ItemClassTriplet triplet = new ItemClassTriplet(service, subService,  level);
 
-        if (subService != _cachedSubService || depotNotValid || _updateDepots[triplet])
+        if (subService != _cachedSubService || level != _cachedLevel || depotNotValid || _updateDepots[triplet])
         {
           PopulateDepotDropDown(info);
           // PopulatePrefabListBox(service, subService, level);
@@ -320,14 +319,22 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
           _vehiclesInQueuePanel.Hide();
           _vehiclesInQueueListBox.ClearItems();
         }
-        _cachedLineID = lineId;
+
+        _cachedLevel = level;
         _cachedSubService = subService;
-        _cachedSimCount = lineVehicleCount;
-        _cachedQueuedCount = num3;
-        _cachedStopCount = num1;
       }
       else
+      {
         _publicTransportWorldInfoPanel.Hide();
+        _cachedSubService = ItemClass.SubService.None;
+        _cachedLevel = ItemClass.Level.None;
+      }
+
+      if (lineId != _cachedLineID)
+      {
+        PrefabPanelManager.Close();
+      }
+      _cachedLineID = lineId;
     }
 
     private void UpdatePanelPositionAndSize()

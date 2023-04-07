@@ -78,8 +78,19 @@ namespace ImprovedPublicTransport2.UI
             {
                 _info = thisItem.Info;
                 var capacity = _info.m_vehicleAI.GetPassengerCapacity(true);
-                _vehicleNameLabel.text = thisItem.Name + $" ({Localization.Get("VEHICLE_SELECTION_CAPACITY")}: {capacity})";
-                _vehicleNameLabel.tooltip = _vehicleNameLabel.text;
+                var allowedNameLength = 15;
+                string trimmedName;
+                if (thisItem.Name.Length <= allowedNameLength)
+                {
+                    trimmedName = thisItem.Name;
+                }
+                else
+                {
+                    trimmedName = thisItem.Name.Substring(0, 15) + "…"; 
+                }
+                var capacityText =  $"({Localization.Get("VEHICLE_SELECTION_CAPACITY")}: {capacity})";
+                _vehicleNameLabel.text = $"{trimmedName} {capacityText}";
+                _vehicleNameLabel.tooltip = $"{thisItem.Name} {capacityText}";
 
                 _vehicleSprite.atlas = _info?.m_Atlas;
                 _vehicleSprite.spriteName = _info?.m_Thumbnail;
