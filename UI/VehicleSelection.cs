@@ -4,12 +4,11 @@
 // </copyright>
 
 using System.Collections.Generic;
-using System.Linq;
 using ColossalFramework.UI;
 using ImprovedPublicTransport2.UI.AlgernonCommons;
 using ImprovedPublicTransport2.UI.PreviewRenderer;
+using JetBrains.Annotations;
 using UnityEngine;
-using VehicleSelector;
 
 namespace ImprovedPublicTransport2.UI
 {
@@ -91,7 +90,7 @@ namespace ImprovedPublicTransport2.UI
                 VehicleListY,
                 ArrowSize,
                 UITextures.LoadQuadSpriteAtlas("IPT2-Add"),
-                Localization.Get("ADD_VEHICLE_TIP"));
+                Localization.Get("LINE_PANEL_ADD_VEHICLE"));
             _addButton.isEnabled = false;
             _addButton.eventClicked += (c, p) => AddVehicle(_selectedListVehicle);
 
@@ -113,7 +112,7 @@ namespace ImprovedPublicTransport2.UI
                 VehicleListY,
                 ArrowSize,
                 UITextures.LoadQuadSpriteAtlas("IPT2-Remove"),
-                Localization.Get("REMOVE_VEHICLE_TIP"));
+                Localization.Get("LINE_PANEL_REMOVE_VEHICLE"));
             _removeButton.isEnabled = false;
             _removeButton.eventClicked += (c, p) => RemoveVehicle();
 
@@ -260,17 +259,18 @@ namespace ImprovedPublicTransport2.UI
         }
 
         /// <summary>
-        /// Adds a vehicle to the list for this transfer.
+        /// Adds a vehicle to the list for this line.
         /// </summary>
         /// <param name="vehicle">Vehicle prefab to add.</param>
-        private void AddVehicle(VehicleInfo vehicle)
+        private void AddVehicle([CanBeNull] VehicleInfo vehicle)
         {
-            // Add vehicle to line.
+            if (vehicle == null)
+            {
+                return;
+            }
             var vehicleInfos = Query.SelectedVehicleTypesQuery.Query(CurrentLine) ?? new List<VehicleInfo>();
             vehicleInfos.Add(vehicle);
-            var selectedLineVehicles = new HashSet<string>(vehicleInfos.Select(v => v.name).Distinct().ToArray());
-            Command.SelectVehicleTypesCommand.Execute(selectedLineVehicles);
-            // Update lists.
+            Command.SelectVehicleTypesCommand.Execute(vehicleInfos);
             Refresh();
         }
 
@@ -279,42 +279,36 @@ namespace ImprovedPublicTransport2.UI
         /// </summary>
         private void RemoveVehicle()
         {
-            // Remove selected vehicle from line.
-            // VehicleControl.RemoveVehicle(CurrentLine, TransferReason, _selectedLineVehicle);
-
-            // Update lists.
+            if (_selectedLineVehicle == null)
+            {
+                return;
+            }
+            var vehicleInfos = Query.SelectedVehicleTypesQuery.Query(CurrentLine) ?? new List<VehicleInfo>();
+            vehicleInfos.Remove(_selectedLineVehicle);
+            Command.SelectVehicleTypesCommand.Execute(vehicleInfos);
             Refresh();
         }
 
         /// <summary>
-        /// Adds all vehicles in the available vehicle list to this line.
+        /// Adds all vehicle types in the available vehicle list to this line.
         /// </summary>
         private void AddAllVehicles()
         {
-            // Add all vehicles in target list to line.
             var vehicleInfos = Query.SelectedVehicleTypesQuery.Query(CurrentLine) ?? new List<VehicleInfo>();
             foreach (VehicleItem item in _availableVehiclePanel.VehicleList.Data)
             {
                 vehicleInfos.Add(item.Info);
             }
-            var selectedLineVehicles = new HashSet<string>(vehicleInfos.Select(v => v.name).Distinct().ToArray());
-            Command.SelectVehicleTypesCommand.Execute(selectedLineVehicles);
-            // Update lists.
+            Command.SelectVehicleTypesCommand.Execute(vehicleInfos);
             Refresh();
         }
 
         /// <summary>
-        /// Adds all vehicles in the available vehicle list to this line.
+        /// Removes all vehicle types from this line.
         /// </summary>
         private void RemoveAllVehicles()
         {
-            // Add all vehicles in target list to line.
-            foreach (VehicleItem item in _selectedVehiclePanel.VehicleList.Data)
-            {
-                // VehicleControl.RemoveVehicle(CurrentLine, TransferReason, item.Info);
-            }
-
-            // Update lists.
+            Command.SelectVehicleTypesCommand.Execute(new List<VehicleInfo>());
             Refresh();
         }
     }
