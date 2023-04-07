@@ -7,25 +7,7 @@ namespace ImprovedPublicTransport2.Util
 {
     public static class TransportLineUtil
     {
-        //roughly based on TransportLine.ReplaceVehicles()
-        public static void ReplaceVehicles(ushort lineID)
-        {
-            var instance = Singleton<VehicleManager>.instance;
-            for (var i = 0; i < instance.m_vehicles.m_buffer.Length; ++i)
-            {
-                if (instance.m_vehicles.m_buffer[i].m_flags == 0 || instance.m_vehicles.m_buffer[i].Info == null ||
-                    instance.m_vehicles.m_buffer[i].m_transportLine != lineID)
-                {
-                    continue;
-                }
 
-                if (CachedTransportLineData.GetPrefabs(lineID).Contains(instance.m_vehicles.m_buffer[i].Info.name))
-                {
-                    continue;
-                }
-                RemoveVehicle(lineID, (ushort)i, false);
-            }
-        }
 
         public static ushort GetNextVehicle(ushort lineID, ushort vehicleID)
         {
