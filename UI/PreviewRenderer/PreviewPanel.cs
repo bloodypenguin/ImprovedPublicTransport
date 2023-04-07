@@ -3,6 +3,7 @@
 // Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
+using ColossalFramework;
 using ColossalFramework.UI;
 using UnityEngine;
 
@@ -21,6 +22,7 @@ namespace ImprovedPublicTransport2.UI.PreviewRenderer
 
         // Currently selected prefab.
         private PrefabInfo _renderPrefab;
+        public Color32 lineColor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PreviewPanel"/> class.
@@ -99,6 +101,7 @@ namespace ImprovedPublicTransport2.UI.PreviewRenderer
                     // Set mesh and material for render.
                     _renderer.Mesh = vehicle.m_mesh;
                     _renderer.Material = vehicle.m_material;
+                    _renderer.MaterialColor = lineColor;
 
                     // Render.
                     _renderer.Render();
