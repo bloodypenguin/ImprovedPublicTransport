@@ -66,7 +66,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches.DepotAIPatches
                     return false;
                 }
 
-                CachedTransportLineData.SetNextSpawnTime(lineID, SimHelper.SimulationTime + OptionsWrapper<Settings>.Options.SpawnTimeInterval);
+                CachedTransportLineData.SetNextSpawnTime(lineID, SimHelper.SimulationTime + OptionsWrapper<Settings.Settings>.Options.SpawnTimeInterval);
             }
             else
             {

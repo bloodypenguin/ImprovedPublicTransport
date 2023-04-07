@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 using ColossalFramework.PlatformServices;
 using ImprovedPublicTransport2.OptionsFramework.Attibutes;
 
-namespace ImprovedPublicTransport2
+namespace ImprovedPublicTransport2.Settings
 {
     [Options("ImprovedPublicTransport2", "ImprovedPublicTransportSettings")]
     public class Settings

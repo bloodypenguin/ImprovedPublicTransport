@@ -1,9 +1,7 @@
 ﻿using ColossalFramework;
-using ColossalFramework.UI;
-using ImprovedPublicTransport2.Detour;
 using ImprovedPublicTransport2.OptionsFramework;
 
-namespace ImprovedPublicTransport2
+namespace ImprovedPublicTransport2.Settings
 {
     public static class SettingsActions
     {
@@ -34,7 +32,7 @@ namespace ImprovedPublicTransport2
             SimulationManager.instance.AddAction(() =>
             {
                 int length = Singleton<TransportManager>.instance.m_lines.m_buffer.Length;
-                var budgetControl = OptionsWrapper<Settings>.Options.BudgetControl;
+                var budgetControl = OptionsWrapper<ImprovedPublicTransport2.Settings.Settings>.Options.BudgetControl;
                 for (int index = 0; index < length; ++index)
                 {
                     CachedTransportLineData.SetBudgetControlState((ushort) index, budgetControl);
@@ -84,13 +82,13 @@ namespace ImprovedPublicTransport2
             {
                 return;
             }
-            if (!OptionsWrapper<Settings>.Options.DeleteBusLines &&
-                !OptionsWrapper<Settings>.Options.DeleteTramLines &&
-                !OptionsWrapper<Settings>.Options.DeleteTrainLines &&
-                !OptionsWrapper<Settings>.Options.DeleteMetroLines &&
-                !OptionsWrapper<Settings>.Options.DeleteMonorailLines &&
-                !OptionsWrapper<Settings>.Options.DeleteShipLines &&
-                !OptionsWrapper<Settings>.Options.DeletePlaneLines)
+            if (!OptionsWrapper<ImprovedPublicTransport2.Settings.Settings>.Options.DeleteBusLines &&
+                !OptionsWrapper<ImprovedPublicTransport2.Settings.Settings>.Options.DeleteTramLines &&
+                !OptionsWrapper<ImprovedPublicTransport2.Settings.Settings>.Options.DeleteTrainLines &&
+                !OptionsWrapper<ImprovedPublicTransport2.Settings.Settings>.Options.DeleteMetroLines &&
+                !OptionsWrapper<ImprovedPublicTransport2.Settings.Settings>.Options.DeleteMonorailLines &&
+                !OptionsWrapper<ImprovedPublicTransport2.Settings.Settings>.Options.DeleteShipLines &&
+                !OptionsWrapper<ImprovedPublicTransport2.Settings.Settings>.Options.DeletePlaneLines)
             {
                 return;
             }
@@ -129,28 +127,28 @@ namespace ImprovedPublicTransport2
                         switch (subService)
                         {
                             case ItemClass.SubService.PublicTransportBus:
-                                flag = OptionsWrapper<Settings>.Options.DeleteBusLines;
+                                flag = OptionsWrapper<ImprovedPublicTransport2.Settings.Settings>.Options.DeleteBusLines;
                                 break;
                             case ItemClass.SubService.PublicTransportMetro:
-                                flag = OptionsWrapper<Settings>.Options.DeleteMetroLines;
+                                flag = OptionsWrapper<ImprovedPublicTransport2.Settings.Settings>.Options.DeleteMetroLines;
                                 break;
                             case ItemClass.SubService.PublicTransportTrain:
-                                flag = OptionsWrapper<Settings>.Options.DeleteTrainLines;
+                                flag = OptionsWrapper<ImprovedPublicTransport2.Settings.Settings>.Options.DeleteTrainLines;
                                 break;
                             case ItemClass.SubService.PublicTransportShip:
-                                flag = OptionsWrapper<Settings>.Options.DeleteShipLines;
+                                flag = OptionsWrapper<ImprovedPublicTransport2.Settings.Settings>.Options.DeleteShipLines;
                                 break;
                             case ItemClass.SubService.PublicTransportPlane:
-                                flag = OptionsWrapper<Settings>.Options.DeletePlaneLines;
+                                flag = OptionsWrapper<ImprovedPublicTransport2.Settings.Settings>.Options.DeletePlaneLines;
                                 break;
                             case ItemClass.SubService.PublicTransportTram:
-                                flag = OptionsWrapper<Settings>.Options.DeleteTramLines;
+                                flag = OptionsWrapper<ImprovedPublicTransport2.Settings.Settings>.Options.DeleteTramLines;
                                 break;
                             case ItemClass.SubService.PublicTransportMonorail:
-                                flag = OptionsWrapper<Settings>.Options.DeleteMonorailLines;
+                                flag = OptionsWrapper<ImprovedPublicTransport2.Settings.Settings>.Options.DeleteMonorailLines;
                                 break;
                             case ItemClass.SubService.PublicTransportTrolleybus:
-                                flag = OptionsWrapper<Settings>.Options.DeleteBusLines;
+                                flag = OptionsWrapper<ImprovedPublicTransport2.Settings.Settings>.Options.DeleteBusLines;
                                 break;
                         }
                     }
@@ -159,16 +157,16 @@ namespace ImprovedPublicTransport2
                         switch (subService)
                         {
                             case ItemClass.SubService.PublicTransportBus:
-                                flag = OptionsWrapper<Settings>.Options.DeleteBusLines;
+                                flag = OptionsWrapper<ImprovedPublicTransport2.Settings.Settings>.Options.DeleteBusLines;
                                 break;
                             case ItemClass.SubService.PublicTransportShip:
-                                flag = OptionsWrapper<Settings>.Options.DeleteShipLines;
+                                flag = OptionsWrapper<ImprovedPublicTransport2.Settings.Settings>.Options.DeleteShipLines;
                                 break;
                             case ItemClass.SubService.PublicTransportPlane:
-                                flag = OptionsWrapper<Settings>.Options.DeletePlaneLines;
+                                flag = OptionsWrapper<ImprovedPublicTransport2.Settings.Settings>.Options.DeletePlaneLines;
                                 break;
                             case ItemClass.SubService.PublicTransportTrain:
-                                flag = OptionsWrapper<Settings>.Options.DeleteTrainLines;
+                                flag = OptionsWrapper<ImprovedPublicTransport2.Settings.Settings>.Options.DeleteTrainLines;
                                 break;
                         }
                     }
@@ -177,10 +175,10 @@ namespace ImprovedPublicTransport2
                         switch (subService)
                         {
                             case ItemClass.SubService.PublicTransportTours:
-                                flag = OptionsWrapper<Settings>.Options.DeleteBusLines;
+                                flag = OptionsWrapper<ImprovedPublicTransport2.Settings.Settings>.Options.DeleteBusLines;
                                 break;
                             case ItemClass.SubService.PublicTransportPlane:
-                                flag = OptionsWrapper<Settings>.Options.DeletePlaneLines;
+                                flag = OptionsWrapper<ImprovedPublicTransport2.Settings.Settings>.Options.DeletePlaneLines;
                                 break;
                         }
                     }

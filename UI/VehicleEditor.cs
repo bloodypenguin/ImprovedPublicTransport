@@ -36,14 +36,14 @@ namespace ImprovedPublicTransport2.UI
     public override void Update()
     {
       base.Update();
-      if (OptionsWrapper<Settings>.Options.HideVehicleEditor != this._hide)
+      if (OptionsWrapper<Settings.Settings>.Options.HideVehicleEditor != this._hide)
       {
-        this._hide = OptionsWrapper<Settings>.Options.HideVehicleEditor;
+        this._hide = OptionsWrapper<Settings.Settings>.Options.HideVehicleEditor;
         this.isVisible = !this._hide;
       }
-      if (OptionsWrapper<Settings>.Options.VehicleEditorPosition != this._position)
+      if (OptionsWrapper<Settings.Settings>.Options.VehicleEditorPosition != this._position)
       {
-        this._position = OptionsWrapper<Settings>.Options.VehicleEditorPosition;
+        this._position = OptionsWrapper<Settings.Settings>.Options.VehicleEditorPosition;
         if (this.isVisible)
           this.UpdatePosition();
       }
@@ -67,7 +67,7 @@ namespace ImprovedPublicTransport2.UI
         if (!this._initialized || !this.isVisible)
           return;
         this._rightSidePanel.Find<UILabel>("MaintenanceCostLabel").text = (Utils.ToSingle(this._rightSidePanel.Find<UITextField>("MaintenanceCost").text) * 0.01f).ToString(ColossalFramework.Globalization.Locale.Get("MONEY_FORMAT"), (IFormatProvider) LocaleManager.cultureInfo);
-        this._rightSidePanel.Find<UILabel>("MaxSpeedLabel").text = (Utils.ToInt32(this._rightSidePanel.Find<UITextField>("MaxSpeed").text) * 5).ToString() + " " + OptionsWrapper<Settings>.Options.SpeedString;
+        this._rightSidePanel.Find<UILabel>("MaxSpeedLabel").text = (Utils.ToInt32(this._rightSidePanel.Find<UITextField>("MaxSpeed").text) * 5).ToString() + " " + OptionsWrapper<Settings.Settings>.Options.SpeedString;
       }
     }
 
@@ -93,7 +93,7 @@ namespace ImprovedPublicTransport2.UI
       TransportManager instance = Singleton<TransportManager>.instance;
       bool flag1 = instance.TransportTypeLoaded(TransportInfo.TransportType.Taxi);
       bool flag2 = instance.TransportTypeLoaded(TransportInfo.TransportType.Tram);
-      if (OptionsWrapper<Settings>.Options.VehicleEditorPosition == 0)
+      if (OptionsWrapper<Settings.Settings>.Options.VehicleEditorPosition == 0)
       {
         float x = this._publicTransportInfoViewPanel.component.absolutePosition.x;
         if (flag1 & flag2)
