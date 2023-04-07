@@ -7,7 +7,10 @@
 using ColossalFramework;
 using System;
 using System.IO;
+using System.Text;
 using System.Xml.Serialization;
+using ColossalFramework.Globalization;
+using ImprovedPublicTransport2.OptionsFramework;
 using UnityEngine;
 using Utils = ImprovedPublicTransport2.Util.Utils;
 
@@ -616,6 +619,23 @@ namespace ImprovedPublicTransport2
         instance.m_units.m_buffer[(int) num].m_nextUnit = firstUnit1;
       else
         data.m_citizenUnits = firstUnit1;
+    }
+    
+    public string GetTooltip()
+    {
+      var stringBuilder = new StringBuilder();
+      stringBuilder.AppendLine(Title);
+      ItemClass.SubService subService = Info.GetSubService();
+      if (subService == ItemClass.SubService.PublicTransportTaxi)
+        stringBuilder.AppendLine(Localization.Get("VEHICLE_EDITOR_CAPACITY_TAXI") + ": " + (object) TotalCapacity);
+      else
+        stringBuilder.AppendLine(Localization.Get("VEHICLE_EDITOR_CAPACITY") + ": " + (object) TotalCapacity);
+      float num = (float) MaintenanceCost * 0.01f;
+      string str1 = num.ToString(ColossalFramework.Globalization.Locale.Get("MONEY_FORMAT"), (IFormatProvider) LocaleManager.cultureInfo);
+      if (MaintenanceCost > 0)
+        stringBuilder.AppendLine(Localization.Get("VEHICLE_EDITOR_MAINTENANCE") + ": " + (object) MaintenanceCost + " (" + str1 + ")");
+      stringBuilder.AppendLine(Localization.Get("VEHICLE_EDITOR_MAX_SPEED") + ": " + (object) MaxSpeed + " (" + (object) (MaxSpeed * 5) + " " + OptionsWrapper<Settings.Settings>.Options.SpeedString + ")");
+      return stringBuilder.ToString();
     }
 
     private static PrefabData CreateTrailerData(VehicleInfo info)
