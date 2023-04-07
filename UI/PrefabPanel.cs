@@ -87,7 +87,7 @@ namespace ImprovedPublicTransport2.UI
                     (GetUIView().fixedHeight - NoPanelHeight) / 2);
 
                 // Title label.
-                UILabel titleLabel = UILabels.AddLabel(this, 0f, 10f, Localization.Get("MOD_NAME"), PanelWidth, 1.2f);
+                UILabel titleLabel = UILabels.AddLabel(this, 0f, 10f, ImprovedPublicTransportMod.BaseModName, PanelWidth, 1.2f);
                 titleLabel.textAlignment = UIHorizontalAlignment.Center;
 
                 // Building label.
@@ -277,7 +277,6 @@ namespace ImprovedPublicTransport2.UI
         {
             // Local references.
             TransportManager transportManager = Singleton<TransportManager>.instance;
-            DistrictManager districtManager = Singleton<DistrictManager>.instance;
 
             // Update selected building ID.
             _currentLineID = lineID;
@@ -292,30 +291,7 @@ namespace ImprovedPublicTransport2.UI
 
             // Set name.
             _buildingLabel.text = transportManager.GetLineName(_currentLineID);
-
-            // District text.
-            StringBuilder districtText = new StringBuilder();
-
-            // // District area.
-            // _currentDistrict = districtManager.GetDistrict(buildingManager.m_buildings.m_buffer[_currentLineID].m_position);
-            // if (_currentDistrict != 0)
-            // {
-            //     districtText.Append(districtManager.GetDistrictName(_currentDistrict));
-            // }
-            //
-            // // Park area.
-            // _currentPark = districtManager.GetPark(buildingManager.m_buildings.m_buffer[_currentLineID].m_position);
-            // if (_currentPark != 0)
-            // {
-            //     // Add comma between district and park names if we have both.
-            //     if (_currentDistrict != 0)
-            //     {
-            //         districtText.Append(", ");
-            //     }
-            //
-            //     districtText.Append(districtManager.GetParkName(_currentPark));
-            // }
-
+            
             // Make sure we're fully visible on-screen.
             if (absolutePosition.y + height > Screen.height - 120)
             {
