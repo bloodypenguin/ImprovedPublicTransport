@@ -26,16 +26,17 @@ namespace ImprovedPublicTransport2.UI
         protected const float Margin = 5f;
 
         // Vehicle selection list.
-        private readonly UIList<VehicleItem> _vehicleList;
+        private UIList _vehicleList;
 
         // Search panel.
-        private readonly UITextField _nameSearch;
+        private UITextField _nameSearch;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AvailableVehiclePanel"/> class.
         /// </summary>
-        internal AvailableVehiclePanel()
+        public override void Awake()
         {
+            base.Awake();
             try
             {
                 // Basic setup.
@@ -48,14 +49,15 @@ namespace ImprovedPublicTransport2.UI
                 height = VehicleSelection.VehicleListHeight;
 
                 // Vehicle selection list.
-                _vehicleList = UIList<VehicleItem>.AddUIList<VehicleSelectionRow>(
+                _vehicleList = UIList.AddUIList<VehicleSelectionRow>(
                     this,
                     0f,
                     0f,
                     VehicleSelection.ListWidth,
                     VehicleSelection.VehicleListHeight,
                     VehicleSelectionRow.VehicleRowHeight);
-                _vehicleList.EventSelectionChanged += (c, selectedItem) => SelectedVehicle = (selectedItem as VehicleItem)?.Info;
+                _vehicleList.EventSelectionChanged +=
+                    (c, selectedItem) => SelectedVehicle = (selectedItem as VehicleItem)?.Info;
 
                 // Search field.
                 _nameSearch = UITextFields.AddSmallTextField(_vehicleList, 25f, -23f, VehicleSelection.ListWidth - 25f);
@@ -79,12 +81,15 @@ namespace ImprovedPublicTransport2.UI
         /// <summary>
         /// Gets the vehicle selection list.
         /// </summary>
-        internal UIList<VehicleItem> VehicleList => _vehicleList;
+        internal UIList VehicleList => _vehicleList;
 
         /// <summary>
         /// Sets the currently selected vehicle.
         /// </summary>
-        protected virtual VehicleInfo SelectedVehicle { set => ParentPanel.SelectedListVehicle = value; }
+        protected virtual VehicleInfo SelectedVehicle
+        {
+            set => ParentPanel.SelectedListVehicle = value;
+        }
 
         /// <summary>
         /// Clears the current selection.
@@ -114,19 +119,19 @@ namespace ImprovedPublicTransport2.UI
             {
                 return;
             }
-            
+
             // Local reference.
             Building[] buildingBuffer = Singleton<BuildingManager>.instance.m_buildings.m_buffer;
-            
+
             // Generated lists.
             List<VehicleItem> items = new List<VehicleItem>();
-            
+
             TransportInfo info = TransportManager.instance.m_lines.m_buffer[currentLine].Info;
             ItemClass.SubService subService = info.GetSubService();
             ItemClass.Service service = info.GetService();
             ItemClass.Level level = info.GetClassLevel();
-            ItemClassTriplet triplet = new ItemClassTriplet(service, subService,  level);
-            
+            ItemClassTriplet triplet = new ItemClassTriplet(service, subService, level);
+
             // List<VehicleInfo> trailers = new List<VehicleInfo>();
             // List<VehicleInfo> locomotives = new List<VehicleInfo>();
             //
@@ -142,12 +147,13 @@ namespace ImprovedPublicTransport2.UI
                 {
                     return;
                 }
+
                 var thisItem = new VehicleItem(data.Info);
                 items.Add(thisItem);
             });
 
             // Set display list items, without changing the display.
-            _vehicleList.Data = new FastList<VehicleItem>
+            _vehicleList.Data = new FastList<object>
             {
                 m_buffer = items.OrderBy(x => x.Name).ToArray(),
                 m_size = items.Count,
@@ -159,6 +165,7 @@ namespace ImprovedPublicTransport2.UI
         /// </summary>
         /// <param name="displayName">Vehicle display name.</param>
         /// <returns>True if the item should be displayed (empty or matching search result), false otherwise.</returns>
-        protected bool NameFilter(string displayName) => _nameSearch.text.IsNullOrWhiteSpace() || displayName.ToLower().Contains(_nameSearch.text.ToLower());
+        protected bool NameFilter(string displayName) => _nameSearch.text.IsNullOrWhiteSpace() ||
+                                                         displayName.ToLower().Contains(_nameSearch.text.ToLower());
     }
 }

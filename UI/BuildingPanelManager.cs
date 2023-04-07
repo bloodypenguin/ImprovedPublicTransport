@@ -93,7 +93,9 @@ namespace ImprovedPublicTransport2.UI
         {
             try
             {
-                s_transportLineButton = AddInfoPanelButton(UIView.library.Get<PublicTransportWorldInfoPanel>(typeof(PublicTransportWorldInfoPanel).Name));
+                s_transportLineButton =
+                    AddInfoPanelButton(
+                        UIView.library.Get<PublicTransportWorldInfoPanel>(typeof(PublicTransportWorldInfoPanel).Name));
             }
             catch (Exception e)
             {
@@ -209,7 +211,7 @@ namespace ImprovedPublicTransport2.UI
 
             UISprite buttonSprite = panelButton.AddUIComponent<UISprite>();
             buttonSprite.size = panelButton.size;
-            buttonSprite.atlas = UITextures.LoadSingleSpriteAtlas("VS-Icon");
+            buttonSprite.atlas = UITextures.LoadSingleSpriteAtlas("IPT2-Icon");
             buttonSprite.relativePosition = new Vector2(1f, 1f);
             buttonSprite.spriteName = "normal";
             buttonSprite.tooltip = Localization.Get("MOD_NAME");

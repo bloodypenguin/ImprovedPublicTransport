@@ -120,6 +120,7 @@ namespace ImprovedPublicTransport2
         tripSaved.parent.relativePosition = new Vector3(tripSaved.parent.relativePosition.x,
             200.0f, tripSaved.parent.relativePosition.z);
 
+
       UIComponent uiComponent1 = _publicTransportWorldInfoPanel.Find("DeleteLine");
       if (uiComponent1 == null)
       {
@@ -203,6 +204,9 @@ namespace ImprovedPublicTransport2
               _publicTransportWorldInfoPanel.component.height = 493f;
               CreatePrefabPanel();
 
+              _lineVehiclesPanel = _publicTransportWorldInfoPanel.component.AddUIComponent<LineVehiclesPanel>();
+              _lineVehiclesPanel.name = "LineVehiclesPanel";
+              _lineVehiclesPanel.AlignTo(uiPanel.parent, UIAlignAnchor.TopRight);
               CreateVehiclesOnLinePanel();
               CreateVehiclesInQueuePanel();
               BuildingExtension.OnDepotAdded += OnDepotChanged;

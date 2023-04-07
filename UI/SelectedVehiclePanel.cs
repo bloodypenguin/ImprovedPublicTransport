@@ -20,15 +20,15 @@ namespace ImprovedPublicTransport2.UI
     internal class SelectedVehiclePanel : AvailableVehiclePanel
     {
         // Panel to display when no item is selected.
-        private readonly UIPanel _randomPanel;
-        private readonly UILabel _randomLabel;
+        private UIPanel _randomPanel;
+        private UILabel _randomLabel;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectedVehiclePanel"/> class.
         /// </summary>
-        internal SelectedVehiclePanel()
+        public override void Awake()
         {
-
+            base.Awake();
             // Panel setup.
             _randomPanel = VehicleList.AddUIComponent<UIPanel>();
             _randomPanel.width = VehicleList.width;
@@ -41,7 +41,8 @@ namespace ImprovedPublicTransport2.UI
             randomSprite.spriteName = "Random";
 
             // Label.
-            _randomLabel = UILabels.AddLabel(_randomPanel, 0f, 0f, Localization.Get("ANY_VEHICLE"), VehicleList.width, 0.8f);
+            _randomLabel = UILabels.AddLabel(_randomPanel, 0f, 0f, Localization.Get("ANY_VEHICLE"), VehicleList.width,
+                0.8f);
 
             // Size is 56x33, so offset -8 from left and 3.5 from top to match normal row sizing.
             randomSprite.size = new Vector2(56f, 33f);
@@ -52,7 +53,10 @@ namespace ImprovedPublicTransport2.UI
         /// <summary>
         /// Sets the currently selected vehicle.
         /// </summary>
-        protected override VehicleInfo SelectedVehicle { set => ParentPanel.SelectedLineVehicle = value; }
+        protected override VehicleInfo SelectedVehicle
+        {
+            set => ParentPanel.SelectedLineVehicle = value;
+        }
 
         /// <summary>
         /// Populates the list.
@@ -94,7 +98,7 @@ namespace ImprovedPublicTransport2.UI
             }
 
             // Set display list items, without changing the display.
-            VehicleList.Data = new FastList<VehicleItem>
+            VehicleList.Data = new FastList<object>
             {
                 m_buffer = items.OrderBy(x => x.Name).ToArray(),
                 m_size = items.Count,

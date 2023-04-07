@@ -19,8 +19,6 @@ namespace ImprovedPublicTransport2.UI
     /// </summary>
     internal class LineVehiclesPanel : UIPanel
     {
-
-        
         /// <summary>
         /// Layout margin.
         /// </summary>
@@ -45,17 +43,17 @@ namespace ImprovedPublicTransport2.UI
         private const float PanelWidth = VehicleSelection.PanelWidth + Margin + Margin;
 
         // Panel components.
-        private readonly UILabel _buildingLabel;
-        private readonly UIButton _copyButton;
-        private readonly UIButton _pasteButton;
-        private readonly UIButton _copyBuildingButton;
-        private readonly UIButton _copyDistrictButton;
+        private UILabel _buildingLabel;
+        private UIButton _copyButton;
+        private UIButton _pasteButton;
+        private UIButton _copyBuildingButton;
+        private UIButton _copyDistrictButton;
 
         // Sub-panels.
-        private readonly VehicleSelection _vehicleSelection = new VehicleSelection();
+        private VehicleSelection _vehicleSelection;
 
         // Status flag.
-        private readonly bool _panelReady = false;
+        private bool _panelReady = false;
 
         // Current selections.
         private ushort _currentLineID;
@@ -70,8 +68,9 @@ namespace ImprovedPublicTransport2.UI
         /// <summary>
         /// Initializes a new instance of the <see cref="LineVehiclesPanel"/> class.
         /// </summary>
-        internal LineVehiclesPanel()
+        public LineVehiclesPanel()
         {
+            base.Awake();
             try
             {
                 // Basic setup.
@@ -84,7 +83,8 @@ namespace ImprovedPublicTransport2.UI
                 height = NoPanelHeight;
 
                 // Default position - centre in screen.
-                relativePosition = new Vector2(Mathf.Floor((GetUIView().fixedWidth - PanelWidth) / 2), (GetUIView().fixedHeight - NoPanelHeight) / 2);
+                relativePosition = new Vector2(Mathf.Floor((GetUIView().fixedWidth - PanelWidth) / 2),
+                    (GetUIView().fixedHeight - NoPanelHeight) / 2);
 
                 // Title label.
                 UILabel titleLabel = UILabels.AddLabel(this, 0f, 10f, Localization.Get("MOD_NAME"), PanelWidth, 1.2f);
@@ -108,19 +108,18 @@ namespace ImprovedPublicTransport2.UI
                 closeButton.pressedBgSprite = "buttonclosepressed";
 
                 // Close button event handler.
-                closeButton.eventClick += (component, clickEvent) =>
-                {
-                    BuildingPanelManager.Close();
-                };
+                closeButton.eventClick += (component, clickEvent) => { BuildingPanelManager.Close(); };
 
                 // Zoom to building button.
                 UIButton zoomButton = AddZoomButton(this, Margin, Margin, 30f, "ZOOM_BUILDING");
                 zoomButton.eventClicked += (c, p) => ZoomToBuilding(_currentLineID);
 
                 // Copy/paste buttons.
-                _copyButton = UIButtons.AddIconButton(this, CopyButtonX, IconButtonY, IconButtonSize, UITextures.LoadQuadSpriteAtlas("VS-Copy"), Localization.Get("COPY_TIP"));
+                _copyButton = UIButtons.AddIconButton(this, CopyButtonX, IconButtonY, IconButtonSize,
+                    UITextures.LoadQuadSpriteAtlas("IPT2-Copy"), Localization.Get("COPY_TIP"));
                 _copyButton.eventClicked += (c, p) => CopyPaste.Instance.Copy(_currentLineID);
-                _pasteButton = UIButtons.AddIconButton(this, PasteButtonX, IconButtonY, IconButtonSize, UITextures.LoadQuadSpriteAtlas("VS-Paste"), Localization.Get("PASTE_TIP"));
+                _pasteButton = UIButtons.AddIconButton(this, PasteButtonX, IconButtonY, IconButtonSize,
+                    UITextures.LoadQuadSpriteAtlas("IPT2-Paste"), Localization.Get("PASTE_TIP"));
                 _pasteButton.eventClicked += (c, p) => Paste();
 
                 // Copy to buttons.
@@ -129,7 +128,7 @@ namespace ImprovedPublicTransport2.UI
                     CopyBuildingButtonX,
                     IconButtonY,
                     IconButtonSize,
-                    UITextures.LoadQuadSpriteAtlas("VS-CopyBuilding"),
+                    UITextures.LoadQuadSpriteAtlas("IPT2-CopyBuilding"),
                     Localization.Get("COPY_BUILDING_TIP"));
                 _copyBuildingButton.eventClicked += (c, p) => CopyPaste.Instance.CopyToBuildings(_currentLineID, 0, 0);
                 _copyDistrictButton = UIButtons.AddIconButton(
@@ -137,9 +136,10 @@ namespace ImprovedPublicTransport2.UI
                     CopyDistrictButtonX,
                     IconButtonY,
                     IconButtonSize,
-                    UITextures.LoadQuadSpriteAtlas("VS-CopyDistrict"),
+                    UITextures.LoadQuadSpriteAtlas("IPT2-CopyDistrict"),
                     Localization.Get("COPY_DISTRICT_TIP"));
-                _copyDistrictButton.eventClicked += (c, p) => CopyPaste.Instance.CopyToBuildings(_currentLineID, _currentDistrict, _currentPark);
+                _copyDistrictButton.eventClicked += (c, p) =>
+                    CopyPaste.Instance.CopyToBuildings(_currentLineID, _currentDistrict, _currentPark);
 
                 _vehicleSelection = AddUIComponent<VehicleSelection>();
                 _vehicleSelection.ParentPanel = this;
@@ -226,7 +226,8 @@ namespace ImprovedPublicTransport2.UI
         /// <param name="size">Button size.</param>
         /// <param name="tooltipKey">Tooltip translation key.</param>
         /// <returns>New UIButton.</returns>
-        internal static UIButton AddZoomButton(UIComponent parent, float xPos, float yPos, float size, string tooltipKey)
+        internal static UIButton AddZoomButton(UIComponent parent, float xPos, float yPos, float size,
+            string tooltipKey)
         {
             UIButton newButton = parent.AddUIComponent<UIButton>();
 
@@ -263,7 +264,8 @@ namespace ImprovedPublicTransport2.UI
 
                 InstanceID instance = default;
                 instance.Building = buildingID;
-                ToolsModifierControl.cameraController.SetTarget(instance, Singleton<BuildingManager>.instance.m_buildings.m_buffer[buildingID].m_position, zoomIn: true);
+                ToolsModifierControl.cameraController.SetTarget(instance,
+                    Singleton<BuildingManager>.instance.m_buildings.m_buffer[buildingID].m_position, zoomIn: true);
             }
         }
 
@@ -282,7 +284,7 @@ namespace ImprovedPublicTransport2.UI
             _thisLine = transportManager.m_lines.m_buffer[_currentLineID];
 
             // Set up used panels.
-            _vehicleSelection.SetTarget(lineID,"ABC");
+            _vehicleSelection.SetTarget(lineID, "ABC");
             _vehicleSelection.Show();
 
             // Set panel height.
