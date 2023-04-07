@@ -29,6 +29,8 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
     private ItemClass.Level _cachedLevel = ItemClass.Level.None;
     private ItemClass.SubService _cachedSubService = ItemClass.SubService.None;
     private Dictionary<ItemClassTriplet, bool> _updateDepots;
+    private int _cachedSimCount;
+    private int _cachedQueuedCount;
     private PublicTransportWorldInfoPanel _publicTransportWorldInfoPanel;
     private UIComponent _mainSubPanel;
     private UIPanel _iptContainer;
@@ -279,7 +281,6 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
         if (subService != _cachedSubService || level != _cachedLevel || depotNotValid || _updateDepots[triplet])
         {
           PopulateDepotDropDown(info);
-          // PopulatePrefabListBox(service, subService, level);
           _updateDepots[triplet] = false;
         }
         if (_depotDropDown.Items.Length == 0)
@@ -293,8 +294,11 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
         }
         if (lineVehicleCount != 0)
         {
-          // if (lineId != _cachedLineID || lineVehicleCount != _cachedSimCount)
-          // PopulateLineVehicleListBox(lineId, service, subService, level);
+          if (lineId != _cachedLineID || lineVehicleCount != _cachedSimCount)
+          {
+            PopulateLineVehicleListBox(lineId, service, subService, level);
+          }
+
           _lineVehiclePanel.Show();
           UpdatePanelPositionAndSize();
         }
@@ -306,8 +310,11 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
         int num3 = CachedTransportLineData.EnqueuedVehiclesCount(lineId);
         if ((uint) num3 > 0U & depotCanAddVehicle)
         {
-          // if (lineId != _cachedLineID || num3 != _cachedQueuedCount)
-          //   PopulateQueuedVehicleListBox(lineId, service, subService, level);
+          if (lineId != _cachedLineID || num3 != _cachedQueuedCount)
+          {
+            PopulateQueuedVehicleListBox(lineId, service, subService, level);
+          }
+
           if (_vehiclesInQueueListBox.Items.Count == 0)
             _vehiclesInQueuePanel.Hide();
           else
@@ -322,6 +329,8 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
 
         _cachedLevel = level;
         _cachedSubService = subService;
+        _cachedSimCount = lineVehicleCount;
+        _cachedQueuedCount = num3;
       }
       else
       {
@@ -860,6 +869,27 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
       if ((instance.m_buildings.m_buffer[buildingID].m_flags & Building.Flags.Untouchable) != Building.Flags.None)
         buildingID = instance.FindBuilding(instance.m_buildings.m_buffer[buildingID].m_position, 100f, ItemClass.Service.None, ItemClass.SubService.None, Building.Flags.Active, Building.Flags.Untouchable);
       return instance.GetBuildingName(buildingID, InstanceID.Empty) ?? "";
+    }
+    
+    
+    private void PopulateLineVehicleListBox(ushort lineID, ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
+    {
+      _lineVehicleListBox.ClearItems();
+      ActiveVehiclesQuery.Query(lineID, new ItemClassTriplet(service, subService, level))
+        .ForEach(result =>
+        {
+          _lineVehicleListBox.AddItem(result.PrefabData, result.VehicleID);
+        });
+    }
+    
+    private void PopulateQueuedVehicleListBox(ushort lineID, ItemClass.Service service, ItemClass.SubService subService, ItemClass.Level level)
+    {
+      _vehiclesInQueueListBox.ClearItems();
+      QueuedVehicleQuery.Query(lineID, new ItemClassTriplet(service, subService, level))
+        .ForEach(data =>
+        {
+          _vehiclesInQueueListBox.AddItem(data);
+        });
     }
   }
 }

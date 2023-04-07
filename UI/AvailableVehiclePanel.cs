@@ -10,9 +10,7 @@ using ColossalFramework;
 using ColossalFramework.UI;
 using ImprovedPublicTransport2.Query;
 using ImprovedPublicTransport2.UI.AlgernonCommons;
-using JetBrains.Annotations;
 using UnityEngine;
-using VehicleSelector;
 
 namespace ImprovedPublicTransport2.UI
 {
