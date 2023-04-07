@@ -77,7 +77,9 @@ namespace ImprovedPublicTransport2.UI
             if (data is VehicleItem thisItem)
             {
                 _info = thisItem.Info;
-                _vehicleNameLabel.text = thisItem.Name;
+                var capacity = _info.m_vehicleAI.GetPassengerCapacity(true);
+                _vehicleNameLabel.text = thisItem.Name + $" ({Localization.Get("VEHICLE_SELECTION_CAPACITY")}: {capacity})";
+                _vehicleNameLabel.tooltip = _vehicleNameLabel.text;
 
                 _vehicleSprite.atlas = _info?.m_Atlas;
                 _vehicleSprite.spriteName = _info?.m_Thumbnail;

@@ -106,3 +106,4 @@ VEHICLE_PANEL_PREVIOUS_TOOLTIP Jump to the previous vehicle.\nHolding down a shi
 VEHICLE_PANEL_REMOVE_VEHICLE Remove Vehicle
 VEHICLE_PANEL_NEXT Next Vehicle
 VEHICLE_PANEL_NEXT_TOOLTIP Jump to the next vehicle.\nHolding down a shift key when clicking will also zoom in.
+VEHICLE_SELECTION_CAPACITY Capacity

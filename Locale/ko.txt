@@ -104,3 +104,4 @@ VEHICLE_PANEL_PREVIOUS_TOOLTIP 이전 차량으로 이동합니다.\n쉬프트 �
 VEHICLE_PANEL_REMOVE_VEHICLE 차량 제거
 VEHICLE_PANEL_NEXT 다음 차량
 VEHICLE_PANEL_NEXT_TOOLTIP 다음 차량으로 이동합니다.\n쉬프트 키를 누른 채 클릭하면 확대 됩니다.
+VEHICLE_SELECTION_CAPACITY Capacity

@@ -106,3 +106,4 @@ VEHICLE_PANEL_PREVIOUS_TOOLTIP Springe zum vorherigen Fahrzeug.\nWenn du beim Kl
 VEHICLE_PANEL_REMOVE_VEHICLE Entferne Fahrzeug
 VEHICLE_PANEL_NEXT Nächstes Fahrzeug
 VEHICLE_PANEL_NEXT_TOOLTIP Springe zum nächsten Fahrzeug.\nWenn du beim Klicken eine Shift-Taste gedrückt hälst wird auch reingezoomt.
+VEHICLE_SELECTION_CAPACITY Kapazität
