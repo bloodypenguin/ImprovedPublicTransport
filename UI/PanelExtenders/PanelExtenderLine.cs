@@ -11,13 +11,13 @@ using ColossalFramework;
 using ColossalFramework.UI;
 using ImprovedPublicTransport2.OptionsFramework;
 using ImprovedPublicTransport2.Query;
-using ImprovedPublicTransport2.UI;
+using ImprovedPublicTransport2.UI.DontCryJustDieCommons;
 using ImprovedPublicTransport2.Util;
 using UnityEngine;
 using UIUtils = ImprovedPublicTransport2.Util.UIUtils;
 using Utils = ImprovedPublicTransport2.Util.Utils;
 
-namespace ImprovedPublicTransport2
+namespace ImprovedPublicTransport2.UI.PanelExtenders
 {
   public class PanelExtenderLine : MonoBehaviour
   {

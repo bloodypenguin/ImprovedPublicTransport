@@ -4,20 +4,19 @@
 // MVID: 76F370C5-F40B-41AE-AA9D-1E3F87E934D3
 // Assembly location: C:\Games\Steam\steamapps\workshop\content\255710\424106600\ImprovedPublicTransport.dll
 
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 using ColossalFramework;
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using ImprovedPublicTransport2.OptionsFramework;
+using ImprovedPublicTransport2.UI.DontCryJustDieCommons;
 using UnityEngine;
 using UIUtils = ImprovedPublicTransport2.Util.UIUtils;
 using Utils = ImprovedPublicTransport2.Util.Utils;
 
-namespace ImprovedPublicTransport2
+namespace ImprovedPublicTransport2.UI
 {
   public class VehicleEditor : UIPanel
   {

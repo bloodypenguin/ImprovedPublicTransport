@@ -11,7 +11,7 @@ using ImprovedPublicTransport2.Util;
 using UnityEngine;
 using Utils = ImprovedPublicTransport2.Util.Utils;
 
-namespace ImprovedPublicTransport2
+namespace ImprovedPublicTransport2.UI
 {
   public class StopListBoxRow : UIPanel
   {
