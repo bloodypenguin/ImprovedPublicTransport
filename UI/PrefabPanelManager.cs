@@ -14,7 +14,7 @@ namespace ImprovedPublicTransport2.UI
     /// <summary>
     /// Static class to manage the mod's building info panel.
     /// </summary>
-    internal static class BuildingPanelManager
+    internal static class PrefabPanelManager
     {
         // Instance references.
         private static GameObject s_gameObject;
@@ -39,7 +39,7 @@ namespace ImprovedPublicTransport2.UI
                 if (s_gameObject == null)
                 {
                     // Give it a unique name for easy finding with ModTools.
-                    s_gameObject = new GameObject("TCBuildingInfoPanel");
+                    s_gameObject = new GameObject("IPTPrefabPanel");
                     s_gameObject.transform.parent = UIView.GetAView().transform;
 
                     // Add panel and set parent transform.
@@ -51,7 +51,7 @@ namespace ImprovedPublicTransport2.UI
             }
             catch (Exception e)
             {
-                Logging.LogException(e, "exception creating TCBuildingInfoPanel");
+                Logging.LogException(e, "exception creating IPTPrefabPanel");
             }
         }
 
@@ -73,8 +73,8 @@ namespace ImprovedPublicTransport2.UI
         /// <summary>
         /// Sets the target to the selected building, creating the panel if necessary.
         /// </summary>
-        /// <param name="buildingID">New building ID.</param>
-        internal static void SetTarget(ushort buildingID)
+        /// <param name="lineID">New building ID.</param>
+        internal static void SetTarget(ushort lineID)
         {
             // If no existing panel, create it.
             if (Panel == null)
@@ -83,7 +83,7 @@ namespace ImprovedPublicTransport2.UI
             }
 
             // Set the target.
-            Panel.SetTarget(buildingID);
+            Panel.SetTarget(lineID);
         }
 
         /// <summary>
@@ -91,18 +91,19 @@ namespace ImprovedPublicTransport2.UI
         /// </summary>
         internal static void AddInfoPanelButtons()
         {
-            try
-            {
-                s_transportLineButton =
-                    AddInfoPanelButton(
-                        UIView.library.Get<PublicTransportWorldInfoPanel>(typeof(PublicTransportWorldInfoPanel).Name));
-            }
-            catch (Exception e)
-            {
-                Logging.LogException(e, "exception adding building info panel buttons");
-            }
+            // try
+            // {
+            //     s_transportLineButton =
+            //         AddInfoPanelButton(
+            //             UIView.library.Get<PublicTransportWorldInfoPanel>(typeof(PublicTransportWorldInfoPanel).Name));
+            // }
+            // catch (Exception e)
+            // {
+            //     Logging.LogException(e, "exception adding building info panel buttons");
+            // }
         }
 
+        //TODO: implement
         /// <summary>
         /// Handles building info world target building changes.
         /// </summary>

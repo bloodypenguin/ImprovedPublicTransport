@@ -108,7 +108,7 @@ namespace ImprovedPublicTransport2.UI
                 closeButton.pressedBgSprite = "buttonclosepressed";
 
                 // Close button event handler.
-                closeButton.eventClick += (component, clickEvent) => { BuildingPanelManager.Close(); };
+                closeButton.eventClick += (component, clickEvent) => { PrefabPanelManager.Close(); };
 
                 // Zoom to building button.
                 UIButton zoomButton = AddZoomButton(this, Margin, Margin, 30f, "ZOOM_BUILDING");

@@ -44,8 +44,6 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
 
     private VehicleListBox _lineVehicleListBox;
     private VehicleListBox _vehiclesInQueueListBox;
-    private PrefabPanel _prefabPanel;
-
     private UIButton _selectTypes;
     private UIButton _addVehicle;
     
@@ -202,7 +200,6 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
               CreateButtonPanel1();
               CreateButtonPanel2();
               _publicTransportWorldInfoPanel.component.height = 493f;
-              CreatePrefabPanel(uiPanel);
               CreateVehiclesOnLinePanel();
               CreateVehiclesInQueuePanel();
               BuildingExtension.OnDepotAdded += OnDepotChanged;
@@ -293,7 +290,6 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
         if (lineId != _cachedLineID)
         {
           _colorTextField.text = ColorUtility.ToHtmlStringRGB(_colorField.selectedColor);
-          _prefabPanel.Hide();
           UpdatePanelPositionAndSize();
         }
         if (lineVehicleCount != 0)
@@ -380,8 +376,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
         Destroy(_stopCountLabel.gameObject);
       if (_iptContainer != null)
         Destroy(_iptContainer.gameObject);
-      if (_prefabPanel != null)
-        Destroy(_prefabPanel.gameObject);
+      PrefabPanelManager.Close();
       if (_lineVehiclePanel != null)
         Destroy(_lineVehiclePanel.gameObject);
       if (_vehiclesInQueuePanel != null)
@@ -542,26 +537,25 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
       uiPanel.autoLayoutPadding = rectOffset;
       int num4 = 1;
       uiPanel.autoLayout = num4 != 0;
-      UIButton button1 = UIUtils.CreateButton(uiPanel);
-      button1.name = "SelectTypes";
-      button1.textPadding = new RectOffset(10, 10, 4, 0);
-      button1.text = Localization.Get("LINE_PANEL_SELECT_TYPES");
-      button1.tooltip = Localization.Get("LINE_PANEL_SELECT_TYPES_TOOLTIP");
-      button1.textScale = 0.8f;
-      button1.width = 97f;
-      button1.height = 32f;
-      button1.wordWrap = true;
-      button1.eventClick += (c, p) =>
+      UIButton selectTypesButton = UIUtils.CreateButton(uiPanel);
+      selectTypesButton.name = "SelectTypes";
+      selectTypesButton.textPadding = new RectOffset(10, 10, 4, 0);
+      selectTypesButton.text = Localization.Get("LINE_PANEL_SELECT_TYPES");
+      selectTypesButton.tooltip = Localization.Get("LINE_PANEL_SELECT_TYPES_TOOLTIP");
+      selectTypesButton.textScale = 0.8f;
+      selectTypesButton.width = 97f;
+      selectTypesButton.height = 32f;
+      selectTypesButton.wordWrap = true;
+      selectTypesButton.eventClick += (c, p) =>
       {
         if (_depotDropDown.SelectedItem <= 0)
-          return;
-        _prefabPanel.isVisible = !_prefabPanel.isVisible;
-        if (_prefabPanel.isVisible)
         {
-          _prefabPanel.SetTarget(_cachedLineID);
+          return;
         }
+
+        PrefabPanelManager.SetTarget(_cachedLineID);
       };
-      _selectTypes = button1;
+      _selectTypes = selectTypesButton;
       UIButton button2 = UIUtils.CreateButton(uiPanel);
       button2.name = "AddVehicle";
       button2.textPadding = new RectOffset(10, 10, 4, 0);
@@ -622,13 +616,6 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
       button2.height = (float) num11;
       MouseEventHandler mouseEventHandler2 = OnDeleteLineClick;
       button2.eventClick += mouseEventHandler2;
-    }
-
-    private void CreatePrefabPanel(UIPanel uiPanel)
-    {
-      _prefabPanel = _publicTransportWorldInfoPanel.component.AddUIComponent<PrefabPanel>();
-      _prefabPanel.name = "PrefabPanel";
-      _prefabPanel.AlignTo(uiPanel.parent, UIAlignAnchor.TopRight);
     }
 
     private void CreateVehiclesOnLinePanel()
