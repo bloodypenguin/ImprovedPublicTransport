@@ -19,6 +19,8 @@ namespace VehicleSelector
         private Material _material;
         private float _rotation = 35f;
         private float _zoom = 3f;
+        private bool _colorSet;
+        private Color32 _color;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PreviewRenderer"/> class.
@@ -63,6 +65,16 @@ namespace VehicleSelector
         /// Sets the render material.
         /// </summary>
         internal Material Material { set => _material = value; }
+
+        public Color32 MaterialColor
+        {
+            get => _color;
+            set
+            {
+                _color = value;
+                _colorSet = true;
+            }
+        }
 
         /// <summary>
         /// Gets the current render target textures.
@@ -198,6 +210,14 @@ namespace VehicleSelector
             {
                 // Calculate rendering matrix and add mesh to scene.
                 Matrix4x4 matrix = Matrix4x4.TRS(Vector3.zero, modelRotation, Vector3.one);
+                //TODO: set line color, also clean up how it's set up
+                // MaterialPropertyBlock materialBlock = VehicleManager.instance.m_materialBlock;
+                // materialBlock.Clear();
+                // if (_colorSet)
+                // {
+                //     materialBlock.SetColor(VehicleManager.instance.ID_VehicleColor, _color);
+                // }
+
                 Graphics.DrawMesh(_mesh, matrix, previewMaterial, 0, _renderCamera, 0, null, true, true);
             }
 
