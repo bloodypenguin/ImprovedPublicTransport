@@ -164,7 +164,7 @@
     <Compile Include="UI\AlgernonCommons\UITextFields.cs" />
     <Compile Include="UI\AlgernonCommons\UITextures.cs" />
     <Compile Include="UI\AlgernonCommons\UIToolTips.cs" />
-    <Compile Include="UI\LineVehiclesPanel.cs" />
+    <Compile Include="UI\PrefabPanel.cs" />
     <Compile Include="UI\BuildingPanelManager.cs" />
     <Compile Include="UI\AlgernonCommons\UIListRow.cs" />
     <Compile Include="UI\CopyPaste.cs" />
