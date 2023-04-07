@@ -143,7 +143,7 @@ namespace ImprovedPublicTransport2.UI
             var allAvailableVehicles = AvailableVehiclesQuery.Query(triplet);
             allAvailableVehicles.ForEach(data =>
             {
-                if (selectedList.Contains(data.Info))
+                if (selectedList != null && selectedList.Contains(data.Info))
                 {
                     return;
                 }
