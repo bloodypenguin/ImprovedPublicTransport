@@ -60,14 +60,15 @@ namespace ImprovedPublicTransport2.UI
         /// </summary>
         internal static void Close()
         {
-            if (s_panel != null)
+            if (s_panel == null)
             {
-                GameObject.Destroy(s_panel);
-                GameObject.Destroy(s_gameObject);
-
-                s_panel = null;
-                s_gameObject = null;
+                return;
             }
+            GameObject.Destroy(s_panel);
+            GameObject.Destroy(s_gameObject);
+
+            s_panel = null;
+            s_gameObject = null;
         }
 
         /// <summary>
@@ -100,30 +101,6 @@ namespace ImprovedPublicTransport2.UI
             // catch (Exception e)
             // {
             //     Logging.LogException(e, "exception adding building info panel buttons");
-            // }
-        }
-
-        //TODO: implement
-        /// <summary>
-        /// Handles building info world target building changes.
-        /// </summary>
-        internal static void TargetChanged()
-        {
-            // ushort lineID = WorldInfoPanel.GetCurrentInstanceID().TransportLine;
-            // bool supportedBuilding = Transfers.BuildingEligibility(lineID);
-            // s_transportLineButton.isVisible = supportedBuilding;
-            //
-            // // Don't do anything if panel isn't open.
-            // if (s_panel != null)
-            // {
-            //     if (supportedBuilding)
-            //     {
-            //         SetTarget(lineID);
-            //     }
-            //     else
-            //     {
-            //         Close();
-            //     }
             // }
         }
 
