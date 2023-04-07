@@ -12,7 +12,7 @@ namespace ImprovedPublicTransport2.UI.AlgernonCommons
     /// An individual UIList row.
     /// Additions kindly provided by ST-Apps (Stefano Tenuta).
     /// </summary>
-    public abstract class UIListRow<T> : UIPanel
+    public abstract class UIListRow : UIPanel
     {
         /// <summary>
         /// Default display margin.
@@ -47,7 +47,7 @@ namespace ImprovedPublicTransport2.UI.AlgernonCommons
         /// <summary>
         /// Gets the height for this row.
         /// </summary>
-        public virtual float RowHeight => UIList<T>.DefaultRowHeight;
+        public virtual float RowHeight => UIList.DefaultRowHeight;
 
         /// <summary>
         /// Gets or sets the sprite name to be used for the <see cref="UISprite"/> background for selected items.

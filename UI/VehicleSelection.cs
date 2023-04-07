@@ -50,14 +50,14 @@ namespace ImprovedPublicTransport2.UI
         private const float RightColumnX = MidControlX + PreviewWidth + Margin;
 
         // Panel components.
-        private readonly UILabel _titleLabel;
-        private readonly UIButton _addButton;
-        private readonly UIButton _removeButton;
-        private readonly UIButton _addAllButton;
-        private readonly UIButton _removeAllButton;
-        private readonly AvailableVehiclePanel _availableVehiclePanel;
-        private readonly SelectedVehiclePanel _selectedVehiclePanel;
-        private readonly PreviewPanel _previewPanel;
+        private UILabel _titleLabel;
+        private UIButton _addButton;
+        private UIButton _removeButton;
+        private UIButton _addAllButton;
+        private UIButton _removeAllButton;
+        private AvailableVehiclePanel _availableVehiclePanel;
+        private SelectedVehiclePanel _selectedVehiclePanel;
+        private PreviewPanel _previewPanel;
 
         // Currently selected vehicles.
         private VehicleInfo _selectedLineVehicle;
@@ -66,8 +66,9 @@ namespace ImprovedPublicTransport2.UI
         /// <summary>
         /// Initializes a new instance of the <see cref="VehicleSelection"/> class.
         /// </summary>
-        internal VehicleSelection()
+        public override void Awake()
         {
+            base.Awake();
             // Set size.
             height = PanelHeight;
             width = PanelWidth;
@@ -78,7 +79,8 @@ namespace ImprovedPublicTransport2.UI
             color = new Color32(160, 160, 160, 255);
 
             // Title.
-            _titleLabel = UILabels.AddLabel(this, 0f, 10f, "Select vehicle", PanelWidth, 1f, UIHorizontalAlignment.Center);
+            _titleLabel = UILabels.AddLabel(this, 0f, 10f, "Select vehicle", PanelWidth, 1f,
+                UIHorizontalAlignment.Center);
 
             // 'Add vehicle' button.
             _addButton = UIButtons.AddIconButton(
@@ -86,7 +88,7 @@ namespace ImprovedPublicTransport2.UI
                 RightColumnX - ArrowSize - Margin,
                 VehicleListY,
                 ArrowSize,
-                UITextures.LoadQuadSpriteAtlas("VS-Add"),
+                UITextures.LoadQuadSpriteAtlas("IPT2-Add"),
                 Localization.Get("ADD_VEHICLE_TIP"));
             _addButton.isEnabled = false;
             _addButton.eventClicked += (c, p) => AddVehicle(_selectedListVehicle);
@@ -97,7 +99,7 @@ namespace ImprovedPublicTransport2.UI
                 RightColumnX - ArrowSize - Margin - ArrowSize - Margin,
                 VehicleListY,
                 ArrowSize,
-                UITextures.LoadQuadSpriteAtlas("VS-AddAll"),
+                UITextures.LoadQuadSpriteAtlas("IPT2-AddAll"),
                 Localization.Get("ADD_ALL_TIP"));
             _addAllButton.isEnabled = false;
             _addAllButton.eventClicked += (c, p) => AddAllVehicles();
@@ -108,7 +110,7 @@ namespace ImprovedPublicTransport2.UI
                 MidControlX,
                 VehicleListY,
                 ArrowSize,
-                UITextures.LoadQuadSpriteAtlas("VS-Remove"),
+                UITextures.LoadQuadSpriteAtlas("IPT2-Remove"),
                 Localization.Get("REMOVE_VEHICLE_TIP"));
             _removeButton.isEnabled = false;
             _removeButton.eventClicked += (c, p) => RemoveVehicle();
@@ -119,7 +121,7 @@ namespace ImprovedPublicTransport2.UI
                 MidControlX + ArrowSize + Margin,
                 VehicleListY,
                 ArrowSize,
-                UITextures.LoadQuadSpriteAtlas("VS-RemoveAll"),
+                UITextures.LoadQuadSpriteAtlas("IPT2-RemoveAll"),
                 Localization.Get("REMOVE_ALL_TIP"));
             _removeAllButton.isEnabled = false;
             _removeAllButton.eventClicked += (c, p) => RemoveAllVehicles();
@@ -133,8 +135,11 @@ namespace ImprovedPublicTransport2.UI
             _availableVehiclePanel.relativePosition = new Vector2(RightColumnX, VehicleListY);
 
             // Vehicle selection list labels.
-            UILabels.AddLabel(_availableVehiclePanel.VehicleList, 0f, -TitleOffsetY, Localization.Get("AVAILABLE_VEHICLES"), ListWidth, 0.8f, UIHorizontalAlignment.Center);
-            UILabels.AddLabel(_selectedVehiclePanel.VehicleList, 0f, -TitleOffsetY, Localization.Get("SELECTED_VEHICLES"), ListWidth, 0.8f, UIHorizontalAlignment.Center);
+            //TODO
+            // UILabels.AddLabel(_availableVehiclePanel.VehicleList, 0f, -TitleOffsetY,
+            //     Localization.Get("AVAILABLE_VEHICLES"), ListWidth, 0.8f, UIHorizontalAlignment.Center);
+            // UILabels.AddLabel(_selectedVehiclePanel.VehicleList, 0f, -TitleOffsetY,
+            //     Localization.Get("SELECTED_VEHICLES"), ListWidth, 0.8f, UIHorizontalAlignment.Center);
 
             // Preview panel.
             _previewPanel = AddUIComponent<PreviewPanel>();
