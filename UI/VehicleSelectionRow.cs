@@ -6,7 +6,6 @@
 using ColossalFramework.UI;
 using ImprovedPublicTransport2.UI.AlgernonCommons;
 using UnityEngine;
-using VehicleSelector;
 
 namespace ImprovedPublicTransport2.UI
 {

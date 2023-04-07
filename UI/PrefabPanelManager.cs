@@ -7,7 +7,6 @@ using System;
 using ColossalFramework.UI;
 using ImprovedPublicTransport2.UI.AlgernonCommons;
 using UnityEngine;
-using VehicleSelector;
 
 namespace ImprovedPublicTransport2.UI
 {
@@ -85,130 +84,6 @@ namespace ImprovedPublicTransport2.UI
 
             // Set the target.
             Panel.SetTarget(lineID);
-        }
-
-        /// <summary>
-        /// Adds the building buttons to game building info panels.
-        /// </summary>
-        internal static void AddInfoPanelButtons()
-        {
-            // try
-            // {
-            //     s_transportLineButton =
-            //         AddInfoPanelButton(
-            //             UIView.library.Get<PublicTransportWorldInfoPanel>(typeof(PublicTransportWorldInfoPanel).Name));
-            // }
-            // catch (Exception e)
-            // {
-            //     Logging.LogException(e, "exception adding building info panel buttons");
-            // }
-        }
-
-        /// <summary>
-        /// Adds a Transfer Controller button to a building info panel to directly access that building's.
-        /// </summary>
-        /// <param name="infoPanel">Infopanel to apply the button to.</param>
-        /// <returns>New UIButton.</returns>
-        private static UIButton AddInfoPanelButton(WorldInfoPanel infoPanel)
-        {
-            const float ButtonHeight = 42f;
-            const float ButtonWidth = 42f;
-
-            // Targets.
-            UIComponent parent = null;
-            float relativeX = 0f;
-            float relativeY = 0f;
-
-            // Player info panels have wrappers, warehouse and zoned ones don't.
-            UIComponent wrapper = infoPanel.Find("Wrapper");
-            if (wrapper == null)
-            {
-                if (infoPanel.Find("ActionPanel") is UIPanel actionPanel)
-                {
-                    Logging.Message("adding info panel button to warehouse/shelter");
-
-                    // Warehouse or shelter.
-                    relativeX = 47f;
-                    parent = actionPanel;
-                }
-                else if (infoPanel.Find("Misc") is UIPanel miscPanel)
-                {
-                    Logging.Message("adding info panel button to unique factories");
-
-                    // Unique factory.
-                    relativeX = 18f;
-                    parent = miscPanel;
-                }
-                else if (infoPanel.Find("ZoneTypeInfo") is UITabContainer zoneTypeInfoPanel)
-                {
-                    // Zoned building.
-                    Logging.Message("adding info panel button to zoned building");
-                    relativeX = 10f;
-                    relativeY = zoneTypeInfoPanel.relativePosition.y;
-                    parent = infoPanel.component;
-                }
-            }
-            else
-            {
-                // City service panel.
-                relativeX = 94f;
-                UIComponent buttonPanels = wrapper.Find("MainSectionPanel")?.Find("MainBottom")?.Find("ButtonPanels");
-                if (buttonPanels != null)
-                {
-                    parent = buttonPanels.Find("ActionButtons")?.Find("ActionPanelPanel")?.Find("ActionPanel");
-
-                    // Send park button panels to back.
-                    buttonPanels.Find("ParkButtons")?.SendToBack();
-                }
-            }
-
-            if (parent == null)
-            {
-                Logging.Error("couldn't place panel button for ", infoPanel.name);
-                return null;
-            }
-
-            UIButton panelButton = parent.AddUIComponent<UIButton>();
-
-            // Basic button setup.
-            panelButton.atlas = UITextures.InGameAtlas;
-            panelButton.height = ButtonHeight;
-            panelButton.width = ButtonWidth;
-            panelButton.normalBgSprite = "GenericPanelLight";
-            panelButton.focusedBgSprite = "GenericPanelLight";
-            panelButton.hoveredBgSprite = "GenericPanelWhite";
-            panelButton.pressedBgSprite = "GenericPanelLight";
-            panelButton.disabledBgSprite = "ButtonMenuDisabled";
-            panelButton.color = new Color32(219, 219, 219, 255);
-            panelButton.focusedColor = Color.white;
-            panelButton.hoveredColor = Color.white;
-            panelButton.disabledColor = Color.white;
-            panelButton.name = "VehicleSelectorButton";
-            panelButton.tooltip = Localization.Get("MOD_NAME");
-            panelButton.tooltipBox = UIToolTips.WordWrapToolTip;
-
-            UISprite buttonSprite = panelButton.AddUIComponent<UISprite>();
-            buttonSprite.size = panelButton.size;
-            buttonSprite.atlas = UITextures.LoadSingleSpriteAtlas("IPT2-Icon");
-            buttonSprite.relativePosition = new Vector2(1f, 1f);
-            buttonSprite.spriteName = "normal";
-            buttonSprite.tooltip = Localization.Get("MOD_NAME");
-
-            // Set position.
-            panelButton.relativePosition = new Vector2(relativeX, relativeY);
-            panelButton.BringToFront();
-
-            // Event handler.
-            panelButton.eventClick += (c, p) =>
-            {
-                // Select current building in the building details panel and show.
-                SetTarget(WorldInfoPanel.GetCurrentInstanceID().Building);
-
-                // Manually unfocus control, otherwise it can stay focused until next UI event (looks untidy).
-                c.Unfocus();
-            };
-
-            return panelButton;
         }
     }
 }
