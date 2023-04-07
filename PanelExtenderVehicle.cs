@@ -11,6 +11,7 @@ using System;
 using System.Reflection;
 using ImprovedPublicTransport2.Detour;
 using ImprovedPublicTransport2.OptionsFramework;
+using ImprovedPublicTransport2.Query;
 using ImprovedPublicTransport2.Util;
 using UnityEngine;
 using UIUtils = ImprovedPublicTransport2.Util.UIUtils;
@@ -76,8 +77,7 @@ namespace ImprovedPublicTransport2
 
     private void UpdateBindings()
     {
-      ushort vehicleID = 0;
-      ushort lineId = this.GetLineID(out vehicleID);
+      var lineId = WorldInfoLineIDForCurrentVehicleQuery.Query(out var vehicleID);
       if ((int) lineId == 0)
       {
         this._passengerPanel.Hide();
@@ -363,15 +363,16 @@ namespace ImprovedPublicTransport2
 
     private void OnChangeVehicleClick(UIComponent component, UIMouseEventParameter eventParam)
     {
-      ushort firstVehicle = 0;
-      ushort lineId = this.GetLineID(out firstVehicle);
-      if ((int) lineId == 0)
+      var lineId = WorldInfoLineIDForCurrentVehicleQuery.Query(out var firstVehicle);
+      if (lineId == 0)
         return;
-      ushort num = !(component.name == "PreviousVehicle") ? TransportLineUtil.GetNextVehicle(lineId, firstVehicle) : TransportLineUtil.GetPreviousVehicle(lineId, firstVehicle);
-      if ((int) firstVehicle == (int) num)
+      var num = component.name != "PreviousVehicle" ? TransportLineUtil.GetNextVehicle(lineId, firstVehicle) : TransportLineUtil.GetPreviousVehicle(lineId, firstVehicle);
+      if (firstVehicle == (int) num)
         return;
-      InstanceID instanceId = new InstanceID();
-      instanceId.Vehicle = num;
+      var instanceId = new InstanceID
+      {
+        Vehicle = num
+      };
       WorldInfoPanel.ChangeInstanceID(WorldInfoPanel.GetCurrentInstanceID(), instanceId);
       ToolsModifierControl.cameraController.SetTarget(instanceId, ToolsModifierControl.cameraController.transform.position, Input.GetKey(KeyCode.LeftShift) | Input.GetKey(KeyCode.RightShift));
     }
@@ -380,9 +381,8 @@ namespace ImprovedPublicTransport2
     {
         SimulationManager.instance.AddAction(() =>
         {
-            ushort firstVehicle = 0;
-            ushort lineId = this.GetLineID(out firstVehicle);
-            if ((int) lineId == 0 || (int) firstVehicle == 0)
+          var lineId = WorldInfoLineIDForCurrentVehicleQuery.Query(out var firstVehicle);
+            if (lineId == 0 || firstVehicle == 0)
                 return;
             CachedTransportLineData.SetBudgetControlState(lineId, false);
             TransportLineUtil.RemoveVehicle(lineId, firstVehicle, true);
@@ -454,21 +454,6 @@ namespace ImprovedPublicTransport2
         current = 0.0f;
         max = 0.0f;
         return true;
-    }
-
-
-
-    public ushort GetLineID(out ushort firstVehicle)
-    {
-      firstVehicle = (ushort) 0;
-      InstanceID currentInstanceId = WorldInfoPanel.GetCurrentInstanceID();
-      if (currentInstanceId.Type == InstanceType.Vehicle && (int) currentInstanceId.Vehicle != 0)
-      {
-        firstVehicle = Singleton<VehicleManager>.instance.m_vehicles.m_buffer[(int) currentInstanceId.Vehicle].GetFirstVehicle(currentInstanceId.Vehicle);
-        if ((int) firstVehicle != 0)
-          return Singleton<VehicleManager>.instance.m_vehicles.m_buffer[(int) firstVehicle].m_transportLine;
-      }
-      return 0;
     }
 
     private Color GetColor(float value)

@@ -825,14 +825,7 @@ namespace ImprovedPublicTransport2
       DefaultTool.OpenWorldInfoPanel(id, ToolsModifierControl.cameraController.transform.position);
     }
 
-    private void OnSelectedPrefabsChanged(UIComponent component, HashSet<string> selectedItems)
-    {
-      ushort lineId = GetLineID();
-      if (lineId == 0)
-        return;
-      CachedTransportLineData.SetPrefabs(lineId, selectedItems);
-      Singleton<SimulationManager>.instance.AddAction(() => TransportLineUtil.ReplaceVehicles(lineId));
-    }
+
 
     private void OnColorChanged(UIComponent component, Color color)
     {
