@@ -1,21 +1,23 @@
 using System.Collections.Generic;
+using System.Linq;
 using ColossalFramework;
 using ImprovedPublicTransport2.Query;
 using ImprovedPublicTransport2.Util;
+using JetBrains.Annotations;
 
 namespace ImprovedPublicTransport2.Command
 {
     public static class SelectVehicleTypesCommand
     {
-        public static void Execute(HashSet<string> selectedItems)
+        public static void Execute([NotNull] IEnumerable<VehicleInfo> selectedVehicleInfos)
         {
             var lineId = WorldInfoCurrentLineIDQuery.Query(out _);
             if (lineId == 0)
             {
                 return;
             }
-
-            CachedTransportLineData.SetPrefabs(lineId, selectedItems);
+            var selectedItems = new HashSet<string>(selectedVehicleInfos.Select(v => v.name).Distinct().ToArray());
+            CachedTransportLineData.SetPrefabs(lineId, selectedItems.Count == 0 ? null : selectedItems);
             Singleton<SimulationManager>.instance.AddAction(() => ReplaceVehicles(lineId));
         }
         
@@ -31,7 +33,8 @@ namespace ImprovedPublicTransport2.Command
                     continue;
                 }
 
-                if (CachedTransportLineData.GetPrefabs(lineID).Contains(instance.m_vehicles.m_buffer[i].Info.name))
+                var prefabs = CachedTransportLineData.GetPrefabs(lineID);
+                if (prefabs != null && prefabs.Contains(instance.m_vehicles.m_buffer[i].Info.name))
                 {
                     continue;
                 }
