@@ -9,7 +9,7 @@ namespace ImprovedPublicTransport2.Command
     {
         public static void Execute(HashSet<string> selectedItems)
         {
-            var lineId = WorldInfoLineIDForCurrentVehicleQuery.Query(out _);
+            var lineId = WorldInfoCurrentLineIDQuery.Query(out _);
             if (lineId == 0)
             {
                 return;

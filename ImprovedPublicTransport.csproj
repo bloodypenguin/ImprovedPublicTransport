@@ -127,7 +127,7 @@
     <Compile Include="Query\QueuedVehicleQuery.cs" />
     <Compile Include="Query\SelectedVehicleTypesQuery.cs" />
     <Compile Include="Query\WaitingPassengerCountQuery.cs" />
-    <Compile Include="Query\WorldInfoLineIDForCurrentVehicleQuery.cs" />
+    <Compile Include="Query\WorldInfoCurrentLineIDQuery.cs" />
     <Compile Include="RedirectionFramework\AssemblyRedirector.cs" />
     <Compile Include="RedirectionFramework\Attributes\IgnoreConditions\DisableAttribute.cs" />
     <Compile Include="RedirectionFramework\Attributes\IgnoreConditionAttribute.cs" />

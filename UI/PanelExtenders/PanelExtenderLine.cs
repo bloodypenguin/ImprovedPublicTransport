@@ -216,7 +216,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
 
     private void UpdateBindings()
     {
-      ushort lineId = GetLineID();
+      ushort lineId = WorldInfoCurrentLineIDQuery.Query(out _);
       if (lineId != 0)
       {
         int lineVehicleCount = TransportLineUtil.CountLineActiveVehicles(lineId, out int _);
@@ -685,7 +685,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
 
     private void OnMouseEnter(UIComponent component, UIMouseEventParameter p)
     {
-      ushort lineId = GetLineID();
+      ushort lineId = WorldInfoCurrentLineIDQuery.Query(out _);
       if (lineId == 0)
         return;
       TransportLine transportLine = Singleton<TransportManager>.instance.m_lines.m_buffer[lineId];
@@ -703,7 +703,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
     {
         SimulationManager.instance.AddAction(() =>
         {
-            ushort lineId = GetLineID();
+            ushort lineId = WorldInfoCurrentLineIDQuery.Query(out _);
             if (lineId == 0)
                 return;
             bool budgetControlState = CachedTransportLineData.GetBudgetControlState(lineId);
@@ -716,7 +716,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
 
     private void OnUnbunchingClick(UIComponent component, UIMouseEventParameter p)
     {
-      ushort lineId = GetLineID();
+      ushort lineId = WorldInfoCurrentLineIDQuery.Query(out _);
       if (lineId == 0)
         return;
       bool unbunchingState = CachedTransportLineData.GetUnbunchingState(lineId);
@@ -727,7 +727,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
     {
         SimulationManager.instance.AddAction(() =>
         {
-            ushort lineId = GetLineID();
+            ushort lineId = WorldInfoCurrentLineIDQuery.Query(out _);
             if (lineId == 0)
                 return;
             ushort depot = CachedTransportLineData.GetDepot(lineId);
@@ -757,7 +757,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
     {
         SimulationManager.instance.AddAction(() =>
         {
-            ushort lineId = GetLineID();
+            ushort lineId = WorldInfoCurrentLineIDQuery.Query(out _);
             if (lineId == 0)
                 return;
             CachedTransportLineData.SetBudgetControlState(lineId, false);
@@ -793,7 +793,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
 
       private void OnDeleteLineClick(UIComponent component, UIMouseEventParameter eventParam)
     {
-      ushort lineID = GetLineID();
+      ushort lineID = WorldInfoCurrentLineIDQuery.Query(out _);
       if (lineID == 0)
         return;
       ConfirmPanel.ShowModal("CONFIRM_LINEDELETE", (comp, ret) =>
@@ -808,7 +808,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
 
     private void OnSelectedDepotChanged(UIComponent component, ushort selectedItem)
     {
-      ushort lineId = GetLineID();
+      ushort lineId = WorldInfoCurrentLineIDQuery.Query(out _);
       if (lineId == 0)
         return;
       CachedTransportLineData.SetDepot(lineId, selectedItem);
@@ -866,20 +866,6 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
       if ((instance.m_buildings.m_buffer[buildingID].m_flags & Building.Flags.Untouchable) != Building.Flags.None)
         buildingID = instance.FindBuilding(instance.m_buildings.m_buffer[buildingID].m_position, 100f, ItemClass.Service.None, ItemClass.SubService.None, Building.Flags.Active, Building.Flags.Untouchable);
       return instance.GetBuildingName(buildingID, InstanceID.Empty) ?? "";
-    }
-    
-    public ushort GetLineID()
-    {
-      InstanceID currentInstanceId = WorldInfoPanel.GetCurrentInstanceID();
-      if (currentInstanceId.Type == InstanceType.TransportLine)
-        return currentInstanceId.TransportLine;
-      if (currentInstanceId.Type == InstanceType.Vehicle)
-      {
-        ushort firstVehicle = Singleton<VehicleManager>.instance.m_vehicles.m_buffer[currentInstanceId.Vehicle].GetFirstVehicle(currentInstanceId.Vehicle);
-        if (firstVehicle != 0)
-          return Singleton<VehicleManager>.instance.m_vehicles.m_buffer[firstVehicle].m_transportLine;
-      }
-      return 0;
     }
   }
 }

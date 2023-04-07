@@ -77,7 +77,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
 
     private void UpdateBindings()
     {
-      var lineId = WorldInfoLineIDForCurrentVehicleQuery.Query(out var vehicleID);
+      var lineId = WorldInfoCurrentLineIDQuery.Query(out var vehicleID);
       if ((int) lineId == 0)
       {
         this._passengerPanel.Hide();
@@ -363,7 +363,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
 
     private void OnChangeVehicleClick(UIComponent component, UIMouseEventParameter eventParam)
     {
-      var lineId = WorldInfoLineIDForCurrentVehicleQuery.Query(out var firstVehicle);
+      var lineId = WorldInfoCurrentLineIDQuery.Query(out var firstVehicle);
       if (lineId == 0)
         return;
       var num = component.name != "PreviousVehicle" ? TransportLineUtil.GetNextVehicle(lineId, firstVehicle) : TransportLineUtil.GetPreviousVehicle(lineId, firstVehicle);
@@ -381,7 +381,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
     {
         SimulationManager.instance.AddAction(() =>
         {
-          var lineId = WorldInfoLineIDForCurrentVehicleQuery.Query(out var firstVehicle);
+          var lineId = WorldInfoCurrentLineIDQuery.Query(out var firstVehicle);
             if (lineId == 0 || firstVehicle == 0)
                 return;
             CachedTransportLineData.SetBudgetControlState(lineId, false);
