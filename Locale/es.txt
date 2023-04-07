@@ -103,3 +103,4 @@ VEHICLE_PANEL_PREVIOUS_TOOLTIP Saltar al vehículo anterior.\nShift + clic para 
 VEHICLE_PANEL_REMOVE_VEHICLE Eliminar vehículo
 VEHICLE_PANEL_NEXT Vehículo siguiente
 VEHICLE_PANEL_NEXT_TOOLTIP Saltar al vehículo siguiente.\nShift + clic para ver detalles.
+VEHICLE_SELECTION_CAPACITY Capacity

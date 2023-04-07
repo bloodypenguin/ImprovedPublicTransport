@@ -106,3 +106,4 @@ VEHICLE_PANEL_PREVIOUS_TOOLTIP Przeskakuje do poprzedniego pojazdu.\nPrzytrzyman
 VEHICLE_PANEL_REMOVE_VEHICLE Usuń pojazd
 VEHICLE_PANEL_NEXT Następny pojazd
 VEHICLE_PANEL_NEXT_TOOLTIP Przeskakuje do następnego pojazdu.\nPrzytrzymanie klawisza Shift podczas klikania dodatkowo przybliży widok.
+VEHICLE_SELECTION_CAPACITY Pojemność
