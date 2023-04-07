@@ -17,7 +17,7 @@ namespace ImprovedPublicTransport2.UI
     /// <summary>
     /// Building info panel.
     /// </summary>
-    internal class LineVehiclesPanel : UIPanel
+    internal class PrefabPanel : UIPanel
     {
         /// <summary>
         /// Layout margin.
@@ -66,9 +66,9 @@ namespace ImprovedPublicTransport2.UI
         private bool _pasteProcessing = false;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LineVehiclesPanel"/> class.
+        /// Initializes a new instance of the <see cref="PrefabPanel"/> class.
         /// </summary>
-        public LineVehiclesPanel()
+        public PrefabPanel()
         {
             base.Awake();
             try

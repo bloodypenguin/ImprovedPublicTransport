@@ -25,7 +25,7 @@ namespace ImprovedPublicTransport2
     private const float PARENT_HEIGHT = 285f;
     
     private bool _initialized;
-    private int _cachedLineID;
+    private ushort _cachedLineID;
     private ItemClass.SubService _cachedSubService;
     private Dictionary<ItemClassTriplet, bool> _updateDepots;
     private int _cachedSimCount;
@@ -44,11 +44,11 @@ namespace ImprovedPublicTransport2
 
     private VehicleListBox _lineVehicleListBox;
     private VehicleListBox _vehiclesInQueueListBox;
-    private LineVehiclesPanel _lineVehiclesPanel;
+    private PrefabPanel _prefabPanel;
 
     private UIButton _selectTypes;
     private UIButton _addVehicle;
-    private UIPanel _prefabPanel;
+    
     private UIPanel _lineVehiclePanel;
     private UIPanel _vehiclesInQueuePanel;
 
@@ -202,11 +202,7 @@ namespace ImprovedPublicTransport2
               CreateButtonPanel1();
               CreateButtonPanel2();
               _publicTransportWorldInfoPanel.component.height = 493f;
-              CreatePrefabPanel();
-
-              _lineVehiclesPanel = _publicTransportWorldInfoPanel.component.AddUIComponent<LineVehiclesPanel>();
-              _lineVehiclesPanel.name = "LineVehiclesPanel";
-              _lineVehiclesPanel.AlignTo(uiPanel.parent, UIAlignAnchor.TopRight);
+              CreatePrefabPanel(uiPanel);
               CreateVehiclesOnLinePanel();
               CreateVehiclesInQueuePanel();
               BuildingExtension.OnDepotAdded += OnDepotChanged;
@@ -297,7 +293,6 @@ namespace ImprovedPublicTransport2
         if (lineId != _cachedLineID)
         {
           _colorTextField.text = ColorUtility.ToHtmlStringRGB(_colorField.selectedColor);
-          _lineVehiclesPanel.SetTarget(lineId);
           _prefabPanel.Hide();
           UpdatePanelPositionAndSize();
         }
@@ -342,8 +337,8 @@ namespace ImprovedPublicTransport2
     private void UpdatePanelPositionAndSize()
     {
       float num = 0.0f;
-      if (_prefabPanel.isVisible)
-        num = _prefabPanel.width + 1f;
+      // if (_prefabPanel.isVisible)
+      //   num = _prefabPanel.width + 1f;
       _lineVehiclePanel.relativePosition = new Vector3((float) (num + (double) _lineVehiclePanel.parent.width + 1.0), 0.0f);
       if (_lineVehiclePanel.isVisible)
       {
@@ -561,6 +556,10 @@ namespace ImprovedPublicTransport2
         if (_depotDropDown.SelectedItem <= 0)
           return;
         _prefabPanel.isVisible = !_prefabPanel.isVisible;
+        if (_prefabPanel.isVisible)
+        {
+          _prefabPanel.SetTarget(_cachedLineID);
+        }
       };
       _selectTypes = button1;
       UIButton button2 = UIUtils.CreateButton(uiPanel);
@@ -625,40 +624,11 @@ namespace ImprovedPublicTransport2
       button2.eventClick += mouseEventHandler2;
     }
 
-    private void CreatePrefabPanel()
+    private void CreatePrefabPanel(UIPanel uiPanel)
     {
-      UIPanel uiPanel = _publicTransportWorldInfoPanel.component.AddUIComponent<UIPanel>();
-      uiPanel.name = "PrefabPanel";
-      uiPanel.AlignTo(uiPanel.parent, UIAlignAnchor.TopRight);
-      uiPanel.relativePosition = new Vector3(uiPanel.parent.width + 1f, 0.0f);
-      uiPanel.width = 180f;
-      uiPanel.height = PARENT_HEIGHT - 16f;
-      uiPanel.backgroundSprite = "UnlockingPanel2";
-      uiPanel.opacity = 0.95f;
-      _prefabPanel = uiPanel;
-      UILabel uiLabel = uiPanel.AddUIComponent<UILabel>();
-      uiLabel.text = Localization.Get("LINE_PANEL_SELECT_TYPES");
-      uiLabel.textAlignment = UIHorizontalAlignment.Center;
-      uiLabel.font = _vehicleAmount.font;
-      uiLabel.position = new Vector3((float) (uiPanel.width / 2.0 - uiLabel.width / 2.0), (float) (uiLabel.height / 2.0 - 20.0));
-      UIButton uiButton = uiPanel.AddUIComponent<UIButton>();
-      uiButton.name = "CloseButton";
-      uiButton.width = 32f;
-      uiButton.height = 32f;
-      uiButton.normalBgSprite = "buttonclose";
-      uiButton.hoveredBgSprite = "buttonclosehover";
-      uiButton.pressedBgSprite = "buttonclosepressed";
-      uiButton.relativePosition = new Vector3((float) (uiPanel.width - (double) uiButton.width - 2.0), 2f);
-      uiButton.eventClick += (c, p) => _prefabPanel.isVisible = !_prefabPanel.isVisible;
-      // _prefabListBox = VehicleListBox.Create(uiPanel);
-      // _prefabListBox.name = "VehicleListBox";
-      // _prefabListBox.AlignTo(uiPanel, UIAlignAnchor.TopLeft);
-      // _prefabListBox.relativePosition = new Vector3(3f, 40f);
-      // _prefabListBox.width = uiPanel.width - 6f;
-      // _prefabListBox.height = PARENT_HEIGHT - 61f;
-      // _prefabListBox.Font = _vehicleAmount.font;
-      // _prefabListBox.eventSelectedItemsChanged += OnSelectedPrefabsChanged;
-      // _prefabListBox.eventRowShiftClick += OnAddVehicleClick;
+      _prefabPanel = _publicTransportWorldInfoPanel.component.AddUIComponent<PrefabPanel>();
+      _prefabPanel.name = "PrefabPanel";
+      _prefabPanel.AlignTo(uiPanel.parent, UIAlignAnchor.TopRight);
     }
 
     private void CreateVehiclesOnLinePanel()
@@ -666,7 +636,7 @@ namespace ImprovedPublicTransport2
       UIPanel uiPanel = _publicTransportWorldInfoPanel.component.AddUIComponent<UIPanel>();
       uiPanel.name = "VehiclesOnLine";
       uiPanel.AlignTo(uiPanel.parent, UIAlignAnchor.TopRight);
-      uiPanel.relativePosition = new Vector3((float) (uiPanel.parent.width + (double) _prefabPanel.width + 180f + 3.0), 0.0f);
+      uiPanel.relativePosition = new Vector3((float) (uiPanel.parent.width + /*(double) _prefabPanel.width */+ 180f + 3.0), 0.0f);
       uiPanel.width = 180f;
       uiPanel.height = (float) ((PARENT_HEIGHT - 16.0) / 2.0);
       uiPanel.backgroundSprite = "UnlockingPanel2";

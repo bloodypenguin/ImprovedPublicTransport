@@ -201,7 +201,7 @@ namespace ImprovedPublicTransport2.UI
         /// <summary>
         /// Gets or sets the parent tab reference.
         /// </summary>
-        internal LineVehiclesPanel ParentPanel { get; set; }
+        internal PrefabPanel ParentPanel { get; set; }
 
         /// <summary>
         /// Gets the current transfer reason.
