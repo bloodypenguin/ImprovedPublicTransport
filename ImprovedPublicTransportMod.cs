@@ -16,6 +16,8 @@ using ImprovedPublicTransport2.HarmonyPatches.VehicleManagerPatches;
 using ImprovedPublicTransport2.HarmonyPatches.XYZVehicleAIPatches;
 using ImprovedPublicTransport2.OptionsFramework.Extensions;
 using ImprovedPublicTransport2.RedirectionFramework;
+using ImprovedPublicTransport2.UI;
+using ImprovedPublicTransport2.UI.PanelExtenders;
 using UnityEngine;
 using Utils = ImprovedPublicTransport2.Util.Utils;
 

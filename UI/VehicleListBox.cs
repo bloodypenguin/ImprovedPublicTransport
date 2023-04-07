@@ -4,12 +4,12 @@
 // MVID: 76F370C5-F40B-41AE-AA9D-1E3F87E934D3
 // Assembly location: C:\Games\Steam\steamapps\workshop\content\255710\424106600\ImprovedPublicTransport.dll
 
-using ColossalFramework.UI;
 using System;
 using System.Collections.Generic;
+using ColossalFramework.UI;
 using UnityEngine;
 
-namespace ImprovedPublicTransport2
+namespace ImprovedPublicTransport2.UI
 {
   public class VehicleListBox : UIPanel
   {

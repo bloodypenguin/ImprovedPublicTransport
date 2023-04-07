@@ -5,7 +5,7 @@
 
 using ImprovedPublicTransport2.UI.AlgernonCommons;
 
-namespace VehicleSelector
+namespace ImprovedPublicTransport2.UI
 {
     /// <summary>
     /// Vehicle list item record.
