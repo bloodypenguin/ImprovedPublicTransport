@@ -29,7 +29,7 @@ namespace ImprovedPublicTransport2
         public const string BaseModName = "Improved Public Transport 2";
         
         public static bool inGame;
-        private GameObject _iptGameObject;
+        public static GameObject _iptGameObject;
         private GameObject _worldInfoPanel;
         private readonly string version = "7.0.0-preview2";
 

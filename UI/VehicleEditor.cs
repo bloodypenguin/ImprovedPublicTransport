@@ -21,6 +21,10 @@ namespace ImprovedPublicTransport2.UI
 {
   public class VehicleEditor : UIPanel
   {
+    public delegate void SettingsAppliedHandler();
+
+    public event SettingsAppliedHandler eventSettingsApplied;
+    
     private bool _firstShow = true;
     private int _selectedIndex = -1;
     public static VehicleEditor Instance;
@@ -33,6 +37,7 @@ namespace ImprovedPublicTransport2.UI
     private PublicTransportInfoViewPanel _publicTransportInfoViewPanel;
     private UIPanel _containerPanel;
     private UIPanel _rightSidePanel;
+    
 
     public override void Update()
     {
@@ -602,6 +607,14 @@ namespace ImprovedPublicTransport2.UI
       bool isChecked = uiCheckBox.isChecked;
       prefab.SetValues(capacity, int32_1, int32_3, isChecked);
       this.UpdateBindings();
+      try
+      {
+        eventSettingsApplied?.Invoke();
+      }
+      catch (Exception e)
+      {
+        UnityEngine.Debug.LogException(e);
+      }
     }
 
       private PrefabData[] GetPrefabs()
@@ -622,6 +635,14 @@ namespace ImprovedPublicTransport2.UI
       if (this._selectedIndex > -1)
         GetPrefabs()[this._selectedIndex].SetDefaults();
       this.UpdateBindings();
+      try
+      {
+        eventSettingsApplied?.Invoke();
+      }
+      catch (Exception e)
+      {
+        UnityEngine.Debug.LogException(e);
+      }
     }
 
     private void SetTransportType(TransportInfo.TransportType transportType, VehicleInfo selectedPrefab = null)
