@@ -124,7 +124,7 @@ namespace ImprovedPublicTransport2.Util
         //based off code in TransportLine.SimulationStep
         public static void RemoveActiveVehicle(ushort lineID, bool descreaseTargetVehicleCount, int activeVehiclesCount)
         {
-            ushort activeVehicle = TransportLineDetour.GetActiveVehicle(
+            ushort activeVehicle = TransportLineReverseDetour.GetActiveVehicle(
                 ref Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID],
                 Singleton<SimulationManager>.instance.m_randomizer.Int32((uint) activeVehiclesCount));
             if ((int) activeVehicle != 0)

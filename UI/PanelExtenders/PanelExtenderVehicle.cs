@@ -10,6 +10,7 @@ using ColossalFramework;
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using ImprovedPublicTransport2.Detour;
+using ImprovedPublicTransport2.HarmonyPatches.TransportLinePatches;
 using ImprovedPublicTransport2.OptionsFramework;
 using ImprovedPublicTransport2.Query;
 using ImprovedPublicTransport2.PersistentData;
@@ -145,8 +146,8 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
             this._status.text = Localization.Get("VEHICLE_PANEL_STATUS_UNBUNCHING");
           this._distance.text = this._status.text;
           var boardingTime = vm.m_vehicles.m_buffer[(int)vehicleID].Info?.m_vehicleType == VehicleInfo.VehicleType.Plane
-            ? TransportLineDetour.AirplaneBoardingTime
-            : TransportLineDetour.BoardingTime;
+            ? CanLeaveStopPatch.AirplaneBoardingTime
+            : CanLeaveStopPatch.BoardingTime;
           
           var timeSinceBoardingFinished = vm.m_vehicles.m_buffer[vehicleID].m_waitCounter - boardingTime;
           float progress;
@@ -156,7 +157,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
           }
           else
           {
-            var maxUnbunchingTime = (float) Mathf.Min(OptionsWrapper<Settings.Settings>.Options.IntervalAggressionFactor, TransportLineDetour.MaxUnbunchingTime);
+            var maxUnbunchingTime = (float) Mathf.Min(OptionsWrapper<Settings.Settings>.Options.IntervalAggressionFactor, CanLeaveStopPatch.MaxUnbunchingTime);
             progress = timeSinceBoardingFinished / maxUnbunchingTime;
           }
           this._distanceTraveled.progressColor = Color.green;
