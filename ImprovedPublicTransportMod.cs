@@ -220,7 +220,6 @@ namespace ImprovedPublicTransport2
             BuildingExtension.Deinit();
             CachedNodeData.Deinit();
             CachedVehicleData.Deinit();
-            VehiclePrefabs.Deinit();
             SerializableDataExtension.instance.Loaded = false;
             LocaleModifier.Deinit();
 

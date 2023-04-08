@@ -30,10 +30,8 @@ namespace ImprovedPublicTransport2.HarmonyPatches.TransportLinePatches
                 return true; //if it's not a proper transport line, let's not modify the behavior
             }
 
-            var name = CachedTransportLineData.EnqueuedVehiclesCount(lineID) > 0
-                ? CachedTransportLineData.Dequeue(lineID)
-                : CachedTransportLineData.GetRandomPrefab(lineID);
-
+            var dequeuedVehicle = CachedTransportLineData.Dequeue(lineID);
+            var name =  dequeuedVehicle ?? CachedTransportLineData.GetRandomPrefab(lineID);
             __result = string.IsNullOrEmpty(name) ? null : PrefabCollection<VehicleInfo>.FindLoaded(name);
             return false;
         }

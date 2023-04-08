@@ -57,7 +57,7 @@ namespace ImprovedPublicTransport2.UI
     protected override void OnMouseEnter(UIMouseEventParameter p)
     {
       StringBuilder stringBuilder = new StringBuilder();
-      stringBuilder.Append(_prefab.GetTooltip());
+      stringBuilder.Append(_prefab.GetDescription());
       stringBuilder.AppendLine();
       if ((int) this.VehicleID != 0)
         stringBuilder.AppendLine(Localization.Get("VEHICLE_LIST_BOX_ROW_TOOLTIP1"));

@@ -56,7 +56,7 @@ namespace ImprovedPublicTransport2.UI
                     VehicleSelection.VehicleListHeight,
                     VehicleSelectionRow.VehicleRowHeight);
                 _vehicleList.EventSelectionChanged +=
-                    (c, selectedItem) => SelectedVehicle = (selectedItem as VehicleItem)?.Info;
+                    (c, selectedItem) => SelectedVehicle = selectedItem as PrefabData;
 
                 // Search field.
                 _nameSearch = UITextFields.AddSmallTextField(_vehicleList, 25f, -23f, VehicleSelection.ListWidth - 25f);
@@ -85,7 +85,7 @@ namespace ImprovedPublicTransport2.UI
         /// <summary>
         /// Sets the currently selected vehicle.
         /// </summary>
-        protected virtual VehicleInfo SelectedVehicle
+        protected virtual PrefabData SelectedVehicle
         {
             set => ParentPanel.SelectedListVehicle = value;
         }
@@ -123,7 +123,7 @@ namespace ImprovedPublicTransport2.UI
             Building[] buildingBuffer = Singleton<BuildingManager>.instance.m_buildings.m_buffer;
 
             // Generated lists.
-            List<VehicleItem> items = new List<VehicleItem>();
+            var items = new List<PrefabData>();
 
             TransportInfo info = TransportManager.instance.m_lines.m_buffer[currentLine].Info;
             ItemClass.SubService subService = info.GetSubService();
@@ -142,17 +142,16 @@ namespace ImprovedPublicTransport2.UI
             var allAvailableVehicles = AvailableVehiclesQuery.Query(triplet);
             allAvailableVehicles.ForEach(data =>
             {
-                if (selectedList != null && selectedList.Contains(data.Info))
+                if (selectedList.Contains(data))
                 {
                     return;
                 }
-
-                var thisItem = new VehicleItem(data.Info);
-                if (!NameFilter(thisItem.Name))
+                
+                if (!NameFilter(data.DisplayName))
                 {
                     return;
                 }
-                items.Add(thisItem);
+                items.Add(data);
             });
 
             // Set display list items, without changing the display.

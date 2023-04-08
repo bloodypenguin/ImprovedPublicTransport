@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace ImprovedPublicTransport2.Query
 {
     public static class QueuedVehicleQuery
     {
+        [NotNull]
         public static List<PrefabData> Query(ushort lineID, ItemClassTriplet classTriplet)
         {
             var result = new List<PrefabData>();
@@ -13,7 +15,7 @@ namespace ImprovedPublicTransport2.Query
             {
                 foreach (var data in prefabs)
                 {
-                    if (data.ObjectName != str)
+                    if (data.Name != str)
                     {
                         continue;
                     }

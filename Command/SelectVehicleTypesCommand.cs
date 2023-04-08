@@ -9,14 +9,14 @@ namespace ImprovedPublicTransport2.Command
 {
     public static class SelectVehicleTypesCommand
     {
-        public static void Execute([NotNull] IEnumerable<VehicleInfo> selectedVehicleInfos)
+        public static void Execute([NotNull] IEnumerable<PrefabData> selectedVehicleInfos)
         {
             var lineId = WorldInfoCurrentLineIDQuery.Query(out _);
             if (lineId == 0)
             {
                 return;
             }
-            var selectedItems = new HashSet<string>(selectedVehicleInfos.Select(v => v.name).Distinct().ToArray());
+            var selectedItems = new HashSet<string>(selectedVehicleInfos.Select(v => v.Info.name).Distinct().ToArray());
             CachedTransportLineData.SetPrefabs(lineId, selectedItems.Count == 0 ? null : selectedItems);
             Singleton<SimulationManager>.instance.AddAction(() => ReplaceVehicles(lineId));
         }

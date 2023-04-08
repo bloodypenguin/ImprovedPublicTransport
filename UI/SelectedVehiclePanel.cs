@@ -51,7 +51,7 @@ namespace ImprovedPublicTransport2.UI
         /// <summary>
         /// Sets the currently selected vehicle.
         /// </summary>
-        protected override VehicleInfo SelectedVehicle
+        protected override PrefabData SelectedVehicle
         {
             set => ParentPanel.SelectedLineVehicle = value;
         }
@@ -61,29 +61,27 @@ namespace ImprovedPublicTransport2.UI
         /// </summary>
         protected override void PopulateList()
         {
-            List<VehicleItem> items = new List<VehicleItem>();
+            var items = new List<PrefabData>();
             var lineVehicles = SelectedVehicleTypesQuery.Query(ParentPanel.CurrentLine);
 
             // Any selected vehicles?
-            if (lineVehicles != null && lineVehicles.Count > 0)
+            if (lineVehicles is { Count: > 0 })
             {
                 // Yes - hide random panel.
                 _randomPanel.Hide();
 
                 // Generate filtered display list.
-                foreach (VehicleInfo vehicle in lineVehicles)
+                foreach (var vehicle in lineVehicles)
                 {
-                    // Generate vehicle record for name filtering.
-                    VehicleItem thisItem = new VehicleItem(vehicle);
 
                     // Apply name filter.
-                    if (!NameFilter(thisItem.Name))
+                    if (!NameFilter(vehicle.DisplayName))
                     {
                         continue;
                     }
 
                     // Name filter passed - add to available list.
-                    items.Add(thisItem);
+                    items.Add(vehicle);
                 }
             }
             else
@@ -98,7 +96,7 @@ namespace ImprovedPublicTransport2.UI
             // Set display list items, without changing the display.
             VehicleList.Data = new FastList<object>
             {
-                m_buffer = items.OrderBy(x => x.Name).ToArray(),
+                m_buffer = items.OrderBy(x => x.DisplayName).ToArray(),
                 m_size = items.Count,
             };
         }

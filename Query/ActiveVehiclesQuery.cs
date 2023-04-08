@@ -41,7 +41,7 @@ namespace ImprovedPublicTransport2.Query
                 var info = Singleton<VehicleManager>.instance.m_vehicles.m_buffer[vehicle].Info;
                 foreach (var data in prefabs)
                 {
-                    if (info.name != data.ObjectName)
+                    if (info.name != data.Name)
                     {
                         continue;
                     }
