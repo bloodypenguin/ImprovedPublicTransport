@@ -311,7 +311,7 @@ namespace ImprovedPublicTransport2
 
         public static string Dequeue(ushort lineID)
         {
-            if (_lineData[lineID].QueuedVehicles == null)
+            if (_lineData[lineID].QueuedVehicles is not { Count: not 0 })
             {
                 return null;
             }
@@ -321,15 +321,18 @@ namespace ImprovedPublicTransport2
 
         public static void DequeueVehicle(ushort lineID)
         {
-            if (_lineData[lineID].QueuedVehicles == null)
+            if (_lineData[lineID].QueuedVehicles is not { Count: not 0 })
+            {
                 return;
+            }
+
             DecreaseTargetVehicleCount(lineID);
             Dequeue(lineID);
         }
 
         public static void DequeueVehicles(ushort lineID, int[] indexes, bool decreaseVehicleCount = true)
         {
-            if (_lineData[lineID].QueuedVehicles == null)
+            if (_lineData[lineID].QueuedVehicles is not { Count: not 0 })
             {
                 return;
             }
@@ -350,7 +353,7 @@ namespace ImprovedPublicTransport2
 
         public static string[] GetEnqueuedVehicles(ushort lineID)
         {
-            if (_lineData[lineID].QueuedVehicles == null)
+            if (_lineData[lineID].QueuedVehicles is not { Count: not 0 })
                 return new string[0];
             lock (_lineData[lineID].QueuedVehicles)
                 return _lineData[lineID].QueuedVehicles.ToArray();
