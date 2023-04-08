@@ -43,6 +43,8 @@ namespace ImprovedPublicTransport2.UI
 
                     // Add panel and set parent transform.
                     s_panel = s_gameObject.AddComponent<PrefabPanel>();
+                    ImprovedPublicTransportMod._iptGameObject.GetComponent<VehicleEditor>().eventSettingsApplied +=
+                        OnEventSettingsApplied;
 
                     // Show panel.
                     Panel.Show();
@@ -63,6 +65,9 @@ namespace ImprovedPublicTransport2.UI
             {
                 return;
             }
+
+            ImprovedPublicTransportMod._iptGameObject.GetComponent<VehicleEditor>().eventSettingsApplied -=
+                OnEventSettingsApplied;
             GameObject.Destroy(s_panel);
             GameObject.Destroy(s_gameObject);
 
@@ -84,6 +89,11 @@ namespace ImprovedPublicTransport2.UI
 
             // Set the target.
             Panel.SetTarget(lineID);
+        }
+        
+        private static void OnEventSettingsApplied()
+        {
+            s_panel.SetTarget(s_panel.CurrentLineID);
         }
     }
 }
