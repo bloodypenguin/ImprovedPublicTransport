@@ -117,9 +117,10 @@ namespace ImprovedPublicTransport2
                     LineWatcher.instance.Init();
 
                     CachedTransportLineData.Init();
-                    Redirector<TransportLineDetour>.Deploy();
+                    Redirector<TransportLineReverseDetour>.Deploy();
                     SimulationStepPatch.Apply();
                     GetLineVehiclePatch.Apply();
+                    CanLeaveStopPatch.Apply();
 
                     VehiclePrefabs.Init();
                     SerializableDataExtension.instance.Loaded = true;
@@ -214,9 +215,10 @@ namespace ImprovedPublicTransport2
             Redirector<TrolleybusAIDetour>.Revert();
             Redirector<PassengerHelicopterAIDetour>.Revert();
 
-            Redirector<TransportLineDetour>.Revert();
+            Redirector<TransportLineReverseDetour>.Revert();
             SimulationStepPatch.Undo();
             GetLineVehiclePatch.Undo();
+            CanLeaveStopPatch.Undo();
             CachedTransportLineData.Deinit();
 
             BuildingExtension.Deinit();

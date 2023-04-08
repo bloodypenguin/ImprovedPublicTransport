@@ -1,4 +1,5 @@
 ﻿using ColossalFramework;
+using ImprovedPublicTransport2.HarmonyPatches.TransportLinePatches;
 using ImprovedPublicTransport2.RedirectionFramework.Attributes;
 using ImprovedPublicTransport2.PersistentData;
 
@@ -10,7 +11,7 @@ namespace ImprovedPublicTransport2.Detour.Vehicles
         [RedirectMethod]
         public override bool CanLeave(ushort vehicleID, ref Vehicle vehicleData)
         {
-            if ((int)vehicleData.m_leadingVehicle == 0 && (int)vehicleData.m_waitCounter < TransportLineDetour.BoardingTime ||
+            if ((int)vehicleData.m_leadingVehicle == 0 && (int)vehicleData.m_waitCounter < CanLeaveStopPatch.BoardingTime ||
                 !base.CanLeave(vehicleID, ref vehicleData))
             {
                 //begin mod(+): track if unbunching happens

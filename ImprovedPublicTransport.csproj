@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="BuildingExtension.cs" />
     <Compile Include="Command\SelectVehicleTypesCommand.cs" />
+    <Compile Include="HarmonyPatches\TransportLinePatches\CanLeaveStopPatch.cs" />
     <Compile Include="PersistentData\CachedNodeData.cs" />
     <Compile Include="PersistentData\CachedTransportLineData.cs" />
     <Compile Include="PersistentData\CachedVehicleData.cs" />
@@ -196,7 +197,7 @@
     <Compile Include="Util\VehicleUtil.cs" />
     <Compile Include="LineWatcher.cs" />
     <Compile Include="SimHelper.cs" />
-    <Compile Include="Detour\TransportLineDetour.cs" />
+    <Compile Include="Detour\TransportLineReverseDetour.cs" />
     <Compile Include="ImprovedPublicTransportMod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
