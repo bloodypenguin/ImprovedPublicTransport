@@ -61,8 +61,8 @@ namespace ImprovedPublicTransport2.UI
         private PreviewPanel _previewPanel;
 
         // Currently selected vehicles.
-        private VehicleInfo _selectedLineVehicle;
-        private VehicleInfo _selectedAvailableVehicle;
+        private PrefabData _selectedLineVehicle;
+        private PrefabData _selectedAvailableVehicle;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VehicleSelection"/> class.
@@ -149,7 +149,7 @@ namespace ImprovedPublicTransport2.UI
         /// <summary>
         /// Sets the currently selected vehicle from the list of currently selected vehicles.
         /// </summary>
-        internal VehicleInfo SelectedLineVehicle
+        internal PrefabData SelectedLineVehicle
         {
             set
             {
@@ -160,7 +160,7 @@ namespace ImprovedPublicTransport2.UI
                     // Clear other vehicle list selection if this is active.
                     _availableVehiclePanel.ClearSelection();
                     _previewPanel.lineColor = TransportManager.instance.m_lines.m_buffer[CurrentLine].m_color;
-                    _previewPanel.SetTarget(value);
+                    _previewPanel.SetTarget(value.Info);
                 }
                 else
                 {
@@ -176,7 +176,7 @@ namespace ImprovedPublicTransport2.UI
         /// <summary>
         /// Sets the currently selected vehicle from the list of all currently unselected vehicles.
         /// </summary>
-        internal VehicleInfo SelectedListVehicle
+        internal PrefabData SelectedListVehicle
         {
             set
             {
@@ -187,7 +187,7 @@ namespace ImprovedPublicTransport2.UI
                     // Clear other vehicle list selection if this is active.
                     _selectedVehiclePanel.ClearSelection();
                     _previewPanel.lineColor = TransportManager.instance.m_lines.m_buffer[CurrentLine].m_color;
-                    _previewPanel.SetTarget(value);
+                    _previewPanel.SetTarget(value.Info);
                 }
                 else
                 {
@@ -257,13 +257,13 @@ namespace ImprovedPublicTransport2.UI
         /// Adds a vehicle to the list for this line.
         /// </summary>
         /// <param name="vehicle">Vehicle prefab to add.</param>
-        private void AddVehicle([CanBeNull] VehicleInfo vehicle)
+        private void AddVehicle([CanBeNull] PrefabData vehicle)
         {
             if (vehicle == null)
             {
                 return;
             }
-            var vehicleInfos = Query.SelectedVehicleTypesQuery.Query(CurrentLine) ?? new List<VehicleInfo>();
+            var vehicleInfos = Query.SelectedVehicleTypesQuery.Query(CurrentLine);
             vehicleInfos.Add(vehicle);
             Command.SelectVehicleTypesCommand.Execute(vehicleInfos);
             Refresh();
@@ -278,7 +278,7 @@ namespace ImprovedPublicTransport2.UI
             {
                 return;
             }
-            var vehicleInfos = Query.SelectedVehicleTypesQuery.Query(CurrentLine) ?? new List<VehicleInfo>();
+            var vehicleInfos = Query.SelectedVehicleTypesQuery.Query(CurrentLine);
             vehicleInfos.Remove(_selectedLineVehicle);
             Command.SelectVehicleTypesCommand.Execute(vehicleInfos);
             Refresh();
@@ -289,10 +289,10 @@ namespace ImprovedPublicTransport2.UI
         /// </summary>
         private void AddAllVehicles()
         {
-            var vehicleInfos = Query.SelectedVehicleTypesQuery.Query(CurrentLine) ?? new List<VehicleInfo>();
-            foreach (VehicleItem item in _availableVehiclePanel.VehicleList.Data)
+            var vehicleInfos = Query.SelectedVehicleTypesQuery.Query(CurrentLine);
+            foreach (PrefabData item in _availableVehiclePanel.VehicleList.Data)
             {
-                vehicleInfos.Add(item.Info);
+                vehicleInfos.Add(item);
             }
             Command.SelectVehicleTypesCommand.Execute(vehicleInfos);
             Refresh();
@@ -303,7 +303,7 @@ namespace ImprovedPublicTransport2.UI
         /// </summary>
         private void RemoveAllVehicles()
         {
-            Command.SelectVehicleTypesCommand.Execute(new List<VehicleInfo>());
+            Command.SelectVehicleTypesCommand.Execute(new List<PrefabData>());
             Refresh();
         }
     }

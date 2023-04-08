@@ -348,22 +348,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
 
     private void UpdatePanelPositionAndSize()
     {
-      float num = 0.0f;
-      // if (_prefabPanel.isVisible)
-      //   num = _prefabPanel.width + 1f;
-      _lineVehiclePanel.relativePosition = new Vector3((float) (num + (double) _lineVehiclePanel.parent.width + 1.0), 0.0f);
-      if (_lineVehiclePanel.isVisible)
-      {
-        _vehiclesInQueuePanel.relativePosition = new Vector3((float) (num + (double) _vehiclesInQueuePanel.parent.width + 1.0), _lineVehiclePanel.height + 1f);
-        _vehiclesInQueuePanel.height = (float) ((PARENT_HEIGHT - 16.0) * 0.5);
-        _vehiclesInQueueListBox.height = 162f;
-      }
-      else
-      {
-        _vehiclesInQueuePanel.relativePosition = new Vector3((float) (num + (double) _vehiclesInQueuePanel.parent.width + 1.0), 0.0f);
-        _vehiclesInQueuePanel.height = PARENT_HEIGHT - 16f;
-        _vehiclesInQueueListBox.height = PARENT_HEIGHT - 61f;
-      }
+      _lineVehiclePanel.relativePosition = new Vector3((float) (_lineVehiclePanel.parent.width + 1.0), 0.0f);
       if (_vehiclesInQueuePanel.isVisible)
       {
         _lineVehiclePanel.height = (float) ((PARENT_HEIGHT - 16.0) * 0.5);
@@ -374,6 +359,19 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
         _lineVehiclePanel.height = PARENT_HEIGHT - 16f;
         _lineVehicleListBox.height = PARENT_HEIGHT - 61f;
       }
+      if (_lineVehiclePanel.isVisible)
+      {
+        _vehiclesInQueuePanel.relativePosition = new Vector3((float) (_vehiclesInQueuePanel.parent.width + 1.0), _lineVehiclePanel.height + 1f);
+        _vehiclesInQueuePanel.height = (float) ((PARENT_HEIGHT - 16.0) * 0.5);
+        _vehiclesInQueueListBox.height = 162f;
+      }
+      else
+      {
+        _vehiclesInQueuePanel.relativePosition = new Vector3((float) (_vehiclesInQueuePanel.parent.width + 1.0), 0.0f);
+        _vehiclesInQueuePanel.height = PARENT_HEIGHT - 16f;
+        _vehiclesInQueueListBox.height = PARENT_HEIGHT - 61f;
+      }
+
     }
 
     private void OnDestroy()
@@ -748,7 +746,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
                 string prefabName =
                     !(component as VehicleListBoxRow != null)
                         ? CachedTransportLineData.GetRandomPrefab(lineId)
-                        : (component as VehicleListBoxRow).Prefab.ObjectName;
+                        : (component as VehicleListBoxRow).Prefab.Name;
                 CachedTransportLineData.EnqueueVehicle(lineId, prefabName); //we need to enqueue vehicle first
                 CachedTransportLineData.IncreaseTargetVehicleCount(lineId);
             }
@@ -767,7 +765,9 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
             int[] selectedIndexes = _vehiclesInQueueListBox.SelectedIndexes;
             HashSet<ushort> selectedVehicles = _lineVehicleListBox.SelectedVehicles;
             if (selectedIndexes.Length != 0)
-                CachedTransportLineData.DequeueVehicles(lineId, selectedIndexes);
+            {
+              CachedTransportLineData.DequeueVehicles(lineId, selectedIndexes);
+            }
             else if (selectedVehicles.Count > 0)
             {
                 foreach (ushort vehicleID in selectedVehicles)

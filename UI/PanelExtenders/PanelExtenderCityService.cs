@@ -115,7 +115,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
                   for (int index = 0; index < prefabs.Length; ++index)
                   {
                     PrefabData data = prefabs[index];
-                    if (info.name == data.ObjectName)
+                    if (info.name == data.Name)
                     {
                       this._vehicleListBox.AddItem(data, vehicleID);
                       break;

@@ -1,16 +1,21 @@
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace ImprovedPublicTransport2.Query
 {
     public static class SelectedVehicleTypesQuery
     {
 
-        // When returns null, it means random
-        public static List<VehicleInfo> Query(ushort lineID)
+        [NotNull]
+        public static List<PrefabData> Query(ushort lineID)
         {
             var prefabs = CachedTransportLineData._lineData[lineID].Prefabs;
-            return prefabs?.Select(PrefabCollection<VehicleInfo>.FindLoaded).Where(p => p != null)
+            if (prefabs == null)
+            {
+                return new List<PrefabData>();
+            }
+            return prefabs.Select(name => VehiclePrefabs.instance.FindByName(name)).Where(p => p != null)
                 .ToList();
         }
     }

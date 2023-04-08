@@ -1,11 +1,5 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: ImprovedPublicTransport.LineData
-// Assembly: ImprovedPublicTransport, Version=1.0.6177.17409, Culture=neutral, PublicKeyToken=null
-// MVID: 76F370C5-F40B-41AE-AA9D-1E3F87E934D3
-// Assembly location: C:\Games\Steam\steamapps\workshop\content\255710\424106600\ImprovedPublicTransport.dll
-
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace ImprovedPublicTransport2
 {
@@ -25,16 +19,10 @@ namespace ImprovedPublicTransport2
 
     public ushort Depot { get; set; }
 
+    [CanBeNull]
     public HashSet<string> Prefabs { get; set; }
 
+    [CanBeNull]
     public Queue<string> QueuedVehicles { get; set; }
-
-
-    
-    public List<VehicleInfo> QueuedVehiclesList()
-    {
-      return QueuedVehicles.Select(PrefabCollection<VehicleInfo>.FindLoaded).Where(p => p != null)
-        .ToList();
-    }
   }
 }

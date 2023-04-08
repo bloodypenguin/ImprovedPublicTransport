@@ -178,7 +178,6 @@
     <Compile Include="UI\StopListBox.cs" />
     <Compile Include="UI\StopListBoxRow.cs" />
     <Compile Include="UI\VehicleEditor.cs" />
-    <Compile Include="UI\VehicleItem.cs" />
     <Compile Include="UI\VehicleListBox.cs" />
     <Compile Include="UI\VehicleListBoxRow.cs" />
     <Compile Include="UI\VehicleSelection.cs" />

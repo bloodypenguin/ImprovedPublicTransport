@@ -11,6 +11,7 @@ using System.Text;
 using System.Xml.Serialization;
 using ColossalFramework.Globalization;
 using ImprovedPublicTransport2.OptionsFramework;
+using ImprovedPublicTransport2.UI.AlgernonCommons;
 using UnityEngine;
 using Utils = ImprovedPublicTransport2.Util.Utils;
 
@@ -19,44 +20,21 @@ namespace ImprovedPublicTransport2
   public class PrefabData
   {
     private bool _saveToXml = true;
-    private VehicleInfo _info;
     private VehicleInfo.VehicleTrailer _lastTrailer;
     private PrefabData[] _trailerData;
-    private PrefabData.DefaultPrefabData Defaults;
+    private DefaultPrefabData Defaults;
     private bool _changeFlag;
     private int _maintenanceCost;
 
-    public int PrefabDataIndex
-    {
-      get
-      {
-        return this._info.m_prefabDataIndex;
-      }
-    }
+    public int PrefabDataIndex => Info.m_prefabDataIndex;
 
-    public VehicleInfo Info
-    {
-      get
-      {
-        return this._info;
-      }
-    }
+    public VehicleInfo Info { get; private set; }
 
-    public string ObjectName
-    {
-      get
-      {
-        return this._info.name;
-      }
-    }
+    public string Name => Info.name;
 
-    public string Title
-    {
-      get
-      {
-        return ColossalFramework.Globalization.Locale.Get("VEHICLE_TITLE", PrefabCollection<VehicleInfo>.PrefabName((uint) this.PrefabDataIndex));
-      }
-    }
+    public string DisplayName { get; }
+
+    public string Title => Locale.Get("VEHICLE_TITLE", PrefabCollection<VehicleInfo>.PrefabName((uint) this.PrefabDataIndex));
 
     public int TotalCapacity
     {
@@ -68,7 +46,7 @@ namespace ImprovedPublicTransport2
           for (int index = 0; index < this._trailerData.Length; ++index)
             num += this._trailerData[index].Capacity;
         }
-        return num + PrefabData.GetCapacity(this._info.m_class.m_service, this._info.m_class.m_subService, this._info.m_class.m_level, this._info.m_vehicleAI);
+        return num + PrefabData.GetCapacity(this.Info.m_class.m_service, this.Info.m_class.m_subService, this.Info.m_class.m_level, this.Info.m_vehicleAI);
       }
     }
 
@@ -76,7 +54,7 @@ namespace ImprovedPublicTransport2
     {
       get
       {
-        return PrefabData.GetCapacity(this._info.m_class.m_service, this._info.m_class.m_subService, this._info.m_class.m_level, this._info.m_vehicleAI);
+        return PrefabData.GetCapacity(this.Info.m_class.m_service, this.Info.m_class.m_subService, this.Info.m_class.m_level, this.Info.m_vehicleAI);
       }
       set
       {
@@ -87,8 +65,8 @@ namespace ImprovedPublicTransport2
           for (int index = 0; index < this._trailerData.Length; ++index)
             this._trailerData[index].Capacity = value;
         }
-        PrefabData.SetCapacity(this._info.m_class.m_service, this._info.m_class.m_subService, this._info.m_class.m_level, this._info.m_vehicleAI, value);
-        if (this._info.m_class.m_subService != ItemClass.SubService.PublicTransportTaxi)
+        PrefabData.SetCapacity(this.Info.m_class.m_service, this.Info.m_class.m_subService, this.Info.m_class.m_level, this.Info.m_vehicleAI, value);
+        if (this.Info.m_class.m_subService != ItemClass.SubService.PublicTransportTaxi)
           this.EnsureCitizenUnits();
         this._changeFlag = true;
       }
@@ -103,7 +81,7 @@ namespace ImprovedPublicTransport2
         {
           for (int index = 0; index < this._trailerData.Length; ++index)
           {
-            if (this._trailerData[index].Info.GetSubService() == this._info.GetSubService())
+            if (this._trailerData[index].Info.GetSubService() == this.Info.GetSubService())
               ++num;
           }
         }
@@ -115,13 +93,13 @@ namespace ImprovedPublicTransport2
     {
       get
       {
-        return (int) this._info.m_maxSpeed;
+        return (int) this.Info.m_maxSpeed;
       }
       set
       {
         if (this.MaxSpeed == value)
           return;
-        this._info.m_maxSpeed = (float) value;
+        this.Info.m_maxSpeed = (float) value;
         this._changeFlag = true;
       }
     }
@@ -130,9 +108,9 @@ namespace ImprovedPublicTransport2
     {
       get
       {
-        ItemClass.Service service = this._info.GetService();
-        ItemClass.SubService subService = this._info.GetSubService();
-        ItemClass.Level level = this._info.GetClassLevel();
+        ItemClass.Service service = this.Info.GetService();
+        ItemClass.SubService subService = this.Info.GetSubService();
+        ItemClass.Level level = this.Info.GetClassLevel();
         switch (subService)
         {
           case ItemClass.SubService.PublicTransportBus:
@@ -146,8 +124,8 @@ namespace ImprovedPublicTransport2
           case ItemClass.SubService.PublicTransportTrolleybus:
             if (this._maintenanceCost == 0)
             {
-              float num = (float) this.TotalCapacity / (float) this.CarCount / (float) GameDefault.GetCapacity(service, subService, level, _info.m_vehicleType);
-              this.MaintenanceCost = Mathf.RoundToInt((float) (PrefabData.GetMaintenanceCost(service, subService, level, this._info.m_vehicleAI) * 16) * num);
+              float num = (float) this.TotalCapacity / (float) this.CarCount / (float) GameDefault.GetCapacity(service, subService, level, Info.m_vehicleType);
+              this.MaintenanceCost = Mathf.RoundToInt((float) (PrefabData.GetMaintenanceCost(service, subService, level, this.Info.m_vehicleAI) * 16) * num);
             }
             return this._maintenanceCost;
           default:
@@ -167,33 +145,33 @@ namespace ImprovedPublicTransport2
     {
       get
       {
-        if (this._info.GetSubService() != ItemClass.SubService.PublicTransportTrain || this._info.m_trailers == null)
+        if (this.Info.GetSubService() != ItemClass.SubService.PublicTransportTrain || this.Info.m_trailers == null)
           return false;
-        int length = this._info.m_trailers.Length;
-        return length > 0 && (UnityEngine.Object) this._info.m_trailers[length - 1].m_info == (UnityEngine.Object) this._info;
+        int length = this.Info.m_trailers.Length;
+        return length > 0 && (UnityEngine.Object) this.Info.m_trailers[length - 1].m_info == (UnityEngine.Object) this.Info;
       }
       set
       {
-        if (this._info.m_trailers == null || this._info.GetSubService() != ItemClass.SubService.PublicTransportTrain || this.EngineOnBothEnds == value)
+        if (this.Info.m_trailers == null || this.Info.GetSubService() != ItemClass.SubService.PublicTransportTrain || this.EngineOnBothEnds == value)
           return;
-        int length = this._info.m_trailers.Length;
+        int length = this.Info.m_trailers.Length;
         if (length <= 1)
           return;
-        if (value && (UnityEngine.Object) this._info.m_trailers[length - 1].m_info != (UnityEngine.Object) this._info)
+        if (value && (UnityEngine.Object) this.Info.m_trailers[length - 1].m_info != (UnityEngine.Object) this.Info)
         {
-          Utils.Log((object) ("Replacing last trailer with engine and inverting it for " + this.ObjectName));
-          this._info.m_trailers[length - 1].m_info = this._info;
-          this._info.m_trailers[length - 1].m_invertProbability = 100;
-          this.ApplyBackEngine(this._info, 100);
+          Utils.Log((object) ("Replacing last trailer with engine and inverting it for " + this.Name));
+          this.Info.m_trailers[length - 1].m_info = this.Info;
+          this.Info.m_trailers[length - 1].m_invertProbability = 100;
+          this.ApplyBackEngine(this.Info, 100);
           this._changeFlag = true;
         }
         else
         {
           if (value)
             return;
-          Utils.Log((object) ("Reverting last trailer setting for " + this.ObjectName));
-          this._info.m_trailers[length - 1].m_info = this._lastTrailer.m_info;
-          this._info.m_trailers[length - 1].m_invertProbability = this._lastTrailer.m_invertProbability;
+          Utils.Log((object) ("Reverting last trailer setting for " + this.Name));
+          this.Info.m_trailers[length - 1].m_info = this._lastTrailer.m_info;
+          this.Info.m_trailers[length - 1].m_invertProbability = this._lastTrailer.m_invertProbability;
           this.ApplyBackEngine(this._lastTrailer.m_info, this._lastTrailer.m_invertProbability);
           this._changeFlag = true;
         }
@@ -202,45 +180,46 @@ namespace ImprovedPublicTransport2
 
     public PrefabData(VehicleInfo info)
     {
-      this._info = info;
-      Utils.Log((object) ("Creating PrefabData for " + this.ObjectName));
-      if (this.ObjectName == "451494281.London 1992 Stock (4 car)_Data")
+      this.Info = info;
+      DisplayName = PrefabUtils.GetDisplayName(info);
+      Utils.Log((object) ("Creating PrefabData for " + this.Name));
+      if (this.Name == "451494281.London 1992 Stock (4 car)_Data")
       {
         int length = 3;
-        this._info.m_trailers = new VehicleInfo.VehicleTrailer[length];
+        this.Info.m_trailers = new VehicleInfo.VehicleTrailer[length];
         for (int index = 0; index < length; ++index)
         {
-          this._info.m_trailers[index].m_info = this._info;
-          this._info.m_trailers[index].m_invertProbability = 50;
-          this._info.m_trailers[index].m_probability = 100;
+          this.Info.m_trailers[index].m_info = this.Info;
+          this.Info.m_trailers[index].m_invertProbability = 50;
+          this.Info.m_trailers[index].m_probability = 100;
         }
       }
-      else if (this.ObjectName.Contains("D3S Solaris Urbino 24 '15") && this._info.m_trailers != null && this._info.m_trailers.Length != 0)
+      else if (this.Name.Contains("D3S Solaris Urbino 24 '15") && this.Info.m_trailers != null && this.Info.m_trailers.Length != 0)
       {
-        this._info.m_dampers = 0.6f;
-        VehicleInfo loaded = PrefabCollection<VehicleInfo>.FindLoaded(this.ObjectName.Substring(0, this.ObjectName.IndexOf(".")) + ".D3S Solaris Urbino 24 '15 (II)_Data");
+        this.Info.m_dampers = 0.6f;
+        VehicleInfo loaded = PrefabCollection<VehicleInfo>.FindLoaded(this.Name.Substring(0, this.Name.IndexOf(".")) + ".D3S Solaris Urbino 24 '15 (II)_Data");
         if ((UnityEngine.Object) loaded != (UnityEngine.Object) null)
         {
-          Utils.Log((object) ("Fixing " + this.ObjectName));
-          this._info.m_trailers[0].m_info.m_dampers = 0.6f;
+          Utils.Log((object) ("Fixing " + this.Name));
+          this.Info.m_trailers[0].m_info.m_dampers = 0.6f;
           loaded.m_attachOffsetFront = 1.07f;
           loaded.m_dampers = 0.6f;
-          this._info.m_trailers[1].m_info = loaded;
-          this._info.m_trailers[1].m_invertProbability = 0;
-          this._info.m_trailers[1].m_probability = 100;
+          this.Info.m_trailers[1].m_info = loaded;
+          this.Info.m_trailers[1].m_invertProbability = 0;
+          this.Info.m_trailers[1].m_probability = 100;
           this.ApplyBackEngine(loaded, 0);
         }
       }
-      if (this._info.m_trailers != null)
+      if (this.Info.m_trailers != null)
       {
-        int length = this._info.m_trailers.Length;
+        int length = this.Info.m_trailers.Length;
         if (length > 0)
         {
-          this._lastTrailer = this._info.m_trailers[length - 1];
+          this._lastTrailer = this.Info.m_trailers[length - 1];
           this._trailerData = new PrefabData[length];
           for (int index = 0; index < length; ++index)
           {
-            VehicleInfo info1 = this._info.m_trailers[index].m_info;
+            VehicleInfo info1 = this.Info.m_trailers[index].m_info;
             if ((UnityEngine.Object) info1 != (UnityEngine.Object) null)
               this._trailerData[index] = PrefabData.CreateTrailerData(info1);
           }
@@ -500,15 +479,15 @@ namespace ImprovedPublicTransport2
         string str = "IptVehicleData";
         if (!Directory.Exists(str))
           Directory.CreateDirectory(str);
-        string path2 = Utils.RemoveInvalidFileNameChars(this.ObjectName + ".xml");
+        string path2 = Utils.RemoveInvalidFileNameChars(this.Name + ".xml");
         string path = System.IO.Path.Combine(str, path2);
         if (!File.Exists(path))
         {
-          Utils.Log((object) ("No stored data found for " + this.ObjectName));
+          Utils.Log((object) ("No stored data found for " + this.Name));
         }
         else
         {
-          Utils.Log((object) ("Found stored data for " + this.ObjectName));
+          Utils.Log((object) ("Found stored data for " + this.Name));
           using (StreamReader streamReader = new StreamReader(path))
           {
             PrefabData.DefaultPrefabData defaultPrefabData = (PrefabData.DefaultPrefabData) new XmlSerializer(typeof (PrefabData.DefaultPrefabData)).Deserialize((TextReader) streamReader);
@@ -535,7 +514,7 @@ namespace ImprovedPublicTransport2
         string str = "IptVehicleData";
         if (!Directory.Exists(str))
           Directory.CreateDirectory(str);
-        string path2 = Utils.RemoveInvalidFileNameChars(this.ObjectName + ".xml");
+        string path2 = Utils.RemoveInvalidFileNameChars(this.Name + ".xml");
         string path = System.IO.Path.Combine(str, path2);
         PrefabData.DefaultPrefabData defaultPrefabData = new PrefabData.DefaultPrefabData();
         defaultPrefabData.Capacity = this.Capacity;
@@ -621,7 +600,7 @@ namespace ImprovedPublicTransport2
         data.m_citizenUnits = firstUnit1;
     }
     
-    public string GetTooltip()
+    public string GetDescription()
     {
       var stringBuilder = new StringBuilder();
       stringBuilder.AppendLine(Title);
@@ -641,10 +620,41 @@ namespace ImprovedPublicTransport2
     private static PrefabData CreateTrailerData(VehicleInfo info)
     {
       PrefabData prefabData = new PrefabData();
-      prefabData._info = info;
+      prefabData.Info = info;
       prefabData._saveToXml = false;
       prefabData.CacheDefaults();
       return prefabData;
+    }
+
+    
+    public static bool operator ==(PrefabData obj1, PrefabData obj2)
+    {
+      if (ReferenceEquals(obj1, obj2)) 
+        return true;
+      if (ReferenceEquals(obj1, null)) 
+        return false;
+      if (ReferenceEquals(obj2, null))
+        return false;
+      return obj1.Equals(obj2);
+    }
+    
+    public static bool operator !=(PrefabData obj1, PrefabData obj2) => !(obj1 == obj2);
+    public bool Equals(PrefabData other)
+    {
+      return Equals(Info, other.Info);
+    }
+
+    public override bool Equals(object obj)
+    {
+      if (ReferenceEquals(null, obj)) return false;
+      if (ReferenceEquals(this, obj)) return true;
+      if (obj.GetType() != this.GetType()) return false;
+      return Equals((PrefabData)obj);
+    }
+
+    public override int GetHashCode()
+    {
+      return (Info != null ? Info.GetHashCode() : 0);
     }
 
     [XmlRoot("PrefabData")]

@@ -299,7 +299,7 @@ namespace ImprovedPublicTransport2
                 .Info.m_class;
             var prefabs = VehiclePrefabs.instance.GetPrefabs(itemClass.m_service, itemClass.m_subService, itemClass.m_level);
             var index1 = Singleton<SimulationManager>.instance.m_randomizer.Int32((uint) prefabs.Length);
-            return prefabs[index1].ObjectName;
+            return prefabs[index1].Name;
         }
 
         public static void EnqueueVehicle(ushort lineID, string prefabName)
@@ -311,6 +311,10 @@ namespace ImprovedPublicTransport2
 
         public static string Dequeue(ushort lineID)
         {
+            if (_lineData[lineID].QueuedVehicles == null)
+            {
+                return null;
+            }
             lock (_lineData[lineID].QueuedVehicles)
                 return _lineData[lineID].QueuedVehicles.Dequeue();
         }
@@ -325,6 +329,10 @@ namespace ImprovedPublicTransport2
 
         public static void DequeueVehicles(ushort lineID, int[] indexes, bool decreaseVehicleCount = true)
         {
+            if (_lineData[lineID].QueuedVehicles == null)
+            {
+                return;
+            }
             lock (_lineData[lineID].QueuedVehicles)
             {
                 var stringList = new List<string>(

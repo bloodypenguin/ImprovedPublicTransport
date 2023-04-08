@@ -95,7 +95,7 @@ namespace ImprovedPublicTransport2.UI
         {
           VehicleListBoxRow vehicleListBoxRow = this._items[index];
           if (vehicleListBoxRow.IsSelected)
-            stringSet.Add(vehicleListBoxRow.Prefab.ObjectName);
+            stringSet.Add(vehicleListBoxRow.Prefab.Name);
         }
         return stringSet;
       }
@@ -106,7 +106,7 @@ namespace ImprovedPublicTransport2.UI
         for (int index = 0; index < this._items.Length; ++index)
         {
           VehicleListBoxRow vehicleListBoxRow = this._items[index];
-          if (value.Contains(vehicleListBoxRow.Prefab.ObjectName))
+          if (value.Contains(vehicleListBoxRow.Prefab.Name))
             vehicleListBoxRow.IsSelected = true;
         }
       }
@@ -120,7 +120,7 @@ namespace ImprovedPublicTransport2.UI
         for (int index = 0; index < this._items.Length; ++index)
         {
           VehicleListBoxRow vehicleListBoxRow = this._items[index];
-          stringSet.Add(vehicleListBoxRow.Prefab.ObjectName);
+          stringSet.Add(vehicleListBoxRow.Prefab.Name);
         }
         return stringSet;
       }
