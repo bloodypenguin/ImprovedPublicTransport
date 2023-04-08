@@ -31,9 +31,9 @@ namespace ImprovedPublicTransport2.Util
                 Debug.Log($"IPT 2: Patching method {original.Type.FullName}.{original.MethodName}");
                 var methodInfo = GetOriginal(original);
                 HarmonyInstance.Patch(methodInfo,
-                    prefix: prefix == null ? null : new HarmonyMethod(GetPatch(prefix)),
-                    postfix: postfix == null ? null : new HarmonyMethod(GetPatch(postfix)),
-                    transpiler == null ? null : new HarmonyMethod(GetPatch(transpiler))
+                    prefix: prefix == null ? null : new HarmonyMethod(GetPatch(prefix), before: prefix.Before, after: prefix.After),
+                    postfix: postfix == null ? null : new HarmonyMethod(GetPatch(postfix), before: postfix.Before, after: postfix.After),
+                    transpiler == null ? null : new HarmonyMethod(GetPatch(transpiler), before: transpiler.Before, after: transpiler.After)
                 );
             }
             catch (Exception e)
@@ -85,14 +85,18 @@ namespace ImprovedPublicTransport2.Util
 
         public class MethodDefinition
         {
-            public MethodDefinition(Type type, string methodName, 
+            public MethodDefinition(Type type, string methodName,
                 BindingFlags bindingFlags = BindingFlags.Default,
-                Type[] argumentTypes = null)
+                Type[] argumentTypes = null,
+                string[] before = null,
+                string[] after = null)
             {
                 Type = type;
                 MethodName = methodName;
                 BindingFlags = bindingFlags;
                 ArgumentTypes = argumentTypes;
+                Before = before;
+                After = after;
             }
 
             public Type Type { get; }
@@ -101,6 +105,10 @@ namespace ImprovedPublicTransport2.Util
             public BindingFlags BindingFlags { get; }
             
             public Type[] ArgumentTypes { get; }
+
+            public string[] Before { get;  }
+            
+            public string[] After { get;  }
         }
     }
 }

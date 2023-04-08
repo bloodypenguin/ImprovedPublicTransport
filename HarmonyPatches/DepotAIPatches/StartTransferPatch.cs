@@ -11,7 +11,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches.DepotAIPatches
         {
             PatchUtil.Patch(
                 new PatchUtil.MethodDefinition(typeof(DepotAI), nameof(DepotAI.StartTransfer)),
-                new PatchUtil.MethodDefinition(typeof(StartTransferPatch), nameof(StartTransferPre)),
+                new PatchUtil.MethodDefinition(typeof(StartTransferPatch), nameof(StartTransferPre), before: new[] {"com.github.algernon-A.csl.vehicleselector"}),
                 null
             );
         }
@@ -22,7 +22,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches.DepotAIPatches
                 new PatchUtil.MethodDefinition(typeof(DepotAI), nameof(DepotAI.StartTransfer))
             );
         }
-
+        
         private static bool StartTransferPre(
             DepotAI __instance,
             ref ushort buildingID, ref Building data,
