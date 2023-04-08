@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using ColossalFramework;
+using ImprovedPublicTransport2.TransientData;
 using ImprovedPublicTransport2.Util;
 
 namespace ImprovedPublicTransport2.Query

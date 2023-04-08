@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace ImprovedPublicTransport2
+namespace ImprovedPublicTransport2.PersistentData
 {
   public struct LineData
   {

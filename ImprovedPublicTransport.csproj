@@ -72,8 +72,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuildingExtension.cs" />
-    <Compile Include="CachedTransportLineData.cs" />
     <Compile Include="Command\SelectVehicleTypesCommand.cs" />
+    <Compile Include="PersistentData\CachedNodeData.cs" />
+    <Compile Include="PersistentData\CachedTransportLineData.cs" />
+    <Compile Include="PersistentData\CachedVehicleData.cs" />
+    <Compile Include="PersistentData\LineData.cs" />
+    <Compile Include="PersistentData\MovingAverage.cs" />
+    <Compile Include="PersistentData\NodeData.cs" />
+    <Compile Include="PersistentData\SerializableDataExtension.cs" />
+    <Compile Include="PersistentData\VehicleData.cs" />
     <Compile Include="Detour\PublicTransportStopButtonDetour.cs" />
     <Compile Include="Detour\PublicTransportVehicleButtonDetour.cs" />
     <Compile Include="Detour\PublicTransportWorldInfoPanelDetour.cs" />
@@ -87,7 +94,6 @@
     <Compile Include="Detour\Vehicles\PassengerTrainAIDetour.cs" />
     <Compile Include="Detour\Vehicles\TramAIDetour.cs" />
     <Compile Include="Detour\Vehicles\TrolleybusAIDetour.cs" />
-    <Compile Include="GameDefault.cs" />
     <Compile Include="HarmonyPatches\BuildingManagerPatches\GetDepotLevelsPatch.cs" />
     <Compile Include="HarmonyPatches\DepotAIPatches\ClassMatchesPatch.cs" />
     <Compile Include="HarmonyPatches\DepotAIPatches\StartTransferPatch.cs" />
@@ -102,12 +108,8 @@
     <Compile Include="ItemClassTriplet.cs" />
     <Compile Include="LanguageFormat\LanguageDictionaryWrapper.cs" />
     <Compile Include="LanguageFormat\PlainTextLanguageDeserializer.cs" />
-    <Compile Include="LineData.cs" />
     <Compile Include="LocaleModifier.cs" />
     <Compile Include="Localization.cs" />
-    <Compile Include="MovingAverage.cs" />
-    <Compile Include="CachedNodeData.cs" />
-    <Compile Include="NodeData.cs" />
     <Compile Include="OptionsFramework\Attibutes\AbstractOptionsAttribute.cs" />
     <Compile Include="OptionsFramework\Attibutes\ButtonAttribute.cs" />
     <Compile Include="OptionsFramework\Attibutes\CheckboxAttribute.cs" />
@@ -143,6 +145,9 @@
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Settings\SettingsActions.cs" />
     <Compile Include="Settings\VehicleEditorPositions.cs" />
+    <Compile Include="TransientData\GameDefault.cs" />
+    <Compile Include="TransientData\PrefabData.cs" />
+    <Compile Include="TransientData\VehiclePrefabs.cs" />
     <Compile Include="TranslationFramework\DefaultLanguageDeserializer.cs" />
     <Compile Include="TranslationFramework\Language.cs" />
     <Compile Include="TranslationFramework\DefaultLanguage.cs" />
@@ -190,14 +195,9 @@
     <Compile Include="Util\Utils.cs" />
     <Compile Include="Util\VehicleUtil.cs" />
     <Compile Include="LineWatcher.cs" />
-    <Compile Include="PrefabData.cs" />
-    <Compile Include="SerializableDataExtension.cs" />
     <Compile Include="SimHelper.cs" />
     <Compile Include="Detour\TransportLineDetour.cs" />
     <Compile Include="ImprovedPublicTransportMod.cs" />
-    <Compile Include="VehicleData.cs" />
-    <Compile Include="CachedVehicleData.cs" />
-    <Compile Include="VehiclePrefabs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

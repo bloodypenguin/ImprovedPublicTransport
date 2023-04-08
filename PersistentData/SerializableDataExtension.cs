@@ -4,10 +4,10 @@
 // MVID: 76F370C5-F40B-41AE-AA9D-1E3F87E934D3
 // Assembly location: C:\Games\Steam\steamapps\workshop\content\255710\424106600\ImprovedPublicTransport.dll
 
-using ICities;
 using System;
+using ICities;
 
-namespace ImprovedPublicTransport2
+namespace ImprovedPublicTransport2.PersistentData
 {
   public class SerializableDataExtension : ISerializableDataExtension
   {

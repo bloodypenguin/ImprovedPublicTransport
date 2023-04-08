@@ -11,6 +11,7 @@ using ColossalFramework;
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using ImprovedPublicTransport2.OptionsFramework;
+using ImprovedPublicTransport2.TransientData;
 using ImprovedPublicTransport2.UI.DontCryJustDieCommons;
 using UnityEngine;
 using UIUtils = ImprovedPublicTransport2.Util.UIUtils;
