@@ -74,6 +74,7 @@
     <Compile Include="BuildingExtension.cs" />
     <Compile Include="Command\SelectVehicleTypesCommand.cs" />
     <Compile Include="HarmonyPatches\TransportLinePatches\CanLeaveStopPatch.cs" />
+    <Compile Include="HarmonyPatches\XYZVehicleAIPatches\CanLeavePatch.cs" />
     <Compile Include="PersistentData\CachedNodeData.cs" />
     <Compile Include="PersistentData\CachedTransportLineData.cs" />
     <Compile Include="PersistentData\CachedVehicleData.cs" />
@@ -86,15 +87,6 @@
     <Compile Include="Detour\PublicTransportVehicleButtonDetour.cs" />
     <Compile Include="Detour\PublicTransportWorldInfoPanelDetour.cs" />
     <Compile Include="Detour\CommonBuildingAIReverseDetour.cs" />
-    <Compile Include="Detour\Vehicles\BusAIDetour.cs" />
-    <Compile Include="Detour\Vehicles\PassengerBlimpAIDetour.cs" />
-    <Compile Include="Detour\Vehicles\PassengerFerryAIDetour.cs" />
-    <Compile Include="Detour\Vehicles\PassengerHelicopterAIDetour.cs" />
-    <Compile Include="Detour\Vehicles\PassengerPlaneAIDetour.cs" />
-    <Compile Include="Detour\Vehicles\PassengerShipAIDetour.cs" />
-    <Compile Include="Detour\Vehicles\PassengerTrainAIDetour.cs" />
-    <Compile Include="Detour\Vehicles\TramAIDetour.cs" />
-    <Compile Include="Detour\Vehicles\TrolleybusAIDetour.cs" />
     <Compile Include="HarmonyPatches\BuildingManagerPatches\GetDepotLevelsPatch.cs" />
     <Compile Include="HarmonyPatches\DepotAIPatches\ClassMatchesPatch.cs" />
     <Compile Include="HarmonyPatches\DepotAIPatches\StartTransferPatch.cs" />

@@ -4,7 +4,6 @@ using ColossalFramework;
 using ColossalFramework.UI;
 using ICities;
 using ImprovedPublicTransport2.Detour;
-using ImprovedPublicTransport2.Detour.Vehicles;
 using ImprovedPublicTransport2.HarmonyPatches.BuildingManagerPatches;
 using ImprovedPublicTransport2.HarmonyPatches.DepotAIPatches;
 using ImprovedPublicTransport2.HarmonyPatches.NetManagerPatches;
@@ -97,17 +96,7 @@ namespace ImprovedPublicTransport2
                     GetVehicleInfoPatch.Apply();
                     CheckTransportLineVehiclesPatch.Apply();
                     ClassMatchesPatch.Apply();
-                    GetDepotLevelsPatch.Apply();
-
-                    Redirector<BusAIDetour>.Deploy();
-                    Redirector<TrolleybusAIDetour>.Deploy();
-                    Redirector<PassengerTrainAIDetour>.Deploy();
-                    Redirector<PassengerShipAIDetour>.Deploy();
-                    Redirector<PassengerPlaneAIDetour>.Deploy();
-                    Redirector<PassengerFerryAIDetour>.Deploy();
-                    Redirector<PassengerBlimpAIDetour>.Deploy();
-                    Redirector<PassengerHelicopterAIDetour>.Deploy();
-                    Redirector<TramAIDetour>.Deploy();
+                    CanLeavePatch.Apply();
 
                     Redirector<CommonBuildingAIReverseDetour>.Deploy();
                     Redirector<PublicTransportStopButtonDetour>.Deploy();
@@ -200,20 +189,13 @@ namespace ImprovedPublicTransport2
             ClassMatchesPatch.Undo();
             CheckTransportLineVehiclesPatch.Undo();
             GetDepotLevelsPatch.Undo();
+            CanLeavePatch.Undo();
 
-            Redirector<TramAIDetour>.Revert();
-            Redirector<PassengerTrainAIDetour>.Revert();
-            Redirector<PassengerShipAIDetour>.Revert();
-            Redirector<PassengerPlaneAIDetour>.Revert();
-            Redirector<PassengerFerryAIDetour>.Revert();
-            Redirector<PassengerBlimpAIDetour>.Revert();
-            Redirector<BusAIDetour>.Revert();
             Redirector<CommonBuildingAIReverseDetour>.Revert();
             Redirector<PublicTransportStopButtonDetour>.Revert();
             Redirector<PublicTransportVehicleButtonDetour>.Revert();
             Redirector<PublicTransportWorldInfoPanelDetour>.Revert();
-            Redirector<TrolleybusAIDetour>.Revert();
-            Redirector<PassengerHelicopterAIDetour>.Revert();
+
 
             Redirector<TransportLineReverseDetour>.Revert();
             SimulationStepPatch.Undo();
