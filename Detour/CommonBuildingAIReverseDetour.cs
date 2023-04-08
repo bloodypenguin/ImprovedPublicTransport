@@ -2,6 +2,7 @@
 
 namespace ImprovedPublicTransport2.Detour
 {
+    //TODO: Only to access the private method. use a reversed patch instead
     [TargetType(typeof(CommonBuildingAI))]
     public class CommonBuildingAIReverseDetour : ShelterAI
     {
