@@ -12,6 +12,8 @@ using ColossalFramework.UI;
 using ImprovedPublicTransport2.Detour;
 using ImprovedPublicTransport2.OptionsFramework;
 using ImprovedPublicTransport2.Query;
+using ImprovedPublicTransport2.PersistentData;
+using ImprovedPublicTransport2.TransientData;
 using ImprovedPublicTransport2.Util;
 using UnityEngine;
 using UIUtils = ImprovedPublicTransport2.Util.UIUtils;

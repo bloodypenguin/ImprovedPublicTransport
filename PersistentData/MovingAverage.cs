@@ -7,7 +7,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ImprovedPublicTransport2
+namespace ImprovedPublicTransport2.PersistentData
 {
   public class MovingAverage
   {

@@ -5,6 +5,7 @@
 
 using System.Collections.Generic;
 using ColossalFramework.UI;
+using ImprovedPublicTransport2.TransientData;
 using ImprovedPublicTransport2.UI.AlgernonCommons;
 using ImprovedPublicTransport2.UI.PreviewRenderer;
 using JetBrains.Annotations;

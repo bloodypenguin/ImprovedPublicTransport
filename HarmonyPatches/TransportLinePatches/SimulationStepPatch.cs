@@ -6,6 +6,8 @@ using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using ColossalFramework;
 using HarmonyLib;
+using ImprovedPublicTransport2.PersistentData;
+using ImprovedPublicTransport2.TransientData;
 using ImprovedPublicTransport2.Util;
 using UnityEngine;
 

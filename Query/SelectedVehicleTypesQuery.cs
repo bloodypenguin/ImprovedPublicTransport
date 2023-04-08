@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using ImprovedPublicTransport2.PersistentData;
+using ImprovedPublicTransport2.TransientData;
 using JetBrains.Annotations;
 
 namespace ImprovedPublicTransport2.Query

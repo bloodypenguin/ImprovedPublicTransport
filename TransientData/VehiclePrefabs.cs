@@ -5,7 +5,7 @@ using ImprovedPublicTransport2.Util;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace ImprovedPublicTransport2
+namespace ImprovedPublicTransport2.TransientData
 {
     public class VehiclePrefabs : Singleton<VehiclePrefabs>
     {
@@ -49,7 +49,7 @@ namespace ImprovedPublicTransport2
                 : instance.GetPrefabsNoLogging(service, subService, level);
             if (prefabs.Length == 0)
             {
-                Debug.LogWarning("IPT: Vehicles of item class [serrvice: " + service + ", sub service: " +
+                Debug.LogWarning("IPT: Vehicles of item class [service: " + service + ", sub service: " +
                                              subService +
                                              ", level: " + level +
                                              "] were requested. None was found.");
@@ -63,7 +63,7 @@ namespace ImprovedPublicTransport2
             var prefabs = instance.GetPrefabsNoLogging(service, subService);
             if (prefabs.Length == 0)
             {
-                Debug.LogWarning("IPT: Vehicles of item class [serrvice: " + service + ", sub service: " +
+                Debug.LogWarning("IPT: Vehicles of item class [service: " + service + ", sub service: " +
                                              subService +
                                              "] were requested. None was found.");
             }

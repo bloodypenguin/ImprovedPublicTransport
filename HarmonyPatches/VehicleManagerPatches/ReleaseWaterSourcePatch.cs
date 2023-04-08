@@ -1,3 +1,4 @@
+using ImprovedPublicTransport2.PersistentData;
 using ImprovedPublicTransport2.Util;
 
 namespace ImprovedPublicTransport2.HarmonyPatches.VehicleManagerPatches

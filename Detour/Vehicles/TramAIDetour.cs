@@ -1,5 +1,6 @@
 ﻿using ColossalFramework;
 using ImprovedPublicTransport2.RedirectionFramework.Attributes;
+using ImprovedPublicTransport2.PersistentData;
 
 namespace ImprovedPublicTransport2.Detour.Vehicles
 {

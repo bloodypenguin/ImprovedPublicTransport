@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using ColossalFramework.UI;
+using ImprovedPublicTransport2.TransientData;
 using UnityEngine;
 
 namespace ImprovedPublicTransport2.UI

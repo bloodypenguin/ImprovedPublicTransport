@@ -1,4 +1,4 @@
-﻿namespace ImprovedPublicTransport2
+﻿namespace ImprovedPublicTransport2.TransientData
 {
     public static class GameDefault
     {
@@ -50,7 +50,7 @@
                     }
                 }
             }
-            UnityEngine.Debug.LogWarning("IPT: Default capacity of item class [serrvice: " + service + ", sub service: " +
+            UnityEngine.Debug.LogWarning("IPT: Default capacity of item class [service: " + service + ", sub service: " +
                                          subService +
                                          ", level: " + level +
                                          "] were requested. Defaults aren't supported.");
