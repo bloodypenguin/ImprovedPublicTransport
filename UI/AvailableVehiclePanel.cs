@@ -120,9 +120,6 @@ namespace ImprovedPublicTransport2.UI
                 return;
             }
 
-            // Local reference.
-            Building[] buildingBuffer = Singleton<BuildingManager>.instance.m_buildings.m_buffer;
-
             // Generated lists.
             var items = new List<PrefabData>();
 
@@ -132,12 +129,6 @@ namespace ImprovedPublicTransport2.UI
             ItemClass.Level level = info.GetClassLevel();
             ItemClassTriplet triplet = new ItemClassTriplet(service, subService, level);
 
-            // List<VehicleInfo> trailers = new List<VehicleInfo>();
-            // List<VehicleInfo> locomotives = new List<VehicleInfo>();
-            //
-            // // Determine effective building class for vehicle matching.
-            // VehicleControl.GetEffectiveClass(currentLine, buildingBuffer, ParentPanel.TransferReason, out ItemClass.Service buildingService, out ItemClass.SubService buildingSubService, out ItemClass.Level buildingLevel);
-            //
             // Get list of already-selected vehicles.
             var selectedList = SelectedVehicleTypesQuery.Query(currentLine);
             var allAvailableVehicles = AvailableVehiclesQuery.Query(triplet);
@@ -148,7 +139,7 @@ namespace ImprovedPublicTransport2.UI
                     return;
                 }
                 
-                if (!NameFilter(data.DisplayName))
+                if (!NameAndCapacityFilter(data))
                 {
                     return;
                 }
@@ -158,17 +149,13 @@ namespace ImprovedPublicTransport2.UI
             // Set display list items, without changing the display.
             _vehicleList.Data = new FastList<object>
             {
-                m_buffer = items.OrderBy(x => x.Name).ToArray(),
+                m_buffer = items.OrderBy(x => x.Name).Select(d => (object)d).ToArray(),
                 m_size = items.Count,
             };
         }
 
-        /// <summary>
-        /// Applies the name text filter to the specified display name.
-        /// </summary>
-        /// <param name="displayName">Vehicle display name.</param>
-        /// <returns>True if the item should be displayed (empty or matching search result), false otherwise.</returns>
-        protected bool NameFilter(string displayName) => _nameSearch.text.IsNullOrWhiteSpace() ||
-                                                         displayName.ToLower().Contains(_nameSearch.text.ToLower());
+        protected bool NameAndCapacityFilter(PrefabData prefabData) => _nameSearch.text.IsNullOrWhiteSpace() ||
+                                                         prefabData.DisplayName.ToLower().Contains(_nameSearch.text.ToLower()) ||
+                                                         prefabData.TotalCapacity.ToString().Contains(_nameSearch.text);
     }
 }

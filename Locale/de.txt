@@ -107,3 +107,10 @@ VEHICLE_PANEL_REMOVE_VEHICLE Entferne Fahrzeug
 VEHICLE_PANEL_NEXT Nächstes Fahrzeug
 VEHICLE_PANEL_NEXT_TOOLTIP Springe zum nächsten Fahrzeug.\nWenn du beim Klicken eine Shift-Taste gedrückt hälst wird auch reingezoomt.
 VEHICLE_SELECTION_CAPACITY Kapazität
+VEHICLE_SELECTION_ADD_VEHICLE Dieses Fahrzeug zur Liste der zugelassenen Fahrzeuge hinzufügen
+VEHICLE_SELECTION_ADD_ALL Alle möglichen Fahrzeuge zur Liste der zugelassenen Fahrzeuge hinzufügen
+VEHICLE_SELECTION_REMOVE_VEHICLE Dieses Fahrzeug von der Liste der zugelassenen Fahrzeuge entfernen
+VEHICLE_SELECTION_REMOVE_ALL Alle Fahrzeuge von der Liste der zugelassenen Fahrzeuge entfernen
+VEHICLE_SELECTION_AVAILABLE_VEHICLES Verfügbare Fahrzeuge
+VEHICLE_SELECTION_SELECTED_VEHICLES Zugelassene Fahrzeuge
+VEHICLE_SELECTION_ANY_VEHICLE Jedes Fahrzeug
