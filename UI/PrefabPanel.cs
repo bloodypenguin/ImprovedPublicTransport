@@ -31,7 +31,7 @@ namespace ImprovedPublicTransport2.UI
         private const float AreaLabel2Y = AreaLabel1Y + AreaLabelHeight;
         private const float ListY = AreaLabel2Y + AreaLabelHeight + Margin;
         private const float VehicleSelectionHeight = VehicleSelection.PanelHeight + Margin;
-        private const float NoPanelHeight = ListY + Margin;
+        private const float NoPanelHeight = ListY + VehicleSelectionHeight +Margin;
         private const float IconButtonSize = 40f;
         private const float IconButtonY = ListY - IconButtonSize - Margin;
         private const float PasteButtonX = PanelWidth - IconButtonSize - Margin;
