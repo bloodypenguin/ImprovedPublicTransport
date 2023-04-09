@@ -9,7 +9,6 @@ using System.Reflection;
 using ColossalFramework;
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
-using ImprovedPublicTransport2.Detour;
 using ImprovedPublicTransport2.HarmonyPatches.TransportLinePatches;
 using ImprovedPublicTransport2.OptionsFramework;
 using ImprovedPublicTransport2.Query;
