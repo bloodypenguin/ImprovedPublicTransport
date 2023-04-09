@@ -21,6 +21,7 @@ namespace ImprovedPublicTransport2.UI
 {
   public class VehicleEditor : UIPanel
   {
+
     public delegate void SettingsAppliedHandler();
 
     public event SettingsAppliedHandler eventSettingsApplied;
@@ -37,6 +38,7 @@ namespace ImprovedPublicTransport2.UI
     private PublicTransportInfoViewPanel _publicTransportInfoViewPanel;
     private UIPanel _containerPanel;
     private UIPanel _rightSidePanel;
+    private UISprite _vehicleSprite;
     
 
     public override void Update()
@@ -267,28 +269,34 @@ namespace ImprovedPublicTransport2.UI
       UIPanel uiPanel5 = uiPanel3.AddUIComponent<UIPanel>();
       double num11 = (double) uiPanel5.parent.width - 8.0;
       uiPanel5.width = (float) num11;
-      double num12 = 30.0;
+      double num12 = 34.0;
       uiPanel5.height = (float) num12;
-      int num13 = 0;
-      uiPanel5.autoLayoutDirection = (LayoutDirection) num13;
+      uiPanel5.autoLayoutDirection = LayoutDirection.Horizontal;
       int num14 = 0;
       uiPanel5.autoLayoutStart = (LayoutStart) num14;
       RectOffset rectOffset3 = new RectOffset(0, 6, 0, 0);
       uiPanel5.autoLayoutPadding = rectOffset3;
-      int num15 = 1;
-      uiPanel5.autoLayout = num15 != 0;
+      uiPanel5.autoLayout = true;
+
+      var vehicleSpriteSize = num12 - 2;
       DropDown dropDown = DropDown.Create((UIComponent) uiPanel5);
       string str3 = "AssetDropDown";
       dropDown.name = str3;
-      double num16 = 27.0;
-      dropDown.height = (float) num16;
-      double num17 = (double) dropDown.parent.width - 6.0;
+      dropDown.height = (float) vehicleSpriteSize;
+      double num17 = (double) dropDown.parent.width - 6.0 - vehicleSpriteSize - 1;
       dropDown.width = (float) num17;
       dropDown.DropDownPanelAlignParent = (UIComponent) this;
       UIFont font = UIUtils.Font;
       dropDown.Font = font;
       PropertyChangedEventHandler<ushort> changedEventHandler1 = new PropertyChangedEventHandler<ushort>(this.OnSelectedItemChanged);
       dropDown.eventSelectedItemChanged += changedEventHandler1;
+      
+
+      _vehicleSprite = uiPanel5.AddUIComponent<UISprite>();
+      _vehicleSprite.height = (float) vehicleSpriteSize;
+      _vehicleSprite.width =(float) vehicleSpriteSize;
+      _vehicleSprite.relativePosition = Vector2.zero;
+      
       UIPanel uiPanel6 = uiPanel3.AddUIComponent<UIPanel>();
       double num18 = (double) uiPanel6.parent.width - 8.0;
       uiPanel6.width = (float) num18;
@@ -787,6 +795,9 @@ namespace ImprovedPublicTransport2.UI
       if (this._selectedIndex > -1)
       {
         PrefabData prefab = GetPrefabs()[this._selectedIndex];
+        _vehicleSprite.atlas = prefab?.Info?.m_Atlas;
+        _vehicleSprite.spriteName = prefab?.Info?.m_Thumbnail;
+        
         uiTextField1.text = prefab.TotalCapacity.ToString();
         UITextField uiTextField5 = uiTextField2;
         int num = prefab.MaintenanceCost;
