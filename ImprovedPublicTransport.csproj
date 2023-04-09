@@ -55,11 +55,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CitiesHarmony.API">
-      <HintPath>.\packages\CitiesHarmony.API.2.0.0\lib\net35\CitiesHarmony.API.dll</HintPath>
+      <HintPath>.\packages\CitiesHarmony.API.2.1.0\lib\net35\CitiesHarmony.API.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="CitiesHarmony.Harmony">
-      <HintPath>.\packages\CitiesHarmony.Harmony.2.0.4\lib\net35\CitiesHarmony.Harmony.dll</HintPath>
+      <HintPath>.\packages\CitiesHarmony.Harmony.2.2.0\lib\net35\CitiesHarmony.Harmony.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Core" />
@@ -72,21 +72,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuildingExtension.cs" />
-    <Compile Include="CachedTransportLineData.cs" />
-    <Compile Include="Detour\PublicTransportStopButtonDetour.cs" />
-    <Compile Include="Detour\PublicTransportVehicleButtonDetour.cs" />
-    <Compile Include="Detour\PublicTransportWorldInfoPanelDetour.cs" />
-    <Compile Include="Detour\CommonBuildingAIReverseDetour.cs" />
-    <Compile Include="Detour\Vehicles\BusAIDetour.cs" />
-    <Compile Include="Detour\Vehicles\PassengerBlimpAIDetour.cs" />
-    <Compile Include="Detour\Vehicles\PassengerFerryAIDetour.cs" />
-    <Compile Include="Detour\Vehicles\PassengerHelicopterAIDetour.cs" />
-    <Compile Include="Detour\Vehicles\PassengerPlaneAIDetour.cs" />
-    <Compile Include="Detour\Vehicles\PassengerShipAIDetour.cs" />
-    <Compile Include="Detour\Vehicles\PassengerTrainAIDetour.cs" />
-    <Compile Include="Detour\Vehicles\TramAIDetour.cs" />
-    <Compile Include="Detour\Vehicles\TrolleybusAIDetour.cs" />
-    <Compile Include="GameDefault.cs" />
+    <Compile Include="Command\SelectVehicleTypesCommand.cs" />
+    <Compile Include="HarmonyPatches\HarmonyId.cs" />
+    <Compile Include="HarmonyPatches\PublicTransportStopButtonPatches\OnMouseDownPatch.cs" />
+    <Compile Include="HarmonyPatches\PublicTransportVehicleButtonPatches\OnMouseDownPatch.cs" />
+    <Compile Include="HarmonyPatches\PublicTransportWorldInfoPanelPatches\UpdateStopButtonsPatch.cs" />
+    <Compile Include="HarmonyPatches\PublicTransportWorldInfoPanelPatches\RefreshVehicleButtonsPatch.cs" />
+    <Compile Include="HarmonyPatches\TransportLinePatches\CanLeaveStopPatch.cs" />
+    <Compile Include="HarmonyPatches\XYZVehicleAIPatches\CanLeavePatch.cs" />
+    <Compile Include="Data\CachedNodeData.cs" />
+    <Compile Include="Data\CachedTransportLineData.cs" />
+    <Compile Include="Data\CachedVehicleData.cs" />
+    <Compile Include="Data\GameDefault.cs" />
+    <Compile Include="Data\LineData.cs" />
+    <Compile Include="Data\MovingAverage.cs" />
+    <Compile Include="Data\NodeData.cs" />
+    <Compile Include="Data\PrefabData.cs" />
+    <Compile Include="Data\SerializableDataExtension.cs" />
+    <Compile Include="Data\VehicleData.cs" />
+    <Compile Include="ReverseDetours\CommonBuildingAIReverseDetour.cs" />
     <Compile Include="HarmonyPatches\BuildingManagerPatches\GetDepotLevelsPatch.cs" />
     <Compile Include="HarmonyPatches\DepotAIPatches\ClassMatchesPatch.cs" />
     <Compile Include="HarmonyPatches\DepotAIPatches\StartTransferPatch.cs" />
@@ -101,12 +105,8 @@
     <Compile Include="ItemClassTriplet.cs" />
     <Compile Include="LanguageFormat\LanguageDictionaryWrapper.cs" />
     <Compile Include="LanguageFormat\PlainTextLanguageDeserializer.cs" />
-    <Compile Include="LineData.cs" />
     <Compile Include="LocaleModifier.cs" />
     <Compile Include="Localization.cs" />
-    <Compile Include="MovingAverage.cs" />
-    <Compile Include="CachedNodeData.cs" />
-    <Compile Include="NodeData.cs" />
     <Compile Include="OptionsFramework\Attibutes\AbstractOptionsAttribute.cs" />
     <Compile Include="OptionsFramework\Attibutes\ButtonAttribute.cs" />
     <Compile Include="OptionsFramework\Attibutes\CheckboxAttribute.cs" />
@@ -121,6 +121,13 @@
     <Compile Include="OptionsFramework\Extensions\UIHelperBaseExtensions.cs" />
     <Compile Include="OptionsFramework\OptionsWrapper.cs" />
     <Compile Include="OptionsFramework\Util.cs" />
+    <Compile Include="Data\VehiclePrefabs.cs" />
+    <Compile Include="Query\ActiveVehiclesQuery.cs" />
+    <Compile Include="Query\AvailableVehiclesQuery.cs" />
+    <Compile Include="Query\QueuedVehicleQuery.cs" />
+    <Compile Include="Query\SelectedVehicleTypesQuery.cs" />
+    <Compile Include="Query\WaitingPassengerCountQuery.cs" />
+    <Compile Include="Query\WorldInfoCurrentLineIDQuery.cs" />
     <Compile Include="RedirectionFramework\AssemblyRedirector.cs" />
     <Compile Include="RedirectionFramework\Attributes\IgnoreConditions\DisableAttribute.cs" />
     <Compile Include="RedirectionFramework\Attributes\IgnoreConditionAttribute.cs" />
@@ -133,13 +140,9 @@
     <Compile Include="RedirectionFramework\RedirectionUtil.cs" />
     <Compile Include="RedirectionFramework\Redirector.cs" />
     <Compile Include="RedirectionFramework\Tuple.cs" />
-    <Compile Include="SettingsActions.cs" />
-    <Compile Include="StopListBox.cs" />
-    <Compile Include="StopListBoxRow.cs" />
-    <Compile Include="PanelExtenderCityService.cs" />
-    <Compile Include="PublicTransportStopWorldInfoPanel.cs" />
-    <Compile Include="DropDown.cs" />
-    <Compile Include="DropDownRow.cs" />
+    <Compile Include="Settings\Settings.cs" />
+    <Compile Include="Settings\SettingsActions.cs" />
+    <Compile Include="Settings\VehicleEditorPositions.cs" />
     <Compile Include="TranslationFramework\DefaultLanguageDeserializer.cs" />
     <Compile Include="TranslationFramework\Language.cs" />
     <Compile Include="TranslationFramework\DefaultLanguage.cs" />
@@ -147,28 +150,50 @@
     <Compile Include="TranslationFramework\LocalizationManager.cs" />
     <Compile Include="TranslationFramework\TranslatableAttribute.cs" />
     <Compile Include="TranslationFramework\Util.cs" />
+    <Compile Include="UI\AlgernonCommons\AssemblyUtils.cs" />
+    <Compile Include="UI\AlgernonCommons\Logging.cs" />
+    <Compile Include="UI\AlgernonCommons\ModBase.cs" />
+    <Compile Include="UI\AlgernonCommons\PrefabUtils.cs" />
+    <Compile Include="UI\AlgernonCommons\UIButtons.cs" />
+    <Compile Include="UI\AlgernonCommons\UIDropDowns.cs" />
+    <Compile Include="UI\AlgernonCommons\UIFonts.cs" />
+    <Compile Include="UI\AlgernonCommons\UILabels.cs" />
+    <Compile Include="UI\AlgernonCommons\UIList.cs" />
+    <Compile Include="UI\AlgernonCommons\UIScrollbars.cs" />
+    <Compile Include="UI\AlgernonCommons\UITextFields.cs" />
+    <Compile Include="UI\AlgernonCommons\UITextures.cs" />
+    <Compile Include="UI\AlgernonCommons\UIToolTips.cs" />
+    <Compile Include="UI\DontCryJustDieCommons\DropDown.cs" />
+    <Compile Include="UI\DontCryJustDieCommons\DropDownRow.cs" />
+    <Compile Include="UI\PanelExtenders\PanelExtenderCityService.cs" />
+    <Compile Include="UI\PanelExtenders\PanelExtenderLine.cs" />
+    <Compile Include="UI\PanelExtenders\PanelExtenderVehicle.cs" />
+    <Compile Include="UI\PrefabPanel.cs" />
+    <Compile Include="UI\PrefabPanelManager.cs" />
+    <Compile Include="UI\AlgernonCommons\UIListRow.cs" />
+    <Compile Include="UI\CopyPaste.cs" />
+    <Compile Include="UI\PreviewRenderer\PreviewPanel.cs" />
+    <Compile Include="UI\PreviewRenderer\PreviewRenderer.cs" />
+    <Compile Include="UI\PublicTransportStopWorldInfoPanel.cs" />
+    <Compile Include="UI\SelectedVehiclePanel.cs" />
+    <Compile Include="UI\StopListBox.cs" />
+    <Compile Include="UI\StopListBoxRow.cs" />
+    <Compile Include="UI\VehicleEditor.cs" />
+    <Compile Include="UI\VehicleListBox.cs" />
+    <Compile Include="UI\VehicleListBoxRow.cs" />
+    <Compile Include="UI\VehicleSelection.cs" />
+    <Compile Include="UI\AvailableVehiclePanel.cs" />
+    <Compile Include="UI\VehicleSelectionRow.cs" />
     <Compile Include="Util\DepotUtil.cs" />
     <Compile Include="Util\PatchUtil.cs" />
     <Compile Include="Util\TransportLineUtil.cs" />
     <Compile Include="Util\UIUtils.cs" />
     <Compile Include="Util\Utils.cs" />
     <Compile Include="Util\VehicleUtil.cs" />
-    <Compile Include="VehicleEditorPositions.cs" />
-    <Compile Include="VehicleListBoxRow.cs" />
     <Compile Include="LineWatcher.cs" />
-    <Compile Include="PrefabData.cs" />
-    <Compile Include="VehicleListBox.cs" />
-    <Compile Include="VehicleEditor.cs" />
-    <Compile Include="SerializableDataExtension.cs" />
-    <Compile Include="Settings.cs" />
     <Compile Include="SimHelper.cs" />
-    <Compile Include="Detour\TransportLineDetour.cs" />
+    <Compile Include="ReverseDetours\TransportLineReverseDetour.cs" />
     <Compile Include="ImprovedPublicTransportMod.cs" />
-    <Compile Include="PanelExtenderVehicle.cs" />
-    <Compile Include="PanelExtenderLine.cs" />
-    <Compile Include="VehicleData.cs" />
-    <Compile Include="CachedVehicleData.cs" />
-    <Compile Include="VehiclePrefabs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -203,7 +228,7 @@ del "$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)\$
 xcopy /y "$(TargetPath)" "$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(TargetName)" /s /e
 mkdir "$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(TargetName)"\Locale
 xcopy /y "$(ProjectDir)\Locale" "$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(TargetName)\Locale" /s /e
-xcopy /y "$(SolutionDir)\packages\CitiesHarmony.API.2.0.0\lib\net35\CitiesHarmony.API.dll" "$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(TargetName)" /s /e
+xcopy /y "$(SolutionDir)\packages\CitiesHarmony.API.2.1.0\lib\net35\CitiesHarmony.API.dll" "$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(TargetName)" /s /e
 </PostBuildEvent>
   </PropertyGroup>
 </Project>

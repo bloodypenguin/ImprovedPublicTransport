@@ -1,3 +1,5 @@
+using HarmonyLib;
+using ImprovedPublicTransport2.Data;
 using ImprovedPublicTransport2.Util;
 
 namespace ImprovedPublicTransport2.HarmonyPatches.TransportLinePatches
@@ -10,7 +12,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches.TransportLinePatches
                 new PatchUtil.MethodDefinition(typeof(TransportLine),
                     nameof(TransportLine.GetLineVehicle)),
                 new PatchUtil.MethodDefinition(typeof(GetLineVehiclePatch),
-                    nameof(Prefix))
+                    nameof(Prefix), priority: Priority.Normal)
             );
         }
 
@@ -30,10 +32,8 @@ namespace ImprovedPublicTransport2.HarmonyPatches.TransportLinePatches
                 return true; //if it's not a proper transport line, let's not modify the behavior
             }
 
-            var name = CachedTransportLineData.EnqueuedVehiclesCount(lineID) > 0
-                ? CachedTransportLineData.Dequeue(lineID)
-                : CachedTransportLineData.GetRandomPrefab(lineID);
-
+            var dequeuedVehicle = CachedTransportLineData.Dequeue(lineID);
+            var name =  dequeuedVehicle ?? CachedTransportLineData.GetRandomPrefab(lineID);
             __result = string.IsNullOrEmpty(name) ? null : PrefabCollection<VehicleInfo>.FindLoaded(name);
             return false;
         }

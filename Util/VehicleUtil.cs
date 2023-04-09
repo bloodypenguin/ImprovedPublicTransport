@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Text;
 using ColossalFramework;
+using ColossalFramework.Globalization;
+using ImprovedPublicTransport2.OptionsFramework;
 
 namespace ImprovedPublicTransport2.Util
 {

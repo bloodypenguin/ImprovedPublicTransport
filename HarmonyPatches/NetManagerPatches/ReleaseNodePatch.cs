@@ -1,3 +1,4 @@
+using ImprovedPublicTransport2.Data;
 using ImprovedPublicTransport2.Util;
 
 namespace ImprovedPublicTransport2.HarmonyPatches.NetManagerPatches

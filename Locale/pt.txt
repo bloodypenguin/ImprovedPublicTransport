@@ -97,3 +97,11 @@ VEHICLE_PANEL_PREVIOUS_TOOLTIP Ir para veículo anterior.\nSegurar Shift ao clic
 VEHICLE_PANEL_REMOVE_VEHICLE Remover Veículo
 VEHICLE_PANEL_NEXT Próximo Veículo
 VEHICLE_PANEL_NEXT_TOOLTIP Ir para próximo veículo.\nSegurar Shift ao clicar também dará zoom.
+VEHICLE_SELECTION_CAPACITY Capacidade
+VEHICLE_SELECTION_ADD_VEHICLE Add this vehicle to the list of permitted vehicles
+VEHICLE_SELECTION_ADD_ALL Add all eligible vehicles to the list of permitted vehicles
+VEHICLE_SELECTION_REMOVE_VEHICLE Remove this vehicle from the list of permitted vehicles
+VEHICLE_SELECTION_REMOVE_ALL Remove all vehicles from the list of permitted vehicles
+VEHICLE_SELECTION_AVAILABLE_VEHICLES Available vehicles
+VEHICLE_SELECTION_SELECTED_VEHICLES Selected vehicles
+VEHICLE_SELECTION_ANY_VEHICLE Any vehicle
