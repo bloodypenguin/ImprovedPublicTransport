@@ -3,13 +3,11 @@
 // Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
-using ImprovedPublicTransport2.UI;
 using ImprovedPublicTransport2.UI.AlgernonCommons;
 
 namespace ImprovedPublicTransport2.UI
 {
     using System;
-    using System.Text;
     using ColossalFramework;
     using ColossalFramework.UI;
     using UnityEngine;

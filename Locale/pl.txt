@@ -107,3 +107,10 @@ VEHICLE_PANEL_REMOVE_VEHICLE Usuń pojazd
 VEHICLE_PANEL_NEXT Następny pojazd
 VEHICLE_PANEL_NEXT_TOOLTIP Przeskakuje do następnego pojazdu.\nPrzytrzymanie klawisza Shift podczas klikania dodatkowo przybliży widok.
 VEHICLE_SELECTION_CAPACITY Pojemność
+VEHICLE_SELECTION_ADD_VEHICLE Dodaj ten pojazd do list dozwolonych pojazdów
+VEHICLE_SELECTION_ADD_ALL Dodaj wszystkie kwalifikujące sie pojazdy do listy dozwolonych pojazdów
+VEHICLE_SELECTION_REMOVE_VEHICLE Usuń ten pojazd z listy dozwolonych pojazdów
+VEHICLE_SELECTION_REMOVE_ALL Usuń wszystkie pojazdy z listy dozwolonych pojazdów
+VEHICLE_SELECTION_AVAILABLE_VEHICLES Dostępne pojazdy
+VEHICLE_SELECTION_SELECTED_VEHICLES Wybrane pojazdy
+VEHICLE_SELECTION_ANY_VEHICLE Jakikolwiek pojazd

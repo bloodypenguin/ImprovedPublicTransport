@@ -107,3 +107,10 @@ VEHICLE_PANEL_REMOVE_VEHICLE Remove Vehicle
 VEHICLE_PANEL_NEXT Next Vehicle
 VEHICLE_PANEL_NEXT_TOOLTIP Jump to the next vehicle.\nHolding down a shift key when clicking will also zoom in.
 VEHICLE_SELECTION_CAPACITY Capacity
+VEHICLE_SELECTION_ADD_VEHICLE Add this vehicle to the list of permitted vehicles
+VEHICLE_SELECTION_ADD_ALL Add all eligible vehicles to the list of permitted vehicles
+VEHICLE_SELECTION_REMOVE_VEHICLE Remove this vehicle from the list of permitted vehicles
+VEHICLE_SELECTION_REMOVE_ALL Remove all vehicles from the list of permitted vehicles
+VEHICLE_SELECTION_AVAILABLE_VEHICLES Available vehicles
+VEHICLE_SELECTION_SELECTED_VEHICLES Selected vehicles
+VEHICLE_SELECTION_ANY_VEHICLE Any vehicle

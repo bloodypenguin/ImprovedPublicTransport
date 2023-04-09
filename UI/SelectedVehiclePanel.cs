@@ -40,7 +40,7 @@ namespace ImprovedPublicTransport2.UI
             randomSprite.spriteName = "Random";
 
             // Label.
-            _randomLabel = UILabels.AddLabel(_randomPanel, 0f, 0f, Localization.Get("ANY_VEHICLE"), VehicleList.width,
+            _randomLabel = UILabels.AddLabel(_randomPanel, 0f, 0f, Localization.Get("VEHICLE_SELECTION_ANY_VEHICLE"), VehicleList.width,
                 0.8f);
 
             // Size is 56x33, so offset -8 from left and 3.5 from top to match normal row sizing.
@@ -76,7 +76,7 @@ namespace ImprovedPublicTransport2.UI
                 {
 
                     // Apply name filter.
-                    if (!NameFilter(vehicle.DisplayName))
+                    if (!NameAndCapacityFilter(vehicle))
                     {
                         continue;
                     }
@@ -91,13 +91,13 @@ namespace ImprovedPublicTransport2.UI
                 _randomPanel.Show();
 
                 // Check for TLM override.
-                _randomLabel.text = Localization.Get("ANY_VEHICLE");
+                _randomLabel.text = Localization.Get("VEHICLE_SELECTION_ANY_VEHICLE");
             }
 
             // Set display list items, without changing the display.
             VehicleList.Data = new FastList<object>
             {
-                m_buffer = items.OrderBy(x => x.DisplayName).ToArray(),
+                m_buffer = items.OrderBy(x => x.Name).Select(d => (object)d).ToArray(),
                 m_size = items.Count,
             };
         }

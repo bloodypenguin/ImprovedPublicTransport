@@ -105,3 +105,10 @@ VEHICLE_PANEL_REMOVE_VEHICLE Удалить транспорт
 VEHICLE_PANEL_NEXT Следующий транспорт
 VEHICLE_PANEL_NEXT_TOOLTIP Показать следующее транспортное средство.\nЗажмите Shift, чтобы приблизить камеру.
 VEHICLE_SELECTION_CAPACITY Вместимость
+VEHICLE_SELECTION_ADD_VEHICLE Добавить это транспортное средство в список разрешённого транспорта
+VEHICLE_SELECTION_ADD_ALL Добавить все подходящие транспортные средства в список разрешённого транспорта
+VEHICLE_SELECTION_REMOVE_VEHICLE Удалить это транспортное средство из списка разрешённого транспорта
+VEHICLE_SELECTION_REMOVE_ALL Удалить все транспортные средства из списка разрешённого транспорта
+VEHICLE_SELECTION_AVAILABLE_VEHICLES Доступный транспорт
+VEHICLE_SELECTION_SELECTED_VEHICLES Выбранный транспорт
+VEHICLE_SELECTION_ANY_VEHICLE Любой транспорт
