@@ -6,8 +6,10 @@ using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using ColossalFramework;
 using HarmonyLib;
+using ImprovedPublicTransport2.Data;
 using ImprovedPublicTransport2.Util;
 using UnityEngine;
+using static ImprovedPublicTransport2.ImprovedPublicTransportMod;
 
 namespace ImprovedPublicTransport2.HarmonyPatches.TransportLinePatches
 {
@@ -17,9 +19,9 @@ namespace ImprovedPublicTransport2.HarmonyPatches.TransportLinePatches
         {
             PatchUtil.Patch(
                 new PatchUtil.MethodDefinition(typeof(TransportLine), nameof(TransportLine.SimulationStep)),
-                new PatchUtil.MethodDefinition(typeof(SimulationStepPatch), nameof(Prefix)),
-                new PatchUtil.MethodDefinition(typeof(SimulationStepPatch), nameof(Postfix)),
-                new PatchUtil.MethodDefinition(typeof(SimulationStepPatch), nameof(Transpile))
+                new PatchUtil.MethodDefinition(typeof(SimulationStepPatch), nameof(Prefix), priority: Priority.Normal),
+                new PatchUtil.MethodDefinition(typeof(SimulationStepPatch), nameof(Postfix), priority: Priority.Normal),
+                new PatchUtil.MethodDefinition(typeof(SimulationStepPatch), nameof(Transpile), priority: Priority.Normal)
             );
         }
 
@@ -33,7 +35,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches.TransportLinePatches
         public static IEnumerable<CodeInstruction> Transpile(MethodBase original,
             IEnumerable<CodeInstruction> instructions)
         {
-            Debug.Log("IPT 2: Transpiling method: " + original.DeclaringType + "." + original);
+            Debug.Log($"{ShortModName}: Transpiling method: {original.DeclaringType}.{original}");
 
             var codes = new List<CodeInstruction>(instructions);
             var newCodes = new List<CodeInstruction>();
@@ -47,15 +49,15 @@ namespace ImprovedPublicTransport2.HarmonyPatches.TransportLinePatches
 
                 if (codeInstruction.operand.ToString().Contains(nameof(EconomyManager.FetchResource)))
                 {
-                    Debug.Log("IPT 2: Replacing call to FetchResourceStub()");
+                    Debug.Log($"{ShortModName}: Replacing call to FetchResourceStub()");
                     newCodes.Add(new CodeInstruction(OpCodes.Call,
                         AccessTools.Method(typeof(SimulationStepPatch), nameof(FetchResourceStub))));
                     continue;
                 }
 
-                Debug.Log("IPT 2: Replacing call to CalculateTargetVehicleCount()");
-                var thisInstruction = newCodes[newCodes.Count() - 1];
-                newCodes.RemoveAt(newCodes.Count() - 1);
+                Debug.Log($"{ShortModName}: Replacing call to CalculateTargetVehicleCount()");
+                var thisInstruction = newCodes[newCodes.Count - 1];
+                newCodes.RemoveAt(newCodes.Count - 1);
 
                 newCodes.Add(new CodeInstruction(OpCodes.Ldarg_1)
                 {
@@ -85,14 +87,13 @@ namespace ImprovedPublicTransport2.HarmonyPatches.TransportLinePatches
 
         public static void Postfix(ushort __state)
         {
-            var lineID = __state;
             if (!CachedTransportLineData._init || !((SimulationManager.instance.m_currentFrameIndex & 4095U) >= 3840U) ||
-                !TransportManager.instance.m_lines.m_buffer[lineID].Complete)
+                !TransportManager.instance.m_lines.m_buffer[__state].Complete)
             {
                 return;
             }
 
-            var stops1 = TransportManager.instance.m_lines.m_buffer[lineID].m_stops;
+            var stops1 = TransportManager.instance.m_lines.m_buffer[__state].m_stops;
             var stop1 = stops1;
             do
             {
@@ -100,11 +101,11 @@ namespace ImprovedPublicTransport2.HarmonyPatches.TransportLinePatches
                 stop1 = TransportLine.GetNextStop(stop1);
             } while (stops1 != stop1 && stop1 != 0);
 
-            var itemClass = TransportManager.instance.m_lines.m_buffer[lineID].Info.m_class;
+            var itemClass = TransportManager.instance.m_lines.m_buffer[__state].Info.m_class;
             var prefabs =
                 VehiclePrefabs.instance.GetPrefabs(itemClass.m_service, itemClass.m_subService, itemClass.m_level);
             var amount = 0;
-            TransportLineUtil.CountLineActiveVehicles(lineID, out _, (num3) =>
+            TransportLineUtil.CountLineActiveVehicles(__state, out _, (num3) =>
             {
                 var prefabData = Array.Find(prefabs,
                     item => item.PrefabDataIndex ==
@@ -115,7 +116,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches.TransportLinePatches
             });
             if (amount != 0)
                 Singleton<EconomyManager>.instance.FetchResource(EconomyManager.Resource.Maintenance, amount,
-                    TransportManager.instance.m_lines.m_buffer[lineID].Info.m_class);
+                    TransportManager.instance.m_lines.m_buffer[__state].Info.m_class);
         }
 
         public static int CalculateTargetVehicleCount(ushort lineID)
