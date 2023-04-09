@@ -88,7 +88,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
       }
       else
       {
-        this._publicTransportVehicleWorldInfoPanel.component.height = 332f;
+        this._publicTransportVehicleWorldInfoPanel.component.height = 377f;
         this._editType.isVisible = !OptionsWrapper<Settings.Settings>.Options.HideVehicleEditor;
           ItemClass itemClass = Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineId].Info.m_class;
           ItemClass.SubService subService = itemClass.m_subService;
@@ -238,6 +238,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
     private void AddPanelControls()
     {
       UILabel uiLabel1 = Utils.GetPrivate<UILabel>((object) this._publicTransportVehicleWorldInfoPanel, "m_Type");
+      _publicTransportVehicleWorldInfoPanel.Find<UIButton>("LinesOverview").parent.height = 20f;
       int num1 = 132;
       uiLabel1.anchor = (UIAnchorStyle) num1;
       UIPanel parent = (UIPanel) uiLabel1.parent;

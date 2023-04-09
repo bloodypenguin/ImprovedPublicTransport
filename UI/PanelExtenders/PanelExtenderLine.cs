@@ -22,9 +22,6 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
 {
   public class PanelExtenderLine : MonoBehaviour
   {
-    
-    private const float PARENT_HEIGHT = 285f;
-    
     private bool _initialized;
     private ushort _cachedLineID;
     private ItemClass.Level _cachedLevel = ItemClass.Level.None;
@@ -200,7 +197,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
               CreateDropDownPanel();
               CreateButtonPanel1();
               CreateButtonPanel2();
-              _publicTransportWorldInfoPanel.component.height = 493f;
+              _publicTransportWorldInfoPanel.component.height = 515f;
               CreateVehiclesOnLinePanel();
               CreateVehiclesInQueuePanel();
               BuildingExtension.OnDepotAdded += OnDepotChanged;
@@ -352,27 +349,32 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
       _lineVehiclePanel.relativePosition = new Vector3((float) (_lineVehiclePanel.parent.width + 1.0), 0.0f);
       if (_vehiclesInQueuePanel.isVisible)
       {
-        _lineVehiclePanel.height = (float) ((PARENT_HEIGHT - 16.0) * 0.5);
-        _lineVehicleListBox.height = 162f;
+        _lineVehiclePanel.height = ParentHeight() * 0.5f;
+        _lineVehicleListBox.height = _lineVehiclePanel.height - 45f;
       }
       else
       {
-        _lineVehiclePanel.height = PARENT_HEIGHT - 16f;
-        _lineVehicleListBox.height = PARENT_HEIGHT - 61f;
+        _lineVehiclePanel.height = ParentHeight();
+        _lineVehicleListBox.height = _lineVehiclePanel.height - 45f;
       }
       if (_lineVehiclePanel.isVisible)
       {
-        _vehiclesInQueuePanel.relativePosition = new Vector3((float) (_vehiclesInQueuePanel.parent.width + 1.0), _lineVehiclePanel.height + 1f);
-        _vehiclesInQueuePanel.height = (float) ((PARENT_HEIGHT - 16.0) * 0.5);
-        _vehiclesInQueueListBox.height = 162f;
+        _vehiclesInQueuePanel.relativePosition = new Vector3((float) (_vehiclesInQueuePanel.parent.width + 1.0), ParentHeight() * 0.5f + 1f);
+        _vehiclesInQueuePanel.height = ParentHeight() * 0.5f;
+        _vehiclesInQueueListBox.height = _vehiclesInQueuePanel.height - 45f;
       }
       else
       {
-        _vehiclesInQueuePanel.relativePosition = new Vector3((float) (_vehiclesInQueuePanel.parent.width + 1.0), 0.0f);
-        _vehiclesInQueuePanel.height = PARENT_HEIGHT - 16f;
-        _vehiclesInQueueListBox.height = PARENT_HEIGHT - 61f;
+        _vehiclesInQueuePanel.relativePosition = new Vector3((float) (_lineVehiclePanel.parent.width + 1.0), 0.0f);
+        _vehiclesInQueuePanel.height = ParentHeight();
+        _vehiclesInQueueListBox.height = _vehiclesInQueuePanel.height - 45f;
       }
 
+    }
+
+    private float ParentHeight()
+    {
+      return _lineVehiclePanel.parent.height - 16; //because it has that little thing on the bottom
     }
 
     private void OnDestroy()
@@ -640,7 +642,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
       uiPanel.AlignTo(uiPanel.parent, UIAlignAnchor.TopRight);
       uiPanel.relativePosition = new Vector3((float) (uiPanel.parent.width + /*(double) _prefabPanel.width */+ 180f + 3.0), 0.0f);
       uiPanel.width = 180f;
-      uiPanel.height = (float) ((PARENT_HEIGHT - 16.0) / 2.0);
+      uiPanel.height = 200f; //TODO: do we really need to set?
       uiPanel.backgroundSprite = "UnlockingPanel2";
       uiPanel.opacity = 0.95f;
       _lineVehiclePanel = uiPanel;
@@ -666,7 +668,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
       uiPanel.AlignTo(uiPanel.parent, UIAlignAnchor.TopRight);
       uiPanel.relativePosition = new Vector3(uiPanel.parent.width + 180f + 180f + 1f,  + 0f);
       uiPanel.width = 180f;
-      uiPanel.height = (float) ((PARENT_HEIGHT - 16.0) / 2.0);
+      uiPanel.height = 200f; //TODO: do we really need to set?
       uiPanel.backgroundSprite = "UnlockingPanel2";
       uiPanel.opacity = 0.95f;
       _vehiclesInQueuePanel = uiPanel;
