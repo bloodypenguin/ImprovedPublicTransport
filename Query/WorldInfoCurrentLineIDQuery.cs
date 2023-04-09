@@ -4,8 +4,6 @@ namespace ImprovedPublicTransport2.Query
 {
     public static class WorldInfoCurrentLineIDQuery
     {
-        
-        
         public static ushort Query(out ushort firstVehicle)
         {
             firstVehicle = 0;

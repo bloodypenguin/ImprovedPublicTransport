@@ -2,11 +2,13 @@ using System.Collections.Generic;
 using ColossalFramework;
 using ImprovedPublicTransport2.Data;
 using ImprovedPublicTransport2.Util;
+using JetBrains.Annotations;
 
 namespace ImprovedPublicTransport2.Query
 {
     public static class ActiveVehiclesQuery
     {
+        [NotNull]
         public static List<VehicleQueryResult> Query(ushort lineID, ItemClassTriplet classTriplet)
         {
             var results = new List<VehicleQueryResult>();
