@@ -3,7 +3,6 @@ using CitiesHarmony.API;
 using ColossalFramework;
 using ColossalFramework.UI;
 using ICities;
-using ImprovedPublicTransport2.Detour;
 using ImprovedPublicTransport2.HarmonyPatches.BuildingManagerPatches;
 using ImprovedPublicTransport2.HarmonyPatches.DepotAIPatches;
 using ImprovedPublicTransport2.HarmonyPatches.NetManagerPatches;
@@ -15,7 +14,9 @@ using ImprovedPublicTransport2.HarmonyPatches.XYZVehicleAIPatches;
 using ImprovedPublicTransport2.OptionsFramework.Extensions;
 using ImprovedPublicTransport2.RedirectionFramework;
 using ImprovedPublicTransport2.Data;
+using ImprovedPublicTransport2.HarmonyPatches.PublicTransportVehicleButtonPatches;
 using ImprovedPublicTransport2.HarmonyPatches.PublicTransportWorldInfoPanelPatches;
+using ImprovedPublicTransport2.ReverseDetours;
 using ImprovedPublicTransport2.UI;
 using ImprovedPublicTransport2.UI.PanelExtenders;
 using UnityEngine;
@@ -100,8 +101,8 @@ namespace ImprovedPublicTransport2
                     CanLeavePatch.Apply();
 
                     Redirector<CommonBuildingAIReverseDetour>.Deploy();
-                    Redirector<PublicTransportStopButtonDetour>.Deploy();
-                    Redirector<PublicTransportVehicleButtonDetour>.Deploy();
+                    HarmonyPatches.PublicTransportStopButtonPatches.OnMouseDownPatch.Apply();
+                    HarmonyPatches.PublicTransportVehicleButtonPatches.OnMouseDownPatch.Apply();
                     RefreshVehicleButtonsPatch.Apply();
                     UpdateStopButtonsPatch.Apply();
                     BuildingExtension.Init();
@@ -191,8 +192,8 @@ namespace ImprovedPublicTransport2
             CanLeavePatch.Undo();
 
             Redirector<CommonBuildingAIReverseDetour>.Revert();
-            Redirector<PublicTransportStopButtonDetour>.Revert();
-            Redirector<PublicTransportVehicleButtonDetour>.Revert();
+            HarmonyPatches.PublicTransportStopButtonPatches.OnMouseDownPatch.Undo();
+            HarmonyPatches.PublicTransportVehicleButtonPatches.OnMouseDownPatch.Undo();
             RefreshVehicleButtonsPatch.Undo();
             UpdateStopButtonsPatch.Undo();
 

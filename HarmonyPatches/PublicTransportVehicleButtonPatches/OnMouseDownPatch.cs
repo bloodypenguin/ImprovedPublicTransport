@@ -1,14 +1,31 @@
 ﻿using ColossalFramework.UI;
-using ImprovedPublicTransport2.RedirectionFramework.Attributes;
+using ImprovedPublicTransport2.HarmonyPatches.PublicTransportWorldInfoPanelPatches;
+using ImprovedPublicTransport2.Util;
 using UnityEngine;
 
-namespace ImprovedPublicTransport2.Detour
+namespace ImprovedPublicTransport2.HarmonyPatches.PublicTransportVehicleButtonPatches
 {
-    [TargetType(typeof(PublicTransportVehicleButton))]
-    public class PublicTransportVehicleButtonDetour : PublicTransportVehicleButton
+
+    public static class OnMouseDownPatch
     {
-        [RedirectMethod]
-        private void OnMouseDown(UIComponent component, UIMouseEventParameter eventParam)
+        
+        public static void Apply()
+        {
+            PatchUtil.Patch(
+                new PatchUtil.MethodDefinition(typeof(PublicTransportVehicleButton), "OnMouseDown"),
+                new PatchUtil.MethodDefinition(typeof(OnMouseDownPatch),
+                    nameof(Prefix))
+            );
+        }
+
+        public static void Undo()
+        {
+            PatchUtil.Unpatch(
+                new PatchUtil.MethodDefinition(typeof(PublicTransportVehicleButton), "OnMouseDown")
+            );
+        }
+
+        private static bool Prefix(UIComponent component, UIMouseEventParameter eventParam)
         {
             ushort objectUserData = (ushort)(component as UIButton).objectUserData;
             InstanceID empty = InstanceID.Empty;
@@ -25,6 +42,8 @@ namespace ImprovedPublicTransport2.Detour
             }
             PublicTransportWorldInfoPanel.ResetScrollPosition();
             UIView.SetFocus((UIComponent)null);
+
+            return false;
         }
     }
 }

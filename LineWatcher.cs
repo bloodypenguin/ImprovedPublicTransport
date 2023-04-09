@@ -6,7 +6,6 @@
 
 using ColossalFramework;
 using System.Collections.Generic;
-using ImprovedPublicTransport2.Detour;
 using ImprovedPublicTransport2.OptionsFramework;
 using ImprovedPublicTransport2.Data;
 using ImprovedPublicTransport2.Util;

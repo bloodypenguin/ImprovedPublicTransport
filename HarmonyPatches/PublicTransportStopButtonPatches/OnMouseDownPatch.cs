@@ -1,17 +1,31 @@
 ﻿using ColossalFramework;
 using ColossalFramework.UI;
-using ImprovedPublicTransport2.RedirectionFramework.Attributes;
 using ImprovedPublicTransport2.UI;
+using ImprovedPublicTransport2.Util;
 using UnityEngine;
 
-namespace ImprovedPublicTransport2.Detour
+namespace ImprovedPublicTransport2.HarmonyPatches.PublicTransportStopButtonPatches
 {
-    [TargetType(typeof(PublicTransportStopButton))]
-    public class PublicTransportStopButtonDetour : PublicTransportStopButton
+    public class OnMouseDownPatch
     {
 
-        [RedirectMethod]
-        private void OnMouseDown(UIComponent component, UIMouseEventParameter eventParam)
+        public static void Apply()
+        {
+            PatchUtil.Patch(
+                new PatchUtil.MethodDefinition(typeof(PublicTransportStopButton), "OnMouseDown"),
+                new PatchUtil.MethodDefinition(typeof(OnMouseDownPatch),
+                    nameof(Prefix))
+            );
+        }
+
+        public static void Undo()
+        {
+            PatchUtil.Unpatch(
+                new PatchUtil.MethodDefinition(typeof(PublicTransportStopButton), "OnMouseDown")
+            );
+        }
+        
+        private static bool Prefix(UIComponent component, UIMouseEventParameter eventParam)
         {
             ushort objectUserData = (ushort)(component as UIButton).objectUserData;
             Vector3 position = Singleton<NetManager>.instance.m_nodes.m_buffer[(int)objectUserData].m_position;
@@ -28,6 +42,8 @@ namespace ImprovedPublicTransport2.Detour
             //begin mod: show PublicTransportStopWorldInfoPanel
             PublicTransportStopWorldInfoPanel.instance.Show(position, empty);
             //end mod
+
+            return false;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using ColossalFramework;
-using ImprovedPublicTransport2.Detour;
 using ImprovedPublicTransport2.Data;
+using ImprovedPublicTransport2.ReverseDetours;
 using UnityEngine;
 using static ImprovedPublicTransport2.ImprovedPublicTransportMod;
 
