@@ -2,17 +2,18 @@ using System;
 using System.Reflection;
 using HarmonyLib;
 using UnityEngine;
+using static ImprovedPublicTransport2.ImprovedPublicTransportMod;
 
 namespace ImprovedPublicTransport2.Util
 {
     internal static class PatchUtil
     {
-        //use a different ID in your mod if you copy this!!!
-        private const string HarmonyId = "github.com/bloodypenguin/ImprovedPublicTransport";
-        private static Harmony _harmonyInstance = null;
+
+        private static Harmony _harmonyInstance;
 
         private static Harmony HarmonyInstance =>
             _harmonyInstance ??= new Harmony(HarmonyId);
+
 
         public static void Patch(
             MethodDefinition original,
@@ -23,29 +24,29 @@ namespace ImprovedPublicTransport2.Util
             if (prefix == null && postfix == null && transpiler == null)
             {
                 throw new Exception(
-                    $"IPT 2: prefix, postfix and transpiler are null for method {original.Type.FullName}.{original.MethodName}");
+                    $"{ShortModName}: prefix, postfix and transpiler are null for method {original.Type.FullName}.{original.MethodName}");
             }
 
             try
             {
-                Debug.Log($"IPT 2: Patching method {original.Type.FullName}.{original.MethodName}");
+                Debug.Log($"{ShortModName}: Patching method {original.Type.FullName}.{original.MethodName}");
                 var methodInfo = GetOriginal(original);
                 HarmonyInstance.Patch(methodInfo,
-                    prefix: prefix == null ? null : new HarmonyMethod(GetPatch(prefix), before: prefix.Before, after: prefix.After),
-                    postfix: postfix == null ? null : new HarmonyMethod(GetPatch(postfix), before: postfix.Before, after: postfix.After),
-                    transpiler == null ? null : new HarmonyMethod(GetPatch(transpiler), before: transpiler.Before, after: transpiler.After)
+                    prefix == null ? null : new HarmonyMethod(GetPatch(prefix), before: prefix.Before, after: prefix.After, priority: prefix.Priority),
+                    postfix == null ? null : new HarmonyMethod(GetPatch(postfix), before: postfix.Before, after: postfix.After, priority: postfix.Priority),
+                    transpiler == null ? null : new HarmonyMethod(GetPatch(transpiler), before: transpiler.Before, after: transpiler.After, priority: transpiler.Priority)
                 );
             }
             catch (Exception e)
             {
-                Debug.LogError($"IPT 2: Failed to patch method {original.Type.FullName}.{original.MethodName}");
+                Debug.LogError($"{ShortModName}: Failed to patch method {original.Type.FullName}.{original.MethodName}");
                 Debug.LogException(e);
             }
         }
 
         public static void Unpatch(MethodDefinition original)
         {
-            Debug.Log($"IPT 2: Unpatching method {original.Type.FullName}.{original.MethodName}");
+            Debug.Log($"{ShortModName}: Unpatching method {original.Type.FullName}.{original.MethodName}");
             HarmonyInstance.Unpatch(GetOriginal(original), HarmonyPatchType.All, HarmonyId);
         }
 
@@ -60,7 +61,7 @@ namespace ImprovedPublicTransport2.Util
             if (methodInfo == null)
             {
                 throw new Exception(
-                    $"IPT 2: Failed to find original method {original.Type.FullName}.{original.MethodName}");
+                    $"{ShortModName}: Failed to find original method {original.Type.FullName}.{original.MethodName}");
             }
 
             return methodInfo;
@@ -77,7 +78,7 @@ namespace ImprovedPublicTransport2.Util
             
             if (methodInfo == null)
             {
-                throw new Exception($"IPT 2: Failed to find patch method {patch.Type.FullName}.{patch.MethodName}");
+                throw new Exception($"{ShortModName}: Failed to find patch method {patch.Type.FullName}.{patch.MethodName}");
             }
 
             return methodInfo;
@@ -89,7 +90,8 @@ namespace ImprovedPublicTransport2.Util
                 BindingFlags bindingFlags = BindingFlags.Default,
                 Type[] argumentTypes = null,
                 string[] before = null,
-                string[] after = null)
+                string[] after = null,
+                int priority = -1)
             {
                 Type = type;
                 MethodName = methodName;
@@ -97,6 +99,7 @@ namespace ImprovedPublicTransport2.Util
                 ArgumentTypes = argumentTypes;
                 Before = before;
                 After = after;
+                Priority = priority;
             }
 
             public Type Type { get; }
@@ -109,6 +112,8 @@ namespace ImprovedPublicTransport2.Util
             public string[] Before { get;  }
             
             public string[] After { get;  }
+            
+            public int Priority { get;  }
         }
     }
 }

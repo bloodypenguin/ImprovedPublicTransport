@@ -71,8 +71,8 @@ namespace ImprovedPublicTransport2.UI
       {
         if (stopIndex == -1)
         {
-          ushort transportLine = Singleton<NetManager>.instance.m_nodes.m_buffer[node].m_transportLine;
-          str = string.Format("{0} #{1}", (object) Singleton<TransportManager>.instance.GetLineName(transportLine), (object) (TransportLineUtil.GetStopIndex(transportLine, node) + 1));
+          var transportLine = Singleton<NetManager>.instance.m_nodes.m_buffer[node].m_transportLine;
+          str = $"{Singleton<TransportManager>.instance.GetLineName(transportLine)} #{TransportLineUtil.GetStopIndex(transportLine, node) + 1}";
         }
         else
           str = string.Format(Localization.Get("STOP_LIST_BOX_ROW_STOP"), (object)stopIndex);

@@ -581,7 +581,7 @@ namespace ImprovedPublicTransport2.TransientData
           passengerCount -= 5;
         if (passengerCount < 0)
         {
-          Utils.LogToTxt((object) string.Format("ReleaseUnits for #{0}", (object) vehicleID));
+          Utils.LogToTxt($"ReleaseUnits for #{vehicleID}");
           instance.m_units.m_buffer[(int) num].m_nextUnit = 0U;
           instance.ReleaseUnits(firstUnit);
           return;
@@ -590,7 +590,7 @@ namespace ImprovedPublicTransport2.TransientData
       }
       if (passengerCount <= 0)
         return;
-      Utils.LogToTxt((object) string.Format("CreateUnits for #{0}", (object) vehicleID));
+      Utils.LogToTxt($"CreateUnits for #{vehicleID}");
       uint firstUnit1 = 0;
       if (!instance.CreateUnits(out firstUnit1, ref Singleton<SimulationManager>.instance.m_randomizer, (ushort) 0, vehicleID, 0, 0, 0, passengerCount, 0))
         return;
