@@ -81,6 +81,7 @@
     <Compile Include="PersistentData\LineData.cs" />
     <Compile Include="PersistentData\MovingAverage.cs" />
     <Compile Include="PersistentData\NodeData.cs" />
+    <Compile Include="PersistentData\PrefabData.cs" />
     <Compile Include="PersistentData\SerializableDataExtension.cs" />
     <Compile Include="PersistentData\VehicleData.cs" />
     <Compile Include="Detour\PublicTransportStopButtonDetour.cs" />
@@ -139,7 +140,6 @@
     <Compile Include="Settings\SettingsActions.cs" />
     <Compile Include="Settings\VehicleEditorPositions.cs" />
     <Compile Include="TransientData\GameDefault.cs" />
-    <Compile Include="TransientData\PrefabData.cs" />
     <Compile Include="TransientData\VehiclePrefabs.cs" />
     <Compile Include="TranslationFramework\DefaultLanguageDeserializer.cs" />
     <Compile Include="TranslationFramework\Language.cs" />
