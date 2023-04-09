@@ -1,31 +1,14 @@
 using System;
 using System.Collections.Generic;
 using ColossalFramework;
-using ImprovedPublicTransport2.Detour;
+using ImprovedPublicTransport2.Data;
+using ImprovedPublicTransport2.ReverseDetours;
 
 namespace ImprovedPublicTransport2.Util
 {
     public static class TransportLineUtil
     {
-        //roughly based on TransportLine.ReplaceVehicles()
-        public static void ReplaceVehicles(ushort lineID)
-        {
-            var instance = Singleton<VehicleManager>.instance;
-            for (var i = 0; i < instance.m_vehicles.m_buffer.Length; ++i)
-            {
-                if (instance.m_vehicles.m_buffer[i].m_flags == 0 || instance.m_vehicles.m_buffer[i].Info == null ||
-                    instance.m_vehicles.m_buffer[i].m_transportLine != lineID)
-                {
-                    continue;
-                }
 
-                if (CachedTransportLineData.GetPrefabs(lineID).Contains(instance.m_vehicles.m_buffer[i].Info.name))
-                {
-                    continue;
-                }
-                RemoveVehicle(lineID, (ushort)i, false);
-            }
-        }
 
         public static ushort GetNextVehicle(ushort lineID, ushort vehicleID)
         {
@@ -141,7 +124,7 @@ namespace ImprovedPublicTransport2.Util
         //based off code in TransportLine.SimulationStep
         public static void RemoveActiveVehicle(ushort lineID, bool descreaseTargetVehicleCount, int activeVehiclesCount)
         {
-            ushort activeVehicle = TransportLineDetour.GetActiveVehicle(
+            ushort activeVehicle = TransportLineReverseDetour.GetActiveVehicle(
                 ref Singleton<TransportManager>.instance.m_lines.m_buffer[(int) lineID],
                 Singleton<SimulationManager>.instance.m_randomizer.Int32((uint) activeVehiclesCount));
             if ((int) activeVehicle != 0)

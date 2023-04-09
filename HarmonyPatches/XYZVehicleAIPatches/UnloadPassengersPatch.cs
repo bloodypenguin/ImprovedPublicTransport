@@ -1,4 +1,6 @@
 using System;
+using HarmonyLib;
+using ImprovedPublicTransport2.Data;
 using ImprovedPublicTransport2.Util;
 using UnityEngine;
 
@@ -77,8 +79,8 @@ namespace ImprovedPublicTransport2.HarmonyPatches.XYZVehicleAIPatches
         {
             PatchUtil.Patch(
                 new PatchUtil.MethodDefinition(type, UnloadPassengersMethod),
-                new PatchUtil.MethodDefinition(typeof(UnloadPassengersPatch), nameof(UnloadPassengersPre)),
-                new PatchUtil.MethodDefinition(typeof(UnloadPassengersPatch), nameof(UnloadPassengersPost))
+                new PatchUtil.MethodDefinition(typeof(UnloadPassengersPatch), nameof(UnloadPassengersPre), priority: Priority.Normal),
+                new PatchUtil.MethodDefinition(typeof(UnloadPassengersPatch), nameof(UnloadPassengersPost), priority: Priority.Normal)
             );
         }
 

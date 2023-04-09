@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using ImprovedPublicTransport2.Util;
 
 namespace ImprovedPublicTransport2.HarmonyPatches.TransportManagerPatches
@@ -22,6 +23,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches.TransportManagerPatches
             );
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public static bool Prefix()
         {
 
