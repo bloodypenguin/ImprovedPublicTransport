@@ -153,6 +153,7 @@
     <Compile Include="UI\AlgernonCommons\ModBase.cs" />
     <Compile Include="UI\AlgernonCommons\PrefabUtils.cs" />
     <Compile Include="UI\AlgernonCommons\UIButtons.cs" />
+    <Compile Include="UI\AlgernonCommons\UIDropDowns.cs" />
     <Compile Include="UI\AlgernonCommons\UIFonts.cs" />
     <Compile Include="UI\AlgernonCommons\UILabels.cs" />
     <Compile Include="UI\AlgernonCommons\UIList.cs" />

@@ -156,7 +156,7 @@ namespace ImprovedPublicTransport2.UI.AlgernonCommons
         /// <returns>New checkbox using the game's option panel template.</returns>
         public static UITextField AddPlainTextfield(UIComponent parent, string text)
         {
-            UIPanel textFieldPanel = parent.AttachUIComponent(UITemplateManager.GetAsGameObject("OptionsTextfieldTemplate")) as UIPanel;
+            UIPanel textFieldPanel = parent.AttachUIComponent(UITemplateManager.GetAsGameObject("IPT2_OptionsTextfieldTemplate")) as UIPanel;
 
             // Set text label.
             textFieldPanel.Find<UILabel>("Label").text = text;
