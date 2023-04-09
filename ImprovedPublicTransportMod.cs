@@ -15,6 +15,7 @@ using ImprovedPublicTransport2.HarmonyPatches.XYZVehicleAIPatches;
 using ImprovedPublicTransport2.OptionsFramework.Extensions;
 using ImprovedPublicTransport2.RedirectionFramework;
 using ImprovedPublicTransport2.Data;
+using ImprovedPublicTransport2.HarmonyPatches.PublicTransportWorldInfoPanelPatches;
 using ImprovedPublicTransport2.UI;
 using ImprovedPublicTransport2.UI.PanelExtenders;
 using UnityEngine;
@@ -103,7 +104,8 @@ namespace ImprovedPublicTransport2
                     Redirector<CommonBuildingAIReverseDetour>.Deploy();
                     Redirector<PublicTransportStopButtonDetour>.Deploy();
                     Redirector<PublicTransportVehicleButtonDetour>.Deploy();
-                    Redirector<PublicTransportWorldInfoPanelDetour>.Deploy();
+                    RefreshVehicleButtonsPatch.Apply();
+                    UpdateStopButtonsPatch.Apply();
                     BuildingExtension.Init();
                     LineWatcher.instance.Init();
 
@@ -193,8 +195,8 @@ namespace ImprovedPublicTransport2
             Redirector<CommonBuildingAIReverseDetour>.Revert();
             Redirector<PublicTransportStopButtonDetour>.Revert();
             Redirector<PublicTransportVehicleButtonDetour>.Revert();
-            Redirector<PublicTransportWorldInfoPanelDetour>.Revert();
-
+            RefreshVehicleButtonsPatch.Undo();
+            UpdateStopButtonsPatch.Undo();
 
             Redirector<TransportLineReverseDetour>.Revert();
             SimulationStepPatch.Undo();
