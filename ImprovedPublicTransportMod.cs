@@ -33,7 +33,7 @@ namespace ImprovedPublicTransport2
         public static bool inGame;
         public static GameObject _iptGameObject;
         private GameObject _worldInfoPanel;
-        private readonly string version = "7.0.0-preview4";
+        private readonly string version = "7.0.0";
 
         public string Name => $"{BaseModName} [r{version}]";
 
