@@ -1,4 +1,5 @@
 using ColossalFramework;
+using HarmonyLib;
 using ImprovedPublicTransport2.OptionsFramework;
 using ImprovedPublicTransport2.Util;
 using UnityEngine;
@@ -15,9 +16,9 @@ namespace ImprovedPublicTransport2.HarmonyPatches.TransportLinePatches
         {
             PatchUtil.Patch(
                 new PatchUtil.MethodDefinition(typeof(TransportLine),
-                    nameof(TransportLine.CanLeaveStop)),
+                    nameof(TransportLine.CanLeaveStop), priority: Priority.Normal),
                 new PatchUtil.MethodDefinition(typeof(CanLeaveStopPatch),
-                    nameof(Prefix))
+                    nameof(Prefix), priority: Priority.Normal)
             );
         }
 
