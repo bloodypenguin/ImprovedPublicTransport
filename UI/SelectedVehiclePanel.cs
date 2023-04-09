@@ -6,8 +6,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using ColossalFramework.UI;
+using ImprovedPublicTransport2.Data;
 using ImprovedPublicTransport2.Query;
-using ImprovedPublicTransport2.TransientData;
 using ImprovedPublicTransport2.UI.AlgernonCommons;
 using UnityEngine;
 

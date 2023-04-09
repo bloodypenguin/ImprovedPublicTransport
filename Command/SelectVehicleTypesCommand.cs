@@ -2,8 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ColossalFramework;
 using ImprovedPublicTransport2.Query;
-using ImprovedPublicTransport2.PersistentData;
-using ImprovedPublicTransport2.TransientData;
+using ImprovedPublicTransport2.Data;
 using ImprovedPublicTransport2.Util;
 using JetBrains.Annotations;
 

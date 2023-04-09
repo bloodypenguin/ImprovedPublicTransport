@@ -7,7 +7,7 @@
 using System;
 using Utils = ImprovedPublicTransport2.Util.Utils;
 
-namespace ImprovedPublicTransport2.PersistentData
+namespace ImprovedPublicTransport2.Data
 {
 
   public static class CachedVehicleData

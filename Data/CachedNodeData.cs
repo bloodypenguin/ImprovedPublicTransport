@@ -7,7 +7,7 @@
 using System;
 using ImprovedPublicTransport2.Util;
 
-namespace ImprovedPublicTransport2.PersistentData
+namespace ImprovedPublicTransport2.Data
 {
   public static class CachedNodeData
   {

@@ -5,7 +5,7 @@ using ImprovedPublicTransport2.Util;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace ImprovedPublicTransport2.TransientData
+namespace ImprovedPublicTransport2.Data
 {
     public class VehiclePrefabs : Singleton<VehiclePrefabs>
     {

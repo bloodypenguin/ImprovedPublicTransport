@@ -3,7 +3,7 @@ using System.Reflection;
 using ColossalFramework;
 using ColossalFramework.UI;
 using ImprovedPublicTransport2.RedirectionFramework.Attributes;
-using ImprovedPublicTransport2.PersistentData;
+using ImprovedPublicTransport2.Data;
 using ImprovedPublicTransport2.UI;
 using UnityEngine;
 

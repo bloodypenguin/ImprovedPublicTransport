@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using ColossalFramework;
 using HarmonyLib;
-using ImprovedPublicTransport2.PersistentData;
+using ImprovedPublicTransport2.Data;
 using ImprovedPublicTransport2.Util;
 using UnityEngine;
 using static ImprovedPublicTransport2.ImprovedPublicTransportMod;

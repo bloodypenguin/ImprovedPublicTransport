@@ -4,7 +4,7 @@
 // </copyright>
 
 using ColossalFramework.UI;
-using ImprovedPublicTransport2.TransientData;
+using ImprovedPublicTransport2.Data;
 using ImprovedPublicTransport2.UI.AlgernonCommons;
 using UnityEngine;
 

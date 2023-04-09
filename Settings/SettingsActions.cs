@@ -1,6 +1,6 @@
 ﻿using ColossalFramework;
 using ImprovedPublicTransport2.OptionsFramework;
-using ImprovedPublicTransport2.PersistentData;
+using ImprovedPublicTransport2.Data;
 
 namespace ImprovedPublicTransport2.Settings
 {

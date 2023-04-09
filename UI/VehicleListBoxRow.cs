@@ -10,7 +10,7 @@ using ColossalFramework;
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using ImprovedPublicTransport2.OptionsFramework;
-using ImprovedPublicTransport2.TransientData;
+using ImprovedPublicTransport2.Data;
 using UnityEngine;
 using Utils = ImprovedPublicTransport2.Util.Utils;
 
