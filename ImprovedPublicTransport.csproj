@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="BuildingExtension.cs" />
     <Compile Include="Command\SelectVehicleTypesCommand.cs" />
+    <Compile Include="HarmonyPatches\HarmonyId.cs" />
     <Compile Include="HarmonyPatches\PublicTransportWorldInfoPanelPatches\UpdateStopButtonsPatch.cs" />
     <Compile Include="HarmonyPatches\PublicTransportWorldInfoPanelPatches\RefreshVehicleButtonsPatch.cs" />
     <Compile Include="HarmonyPatches\TransportLinePatches\CanLeaveStopPatch.cs" />
@@ -219,6 +220,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="HarmonyPatches\PublicTransportVehicleButtonPatches" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

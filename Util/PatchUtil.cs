@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using HarmonyLib;
+using ImprovedPublicTransport2.HarmonyPatches;
 using UnityEngine;
 using static ImprovedPublicTransport2.ImprovedPublicTransportMod;
 
@@ -12,7 +13,7 @@ namespace ImprovedPublicTransport2.Util
         private static Harmony _harmonyInstance;
 
         private static Harmony HarmonyInstance =>
-            _harmonyInstance ??= new Harmony(HarmonyId);
+            _harmonyInstance ??= new Harmony(HarmonyId.Value);
 
 
         public static void Patch(
@@ -47,7 +48,7 @@ namespace ImprovedPublicTransport2.Util
         public static void Unpatch(MethodDefinition original)
         {
             Debug.Log($"{ShortModName}: Unpatching method {original.Type.FullName}.{original.MethodName}");
-            HarmonyInstance.Unpatch(GetOriginal(original), HarmonyPatchType.All, HarmonyId);
+            HarmonyInstance.Unpatch(GetOriginal(original), HarmonyPatchType.All, HarmonyId.Value);
         }
 
         private static MethodInfo GetOriginal(MethodDefinition original)
