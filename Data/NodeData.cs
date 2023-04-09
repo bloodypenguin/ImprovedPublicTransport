@@ -7,7 +7,7 @@
 using ImprovedPublicTransport2.OptionsFramework;
 using UnityEngine;
 
-namespace ImprovedPublicTransport2.PersistentData
+namespace ImprovedPublicTransport2.Data
 {
   public struct NodeData
   {

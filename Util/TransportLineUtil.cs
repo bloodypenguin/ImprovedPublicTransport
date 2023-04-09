@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using ColossalFramework;
 using ImprovedPublicTransport2.Detour;
-using ImprovedPublicTransport2.PersistentData;
+using ImprovedPublicTransport2.Data;
 
 namespace ImprovedPublicTransport2.Util
 {

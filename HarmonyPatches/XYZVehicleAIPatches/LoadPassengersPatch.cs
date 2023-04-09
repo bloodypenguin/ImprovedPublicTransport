@@ -1,6 +1,6 @@
 using System;
 using HarmonyLib;
-using ImprovedPublicTransport2.PersistentData;
+using ImprovedPublicTransport2.Data;
 using ImprovedPublicTransport2.Util;
 using UnityEngine;
 

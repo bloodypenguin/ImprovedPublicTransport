@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using ColossalFramework;
 using ImprovedPublicTransport2.OptionsFramework;
-using ImprovedPublicTransport2.TransientData;
 using ImprovedPublicTransport2.Util;
 using UnityEngine;
 using Utils = ImprovedPublicTransport2.Util.Utils;
 
-namespace ImprovedPublicTransport2.PersistentData
+namespace ImprovedPublicTransport2.Data
 {
     public static class CachedTransportLineData
     {

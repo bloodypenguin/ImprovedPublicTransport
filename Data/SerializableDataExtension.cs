@@ -7,7 +7,7 @@
 using System;
 using ICities;
 
-namespace ImprovedPublicTransport2.PersistentData
+namespace ImprovedPublicTransport2.Data
 {
   public class SerializableDataExtension : ISerializableDataExtension
   {
