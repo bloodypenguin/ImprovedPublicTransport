@@ -73,6 +73,8 @@
   <ItemGroup>
     <Compile Include="BuildingExtension.cs" />
     <Compile Include="Command\SelectVehicleTypesCommand.cs" />
+    <Compile Include="HarmonyPatches\PublicTransportWorldInfoPanelPatches\UpdateStopButtonsPatch.cs" />
+    <Compile Include="HarmonyPatches\PublicTransportWorldInfoPanelPatches\RefreshVehicleButtonsPatch.cs" />
     <Compile Include="HarmonyPatches\TransportLinePatches\CanLeaveStopPatch.cs" />
     <Compile Include="HarmonyPatches\XYZVehicleAIPatches\CanLeavePatch.cs" />
     <Compile Include="Data\CachedNodeData.cs" />
@@ -87,7 +89,6 @@
     <Compile Include="Data\VehicleData.cs" />
     <Compile Include="Detour\PublicTransportStopButtonDetour.cs" />
     <Compile Include="Detour\PublicTransportVehicleButtonDetour.cs" />
-    <Compile Include="Detour\PublicTransportWorldInfoPanelDetour.cs" />
     <Compile Include="Detour\CommonBuildingAIReverseDetour.cs" />
     <Compile Include="HarmonyPatches\BuildingManagerPatches\GetDepotLevelsPatch.cs" />
     <Compile Include="HarmonyPatches\DepotAIPatches\ClassMatchesPatch.cs" />
