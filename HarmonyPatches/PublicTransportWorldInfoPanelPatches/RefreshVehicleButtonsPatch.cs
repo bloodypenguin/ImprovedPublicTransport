@@ -38,7 +38,17 @@ namespace ImprovedPublicTransport2.HarmonyPatches.PublicTransportWorldInfoPanelP
                 ___m_vehicleButtons.items[index].relativePosition = relativePosition;
                 ___m_vehicleButtons.items[index].objectUserData = (object)num;
                 //begin mod(+): add tooltip with asset name
-                ___m_vehicleButtons.items[index].tooltip = Singleton<VehicleManager>.instance.GetVehicleName(num);
+                string tooltip;
+                var prefab = VehicleManager.instance.m_vehicles.m_buffer[num].Info;
+                if (prefab == null)
+                {
+                    tooltip = Singleton<VehicleManager>.instance.GetVehicleName(num);
+                }
+                else
+                {
+                    tooltip = VehiclePrefabs.instance.FindByName(prefab.name)?.GetDescription();
+                }
+                ___m_vehicleButtons.items[index].tooltip = tooltip; 
                 //end mod
                 num = instance.m_vehicles.m_buffer[(int)num].m_nextLineVehicle;
                 if (++index >= CachedVehicleData.MaxVehicleCount)
