@@ -1,8 +1,8 @@
-﻿using System;
-using ColossalFramework;
+﻿using ColossalFramework;
 using ImprovedPublicTransport2.Detour;
 using ImprovedPublicTransport2.PersistentData;
 using UnityEngine;
+using static ImprovedPublicTransport2.ImprovedPublicTransportMod;
 
 namespace ImprovedPublicTransport2.Util
 {
@@ -153,7 +153,7 @@ namespace ImprovedPublicTransport2.Util
             if ((int) closestDepot != 0)
             {
                 CachedTransportLineData.SetDepot(lineID, closestDepot);
-                UnityEngine.Debug.LogWarning($"IPT2: auto assigned depot {closestDepot} to line {lineID}");
+                UnityEngine.Debug.LogWarning($"{ShortModName}: auto assigned depot {closestDepot} to line {lineID}");
             }
 
             return closestDepot;

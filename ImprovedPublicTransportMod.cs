@@ -27,6 +27,9 @@ namespace ImprovedPublicTransport2
     public class ImprovedPublicTransportMod : LoadingExtensionBase, IUserMod
     {
         public const string BaseModName = "Improved Public Transport 2";
+        public const string ShortModName = "IPT2";
+        
+        public const string HarmonyId = "github.com/bloodypenguin/ImprovedPublicTransport";
         
         public static bool inGame;
         public static GameObject _iptGameObject;
@@ -58,7 +61,7 @@ namespace ImprovedPublicTransport2
             inGame = true;
             try
             {
-                Utils.Log($"IPT2: Begin init version: {version}");
+                Utils.Log($"{ShortModName}: Begin init version: {version}");
                 ReleaseUnusedCitizenUnits();
                 UIView objectOfType = Object.FindObjectOfType<UIView>();
                 if (objectOfType != null)
@@ -77,12 +80,12 @@ namespace ImprovedPublicTransport2
                     if (Utils.IsModActive(1764208250)) // More Vehicles
                     {
                         Debug.LogWarning(
-                            "IPT2: More Vehicles is enabled, applying compatibility workaround");
+                            $"{ShortModName}: More Vehicles is enabled, applying compatibility workaround");
                         maxVehicleCount = ushort.MaxValue + 1;
                     }
                     else
                     {
-                        Debug.Log("IPT2: More Vehicles is not enabled");
+                        Debug.Log($"{ShortModName}: More Vehicles is not enabled");
                         maxVehicleCount = VehicleManager.MAX_VEHICLE_COUNT;
                     }
 
@@ -125,14 +128,14 @@ namespace ImprovedPublicTransport2
             }
             catch (Exception ex)
             {
-                Utils.LogError("IPT2: Error during initialization, IPT disables itself." +
-                               Environment.NewLine + "Please try again without any other mod." +
-                               Environment.NewLine +
-                               "Please upload your log file and post the link here if that didn't help:" +
-                               Environment.NewLine +
-                               "http://steamcommunity.com/workshop/filedetails/discussion/424106600/615086038663282271/" +
-                               Environment.NewLine + ex.Message + Environment.NewLine +
-                               ex.InnerException + Environment.NewLine + ex.StackTrace);
+                Utils.LogError(
+                    $"{ShortModName}: Error during initialization, IPT disables itself.{Environment.NewLine}" +
+                    $"Please try again without any other mod.{Environment.NewLine}" +
+                    $"Please upload your log file and post the link here if that didn't help:{Environment.NewLine}" +
+                    $"http://steamcommunity.com/workshop/filedetails/discussion/424106600/615086038663282271/{Environment.NewLine}" +
+                    $"{ex.Message}{Environment.NewLine}" +
+                    $"{ex.InnerException}{Environment.NewLine}" +
+                    $"{ex.StackTrace}");
                 Deinit();
             }
         }
@@ -167,11 +170,8 @@ namespace ImprovedPublicTransport2
                     ++num;
                     instance.m_units.m_buffer[index] = new CitizenUnit();
                     instance.m_units.ReleaseItem((uint)index);
-                    Utils.LogToTxt(string.Format(
-                        "CitizenUnit #{0} - Flags: {1} - Citizens: #{2} | #{3} | #{4} | #{5} | #{6}", index,
-                        citizenUnit.m_flags, citizenUnit.m_citizen0, citizenUnit.m_citizen1,
-                        citizenUnit.m_citizen2, citizenUnit.m_citizen3,
-                        citizenUnit.m_citizen4));
+                    Utils.LogToTxt(
+                        $"CitizenUnit #{index} - Flags: {citizenUnit.m_flags} - Citizens: #{citizenUnit.m_citizen0} | #{citizenUnit.m_citizen1} | #{citizenUnit.m_citizen2} | #{citizenUnit.m_citizen3} | #{citizenUnit.m_citizen4}");
                 }
             }
 

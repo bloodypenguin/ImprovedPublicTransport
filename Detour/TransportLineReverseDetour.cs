@@ -1,4 +1,5 @@
-﻿using ImprovedPublicTransport2.RedirectionFramework.Attributes;
+﻿using System.Runtime.CompilerServices;
+using ImprovedPublicTransport2.RedirectionFramework.Attributes;
 
 namespace ImprovedPublicTransport2.Detour
 {
@@ -6,6 +7,7 @@ namespace ImprovedPublicTransport2.Detour
     [TargetType(typeof(TransportLine))]
     public struct TransportLineReverseDetour
     {
+        [MethodImpl(MethodImplOptions.NoInlining)]
         [RedirectReverse]
         public static ushort GetActiveVehicle(ref TransportLine thisLine, int index)
         {

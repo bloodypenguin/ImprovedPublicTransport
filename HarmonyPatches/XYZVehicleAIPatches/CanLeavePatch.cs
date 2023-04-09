@@ -7,6 +7,7 @@ using HarmonyLib;
 using ImprovedPublicTransport2.PersistentData;
 using ImprovedPublicTransport2.Util;
 using UnityEngine;
+using static ImprovedPublicTransport2.ImprovedPublicTransportMod;
 
 namespace ImprovedPublicTransport2.HarmonyPatches.XYZVehicleAIPatches
 {
@@ -79,8 +80,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches.XYZVehicleAIPatches
         public static IEnumerable<CodeInstruction> Transpile(MethodBase original,
             IEnumerable<CodeInstruction> instructions)
         {
-            Debug.Log("IPT2: CanLeavePatch - Transpiling method: " + original.DeclaringType + "." +
-                      original);
+            Debug.Log($"{ShortModName}: CanLeavePatch - Transpiling method: {original.DeclaringType}.{original}");
             var replaced = false;
             foreach (var codeInstruction in instructions)
             {
@@ -95,7 +95,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches.XYZVehicleAIPatches
                 {
                     labels = codeInstruction.labels
                 };
-                Debug.Log("IPT2: CanLeavePatch - Replaced a call to CanLeaveStop");
+                Debug.Log($"{ShortModName}: CanLeavePatch - Replaced a call to CanLeaveStop");
                 replaced = true;
             }
         }

@@ -2,16 +2,19 @@ using ImprovedPublicTransport2.OptionsFramework;
 using ImprovedPublicTransport2.PersistentData;
 using ImprovedPublicTransport2.Util;
 using UnityEngine;
+using static ImprovedPublicTransport2.ImprovedPublicTransportMod;
 
 namespace ImprovedPublicTransport2.HarmonyPatches.DepotAIPatches
 {
     public class StartTransferPatch
     {
+        private const string VehicleSelectorHarmonyID = "com.github.algernon-A.csl.vehicleselector";
+        
         public static void Apply()
         {
             PatchUtil.Patch(
                 new PatchUtil.MethodDefinition(typeof(DepotAI), nameof(DepotAI.StartTransfer)),
-                new PatchUtil.MethodDefinition(typeof(StartTransferPatch), nameof(StartTransferPre), before: new[] {"com.github.algernon-A.csl.vehicleselector"}),
+                new PatchUtil.MethodDefinition(typeof(StartTransferPatch), nameof(StartTransferPre), before: new[] {VehicleSelectorHarmonyID}),
                 null
             );
         }
@@ -43,12 +46,12 @@ namespace ImprovedPublicTransport2.HarmonyPatches.DepotAIPatches
             {
                 if (depot == 0)
                 {
-                    Debug.LogWarning($"IPT2: No proper depot was found for line {lineID}!");
+                    Debug.LogWarning($"{ShortModName}: No proper depot was found for line {lineID}!");
                     CachedTransportLineData.ClearEnqueuedVehicles(lineID);
                     return false;
                 }
 
-                Debug.LogWarning($"IPT2: Invalid or no depot was selected for line {lineID}, resetting to : {depot}!");
+                Debug.LogWarning($"{ShortModName}: Invalid or no depot was selected for line {lineID}, resetting to : {depot}!");
                 CachedTransportLineData.ClearEnqueuedVehicles(lineID);
                 return false;
             }
@@ -71,7 +74,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches.DepotAIPatches
             }
             else
             {
-                Debug.Log("IPT2: Redirecting from " + buildingID + " to " + depot);
+                Debug.Log($"{ShortModName}: Redirecting from {buildingID} to {depot}");
                 __instance.StartTransfer(depot, ref BuildingManager.instance.m_buildings.m_buffer[depot], reason,
                     offer);
                 return false;
