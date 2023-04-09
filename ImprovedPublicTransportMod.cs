@@ -28,9 +28,7 @@ namespace ImprovedPublicTransport2
     {
         public const string BaseModName = "Improved Public Transport 2";
         public const string ShortModName = "IPT2";
-        
-        public const string HarmonyId = "github.com/bloodypenguin/ImprovedPublicTransport";
-        
+
         public static bool inGame;
         public static GameObject _iptGameObject;
         private GameObject _worldInfoPanel;
