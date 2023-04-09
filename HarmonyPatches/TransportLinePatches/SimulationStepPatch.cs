@@ -20,9 +20,9 @@ namespace ImprovedPublicTransport2.HarmonyPatches.TransportLinePatches
         {
             PatchUtil.Patch(
                 new PatchUtil.MethodDefinition(typeof(TransportLine), nameof(TransportLine.SimulationStep)),
-                new PatchUtil.MethodDefinition(typeof(SimulationStepPatch), nameof(Prefix)),
-                new PatchUtil.MethodDefinition(typeof(SimulationStepPatch), nameof(Postfix)),
-                new PatchUtil.MethodDefinition(typeof(SimulationStepPatch), nameof(Transpile))
+                new PatchUtil.MethodDefinition(typeof(SimulationStepPatch), nameof(Prefix), priority: Priority.Normal),
+                new PatchUtil.MethodDefinition(typeof(SimulationStepPatch), nameof(Postfix), priority: Priority.Normal),
+                new PatchUtil.MethodDefinition(typeof(SimulationStepPatch), nameof(Transpile), priority: Priority.Normal)
             );
         }
 

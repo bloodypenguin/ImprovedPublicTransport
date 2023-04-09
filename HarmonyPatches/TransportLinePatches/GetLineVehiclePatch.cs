@@ -1,3 +1,4 @@
+using HarmonyLib;
 using ImprovedPublicTransport2.PersistentData;
 using ImprovedPublicTransport2.Util;
 
@@ -11,7 +12,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches.TransportLinePatches
                 new PatchUtil.MethodDefinition(typeof(TransportLine),
                     nameof(TransportLine.GetLineVehicle)),
                 new PatchUtil.MethodDefinition(typeof(GetLineVehiclePatch),
-                    nameof(Prefix))
+                    nameof(Prefix), priority: Priority.Normal)
             );
         }
 

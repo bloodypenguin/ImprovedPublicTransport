@@ -48,9 +48,9 @@ namespace ImprovedPublicTransport2.HarmonyPatches.XYZVehicleAIPatches
         {
             PatchUtil.Patch(
                 new PatchUtil.MethodDefinition(type, CanLeaveMethod),
-                new PatchUtil.MethodDefinition(typeof(CanLeavePatch), nameof(Prefix)),
-                new PatchUtil.MethodDefinition(typeof(CanLeavePatch), nameof(Postfix)),
-                new PatchUtil.MethodDefinition(typeof(CanLeavePatch), nameof(Transpile))
+                new PatchUtil.MethodDefinition(typeof(CanLeavePatch), nameof(Prefix), priority: Priority.Normal),
+                new PatchUtil.MethodDefinition(typeof(CanLeavePatch), nameof(Postfix), priority: Priority.Normal),
+                new PatchUtil.MethodDefinition(typeof(CanLeavePatch), nameof(Transpile), priority: Priority.Normal)
             );
         }
 
