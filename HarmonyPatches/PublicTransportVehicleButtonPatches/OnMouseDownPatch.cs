@@ -26,21 +26,24 @@ namespace ImprovedPublicTransport2.HarmonyPatches.PublicTransportVehicleButtonPa
 
         private static bool Prefix(UIComponent component, UIMouseEventParameter eventParam)
         {
-            ushort objectUserData = (ushort)(component as UIButton).objectUserData;
-            InstanceID empty = InstanceID.Empty;
-            empty.Vehicle = objectUserData;
-            Vector3 position;
-            Quaternion rotation;
-            Vector3 size;
-            InstanceManager.GetPosition(empty, out position, out rotation, out size);
-            if ((Object) PublicTransportVehicleButton.cameraController != (Object) null)
+            var objectUserData = (ushort)(component as UIButton).objectUserData;
+            var instanceID = InstanceID.Empty;
+            instanceID.Vehicle = objectUserData;
+            InstanceManager.GetPosition(instanceID, out var position, out _, out _);
+            if (PublicTransportVehicleButton.cameraController != null)
             {
                 //begin mod: zoom on shift pressed
-                PublicTransportVehicleButton.cameraController.SetTarget(empty, position, Input.GetKey(KeyCode.LeftShift) | Input.GetKey(KeyCode.RightShift));
+                PublicTransportVehicleButton.cameraController.SetTarget(instanceID, position, Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
                 //end mod
             }
             PublicTransportWorldInfoPanel.ResetScrollPosition();
-            UIView.SetFocus((UIComponent)null);
+            UIView.SetFocus(null);
+            //begin mod: show PublicTransportVehicleWorldInfoPanel
+            if (!Input.GetKey(KeyCode.LeftAlt) && !Input.GetKey(KeyCode.RightAlt))
+            {
+                WorldInfoPanel.Show<PublicTransportVehicleWorldInfoPanel>(position, instanceID);
+            }
+            //end mod
 
             return false;
         }

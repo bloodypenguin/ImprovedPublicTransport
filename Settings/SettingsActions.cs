@@ -121,7 +121,7 @@ namespace ImprovedPublicTransport2.Settings
                 var subService = info.GetSubService();
                 var service = info.GetService();
                 var level = info.GetClassLevel();
-                if (service == ItemClass.Service.PublicTransport) //TODO(earalov): handle evacuation buses
+                if (service == ItemClass.Service.PublicTransport) //TODO(): handle evacuation buses
                 {
                     if (level == ItemClass.Level.Level1)
                     {
@@ -185,7 +185,7 @@ namespace ImprovedPublicTransport2.Settings
                     }
                     if (flag)
                     {
-                        instance.ReleaseLine((ushort) index); //TODO(earalov): make sure that outside connection lines don't get deleted
+                        instance.ReleaseLine((ushort) index); //TODO(): make sure that outside connection lines don't get deleted
                     }
                 }
             }

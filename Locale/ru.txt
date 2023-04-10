@@ -112,3 +112,5 @@ VEHICLE_SELECTION_REMOVE_ALL Удалить все транспортные ср
 VEHICLE_SELECTION_AVAILABLE_VEHICLES Доступный транспорт
 VEHICLE_SELECTION_SELECTED_VEHICLES Выбранный транспорт
 VEHICLE_SELECTION_ANY_VEHICLE Любой транспорт
+STOP_BUTTON_TOOLTIP {0}\n\nЛевый клик, чтобы показать остановку.\nЗажмите Shift, чтобы приблизить камеру.\nЗажмите Alt, чтобы не показывать информационную панель.
+VEHICLE_BUTTON_TOOLTIP {0}\n\nЛевый клик, чтобы показать транспортное средство.\nЗажмите Shift, чтобы приблизить камеру.\nЗажмите Alt, чтобы не показывать информационную панель

@@ -18,7 +18,7 @@ LINE_PANEL_BUDGET_CONTROL_TOOLTIP Aktiviert oder deaktiviert die Budget-Kontroll
 LINE_PANEL_UNBUNCHING_TOOLTIP Aktiviert oder deaktiviert die Abstandskontrolle für diese Linie.\nDie Abstandskontrolle ist deaktiviert wenn Abstandskontroll-Aggressivität auf 0 gesetzt ist.
 LINE_PANEL_DEPOT Depot:
 LINE_PANEL_NO_DEPOT_FOUND Kein Depot gefunden.
-LINE_PANEL_DEPOT_MARKER_TOOLTIP Gehe zum ausgewählten Depot.\nWenn du beim Klicken eine Shift-Taste gedrückt hälst wird auch reingezoomt.
+LINE_PANEL_DEPOT_MARKER_TOOLTIP Gehe zum ausgewählten Depot.\nWenn du beim Klicken eine Shift-Taste gedrückt hältst wird auch reingezoomt.
 LINE_PANEL_SELECT_TYPES Wähle Typen
 LINE_PANEL_SELECT_TYPES_TOOLTIP Blendet das 'Wähle Typen' Fenster ein oder aus.\nWenn diese Schaltfläche deaktiviert ist must du zuerst ein Depot festlegen.
 LINE_PANEL_LINE_STOPS Haltestellen
@@ -57,7 +57,7 @@ SETTINGS_LINE_DELETION_TOOL_BUTTON_TOOLTIP Löscht alle Linien der ausgewählten
 SETTINGS_LINE_DELETION_TOOL_CONFIRM_TITLE BESTÄTIGE LINIEN LÖSCHUNG
 SETTINGS_LINE_DELETION_TOOL_CONFIRM_MSG Du bist dabei alle Linien zu löschen.\nMöchtest du fortfahren?
 STOP_LIST_BOX_ROW_STOP Haltestelle #{0}
-STOP_LIST_BOX_ROW_TOOLTIP {0}\nWartende Passagiere: {1}\n\nRechtsklick um zu dieser Haltestelle zu springen.\nWenn du beim Klicken eine Shift-Taste gedrückt hälst wird auch reingezoomt.
+STOP_LIST_BOX_ROW_TOOLTIP {0}\nWartende Passagiere: {1}\n\nRechtsklick um zu dieser Haltestelle zu springen.\nWenn du beim Klicken eine Shift-Taste gedrückt hältst wird auch reingezoomt.
 STOP_PANEL_SUGGESTED_NAMES_TOOLTIP Liste mit vorgeschlagenen Haltestellenamen.
 STOP_PANEL_REUSE_NAME_TOOLTIP Benutze diesen Namen für die anderen Haltestellen nahe dieser Position.
 STOP_PANEL_WAITING_PEOPLE Wartende Passagiere: {0}
@@ -73,11 +73,11 @@ STOP_PANEL_UNBUNCHING_TOOLTIP Aktiviert oder deaktiviert die Abstandskontrolle f
 STOP_PANEL_UPDATE_CLOSE_STOPS Übernehme für nahe Haltestellen
 STOP_PANEL_UPDATE_CLOSE_STOPS_TOOLTIP Übernehme die Abstandskontroll-Einstellung für nahe Haltestellen.
 STOP_PANEL_PREVIOUS Vorherige Haltestelle
-STOP_PANEL_PREVIOUS_TOOLTIP Springe zur vorherigen Haltestelle.\nWenn du beim Klicken eine Shift-Taste gedrückt hälst wird auch reingezoomt.
+STOP_PANEL_PREVIOUS_TOOLTIP Springe zur vorherigen Haltestelle.\nWenn du beim Klicken eine Shift-Taste gedrückt hältst wird auch reingezoomt.
 STOP_PANEL_DELETE_STOP Lösche Haltestelle
 STOP_PANEL_DELETE_STOP_TOOLTIP Dieser Button ist aktiviert wenn du Alt drückst.\nBenutze ihn auf eigene Gefahr!!!
 STOP_PANEL_NEXT Nächste Haltestelle
-STOP_PANEL_NEXT_TOOLTIP Springe zur nächsten Haltestelle.\nWenn du beim Klicken eine Shift-Taste gedrückt hälst wird auch reingezoomt.
+STOP_PANEL_NEXT_TOOLTIP Springe zur nächsten Haltestelle.\nWenn du beim Klicken eine Shift-Taste gedrückt hältst wird auch reingezoomt.
 VEHICLE_EDITOR_TITLE Fahrzeugeditor
 VEHICLE_EDITOR_SUB_TITLE {0} Fahrzeuge
 VEHICLE_EDITOR_CAPACITY Passagierkapazität 
@@ -91,7 +91,7 @@ VEHICLE_EDITOR_ENGINE_ON_BOTH_ENDS Zugmaschine an beiden Enden
 VEHICLE_EDITOR_ENGINE_ON_BOTH_ENDS_TOOLTIP Aktiviert oder deaktiviert die Zugmaschine an beiden Zugenden.
 VEHICLE_EDITOR_APPLY Übernehmen
 VEHICLE_EDITOR_DEFAULT Standard
-VEHICLE_LIST_BOX_ROW_TOOLTIP1 Rechtsklick um diesem Fahrzeug zu folgen.\nWenn du beim Klicken eine Shift-Taste gedrückt hälst wird auch reingezoomt.
+VEHICLE_LIST_BOX_ROW_TOOLTIP1 Rechtsklick um diesem Fahrzeug zu folgen.\nWenn du beim Klicken eine Shift-Taste gedrückt hältst wird auch reingezoomt.
 VEHICLE_LIST_BOX_ROW_TOOLTIP2 Shift-Klick um dieses Fahrzeug einzureihen.
 VEHICLE_PANEL_EDIT_TYPE Bearbeite Fahrzeugtyp
 VEHICLE_PANEL_EDIT_TYPE_TOOLTIP Bearbeite diesen Fahrzeugtyp mit dem Fahrzeugeditor.
@@ -102,10 +102,10 @@ VEHICLE_PANEL_PASSENGERS Passagiere:
 VEHICLE_PANEL_EARNINGS Einnahmen:
 VEHICLE_PANEL_EARNINGS_TOOLTIP Ergebnis aus Fahrpreisen und Wartungskosten.
 VEHICLE_PANEL_PREVIOUS Vorheriges Fahrzeug
-VEHICLE_PANEL_PREVIOUS_TOOLTIP Springe zum vorherigen Fahrzeug.\nWenn du beim Klicken eine Shift-Taste gedrückt hälst wird auch reingezoomt.
+VEHICLE_PANEL_PREVIOUS_TOOLTIP Springe zum vorherigen Fahrzeug.\nWenn du beim Klicken eine Shift-Taste gedrückt hältst wird auch reingezoomt.
 VEHICLE_PANEL_REMOVE_VEHICLE Entferne Fahrzeug
 VEHICLE_PANEL_NEXT Nächstes Fahrzeug
-VEHICLE_PANEL_NEXT_TOOLTIP Springe zum nächsten Fahrzeug.\nWenn du beim Klicken eine Shift-Taste gedrückt hälst wird auch reingezoomt.
+VEHICLE_PANEL_NEXT_TOOLTIP Springe zum nächsten Fahrzeug.\nWenn du beim Klicken eine Shift-Taste gedrückt hältst wird auch reingezoomt.
 VEHICLE_SELECTION_CAPACITY Kapazität
 VEHICLE_SELECTION_ADD_VEHICLE Dieses Fahrzeug zur Liste der zugelassenen Fahrzeuge hinzufügen
 VEHICLE_SELECTION_ADD_ALL Alle möglichen Fahrzeuge zur Liste der zugelassenen Fahrzeuge hinzufügen
@@ -114,3 +114,5 @@ VEHICLE_SELECTION_REMOVE_ALL Alle Fahrzeuge von der Liste der zugelassenen Fahrz
 VEHICLE_SELECTION_AVAILABLE_VEHICLES Verfügbare Fahrzeuge
 VEHICLE_SELECTION_SELECTED_VEHICLES Zugelassene Fahrzeuge
 VEHICLE_SELECTION_ANY_VEHICLE Jedes Fahrzeug
+STOP_BUTTON_TOOLTIP {0}\n\nLinksklick um zu dieser Haltestelle zu springen.\nWenn du beim Klicken eine Shift-Taste gedrückt hältst wird auch reingezoomt.\nWenn du beim Klicken eine Alt-Taste gedrückt hältst wird die Haltestelle-Infotafel nicht geöffnet.
+VEHICLE_BUTTON_TOOLTIP {0}\n\nLinksklick um zu diesem Fahrzeug zu springen.\nWenn du beim Klicken eine Shift-Taste gedrückt hältst wird auch reingezoomt.\nWenn du beim Klicken eine Alt-Taste gedrückt hältst wird die Fahrzeug-Infotafel nicht angezeigt.

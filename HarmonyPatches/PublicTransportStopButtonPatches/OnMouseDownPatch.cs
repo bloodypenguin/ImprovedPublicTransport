@@ -27,20 +27,24 @@ namespace ImprovedPublicTransport2.HarmonyPatches.PublicTransportStopButtonPatch
         
         private static bool Prefix(UIComponent component, UIMouseEventParameter eventParam)
         {
-            ushort objectUserData = (ushort)(component as UIButton).objectUserData;
-            Vector3 position = Singleton<NetManager>.instance.m_nodes.m_buffer[(int)objectUserData].m_position;
-            InstanceID empty = InstanceID.Empty;
-            empty.NetNode = objectUserData;
-            if ((Object)PublicTransportStopButton.cameraController != (Object)null)
+            var objectUserData = (ushort)(component as UIButton).objectUserData;
+            var position = Singleton<NetManager>.instance.m_nodes.m_buffer[objectUserData].m_position;
+            var instanceID = InstanceID.Empty;
+            instanceID.NetNode = objectUserData;
+            if (PublicTransportStopButton.cameraController != null)
                 //begin mod: zoom on shift pressed
-                ToolsModifierControl.cameraController.SetTarget(empty, position, Input.GetKey(KeyCode.LeftShift) | Input.GetKey(KeyCode.RightShift));
+                ToolsModifierControl.cameraController.SetTarget(instanceID, position, Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
                 //end mod
 
             PublicTransportWorldInfoPanel.ResetScrollPosition();
-            UIView.SetFocus((UIComponent)null);
+            UIView.SetFocus(null);
+
 
             //begin mod: show PublicTransportStopWorldInfoPanel
-            PublicTransportStopWorldInfoPanel.instance.Show(position, empty);
+            if (!Input.GetKey(KeyCode.LeftAlt) && !Input.GetKey(KeyCode.RightAlt))
+            {
+                PublicTransportStopWorldInfoPanel.instance.Show(position, instanceID);
+            }
             //end mod
 
             return false;

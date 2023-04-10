@@ -159,7 +159,7 @@ namespace ImprovedPublicTransport2.Util
             return closestDepot;
         }
 
-        public static ushort GetClosestDepot(ushort lineID, Vector3 stopPosition) //TODO(earalov): What happens if closest depot is not connected/not reachable?
+        public static ushort GetClosestDepot(ushort lineID, Vector3 stopPosition) //TODO(): What happens if closest depot is not connected/not reachable?
         {
             ushort result = 0;
             var previousDistance = float.MaxValue;
