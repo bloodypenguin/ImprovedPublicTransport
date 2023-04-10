@@ -38,7 +38,7 @@ namespace ImprovedPublicTransport2.HarmonyPatches.PublicTransportWorldInfoPanelP
                 {
                     name = StopListBoxRow.GenerateStopName(name, stop, -1);
                 }
-                uiComponent.tooltip = name;
+                uiComponent.tooltip = string.Format(Localization.Get("STOP_BUTTON_TOOLTIP"), name);
                 //end mod
 
                 stop = TransportLine.GetNextStop(stop);

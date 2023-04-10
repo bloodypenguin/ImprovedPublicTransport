@@ -81,11 +81,6 @@ namespace ImprovedPublicTransport2.UI
 
         public new void Hide()
         {
-            UnityEngine.Debug.Log("Hide");
-            System.Diagnostics.StackTrace t = new System.Diagnostics.StackTrace();
-            UnityEngine.Debug.Log(t.ToString());
-
-
             this.m_InstanceID = InstanceID.Empty;
             this.isVisible = false;
         }

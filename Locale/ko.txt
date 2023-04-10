@@ -112,3 +112,5 @@ VEHICLE_SELECTION_REMOVE_ALL 모든 차량을 허용된 차량 목록에서 삭�
 VEHICLE_SELECTION_AVAILABLE_VEHICLES 이용가능한 차량
 VEHICLE_SELECTION_SELECTED_VEHICLES 선택된 차량
 VEHICLE_SELECTION_ANY_VEHICLE 아무 차량이나
+STOP_BUTTON_TOOLTIP {0}\n\nClick to jump to this stop.\nHolding down a shift key when clicking will also zoom in.\nHoling down an alt key when clicking will prevent opening the stop info panel.
+VEHICLE_BUTTON_TOOLTIP {0}\n\nClick to jump to this vehicle.\nHolding down a shift key when clicking will also zoom in.\nHoling down an alt key when clicking will prevent opening the vehicle info panel.

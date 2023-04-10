@@ -114,3 +114,5 @@ VEHICLE_SELECTION_REMOVE_ALL Remove all vehicles from the list of permitted vehi
 VEHICLE_SELECTION_AVAILABLE_VEHICLES Available vehicles
 VEHICLE_SELECTION_SELECTED_VEHICLES Selected vehicles
 VEHICLE_SELECTION_ANY_VEHICLE Any vehicle
+STOP_BUTTON_TOOLTIP {0}\n\nClick to jump to this stop.\nHolding down a shift key when clicking will also zoom in.\nHoling down an alt key when clicking will prevent opening the stop info panel.
+VEHICLE_BUTTON_TOOLTIP {0}\n\nClick to jump to this vehicle.\nHolding down a shift key when clicking will also zoom in.\nHoling down an alt key when clicking will prevent opening the vehicle info panel.
