@@ -8,7 +8,7 @@ namespace ImprovedPublicTransport2.Settings
     {
         public static void OnBudgetCheckChanged(bool isChecked)
         {
-            if (!ImprovedPublicTransportMod.inGame)
+            if (!ImprovedPublicTransportMod.InGame)
             {
                 return;
             }
@@ -26,7 +26,7 @@ namespace ImprovedPublicTransport2.Settings
 
         public static void OnUpdateButtonClick()
         {
-            if (!ImprovedPublicTransportMod.inGame)
+            if (!ImprovedPublicTransportMod.InGame)
             {
                 return;
             }
@@ -45,7 +45,7 @@ namespace ImprovedPublicTransport2.Settings
 
         public static void OnDefaultVehicleCountSubmitted(int count)
         {
-            if (!ImprovedPublicTransportMod.inGame)
+            if (!ImprovedPublicTransportMod.InGame)
             {
                 return;
             }
@@ -64,7 +64,7 @@ namespace ImprovedPublicTransport2.Settings
 
         public static void OnResetButtonClick()
         {
-            if (!ImprovedPublicTransportMod.inGame)
+            if (!ImprovedPublicTransportMod.InGame)
             {
                 return;
             }
@@ -79,7 +79,7 @@ namespace ImprovedPublicTransport2.Settings
 
         public static void OnDeleteLinesClick()
         {
-            if (!ImprovedPublicTransportMod.inGame)
+            if (!ImprovedPublicTransportMod.InGame)
             {
                 return;
             }

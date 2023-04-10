@@ -30,12 +30,12 @@ namespace ImprovedPublicTransport2
         public const string BaseModName = "Improved Public Transport 2";
         public const string ShortModName = "IPT2";
 
-        public static bool inGame;
-        public static GameObject _iptGameObject;
+        public static bool InGame;
+        public static GameObject IptGameObject;
         private GameObject _worldInfoPanel;
-        private readonly string version = "7.0.0";
+        private const string Version = "7.0.1";
 
-        public string Name => $"{BaseModName} [r{version}]";
+        public string Name => $"{BaseModName} [r{Version}]";
 
         public string Description => Localization.Get("MOD_DESCRIPTION");
 
@@ -57,18 +57,18 @@ namespace ImprovedPublicTransport2
                 return;
             }
 
-            inGame = true;
+            InGame = true;
             try
             {
-                Utils.Log($"{ShortModName}: Begin init version: {version}");
+                Utils.Log($"{ShortModName}: Begin init version: {Version}");
                 ReleaseUnusedCitizenUnits();
                 UIView objectOfType = Object.FindObjectOfType<UIView>();
                 if (objectOfType != null)
                 {
-                    _iptGameObject = new GameObject("IptGameObject");
-                    _iptGameObject.transform.parent = objectOfType.transform;
-                    _iptGameObject.AddComponent<SimHelper>();
-                    _iptGameObject.AddComponent<LineWatcher>();
+                    IptGameObject = new GameObject("IptGameObject");
+                    IptGameObject.transform.parent = objectOfType.transform;
+                    IptGameObject.AddComponent<SimHelper>();
+                    IptGameObject.AddComponent<LineWatcher>();
                     _worldInfoPanel = new GameObject("PublicTransportStopWorldInfoPanel");
                     _worldInfoPanel.transform.parent = objectOfType.transform;
                     _worldInfoPanel.AddComponent<PublicTransportStopWorldInfoPanel>();
@@ -117,10 +117,10 @@ namespace ImprovedPublicTransport2
                     VehiclePrefabs.Init();
                     SerializableDataExtension.instance.Loaded = true;
                     LocaleModifier.Init();
-                    _iptGameObject.AddComponent<VehicleEditor>();
-                    _iptGameObject.AddComponent<PanelExtenderLine>();
-                    _iptGameObject.AddComponent<PanelExtenderVehicle>();
-                    _iptGameObject.AddComponent<PanelExtenderCityService>();
+                    IptGameObject.AddComponent<VehicleEditor>();
+                    IptGameObject.AddComponent<PanelExtenderLine>();
+                    IptGameObject.AddComponent<PanelExtenderVehicle>();
+                    IptGameObject.AddComponent<PanelExtenderCityService>();
                     Utils.Log("Loading done!");
                 }
                 else
@@ -148,9 +148,9 @@ namespace ImprovedPublicTransport2
                 return;
             }
 
-            if (!inGame)
+            if (!InGame)
                 return;
-            inGame = false;
+            InGame = false;
             Deinit();
             Utils.Log("Unloading done!" + Environment.NewLine);
         }
@@ -209,8 +209,8 @@ namespace ImprovedPublicTransport2
             SerializableDataExtension.instance.Loaded = false;
             LocaleModifier.Deinit();
 
-            if (_iptGameObject != null)
-                Object.Destroy(_iptGameObject);
+            if (IptGameObject != null)
+                Object.Destroy(IptGameObject);
             if (!(_worldInfoPanel != null))
                 return;
             Object.Destroy(_worldInfoPanel);

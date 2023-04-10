@@ -29,7 +29,7 @@ namespace ImprovedPublicTransport2
         public override void OnBuildingCreated(ushort id)
         {
             base.OnBuildingCreated(id);
-            if (!ImprovedPublicTransportMod.inGame)
+            if (!ImprovedPublicTransportMod.InGame)
             {
                 return;
             }
@@ -39,7 +39,7 @@ namespace ImprovedPublicTransport2
         public override void OnBuildingReleased(ushort id)
         {
             base.OnBuildingReleased(id);
-            if (!ImprovedPublicTransportMod.inGame)
+            if (!ImprovedPublicTransportMod.InGame)
             {
                 return;
             }
