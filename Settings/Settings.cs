@@ -24,7 +24,7 @@ namespace ImprovedPublicTransport2.Settings
         public bool ShowLineInfo { get; set; } = true;
 
         [BudgetDescription]
-        [Checkbox(SETTINGS_BUDGET, SETTINGS_BUDGET, nameof(SettingsActions), nameof(SettingsActions.OnBudgetCheckChanged))]  //TODO(earalov): add new locale?
+        [Checkbox(SETTINGS_BUDGET, SETTINGS_BUDGET, nameof(SettingsActions), nameof(SettingsActions.OnBudgetCheckChanged))]  //TODO: add new locale?
         public bool BudgetControl { get; set; } = true;
 
         [BudgetDescription]
@@ -36,7 +36,7 @@ namespace ImprovedPublicTransport2.Settings
 
         [AggressionDescription]
         [Slider("SETTINGS_UNBUNCHING_AGGRESSION", 0.0f, 52.0f, 1.0f, SETTINGS_UNBUNCHING)]
-        public byte IntervalAggressionFactor { get; set; } = 52; //TODO(earalov): convert into max seconds at stop
+        public byte IntervalAggressionFactor { get; set; } = 52; //TODO(): convert into max seconds at stop
 
         [Description("SETTINGS_VEHICLE_COUNT_TOOLTIP")]
         [Slider("SETTINGS_VEHICLE_COUNT", 0.0f, 100.0f, 1.0f, SETTINGS_UNBUNCHING, nameof(SettingsActions), nameof(SettingsActions.OnDefaultVehicleCountSubmitted))]

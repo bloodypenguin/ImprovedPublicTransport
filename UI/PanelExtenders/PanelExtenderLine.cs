@@ -756,7 +756,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
         });
     }
 
-    //TODO(earalov): consider corner cases
+    //TODO(): consider corner cases
     private void OnRemoveVehicleClick(UIComponent component, UIMouseEventParameter eventParam)
     {
         SimulationManager.instance.AddAction(() =>

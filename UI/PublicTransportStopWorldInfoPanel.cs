@@ -609,7 +609,7 @@ namespace ImprovedPublicTransport2.UI
             {
                 if (Input.GetMouseButtonDown(0) && !this.Raycast(this.GetCamera().ScreenPointToRay(Input.mousePosition)))
                 {
-                    //TODO(earalov): restore
+                    //TODO(): restore
                     //this.Hide();
                 }
             }
