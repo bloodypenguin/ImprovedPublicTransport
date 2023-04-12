@@ -8,6 +8,7 @@ using ColossalFramework.Globalization;
 using ImprovedPublicTransport2.OptionsFramework;
 using ImprovedPublicTransport2.UI.AlgernonCommons;
 using UnityEngine;
+using static System.Int32;
 using Utils = ImprovedPublicTransport2.Util.Utils;
 
 namespace ImprovedPublicTransport2.Data
@@ -28,8 +29,6 @@ namespace ImprovedPublicTransport2.Data
     public string Name => Info.name;
 
     public string DisplayName { get; }
-
-    public string Title => Locale.Get("VEHICLE_TITLE", PrefabCollection<VehicleInfo>.PrefabName((uint) PrefabDataIndex));
 
     public int TotalCapacity
     {
@@ -190,7 +189,7 @@ namespace ImprovedPublicTransport2.Data
     public PrefabData(VehicleInfo info)
     {
       Info = info;
-      DisplayName = PrefabUtils.GetDisplayName(info);
+      DisplayName = GetDisplayName(info);
       Utils.Log("Creating PrefabData for " + Name);
       if (Name == "451494281.London 1992 Stock (4 car)_Data")
       {
@@ -238,6 +237,52 @@ namespace ImprovedPublicTransport2.Data
       }
       CacheDefaults();
       LoadPrefabData();
+    }
+
+    private static string GetDisplayName(VehicleInfo info)
+    {
+      var infoName = info?.name;
+      if (infoName != null)
+      {
+        if(infoName.StartsWith("Bus") ||
+           infoName.StartsWith("DoubleDeckerBus") ||
+           infoName.StartsWith("ArticulatedBus") ||
+           infoName.StartsWith("Small Aircraft Passenger") ||
+           infoName.StartsWith("Medium Aircraft Passenger") ||
+           infoName.StartsWith("Large Aircraft Passenger") ||
+           infoName.StartsWith("Metro") ||
+           infoName.StartsWith("Tram") ||
+           infoName.StartsWith("Train")||
+           infoName.StartsWith("Ferry")||
+           infoName.StartsWith("Monorail")
+           )
+        {
+          if (infoName.StartsWith("Metro"))
+          {
+            var indexOfUnderscore = infoName.IndexOf("_");
+            if (indexOfUnderscore > 0)
+            {
+              infoName = infoName.Remove(indexOfUnderscore);
+            }
+          }
+          
+          var hasNumberOnEnd = TryParse(infoName.Substring(infoName.Length - 3), out var result);
+          if (!hasNumberOnEnd)
+          {
+            hasNumberOnEnd = TryParse(infoName.Substring(infoName.Length - 2), out result);
+          }
+          if (!hasNumberOnEnd)
+          {
+            hasNumberOnEnd = TryParse(infoName.Substring(infoName.Length - 1), out result);
+          }
+
+          if (hasNumberOnEnd)
+          {
+            return $"{PrefabUtils.GetDisplayName(info)} {result}";
+          }
+        }
+      }
+      return PrefabUtils.GetDisplayName(info);
     }
 
     private PrefabData()
@@ -670,7 +715,7 @@ namespace ImprovedPublicTransport2.Data
     public string GetDescription()
     {
       var stringBuilder = new StringBuilder();
-      stringBuilder.AppendLine(Title);
+      stringBuilder.AppendLine(DisplayName);
       ItemClass.SubService subService = Info.GetSubService();
       if (subService == ItemClass.SubService.PublicTransportTaxi)
         stringBuilder.AppendLine(Localization.Get("VEHICLE_EDITOR_CAPACITY_TAXI") + ": " + TotalCapacity);

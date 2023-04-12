@@ -18,15 +18,15 @@ namespace ImprovedPublicTransport2.UI.DontCryJustDieCommons
     private UILabel _label;
     private ushort _ID;
     private bool _isSelected;
-    private Func<ushort, string> _idToNameFunc;
+    private string _displayName;
 
     public UIFont Font { get; set; }
 
-    public Func<ushort, string> IDToNameFunc
+    public string DisplayName
     {
       set
       {
-        this._idToNameFunc = value;
+        this._displayName = value;
       }
     }
 
@@ -64,7 +64,7 @@ namespace ImprovedPublicTransport2.UI.DontCryJustDieCommons
       {
         if (!this._init)
           this.Start();
-        string text = this._idToNameFunc(this._ID);
+        string text = this._displayName;
         if (Utils.Truncate(this._label, text, "…"))
           this.tooltip = text;
         else

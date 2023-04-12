@@ -35,7 +35,7 @@ namespace ImprovedPublicTransport2.UI.AlgernonCommons
         /// </summary>
         /// <param name="prefabName">Prefab name.</param>
         /// <returns>Cleaned display name.</returns>
-        public static string GetDisplayName(string prefabName)
+        private static string GetDisplayName(string prefabName)
         {
             // Omit any package number, and trim off any trailing _Data.
             int index = prefabName.IndexOf('.');
