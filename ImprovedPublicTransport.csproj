@@ -209,6 +209,7 @@
     <Content Include="Locale\es.txt" />
     <Content Include="Locale\fr.txt" />
     <Content Include="Locale\it.txt" />
+    <Content Include="Locale\ja.txt" />
     <Content Include="Locale\kr.txt" />
     <Content Include="Locale\ko.txt" />
     <Content Include="Locale\pl.txt" />

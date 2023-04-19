@@ -114,3 +114,5 @@ VEHICLE_SELECTION_REMOVE_ALL 全ての車両を許可された車両リストか
 VEHICLE_SELECTION_AVAILABLE_VEHICLES 使用可能な車両
 VEHICLE_SELECTION_SELECTED_VEHICLES 選択した車両
 VEHICLE_SELECTION_ANY_VEHICLE 全ての車両
+STOP_BUTTON_TOOLTIP {0}\n\nClick to jump to this stop.\nHolding down a shift key when clicking will also zoom in.\nHoling down an alt key when clicking will prevent opening the stop info panel.
+VEHICLE_BUTTON_TOOLTIP {0}\n\nClick to jump to this vehicle.\nHolding down a shift key when clicking will also zoom in.\nHoling down an alt key when clicking will prevent opening the vehicle info panel.
