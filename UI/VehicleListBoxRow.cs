@@ -105,7 +105,7 @@ namespace ImprovedPublicTransport2.UI
       this._label.height = this.height;
       this._label.width = this.width - (float) this.autoLayoutPadding.left;
       this._label.verticalAlignment = UIVerticalAlignment.Middle;
-      Utils.Truncate(this._label, this._prefab.Title, "…");
+      Utils.Truncate(this._label, this._prefab.DisplayName, "…");
     }
 
     public override void OnDestroy()

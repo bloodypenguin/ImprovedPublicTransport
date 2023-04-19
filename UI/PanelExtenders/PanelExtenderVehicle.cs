@@ -44,7 +44,7 @@ namespace ImprovedPublicTransport2.UI.PanelExtenders
     private FieldInfo _cachedTotalProgress;
     private FieldInfo _cachedProgressVehicle;
 
-    private void LateUpdate()
+    public void LateUpdate()
     {
       if (!this._initialized)
       {

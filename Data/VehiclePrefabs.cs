@@ -217,7 +217,10 @@ namespace ImprovedPublicTransport2.Data
                             }
                             case ItemClass.SubService.PublicTransportPlane:
                             {
-                                planeList.Add(RegisterPrefab(prefab));
+                                if (prefab.m_vehicleType == VehicleInfo.VehicleType.Plane)
+                                {
+                                    planeList.Add(RegisterPrefab(prefab));
+                                }
                                 continue;
                             }
                             case ItemClass.SubService.PublicTransportTaxi:
@@ -268,7 +271,16 @@ namespace ImprovedPublicTransport2.Data
                             }
                             case ItemClass.SubService.PublicTransportPlane:
                             {
-                                blimpList.Add(RegisterPrefab(prefab));
+                                if (prefab.m_vehicleType == VehicleInfo.VehicleType.Blimp)
+                                {
+                                    blimpList.Add(RegisterPrefab(prefab));
+                                }
+
+                                if (prefab.m_vehicleType == VehicleInfo.VehicleType.Plane)
+                                {
+                                    planeList.Add(RegisterPrefab(prefab));
+                                }
+
                                 continue;
                             }
                             case ItemClass.SubService.PublicTransportTrain:
@@ -293,7 +305,17 @@ namespace ImprovedPublicTransport2.Data
                             }
                             case ItemClass.SubService.PublicTransportPlane:
                             {
-                                helicopterList.Add(RegisterPrefab(prefab));
+                                if (prefab.m_vehicleType == VehicleInfo.VehicleType.Helicopter)
+                                {
+                                    helicopterList.Add(RegisterPrefab(prefab));
+                                }
+                                
+                                
+                                if (prefab.m_vehicleType == VehicleInfo.VehicleType.Plane)
+                                {
+                                    planeList.Add(RegisterPrefab(prefab));
+                                }
+
                                 continue;
                             }
                             default:

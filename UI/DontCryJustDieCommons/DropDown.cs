@@ -175,7 +175,7 @@ namespace ImprovedPublicTransport2.UI.DontCryJustDieCommons
       this._scrollablePanel.scrollPosition = new Vector2(0.0f, 0.0f);
     }
 
-    public void AddItem(ushort ID, Func<ushort, string> func)
+    public void AddItem(ushort ID, string name)
     {
       if (this._items == null)
         this._items = new DropDownRow[0];
@@ -185,7 +185,7 @@ namespace ImprovedPublicTransport2.UI.DontCryJustDieCommons
       if ((UnityEngine.Object) this.Font != (UnityEngine.Object) null)
         dropDownRow.Font = this.Font;
       dropDownRow.ID = ID;
-      dropDownRow.IDToNameFunc = func;
+      dropDownRow.DisplayName = name;
       dropDownRow.eventClick += new MouseEventHandler(this.OnRowClick);
       dropDownRowArray[this._items.Length] = dropDownRow;
       this._items = dropDownRowArray;
@@ -200,7 +200,7 @@ namespace ImprovedPublicTransport2.UI.DontCryJustDieCommons
         if ((UnityEngine.Object) this.Font != (UnityEngine.Object) null)
           dropDownRow.Font = this.Font;
         dropDownRow.ID = id;
-        dropDownRow.IDToNameFunc = func;
+        dropDownRow.DisplayName = func.Invoke(id);
         dropDownRow.eventClick += new MouseEventHandler(this.OnRowClick);
         dropDownRowList.Add(dropDownRow);
       }

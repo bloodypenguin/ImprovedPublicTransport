@@ -843,7 +843,7 @@ namespace ImprovedPublicTransport2.UI
       int num = 0;
       for (int index = 0; index < length; ++index)
       {
-        dropDown.AddItem((ushort) prefabs[index].PrefabDataIndex, new Func<ushort, string>(this.IDToName));
+        dropDown.AddItem((ushort) prefabs[index].PrefabDataIndex, prefabs[index].DisplayName);
         if ((UnityEngine.Object) selectedPrefab != (UnityEngine.Object) null && prefabs[index].PrefabDataIndex == selectedPrefab.m_prefabDataIndex)
           num = index;
       }
