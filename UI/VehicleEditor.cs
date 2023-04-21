@@ -580,24 +580,23 @@ namespace ImprovedPublicTransport2.UI
       this.UpdateBindings();
     }
 
-    private void OnCapacitySubmitted(UIComponent component, string text)
+    private void OnCapacitySubmitted(UIComponent component, string capacityValue)
     {
       if (this._selectedIndex <= -1 || this._selectedSubService == ItemClass.SubService.PublicTransportTaxi)
         return;
       PrefabData prefab = GetPrefabs()[this._selectedIndex];
       int carCount = prefab.CarCount;
-      int int32 = Utils.ToInt32(text);
-      int num1 = 0;
+      int int32 = Utils.ToInt32(capacityValue);
+      int totalCapacity = 0;
       if (int32 > 0)
       {
-        num1 = Utils.RoundToNearest( int32 / (float)carCount, 1) * carCount;
-        (component as UITextField).text = num1.ToString();
+        totalCapacity = Utils.RoundToNearest( int32 / (float)carCount, 1) * carCount;
+        (component as UITextField).text = totalCapacity.ToString();
       }
       UITextField uiTextField = this._rightSidePanel.Find<UITextField>("MaintenanceCost");
       if (!uiTextField.parent.enabled)
         return;
-      float num2 = (float) num1 / (float) carCount / (float) GameDefault.GetCapacity(prefab.Info.GetService(), prefab.Info.GetSubService(), prefab.Info.GetClassLevel(), prefab.Info.m_vehicleType);
-      uiTextField.text = Mathf.RoundToInt((float) (PrefabData.GetMaintenanceCost(prefab.Info.GetService(), prefab.Info.GetSubService(), prefab.Info.GetClassLevel(), prefab.Info.m_vehicleAI) * 16) * num2).ToString();
+      uiTextField.text = PrefabData.CalculateMaintenanceCost(prefab.Info, totalCapacity, carCount).ToString();
     }
 
     private void OnApplyButtonClick(UIComponent component, UIMouseEventParameter eventParam)

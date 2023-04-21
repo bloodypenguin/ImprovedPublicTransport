@@ -90,6 +90,7 @@
     <Compile Include="Data\PrefabData.cs" />
     <Compile Include="Data\SerializableDataExtension.cs" />
     <Compile Include="Data\VehicleData.cs" />
+    <Compile Include="Query\VanillaMaintenanceQuery.cs" />
     <Compile Include="ReverseDetours\CommonBuildingAIReverseDetour.cs" />
     <Compile Include="HarmonyPatches\BuildingManagerPatches\GetDepotLevelsPatch.cs" />
     <Compile Include="HarmonyPatches\DepotAIPatches\ClassMatchesPatch.cs" />
