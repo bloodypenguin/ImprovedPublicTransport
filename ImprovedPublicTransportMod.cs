@@ -75,18 +75,8 @@ namespace ImprovedPublicTransport2
 
                     CachedNodeData.Init();
 
-                    int maxVehicleCount;
-                    if (Utils.IsModActive(1764208250)) // More Vehicles
-                    {
-                        Debug.LogWarning(
-                            $"{ShortModName}: More Vehicles is enabled, applying compatibility workaround");
-                        maxVehicleCount = ushort.MaxValue + 1;
-                    }
-                    else
-                    {
-                        Debug.Log($"{ShortModName}: More Vehicles is not enabled");
-                        maxVehicleCount = VehicleManager.MAX_VEHICLE_COUNT;
-                    }
+                    int maxVehicleCount = VehicleManager.instance.m_vehicles.m_buffer.Length;
+                    Debug.LogWarning($"{ShortModName}: MaxVehicleCout is {maxVehicleCount}");
 
                     CachedVehicleData.Init(maxVehicleCount);
 
